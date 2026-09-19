@@ -1,0 +1,592 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-500.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-600.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #ffffff;
+      font-family: "Poppins", sans-serif;
+      --bg: #ffffff;
+      --primary: #0054ad;
+      --text: #002a78;
+      --text-muted: #705d00;
+      --accent-light: rgba(0, 84, 173, 0.08);
+      --accent-medium: rgba(0, 84, 173, 0.15);
+      --border: rgba(0, 84, 173, 0.2);
+      --card-bg: rgba(0, 84, 173, 0.04);
+    }
+
+    .f10-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+    }
+
+    .f10-content {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* ---------- member card + trigger tag ---------- */
+    .f10-member-card {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      top: 96px;
+      width: 640px;
+      height: 112px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      transform-origin: 50% 50%;
+      opacity: 0;
+    }
+    .f10-avatar {
+      position: absolute;
+      left: 20px;
+      top: 28px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 20px;
+    }
+    .f10-member-name {
+      position: absolute;
+      left: 92px;
+      top: 24px;
+      font-size: 23px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .f10-member-sub {
+      position: absolute;
+      left: 92px;
+      top: 56px;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .f10-tag-chip {
+      position: absolute;
+      right: 20px;
+      top: 36px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px 0 10px;
+      background: var(--accent-light);
+      border-radius: 100px;
+      transform-origin: 90% 50%;
+      opacity: 0;
+      white-space: nowrap;
+    }
+    .f10-tag-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--primary);
+    }
+    .f10-spin-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    .f10-spin-icon circle {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+
+    /* ---------- loader lockup ---------- */
+    .f10-loader {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 254px;
+      display: flex;
+      justify-content: center;
+    }
+    .f10-loader-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+    }
+    .f10-loader-spin {
+      width: 36px;
+      height: 36px;
+      display: block;
+      flex-shrink: 0;
+    }
+    .f10-loader-spin circle {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+    .f10-loader-text {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .f10-loader-caret {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-left: 2px;
+    }
+
+    /* ---------- receipt card ---------- */
+    .f10-receipt-zoom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      top: 340px;
+      width: 780px;
+      transform-origin: 50% 100%;
+    }
+    .f10-receipt-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 32px 30px;
+      opacity: 0;
+      transform: scale(0.9);
+      transform-origin: 50% 50%;
+    }
+    .f10-receipt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .f10-receipt-eyebrow {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .f10-receipt-status {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--primary);
+      background: var(--accent-light);
+      border-radius: 100px;
+      padding: 6px 14px;
+    }
+    .f10-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .f10-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+    }
+    .f10-badge-slot {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+    .f10-badge-outline,
+    .f10-badge-check {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+    }
+    .f10-badge-outline svg,
+    .f10-badge-check svg {
+      width: 40px;
+      height: 40px;
+      display: block;
+    }
+    .f10-badge-check {
+      opacity: 0;
+    }
+    .f10-badge-track {
+      fill: none;
+      stroke: var(--accent-medium);
+      stroke-width: 3;
+    }
+    .f10-badge-arc {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 3;
+      stroke-linecap: round;
+      transform: rotate(-90deg);
+      transform-origin: 20px 20px;
+    }
+    .f10-badge-num {
+      fill: var(--primary);
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .f10-badge-solid {
+      fill: var(--primary);
+    }
+    .f10-badge-check-path {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .f10-row-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .f10-row-label {
+      font-size: 21px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .f10-row-meta {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+  </style>
+
+  <div data-hf-id="hf-snou" id="root" data-composition-id="10-automatizaciones" data-width="1920" data-height="1080" data-duration="9.617">
+    <div data-hf-id="hf-1bei" class="f10-bg clip" data-start="0" data-duration="9.617" data-track-index="0"></div>
+
+    <div data-hf-id="hf-6ej9" class="f10-content clip" data-start="0" data-duration="9.617" data-track-index="1">
+      <!-- Scene 1: trigger — a tag attaches itself to the member card -->
+      <div data-hf-id="hf-wldg" class="f10-member-card" id="f10-member-card">
+        <div data-hf-id="hf-cc44" class="f10-avatar">CR</div>
+        <div data-hf-id="hf-1iht" class="f10-member-name">Camila Ruiz</div>
+        <div data-hf-id="hf-0xoj" class="f10-member-sub">Voluntaria de alabanza</div>
+        <div data-hf-id="hf-817i" class="f10-tag-chip" id="f10-tag-chip">
+          <svg data-hf-id="hf-k15z" class="f10-spin-icon" id="f10-chip-spin" viewBox="0 0 24 24">
+            <circle data-hf-id="hf-40dd" id="f10-chip-spin-arc" cx="12" cy="12" r="9" stroke-dasharray="34 22" />
+          </svg>
+          <span data-hf-id="hf-7q4e" class="f10-tag-label">Cumpleaños hoy</span>
+        </div>
+      </div>
+
+      <!-- Scene 2: the working state — machine sends the message -->
+      <div data-hf-id="hf-9sjj" class="f10-loader">
+        <div data-hf-id="hf-12m6" class="f10-loader-inner" id="f10-loader-inner">
+          <svg data-hf-id="hf-80cc" class="f10-loader-spin" id="f10-loader-spin" viewBox="0 0 36 36">
+            <circle data-hf-id="hf-igvt" id="f10-loader-spin-arc" cx="18" cy="18" r="14" stroke-dasharray="53 35" />
+          </svg>
+          <span data-hf-id="hf-n2th" class="f10-loader-text" id="f10-loader-text"></span><span data-hf-id="hf-yywx" class="f10-loader-caret" id="f10-loader-caret">|</span>
+        </div>
+      </div>
+
+      <!-- Scene 3: the receipt cascades in and mutates -->
+      <div data-hf-id="hf-9zx6" class="f10-receipt-zoom" id="f10-receipt-zoom">
+        <div data-hf-id="hf-3p2e" class="f10-receipt-card" id="f10-receipt-card">
+          <div data-hf-id="hf-jh08" class="f10-receipt-header">
+            <span data-hf-id="hf-77c5" class="f10-receipt-eyebrow">Automatización</span>
+            <span data-hf-id="hf-qjn4" class="f10-receipt-status" id="f10-receipt-status">En curso</span>
+          </div>
+          <div data-hf-id="hf-acod" class="f10-rows">
+            <div data-hf-id="hf-op1s" class="f10-row" id="f10-row-1">
+              <div data-hf-id="hf-5i54" class="f10-badge-slot">
+                <div data-hf-id="hf-ijau" class="f10-badge-outline">
+                  <svg data-hf-id="hf-flyh" viewBox="0 0 40 40">
+                    <circle data-hf-id="hf-rq75" class="f10-badge-track" cx="20" cy="20" r="16" />
+                    <circle data-hf-id="hf-jtas" class="f10-badge-arc" id="f10-arc-1" cx="20" cy="20" r="16" />
+                    <text data-hf-id="hf-9yh5" class="f10-badge-num" x="20" y="21">1</text>
+                  </svg>
+                </div>
+                <div data-hf-id="hf-uo6c" class="f10-badge-check">
+                  <svg data-hf-id="hf-6wgt" viewBox="0 0 40 40">
+                    <circle data-hf-id="hf-5p2e" class="f10-badge-solid" cx="20" cy="20" r="20" />
+                    <path data-hf-id="hf-j6j1" class="f10-badge-check-path" id="f10-check-1" d="M12 21 L17 26 L29 13" />
+                  </svg>
+                </div>
+              </div>
+              <div data-hf-id="hf-1gb2" class="f10-row-text">
+                <span data-hf-id="hf-ee1f" class="f10-row-label">Etiqueta detectada</span>
+                <span data-hf-id="hf-zeeq" class="f10-row-meta" id="f10-meta-1">Cumpleaños hoy</span>
+              </div>
+            </div>
+
+            <div data-hf-id="hf-xcxn" class="f10-row" id="f10-row-2">
+              <div data-hf-id="hf-i3xs" class="f10-badge-slot">
+                <div data-hf-id="hf-x122" class="f10-badge-outline">
+                  <svg data-hf-id="hf-83dw" viewBox="0 0 40 40">
+                    <circle data-hf-id="hf-3hit" class="f10-badge-track" cx="20" cy="20" r="16" />
+                    <circle data-hf-id="hf-kfk1" class="f10-badge-arc" id="f10-arc-2" cx="20" cy="20" r="16" />
+                    <text data-hf-id="hf-b5e8" class="f10-badge-num" x="20" y="21">2</text>
+                  </svg>
+                </div>
+                <div data-hf-id="hf-p1gc" class="f10-badge-check">
+                  <svg data-hf-id="hf-7p2v" viewBox="0 0 40 40">
+                    <circle data-hf-id="hf-fs16" class="f10-badge-solid" cx="20" cy="20" r="20" />
+                    <path data-hf-id="hf-n4n2" class="f10-badge-check-path" id="f10-check-2" d="M12 21 L17 26 L29 13" />
+                  </svg>
+                </div>
+              </div>
+              <div data-hf-id="hf-r176" class="f10-row-text">
+                <span data-hf-id="hf-le15" class="f10-row-label">Plantilla enviada</span>
+                <span data-hf-id="hf-w4w5" class="f10-row-meta" id="f10-meta-2">Vía WhatsApp</span>
+              </div>
+            </div>
+
+            <div data-hf-id="hf-tetm" class="f10-row" id="f10-row-3">
+              <div data-hf-id="hf-gx0p" class="f10-badge-slot">
+                <div data-hf-id="hf-xfd3" class="f10-badge-outline">
+                  <svg data-hf-id="hf-8vzy" viewBox="0 0 40 40">
+                    <circle data-hf-id="hf-4ofw" class="f10-badge-track" cx="20" cy="20" r="16" />
+                    <circle data-hf-id="hf-n9su" class="f10-badge-arc" id="f10-arc-3" cx="20" cy="20" r="16" />
+                    <text data-hf-id="hf-ar37" class="f10-badge-num" x="20" y="21">3</text>
+                  </svg>
+                </div>
+              </div>
+              <div data-hf-id="hf-rfi7" class="f10-row-text">
+                <span data-hf-id="hf-c1km" class="f10-row-label">Sin intervención manual</span>
+                <span data-hf-id="hf-lgs9" class="f10-row-meta" id="f10-meta-3">Verificando envío…</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // ---- setup: measure pending-arc circles + checkmark paths (real geometry, not guessed) ----
+    ["f10-arc-1", "f10-arc-2", "f10-arc-3"].forEach((id) => {
+      const el = document.getElementById(id);
+      const len = el.getTotalLength();
+      el.style.strokeDasharray = String(len);
+      el.style.strokeDashoffset = String(len); // fully hidden until drawn
+    });
+    ["f10-check-1", "f10-check-2"].forEach((id) => {
+      const el = document.getElementById(id);
+      const len = el.getTotalLength();
+      el.style.strokeDasharray = String(len);
+      el.style.strokeDashoffset = String(len);
+    });
+
+    // =========================================================
+    // SCENE 1 (0.00 - 1.95s) — trigger: tag attaches, no click
+    // =========================================================
+    tl.fromTo(
+      "#f10-member-card",
+      { scale: 0.92, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" },
+      0,
+    );
+
+    tl.fromTo(
+      "#f10-tag-chip",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(1.5)" },
+      0.45,
+    );
+
+    // small accent spinner beside the chip — the only motion signaling "something fired"
+    (function () {
+      const arc = document.getElementById("f10-chip-spin-arc");
+      const state = { deg: 0 };
+      tl.to(
+        state,
+        {
+          deg: 360 * 1.3,
+          duration: 1.05,
+          ease: "none",
+          onUpdate: () => arc.setAttribute("transform", `rotate(${state.deg} 12 12)`),
+        },
+        0.8,
+      );
+    })();
+    tl.to("#f10-chip-spin", { opacity: 0, duration: 0.1, ease: "power1.out" }, 1.85);
+
+    // =========================================================
+    // SCENE 2 (1.95 - 5.21s) — the working state: machine performs
+    // =========================================================
+    tl.fromTo(
+      "#f10-loader-inner",
+      { y: 14, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
+      1.95,
+    );
+
+    (function () {
+      const arc = document.getElementById("f10-loader-spin-arc");
+      const state = { deg: 0 };
+      tl.to(
+        state,
+        {
+          deg: 360 * 4.5,
+          duration: 3.1,
+          ease: "none",
+          onUpdate: () => arc.setAttribute("transform", `rotate(${state.deg} 18 18)`),
+        },
+        1.95,
+      );
+    })();
+
+    // typed-on loader label — discrete text states, fast keystroke clusters
+    (function () {
+      const textEl = document.getElementById("f10-loader-text");
+      const SEQUENCE = [
+        { t: 0.0, text: "" },
+        { t: 0.08, text: "En" },
+        { t: 0.16, text: "Envi" },
+        { t: 0.24, text: "Enviando" },
+        { t: 0.4, text: "Enviando What" },
+        { t: 0.55, text: "Enviando WhatsApp" },
+        { t: 0.7, text: "Enviando WhatsApp…" },
+      ];
+      function textAt(time) {
+        for (let i = SEQUENCE.length - 1; i >= 0; i--) {
+          if (time >= SEQUENCE[i].t) return SEQUENCE[i].text;
+        }
+        return "";
+      }
+      const driver = { t: 0 };
+      tl.to(
+        driver,
+        {
+          t: 0.7,
+          duration: 0.7,
+          ease: "none",
+          onUpdate: () => {
+            textEl.textContent = textAt(driver.t);
+          },
+        },
+        2.0,
+      );
+
+      // caret blink, sin-driven, only while typing
+      const caretEl = document.getElementById("f10-loader-caret");
+      const blink = { p: 0 };
+      tl.to(
+        blink,
+        {
+          p: Math.PI * 2 * 3,
+          duration: 0.7,
+          ease: "none",
+          onUpdate: () => {
+            caretEl.style.opacity = Math.sin(blink.p) > 0 ? "1" : "0";
+          },
+        },
+        2.0,
+      );
+      tl.to("#f10-loader-caret", { opacity: 0, duration: 0.1, ease: "power1.out" }, 2.7);
+    })();
+
+    // the pulse dies the instant the result lands — loader fades right as the receipt pops in
+    tl.to("#f10-loader-inner", { opacity: 0, duration: 0.16, ease: "power2.in" }, 5.05);
+
+    // =========================================================
+    // SCENE 3 (5.21 - 9.117s) — the receipt cascades in + mutates
+    // =========================================================
+    tl.fromTo(
+      "#f10-receipt-card",
+      { scale: 0.9, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" },
+      5.21,
+    );
+    tl.fromTo(
+      "#f10-receipt-status",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(1.4)" },
+      5.35,
+    );
+
+    // slow continuous push into the card once it has landed (header drifts up as it grows)
+    tl.to(
+      "#f10-receipt-zoom",
+      { scale: 1.065, duration: 3.407, ease: "power1.inOut" },
+      5.71,
+    );
+
+    // rows stagger in — slide-up + fade
+    tl.fromTo("#f10-row-1", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 5.75);
+    tl.fromTo("#f10-row-2", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 6.05);
+    tl.fromTo("#f10-row-3", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 6.35);
+
+    // pending arcs draw partially as each row lands (still "in progress")
+    tl.to("#f10-arc-1", { strokeDashoffset: 55, duration: 0.3, ease: "power2.out" }, 5.75);
+    tl.to("#f10-arc-2", { strokeDashoffset: 60, duration: 0.3, ease: "power2.out" }, 6.05);
+    tl.to("#f10-arc-3", { strokeDashoffset: 68, duration: 0.3, ease: "power2.out" }, 6.35);
+    // row 3 keeps visibly working for the rest of the shot — never completes
+    tl.to("#f10-arc-3", { strokeDashoffset: 34, duration: 2.4, ease: "none" }, 6.65);
+
+    // badge 1 flips: outline -> solid check, with a scale bounce
+    tl.to("#f10-row-1 .f10-badge-outline", { scale: 0.7, opacity: 0, duration: 0.35, ease: "power2.in" }, 6.9);
+    tl.fromTo("#f10-row-1 .f10-badge-check", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.6)" }, 7.1);
+    tl.to("#f10-check-1", { strokeDashoffset: 0, duration: 0.35, ease: "power2.out" }, 7.1);
+    tl.to("#f10-meta-1", { opacity: 0.65, duration: 0.3, ease: "power1.out" }, 7.1);
+
+    // badge 2 flips: outline -> solid check, with a scale bounce
+    tl.to("#f10-row-2 .f10-badge-outline", { scale: 0.7, opacity: 0, duration: 0.35, ease: "power2.in" }, 7.9);
+    tl.fromTo("#f10-row-2 .f10-badge-check", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.6)" }, 8.1);
+    tl.to("#f10-check-2", { strokeDashoffset: 0, duration: 0.35, ease: "power2.out" }, 8.1);
+    tl.to("#f10-meta-2", { opacity: 0.65, duration: 0.3, ease: "power1.out" }, 8.1);
+
+    // row 3 stays pending — "Verificando envío…" pulses, the machine still visibly capable of more
+    (function () {
+      const metaEl = document.getElementById("f10-meta-3");
+      const pulse = { p: 0 };
+      tl.to(
+        pulse,
+        {
+          p: Math.PI * 2 * 2,
+          duration: 2.4,
+          ease: "none",
+          onUpdate: () => {
+            metaEl.style.opacity = String(0.62 + Math.sin(pulse.p) * 0.32);
+          },
+        },
+        6.65,
+      );
+    })();
+
+    window.__timelines["10-automatizaciones"] = tl;
+  </script>
+</template>

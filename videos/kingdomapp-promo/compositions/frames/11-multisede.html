@@ -1,0 +1,461 @@
+<template>
+<style>
+  #root {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    font-family: "MH11Poppins", "Poppins", sans-serif;
+  }
+
+  @font-face {
+    font-family: "MH11Poppins";
+    src: url("assets/fonts/Poppins-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "MH11Poppins";
+    src: url("assets/fonts/Poppins-500.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "MH11Poppins";
+    src: url("assets/fonts/Poppins-600.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "MH11Poppins";
+    src: url("assets/fonts/Poppins-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  #root .mh11-clip-bg {
+    position: absolute;
+    inset: 0;
+    background: #ffffff;
+  }
+
+  #root .mh11-clip-content {
+    position: absolute;
+    inset: 0;
+  }
+
+  #root .mh11-camera {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+
+  #root .mh11-lines {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  #root .mh11-lines line {
+    stroke: rgba(0, 84, 173, 0.45);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+  #root .mh11-ring {
+    fill: none;
+    stroke: rgba(0, 84, 173, 0.28);
+    stroke-width: 2;
+    stroke-dasharray: 6 9;
+  }
+
+  #root .mh11-hub-glow {
+    position: absolute;
+    left: 960px;
+    top: 470px;
+    width: 230px;
+    height: 230px;
+    margin: -115px 0 0 -115px;
+    border-radius: 50%;
+    background: rgba(0, 84, 173, 0.08);
+    z-index: 4;
+    will-change: transform, opacity;
+    pointer-events: none;
+  }
+
+  #root .mh11-hub {
+    position: absolute;
+    left: 960px;
+    top: 470px;
+    width: 170px;
+    height: 170px;
+    margin: -85px 0 0 -85px;
+    border-radius: 50%;
+    background: #0054ad;
+    display: grid;
+    place-items: center;
+    z-index: 5;
+    will-change: transform, opacity;
+  }
+  #root .mh11-hub svg {
+    display: block;
+  }
+
+  #root .mh11-hub-label {
+    position: absolute;
+    left: 960px;
+    top: 570px;
+    transform: translate(-50%, 0);
+    white-space: nowrap;
+    padding: 9px 22px;
+    border-radius: 100px;
+    background: rgba(0, 84, 173, 0.08);
+    color: #0054ad;
+    font-family: "MH11Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 21px;
+    letter-spacing: 0.02em;
+    z-index: 5;
+    opacity: 0;
+  }
+
+  #root .mh11-node {
+    position: absolute;
+    left: 960px;
+    top: 470px;
+    width: 0;
+    height: 0;
+    z-index: 6;
+    will-change: transform, opacity;
+  }
+  #root .mh11-node-badge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 88px;
+    height: 88px;
+    margin: -44px 0 0 -44px;
+    border-radius: 50%;
+    background: rgba(0, 84, 173, 0.04);
+    border: 1.5px solid rgba(0, 84, 173, 0.2);
+    display: grid;
+    place-items: center;
+  }
+  #root .mh11-node-badge svg {
+    display: block;
+  }
+  #root .mh11-node-label {
+    position: absolute;
+    left: 0;
+    top: 52px;
+    transform: translate(-50%, 0);
+    white-space: nowrap;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: rgba(0, 84, 173, 0.08);
+    color: #0054ad;
+    font-family: "MH11Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+  }
+
+  /* Scene 4 — "Totalmente Parametrizable" chip row (Roles / Redes / Sin código). */
+  #root .mh11-chips-row {
+    position: absolute;
+    left: 50%;
+    top: 758px;
+    transform: translate(-50%, 0);
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    z-index: 7;
+  }
+  #root .mh11-chip {
+    white-space: nowrap;
+    padding: 15px 32px;
+    border-radius: 100px;
+    background: rgba(0, 84, 173, 0.08);
+    border: 1.5px solid rgba(0, 84, 173, 0.2);
+    color: #0054ad;
+    font-family: "MH11Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    opacity: 0;
+  }
+</style>
+
+<div data-hf-id="hf-d4ng" id="root" data-composition-id="11-multisede" data-width="1920" data-height="1080" data-duration="15.473">
+  <div data-hf-id="hf-4t8a" class="mh11-clip-bg clip" data-start="0" data-duration="15.473" data-track-index="0"></div>
+
+  <div data-hf-id="hf-u2xv" class="mh11-clip-content clip" data-start="0" data-duration="15.473" data-track-index="1">
+    <div data-hf-id="hf-us8c" class="mh11-camera" id="mh11-camera">
+      <svg data-hf-id="hf-plio" class="mh11-lines" viewBox="0 0 1920 1080">
+        <ellipse data-hf-id="hf-hqi6" class="mh11-ring" id="mh11-ring" cx="960" cy="470" rx="420" ry="230" />
+        <line data-hf-id="hf-gil6" id="mh11-line-0" x1="960" y1="470" x2="960" y2="240" />
+        <line data-hf-id="hf-j5cr" id="mh11-line-1" x1="960" y1="470" x2="1380" y2="470" />
+        <line data-hf-id="hf-8wrl" id="mh11-line-2" x1="960" y1="470" x2="960" y2="700" />
+        <line data-hf-id="hf-v6dc" id="mh11-line-3" x1="960" y1="470" x2="540" y2="470" />
+      </svg>
+
+      <div data-hf-id="hf-p3w0" class="mh11-hub-glow" id="mh11-hub-glow"></div>
+
+      <div data-hf-id="hf-fa1a" class="mh11-hub" id="mh11-hub">
+        <svg data-hf-id="hf-8nam" viewBox="0 0 64 64" width="66" height="66">
+          <circle data-hf-id="hf-k44g" cx="32" cy="23" r="12" fill="#ffffff" />
+          <path data-hf-id="hf-lirx" d="M10 55c0-13.5 9.8-21 22-21s22 7.5 22 21" fill="#ffffff" />
+        </svg>
+      </div>
+
+      <div data-hf-id="hf-fljl" class="mh11-hub-label" id="mh11-hub-label">Cuenta única</div>
+
+      <div data-hf-id="hf-u8dd" class="mh11-node" id="mh11-node-0">
+        <div data-hf-id="hf-vizc" class="mh11-node-badge">
+          <svg data-hf-id="hf-7zqc" viewBox="0 0 64 64" width="38" height="38">
+            <path data-hf-id="hf-1for" d="M32 6 L50 24 H44 V52 H20 V24 H14 Z" fill="none" stroke="#0054ad" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" />
+            <line data-hf-id="hf-fp0o" x1="32" y1="6" x2="32" y2="0" stroke="#0054ad" stroke-width="4" stroke-linecap="round" />
+            <line data-hf-id="hf-8rz1" x1="27" y1="0" x2="37" y2="0" stroke="#0054ad" stroke-width="4" stroke-linecap="round" />
+            <rect data-hf-id="hf-71uj" x="27" y="36" width="10" height="16" fill="none" stroke="#0054ad" stroke-width="3" />
+          </svg>
+        </div>
+        <div data-hf-id="hf-1g4l" class="mh11-node-label">Bogotá</div>
+      </div>
+
+      <div data-hf-id="hf-tgpk" class="mh11-node" id="mh11-node-1">
+        <div data-hf-id="hf-t1kg" class="mh11-node-badge">
+          <svg data-hf-id="hf-o8d8" viewBox="0 0 64 64" width="38" height="38">
+            <path data-hf-id="hf-sfpn" d="M32 6 L50 24 H44 V52 H20 V24 H14 Z" fill="none" stroke="#0054ad" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" />
+            <line data-hf-id="hf-njvk" x1="32" y1="6" x2="32" y2="0" stroke="#0054ad" stroke-width="4" stroke-linecap="round" />
+            <line data-hf-id="hf-l9kh" x1="27" y1="0" x2="37" y2="0" stroke="#0054ad" stroke-width="4" stroke-linecap="round" />
+            <rect data-hf-id="hf-bwwr" x="27" y="36" width="10" height="16" fill="none" stroke="#0054ad" stroke-width="3" />
+          </svg>
+        </div>
+        <div data-hf-id="hf-2jdp" class="mh11-node-label">Medellín</div>
+      </div>
+
+      <div data-hf-id="hf-24lf" class="mh11-node" id="mh11-node-2">
+        <div data-hf-id="hf-rund" class="mh11-node-badge">
+          <svg data-hf-id="hf-n1g5" viewBox="0 0 64 64" width="38" height="38">
+            <path data-hf-id="hf-s1em" d="M32 6 L50 24 H44 V52 H20 V24 H14 Z" fill="none" stroke="#0054ad" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" />
+            <line data-hf-id="hf-mcyh" x1="32" y1="6" x2="32" y2="0" stroke="#0054ad" stroke-width="4" stroke-linecap="round" />
+            <line data-hf-id="hf-mghk" x1="27" y1="0" x2="37" y2="0" stroke="#0054ad" stroke-width="4" stroke-linecap="round" />
+            <rect data-hf-id="hf-bilq" x="27" y="36" width="10" height="16" fill="none" stroke="#0054ad" stroke-width="3" />
+          </svg>
+        </div>
+        <div data-hf-id="hf-whls" class="mh11-node-label">Cali</div>
+      </div>
+
+      <div data-hf-id="hf-y6he" class="mh11-node" id="mh11-node-3">
+        <div data-hf-id="hf-s8ye" class="mh11-node-badge">
+          <svg data-hf-id="hf-nfr6" viewBox="0 0 64 64" width="38" height="38">
+            <path data-hf-id="hf-rn3l" d="M32 6 L50 24 H44 V52 H20 V24 H14 Z" fill="none" stroke="#0054ad" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" />
+            <line data-hf-id="hf-mr9i" x1="32" y1="6" x2="32" y2="0" stroke="#0054ad" stroke-width="4" stroke-linecap="round" />
+            <line data-hf-id="hf-m26j" x1="27" y1="0" x2="37" y2="0" stroke="#0054ad" stroke-width="4" stroke-linecap="round" />
+            <rect data-hf-id="hf-72bl" x="27" y="36" width="10" height="16" fill="none" stroke="#0054ad" stroke-width="3" />
+          </svg>
+        </div>
+        <div data-hf-id="hf-z5kp" class="mh11-node-label">Barranquilla</div>
+      </div>
+
+      <div data-hf-id="hf-ch-rw" class="mh11-chips-row" id="mh11-chips-row">
+        <div data-hf-id="hf-ch-r0" class="mh11-chip" id="mh11-chip-0">Roles</div>
+        <div data-hf-id="hf-ch-r1" class="mh11-chip" id="mh11-chip-1">Redes</div>
+        <div data-hf-id="hf-ch-r2" class="mh11-chip" id="mh11-chip-2">Sin código</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+  (function () {
+    window.__timelines = window.__timelines || {};
+
+    var DURATION = 15.073;
+    var C = { x: 960, y: 470 };
+    var RX = 420;
+    var RY = 230;
+
+    var camera = document.getElementById("mh11-camera");
+    var hub = document.getElementById("mh11-hub");
+    var hubGlow = document.getElementById("mh11-hub-glow");
+    var hubLabel = document.getElementById("mh11-hub-label");
+    var ring = document.getElementById("mh11-ring");
+
+    var nodeEls = [
+      document.getElementById("mh11-node-0"),
+      document.getElementById("mh11-node-1"),
+      document.getElementById("mh11-node-2"),
+      document.getElementById("mh11-node-3"),
+    ];
+    var lineEls = [
+      document.getElementById("mh11-line-0"),
+      document.getElementById("mh11-line-1"),
+      document.getElementById("mh11-line-2"),
+      document.getElementById("mh11-line-3"),
+    ];
+    var chipEls = [
+      document.getElementById("mh11-chip-0"),
+      document.getElementById("mh11-chip-1"),
+      document.getElementById("mh11-chip-2"),
+    ];
+
+    // Fixed orbital start angles: top, right, bottom, left.
+    var ANGLES = [-Math.PI / 2, 0, Math.PI / 2, Math.PI];
+    var NODE_OFFSETS = [
+      { x: 0, y: -RY },
+      { x: RX, y: 0 },
+      { x: 0, y: RY },
+      { x: -RX, y: 0 },
+    ];
+    var LINE_LEN = [RY, RX, RY, RX];
+
+    // --- Scene 2 (0.7-3.5s): sede nodes spring-pop, staggered, then connectors draw. ---
+    var NODE_POP_AT = [0.7, 1.15, 1.6, 2.05];
+    var POP_DUR = 0.55;
+    var LINE_AT = [1.05, 1.5, 1.95, 2.4];
+    var LINE_DUR = 0.5;
+
+    var tl = gsap.timeline({ paused: true });
+
+    // --- Setup: measured/known geometry for the connector lines and ring. ---
+    ring.style.strokeDasharray = String(ring.getTotalLength());
+    ring.style.strokeDashoffset = String(ring.getTotalLength());
+
+    lineEls.forEach(function (line, i) {
+      line.style.strokeDasharray = String(LINE_LEN[i]);
+      line.style.strokeDashoffset = String(LINE_LEN[i]);
+    });
+
+    // --- Scene 1 (0.0-1.5s): hub establishes — spring-pop, elastic overshoot. ---
+    tl.fromTo(
+      hubGlow,
+      { scale: 0.7, opacity: 0 },
+      { scale: 1, opacity: 0.22, duration: 0.6, ease: "back.out(1.15)" },
+      0,
+    );
+    tl.fromTo(
+      hub,
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.15)" },
+      0,
+    );
+    tl.to(ring, { strokeDashoffset: 0, duration: 0.9, ease: "power2.out" }, 0.4);
+    tl.fromTo(hubLabel, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 0.6);
+
+    // --- Scene 2 (0.7-3.5s, overlapping): sede nodes spring-pop onto the ring, ---
+    // --- staggered, then thin accent connector lines draw hub -> node. ---
+    nodeEls.forEach(function (el, i) {
+      var off = NODE_OFFSETS[i];
+      tl.fromTo(
+        el,
+        { x: off.x, y: off.y, scale: 0, opacity: 0 },
+        { x: off.x, y: off.y, scale: 1, opacity: 1, duration: POP_DUR, ease: "back.out(1.15)" },
+        NODE_POP_AT[i],
+      );
+      tl.to(
+        lineEls[i],
+        { strokeDashoffset: 0, duration: LINE_DUR, ease: "power2.out" },
+        LINE_AT[i],
+      );
+    });
+
+    // --- Scene 3 (3.5-9.5s, the resolve): sede nodes revolve slowly clockwise ---
+    // --- around the hub, staying upright, under a continuous slow camera ---
+    // --- zoom-out (ecosystem reveal); extended hold vs. v1 since the frame is ---
+    // --- now much longer. Orbit continues at a much slower idle creep through ---
+    // --- Scene 4 so the chips (not the orbit) read as the new focal beat. ---
+    var ORBIT_AT = 3.5;
+    var ORBIT_DUR_A = 6.0; // Scene 3 window: 3.5-9.5s
+    var ORBIT_DELTA_A = Math.PI * 2 * 0.3; // slow clockwise creep, not a full lap
+    var ORBIT_DUR_B = DURATION - (ORBIT_AT + ORBIT_DUR_A); // Scene 4 tail: 9.5-15.073s
+    var ORBIT_DELTA_B = Math.PI * 2 * 0.05; // idle background creep once chips take focus
+
+    var orbitState = { d: 0 };
+    function applyOrbit() {
+      for (var i = 0; i < nodeEls.length; i++) {
+        var a = ANGLES[i] + orbitState.d;
+        var x = Math.cos(a) * RX;
+        var y = Math.sin(a) * RY;
+        gsap.set(nodeEls[i], { x: x, y: y });
+        lineEls[i].setAttribute("x2", String(C.x + x));
+        lineEls[i].setAttribute("y2", String(C.y + y));
+      }
+    }
+    tl.to(
+      orbitState,
+      { d: ORBIT_DELTA_A, duration: ORBIT_DUR_A, ease: "none", onUpdate: applyOrbit },
+      ORBIT_AT,
+    );
+    tl.to(
+      orbitState,
+      {
+        d: ORBIT_DELTA_A + ORBIT_DELTA_B,
+        duration: ORBIT_DUR_B,
+        ease: "none",
+        onUpdate: applyOrbit,
+      },
+      ORBIT_AT + ORBIT_DUR_A,
+    );
+
+    // Ambient pulse on the hub glow once the hub has settled — same pace as v1,
+    // cycle count scaled to the new, longer duration.
+    var pulse = { p: 0 };
+    tl.to(
+      pulse,
+      {
+        p: Math.PI * 2 * 7,
+        duration: DURATION - 0.65,
+        ease: "none",
+        onUpdate: function () {
+          var s = 1 + Math.sin(pulse.p) * 0.06;
+          var o = 0.22 + Math.sin(pulse.p) * 0.1;
+          gsap.set(hubGlow, { scale: s, opacity: o });
+        },
+      },
+      0.65,
+    );
+
+    // Multi-phase camera: gentle establish -> neutral focus -> slow zoom-out
+    // that resolves by ~9s (end of Scene 3's hold), then HOLDS through Scene 4
+    // so the chip cascade reads without the camera competing for attention.
+    var phase = { scale: 1.03 };
+    tl.to(phase, { scale: 1.0, duration: 1.0, ease: "power2.out" }, 1.8);
+    tl.to(phase, { scale: 0.9, duration: 5.5, ease: "power2.out" }, 3.5);
+
+    var drift = { p: 0 };
+    tl.to(
+      drift,
+      {
+        p: Math.PI * 2 * 3.37,
+        duration: DURATION,
+        ease: "none",
+        onUpdate: function () {
+          var dx = Math.sin(drift.p) * 5;
+          var dy = Math.sin(drift.p * 1.3) * 3;
+          gsap.set(camera, { scale: phase.scale, x: dx, y: dy });
+        },
+      },
+      0,
+    );
+
+    // --- Scene 4 (9.5-15.073s): "Totalmente Parametrizable" — 3 chips cascade ---
+    // --- into view around the hub, one per phrase of the VO's closing line ---
+    // --- ("roles, redes y permisos... sin escribir una sola línea de código"), ---
+    // --- then hold to the end (final scene of the frame — no exit). ---
+    var CHIP_AT = [9.8, 10.3, 13.0];
+    var CHIP_DUR = 0.5;
+    chipEls.forEach(function (el, i) {
+      tl.fromTo(
+        el,
+        { scale: 0, opacity: 0, y: 14 },
+        { scale: 1, opacity: 1, y: 0, duration: CHIP_DUR, ease: "back.out(1.15)" },
+        CHIP_AT[i],
+      );
+    });
+
+    window.__timelines["11-multisede"] = tl;
+  })();
+</script>
+</template>

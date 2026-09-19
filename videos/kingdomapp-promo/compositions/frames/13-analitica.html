@@ -1,0 +1,714 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      --analitica-bg: #ffffff;
+      --analitica-primary: #0054ad;
+      --analitica-text: #002a78;
+      --analitica-text-muted: #705d00;
+      --analitica-border: rgba(0, 84, 173, 0.2);
+      --analitica-card-bg: rgba(0, 84, 173, 0.04);
+      --analitica-accent-light: rgba(0, 84, 173, 0.08);
+      --analitica-positive: #059669;
+      --analitica-glow-color: 0, 42, 120;
+    }
+
+    #root * {
+      box-sizing: border-box;
+    }
+
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+
+    .analitica-bg {
+      background: var(--analitica-bg);
+    }
+
+    /* ===== camera rig ===== */
+    .analitica-scene {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .analitica-camera {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+    .analitica-stage {
+      position: absolute;
+      inset: 0;
+    }
+
+    .analitica-tag {
+      padding: 9px 26px;
+      background: var(--analitica-accent-light);
+      color: var(--analitica-primary);
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 24px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0;
+      white-space: nowrap;
+    }
+
+    /* ===== Scene 1 — dashboard genérico (barras) + ring count-up ===== */
+    .analitica-cardA {
+      position: absolute;
+      left: 530px;
+      top: 250px;
+      width: 860px;
+      height: 560px;
+      background: var(--analitica-card-bg);
+      border: 1.5px solid var(--analitica-border);
+      border-radius: 14px;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 34px;
+      gap: 18px;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      filter: blur(0px);
+      will-change: transform, opacity, filter;
+    }
+    .analitica-ring-box {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+    .analitica-ring-svg {
+      position: absolute;
+      inset: 0;
+    }
+    .analitica-ring-track {
+      fill: none;
+      stroke: var(--analitica-accent-light);
+      stroke-width: 14;
+    }
+    .analitica-ring-fill {
+      fill: none;
+      stroke: var(--analitica-primary);
+      stroke-width: 14;
+      stroke-linecap: round;
+      transform-origin: 100px 100px;
+      transform: rotate(-90deg);
+    }
+    .analitica-ring-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .analitica-count {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 72px;
+      color: var(--analitica-primary);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .analitica-cardA-label {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 30px;
+      letter-spacing: 0.02em;
+      color: var(--analitica-primary);
+      opacity: 0;
+    }
+    .analitica-bars-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 26px;
+      margin-top: 4px;
+    }
+    .analitica-bar-track {
+      width: 92px;
+      background: var(--analitica-accent-light);
+      border-radius: 6px 6px 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .analitica-bar-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      background: var(--analitica-primary);
+      border-radius: 6px 6px 0 0;
+      transform-origin: 50% 100%;
+    }
+
+    /* ===== Scene 2 — mapa de territorio + pin ===== */
+    .analitica-cardB {
+      position: absolute;
+      left: 530px;
+      top: 250px;
+      width: 860px;
+      height: 560px;
+      background: var(--analitica-card-bg);
+      border: 1.5px solid var(--analitica-border);
+      border-radius: 14px;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 34px;
+      gap: 18px;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      filter: blur(0px);
+      will-change: transform, opacity, filter;
+    }
+    .analitica-map {
+      position: relative;
+      width: 760px;
+      height: 400px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 84, 173, 0.03);
+      border: 1px solid var(--analitica-border);
+    }
+    .analitica-map-grid {
+      position: absolute;
+      inset: 0;
+    }
+    .analitica-map-grid line {
+      stroke: var(--analitica-border);
+      stroke-width: 1;
+      opacity: 0.5;
+    }
+    .analitica-map-blob {
+      position: absolute;
+      background: var(--analitica-accent-light);
+      border: 1px solid var(--analitica-border);
+    }
+    .analitica-map-blob.b1 {
+      width: 220px;
+      height: 170px;
+      left: 60px;
+      top: 70px;
+      border-radius: 58% 42% 55% 45% / 45% 55% 45% 55%;
+    }
+    .analitica-map-blob.b2 {
+      width: 190px;
+      height: 150px;
+      left: 430px;
+      top: 190px;
+      border-radius: 42% 58% 45% 55% / 55% 45% 55% 45%;
+    }
+    .analitica-pin {
+      position: absolute;
+      left: 340px;
+      top: 90px;
+      width: 54px;
+      height: 70px;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .analitica-pin svg {
+      width: 100%;
+      height: 100%;
+    }
+    .analitica-pulse-ring {
+      position: absolute;
+      left: 332px;
+      top: 125px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 3px solid var(--analitica-primary);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .analitica-dot {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--analitica-primary);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .analitica-dot.d1 {
+      left: 560px;
+      top: 230px;
+    }
+    .analitica-dot.d2 {
+      left: 150px;
+      top: 270px;
+    }
+
+    /* ===== Scene 3 — Reporte / exportar + glow ===== */
+    .analitica-glow {
+      position: absolute;
+      left: 1390px;
+      top: 200px;
+      width: 820px;
+      height: 620px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(var(--analitica-glow-color), 0.38) 0%,
+        rgba(var(--analitica-glow-color), 0) 70%
+      );
+      opacity: 0;
+      z-index: 1;
+      will-change: transform, opacity;
+    }
+    .analitica-cardC {
+      position: absolute;
+      left: 1520px;
+      top: 280px;
+      width: 560px;
+      height: 460px;
+      background: var(--analitica-card-bg);
+      border: 1.5px solid var(--analitica-border);
+      border-radius: 14px;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 38px;
+      gap: 22px;
+      opacity: 0;
+      z-index: 2;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .analitica-icon-box {
+      width: 140px;
+      height: 140px;
+    }
+    .analitica-icon-line,
+    .analitica-icon-chevron,
+    .analitica-icon-tray {
+      fill: none;
+      stroke: var(--analitica-primary);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .analitica-cta-wrap {
+      position: relative;
+      display: inline-flex;
+      width: 280px;
+      height: 64px;
+      align-items: center;
+      justify-content: center;
+    }
+    .analitica-pill-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--analitica-accent-light);
+      color: var(--analitica-primary);
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 28px;
+      opacity: 0;
+      white-space: nowrap;
+    }
+    .analitica-check {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--analitica-positive);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .analitica-check svg {
+      width: 28px;
+      height: 28px;
+    }
+    .analitica-check-path {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+
+  <div id="root" data-composition-id="13-analitica" data-width="1920" data-height="1080" data-duration="11.837">
+    <div class="clip analitica-bg" data-start="0" data-duration="11.837" data-track-index="0"></div>
+
+    <div class="clip" data-start="0" data-duration="11.837" data-track-index="1">
+      <div class="analitica-scene">
+        <div class="analitica-camera" id="analitica-camera">
+          <div class="analitica-stage">
+            <!-- Scene 1: dashboard genérico (barras) + ring count-up "Dashboards ejecutivos" -->
+            <div class="analitica-cardA" id="analitica-cardA">
+              <div class="analitica-tag" id="analitica-tagA">Métricas</div>
+              <div class="analitica-ring-box">
+                <svg class="analitica-ring-svg" viewBox="0 0 200 200" width="200" height="200">
+                  <circle class="analitica-ring-track" cx="100" cy="100" r="82" />
+                  <circle class="analitica-ring-fill" id="analitica-ringfill" cx="100" cy="100" r="82" />
+                </svg>
+                <div class="analitica-ring-inner">
+                  <div class="analitica-count" id="analitica-count">0%</div>
+                </div>
+              </div>
+              <div class="analitica-cardA-label" id="analitica-labelA">En vivo</div>
+              <div class="analitica-bars-row">
+                <div class="analitica-bar-track" style="height: 96px;">
+                  <div class="analitica-bar-fill" id="analitica-bar-0"></div>
+                </div>
+                <div class="analitica-bar-track" style="height: 150px;">
+                  <div class="analitica-bar-fill" id="analitica-bar-1"></div>
+                </div>
+                <div class="analitica-bar-track" style="height: 72px;">
+                  <div class="analitica-bar-fill" id="analitica-bar-2"></div>
+                </div>
+                <div class="analitica-bar-track" style="height: 168px;">
+                  <div class="analitica-bar-fill" id="analitica-bar-3"></div>
+                </div>
+                <div class="analitica-bar-track" style="height: 120px;">
+                  <div class="analitica-bar-fill" id="analitica-bar-4"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scene 2: push-through into mini-mapa de territorio con un pin -->
+            <div class="analitica-cardB" id="analitica-cardB">
+              <div class="analitica-tag" id="analitica-tagB">Territorio</div>
+              <div class="analitica-map">
+                <div class="analitica-map-blob b1"></div>
+                <div class="analitica-map-blob b2"></div>
+                <svg class="analitica-map-grid" viewBox="0 0 760 400">
+                  <line x1="150" y1="0" x2="150" y2="400" />
+                  <line x1="320" y1="0" x2="320" y2="400" />
+                  <line x1="490" y1="0" x2="490" y2="400" />
+                  <line x1="660" y1="0" x2="660" y2="400" />
+                  <line x1="0" y1="100" x2="760" y2="100" />
+                  <line x1="0" y1="200" x2="760" y2="200" />
+                  <line x1="0" y1="300" x2="760" y2="300" />
+                </svg>
+                <div class="analitica-pulse-ring" id="analitica-pulse1"></div>
+                <div class="analitica-pulse-ring" id="analitica-pulse2"></div>
+                <div class="analitica-dot d1" id="analitica-dot1"></div>
+                <div class="analitica-dot d2" id="analitica-dot2"></div>
+                <div class="analitica-pin" id="analitica-pin">
+                  <svg viewBox="0 0 54 70">
+                    <path d="M27 0C12 0 0 12 0 27c0 20 27 43 27 43s27-23 27-43C54 12 42 0 27 0z" fill="var(--analitica-primary)" />
+                    <circle cx="27" cy="27" r="10" fill="#ffffff" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scene 3: pan a tarjeta "Reporte" con exportar + glow -->
+            <div class="analitica-glow" id="analitica-glow"></div>
+            <div class="analitica-cardC" id="analitica-cardC">
+              <div class="analitica-tag" id="analitica-tagC">Reporte</div>
+              <svg class="analitica-icon-box" viewBox="0 0 100 100">
+                <line class="analitica-icon-line" id="analitica-icon-line" x1="50" y1="8" x2="50" y2="54" />
+                <path class="analitica-icon-chevron" id="analitica-icon-chevron" d="M30 40 L50 60 L70 40" />
+                <path class="analitica-icon-tray" id="analitica-icon-tray" d="M15 55 L15 85 L85 85 L85 55" />
+              </svg>
+              <div class="analitica-cta-wrap" id="analitica-cta-wrap">
+                <div class="analitica-pill-btn" id="analitica-pill-a">Exportar</div>
+                <div class="analitica-pill-btn" id="analitica-pill-b">Exportado</div>
+                <div class="analitica-check" id="analitica-check">
+                  <svg viewBox="0 0 40 40">
+                    <path class="analitica-check-path" id="analitica-check-path" d="M10 21 L17 28 L30 12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    const TOTAL_DURATION = 11.337;
+
+    /* ---- synchronous SVG measurement setup ---- */
+    const ringFill = document.getElementById('analitica-ringfill');
+    const RING_LEN = ringFill.getTotalLength();
+    ringFill.style.strokeDasharray = RING_LEN;
+    ringFill.style.strokeDashoffset = RING_LEN;
+
+    const checkPath = document.getElementById('analitica-check-path');
+    const CHECK_LEN = checkPath.getTotalLength();
+    checkPath.style.strokeDasharray = CHECK_LEN;
+    checkPath.style.strokeDashoffset = CHECK_LEN;
+
+    ['analitica-icon-line', 'analitica-icon-chevron', 'analitica-icon-tray'].forEach((id) => {
+      const el = document.getElementById(id);
+      const len = el.getTotalLength();
+      el.style.strokeDasharray = len;
+      el.style.strokeDashoffset = len;
+    });
+
+    /* bar fills start collapsed — set via GSAP, not static CSS transform */
+    const barFills = [0, 1, 2, 3, 4].map((i) => document.getElementById('analitica-bar-' + i));
+    gsap.set(barFills, { scaleY: 0 });
+
+    /* ---- camera state (one writer at the bottom composes scale + pan + drift) ---- */
+    const camera = document.getElementById('analitica-camera');
+    const camPhase = { scale: 1 };
+    const camPan = { x: 0, y: 0 };
+
+    /* =========================================================
+       Scene 1 (0.0 – 3.0s): dashboard genérico con barras +
+       ring sweep + count-up "0% -> 100%", label "En vivo",
+       slow continuous camera zoom-in underneath.
+       ========================================================= */
+    tl.fromTo(
+      '#analitica-cardA',
+      { scale: 0.85, opacity: 0, y: 14 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' },
+      0.0,
+    );
+    tl.fromTo('#analitica-tagA', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.15);
+    tl.fromTo(
+      '#analitica-labelA',
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+      0.2,
+    );
+
+    const countState = { value: 0 };
+    const COUNT_START = 0.3;
+    const COUNT_DUR = 1.1;
+    tl.to(
+      countState,
+      {
+        value: 100,
+        duration: COUNT_DUR,
+        ease: 'power2.out',
+        onUpdate: () => {
+          document.getElementById('analitica-count').textContent = Math.round(countState.value) + '%';
+        },
+      },
+      COUNT_START,
+    );
+    tl.fromTo('#analitica-count', { scale: 0.55 }, { scale: 1, duration: COUNT_DUR, ease: 'power2.out' }, COUNT_START);
+    tl.to(ringFill, { strokeDashoffset: 0, duration: COUNT_DUR, ease: 'power2.out' }, COUNT_START);
+
+    /* dashboard bars self-grow, staggered, forming the "generic dashboard" chrome */
+    const BARS_START = 0.55;
+    const BARS_STAGGER = 0.15;
+    barFills.forEach((el, i) => {
+      tl.to(el, { scaleY: 1, duration: 0.5, ease: 'power2.out' }, BARS_START + i * BARS_STAGGER);
+    });
+
+    /* subtle idle float once the panel has landed, clears before the push-through */
+    tl.to('#analitica-cardA', { y: -4, duration: 1.0, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 1.9);
+
+    /* slow continuous camera zoom-in under Scene 1 */
+    tl.to(camPhase, { scale: 1.05, duration: 2.9, ease: 'sine.inOut' }, 0.0);
+
+    /* =========================================================
+       Scene 2 seam -> body (3.0 – 7.0s): z-depth push-THROUGH
+       the dashboard's center into a mini-mapa de territorio con
+       un pin (cut-catalog Zoom-Through: exit accelerates + blurs,
+       hard cut at peak, incoming decelerates into focus) — the
+       blueprint's signature move, same as Frame 9's push-through
+       applied here to analytics instead of finance.
+       ========================================================= */
+    const PUSH_START = 3.0;
+    const PUSH_EXIT_DUR = 0.4;
+    const PUSH_CUT = PUSH_START + PUSH_EXIT_DUR; // 3.4
+    const PUSH_ENTRY_DUR = 0.5;
+
+    // Phase 1 — CardA (dashboard instrument) accelerates toward the viewer and dissolves
+    tl.to('#analitica-cardA', { scale: 1.2, filter: 'blur(18px)', duration: PUSH_EXIT_DUR, ease: 'power3.in' }, PUSH_START);
+    tl.to('#analitica-cardA', { opacity: 0.15, duration: PUSH_EXIT_DUR, ease: 'none' }, PUSH_START);
+    // Camera compounds the push at the same velocity
+    tl.to(camPhase, { scale: 2.5, duration: PUSH_EXIT_DUR, ease: 'power3.in' }, PUSH_START);
+
+    // Phase 2 — hard cut at peak blur/velocity
+    tl.set('#analitica-cardA', { opacity: 0 }, PUSH_CUT);
+    tl.set('#analitica-cardB', { opacity: 0.15, scale: 0.75, filter: 'blur(18px)' }, PUSH_CUT);
+
+    // Phase 3 — CardB (mapa) arrives from behind the camera, resolving into focus
+    tl.to(
+      '#analitica-cardB',
+      { scale: 1, filter: 'blur(0px)', opacity: 1, duration: PUSH_ENTRY_DUR, ease: 'expo.out' },
+      PUSH_CUT,
+    );
+    tl.to(camPhase, { scale: 1.0, duration: PUSH_ENTRY_DUR, ease: 'expo.out' }, PUSH_CUT);
+    tl.fromTo('#analitica-tagB', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, PUSH_CUT + 0.1);
+
+    /* pin drops onto the territorio once the map has landed */
+    const PIN_AT = PUSH_CUT + PUSH_ENTRY_DUR + 0.1; // 4.0
+    tl.fromTo(
+      '#analitica-pin',
+      { scale: 0, opacity: 0, y: -24 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.7)' },
+      PIN_AT,
+    );
+
+    /* secondary location dots pop in, reinforcing "territorio" as plural coverage */
+    tl.fromTo('#analitica-dot1', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(1.6)' }, PIN_AT + 0.4);
+    tl.fromTo('#analitica-dot2', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(1.6)' }, PIN_AT + 0.6);
+
+    /* pulse rings radiate from the pin's base, two staggered loops */
+    tl.fromTo(
+      '#analitica-pulse1',
+      { scale: 0.6, opacity: 0.55 },
+      { scale: 1.8, opacity: 0, duration: 1.0, ease: 'power1.out', repeat: 2 },
+      4.3,
+    );
+    tl.fromTo(
+      '#analitica-pulse2',
+      { scale: 0.6, opacity: 0.55 },
+      { scale: 1.8, opacity: 0, duration: 1.0, ease: 'power1.out', repeat: 2 },
+      4.6,
+    );
+
+    /* subtle idle float while the map holds, clears before the pan begins */
+    tl.to('#analitica-cardB', { y: -4, duration: 1.0, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 5.0);
+
+    /* =========================================================
+       Scene 3 (7.0 – 11.337s): camera PANS to the third card
+       "Reporte" — export icon self-draws, a click-pulse on the
+       "Exportar" pill resolves into "Exportado" with a spring-pop
+       checkmark, a soft accent glow blooms behind it, and the
+       shot settles centered, holding to the end.
+       ========================================================= */
+    const PAN_START = 7.0;
+    const PAN_DUR = 1.0;
+    const PAN_DISTANCE = 840;
+
+    tl.to('#analitica-cardB', { opacity: 0, scale: 0.94, duration: 0.5, ease: 'power2.in' }, PAN_START);
+    tl.to(camPan, { x: -PAN_DISTANCE, duration: PAN_DUR, ease: 'power2.inOut' }, PAN_START);
+    tl.fromTo(
+      '#analitica-cardC',
+      { opacity: 0, scale: 0.9 },
+      { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out' },
+      PAN_START + 0.2,
+    );
+    tl.fromTo('#analitica-tagC', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, PAN_START + 0.3);
+
+    /* gentle push-in climax as the shot settles on the final card, holding to the end */
+    tl.to(camPhase, { scale: 1.05, duration: TOTAL_DURATION - (PAN_START + PAN_DUR), ease: 'power2.out' }, PAN_START + PAN_DUR);
+
+    /* export icon self-draws: tray, then the arrow feeding into it */
+    const ICON_START = 8.1;
+    tl.to(document.getElementById('analitica-icon-tray'), { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, ICON_START);
+    tl.to(document.getElementById('analitica-icon-line'), { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, ICON_START + 0.15);
+    tl.to(document.getElementById('analitica-icon-chevron'), { strokeDashoffset: 0, duration: 0.25, ease: 'power2.out' }, ICON_START + 0.4);
+
+    /* "Exportar" pill fades in beside the icon (pill-b "Exportado" starts hidden, cross-fades in later) */
+    tl.fromTo('#analitica-pill-a', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }, 8.5);
+
+    /* click-pulse sells "un clic" -> cross-fades into "Exportado" + spring-pop check.
+       A continuous opacity cross-fade (not a textContent swap) keeps this seek-safe:
+       any direct seek to a time past the swap still renders the correct label. */
+    const CLICK_AT = 9.0;
+    tl.to('#analitica-cta-wrap', { scale: 0.92, duration: 0.12, ease: 'power1.in' }, CLICK_AT);
+    tl.to('#analitica-cta-wrap', { scale: 1, duration: 0.18, ease: 'back.out(2)' }, CLICK_AT + 0.12);
+    tl.to('#analitica-pill-a', { opacity: 0, duration: 0.16, ease: 'power1.out' }, CLICK_AT + 0.15);
+    tl.to('#analitica-pill-b', { opacity: 1, duration: 0.16, ease: 'power1.out' }, CLICK_AT + 0.15);
+    tl.fromTo(
+      '#analitica-check',
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' },
+      CLICK_AT + 0.2,
+    );
+    tl.to(checkPath, { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, CLICK_AT + 0.35);
+
+    /* soft accent glow blooms in behind the settled hero card */
+    const BLOOM_START = 8.3;
+    const BLOOM_DUR = 1.0;
+    const glow = document.getElementById('analitica-glow');
+    const GLOW_PEAK_OPACITY = 0.3;
+    tl.fromTo(
+      '#analitica-glow',
+      { opacity: 0, scale: 0.85 },
+      { opacity: GLOW_PEAK_OPACITY, scale: 1, duration: BLOOM_DUR, ease: 'power2.out' },
+      BLOOM_START,
+    );
+    const breathePhase = { p: 0 };
+    tl.to(
+      breathePhase,
+      {
+        p: Math.PI * 2 * 0.75,
+        duration: TOTAL_DURATION - (BLOOM_START + BLOOM_DUR),
+        ease: 'none',
+        onUpdate: () => {
+          const s = Math.sin(breathePhase.p);
+          glow.style.opacity = String(GLOW_PEAK_OPACITY + s * 0.04);
+          glow.style.transform = `scale(${1 + s * 0.025})`;
+        },
+      },
+      BLOOM_START + BLOOM_DUR,
+    );
+
+    /* subtle idle float on the final card through the hold */
+    tl.to('#analitica-cardC', { y: -4, duration: 0.9, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 9.5);
+
+    /* ---- single writer: composes phase scale + pan + organic drift onto the camera ---- */
+    const drift = { p: 0 };
+    tl.to(
+      drift,
+      {
+        p: Math.PI * 2 * 2,
+        duration: TOTAL_DURATION,
+        ease: 'none',
+        onUpdate: () => {
+          const dx = Math.sin(drift.p) * 5;
+          const dy = Math.sin(drift.p * 1.3) * 3;
+          camera.style.transform = `scale(${camPhase.scale}) translate(${camPan.x + dx}px, ${camPan.y + dy}px)`;
+        },
+      },
+      0,
+    );
+
+    window.__timelines['13-analitica'] = tl;
+  </script>
+</template>

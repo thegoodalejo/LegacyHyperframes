@@ -1,0 +1,399 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      --problema-bg: #ffffff;
+      --problema-primary: #0054ad;
+      --problema-text: #002a78;
+      --problema-text-muted: #705d00;
+      --problema-card-bg: rgba(0, 84, 173, 0.04);
+      --problema-accent-light: rgba(0, 84, 173, 0.08);
+      --problema-border: rgba(0, 84, 173, 0.2);
+    }
+
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+
+    .problema-bg {
+      background: var(--problema-bg);
+    }
+
+    /* — tool tiles (triptych) — */
+    .problema-tile {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--problema-card-bg);
+      border: 1.5px solid var(--problema-border);
+      box-shadow: none;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+    .problema-tile--center {
+      left: 820px;
+      top: 320px;
+      width: 280px;
+      height: 280px;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .problema-tile--flank {
+      left: 430px;
+      top: 390px;
+      width: 220px;
+      height: 220px;
+      border-radius: 12px;
+    }
+    #problema-tile-cuaderno {
+      left: 1270px;
+    }
+
+    .problema-tile-icon {
+      width: 140px;
+      height: 140px;
+    }
+    .problema-tile--flank .problema-tile-icon {
+      width: 104px;
+      height: 104px;
+    }
+    .problema-tile-label {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 30px;
+      color: var(--problema-text);
+      line-height: 1;
+    }
+
+    /* morph layers inside the center tile */
+    .problema-morph-layer {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    #problema-church-new {
+      opacity: 0;
+    }
+    .problema-church-icon {
+      width: 128px;
+      height: 128px;
+    }
+
+    /* — density markers — */
+    .problema-marker {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--problema-card-bg);
+      border: 1.5px solid var(--problema-border);
+      border-radius: 10px;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+    #problema-marker-otraapp {
+      left: 230px;
+      top: 185px;
+      width: 140px;
+      height: 150px;
+    }
+    #problema-marker-phone {
+      left: 1565px;
+      top: 605px;
+      width: 110px;
+      height: 150px;
+    }
+    .problema-marker-icon {
+      width: 70px;
+      height: 70px;
+    }
+    #problema-marker-phone .problema-marker-icon {
+      width: 62px;
+      height: 118px;
+    }
+    .problema-marker-label {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 22px;
+      color: var(--problema-text-muted);
+      line-height: 1;
+    }
+
+    /* — task bubbles (pill chrome) — */
+    .problema-bubble {
+      position: absolute;
+      width: 170px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--problema-accent-light);
+      border-radius: 100px;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+    .problema-bubble span {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 26px;
+      color: var(--problema-primary);
+      line-height: 1;
+    }
+    #problema-bubble-a {
+      left: 875px;
+      top: 64px;
+    }
+    #problema-bubble-b {
+      left: 553px;
+      top: 708px;
+    }
+    #problema-bubble-c {
+      left: 1197px;
+      top: 708px;
+    }
+
+    /* icon stroke/fill helpers */
+    .problema-ico-line {
+      fill: none;
+      stroke: var(--problema-primary);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .problema-ico-fill {
+      fill: var(--problema-primary);
+      stroke: none;
+    }
+  </style>
+
+  <div data-hf-id="hf-tfx9" id="root" data-composition-id="03-problema" data-width="1920" data-height="1080" data-duration="12.416">
+    <div data-hf-id="hf-iztu" class="clip problema-bg" data-start="0" data-duration="12.416" data-track-index="0"></div>
+
+    <div data-hf-id="hf-f2o9" class="clip" data-start="0" data-duration="12.416" data-track-index="1">
+      <!-- center tile: Excel spreadsheet -> morphs into the church glyph -->
+      <div data-hf-id="hf-p6zo" class="problema-tile problema-tile--center" id="problema-tile-excel">
+        <div data-hf-id="hf-615l" class="problema-morph-layer" id="problema-excel-old">
+          <svg data-hf-id="hf-k6zr" class="problema-tile-icon" viewBox="0 0 100 100">
+            <rect data-hf-id="hf-iw0l" class="problema-ico-line" x="15" y="15" width="70" height="70" rx="8" />
+            <line data-hf-id="hf-zlpb" class="problema-ico-line" x1="15" y1="38" x2="85" y2="38" />
+            <line data-hf-id="hf-egon" class="problema-ico-line" x1="15" y1="61" x2="85" y2="61" />
+            <line data-hf-id="hf-pl03" class="problema-ico-line" x1="38" y1="15" x2="38" y2="85" />
+            <line data-hf-id="hf-8rbz" class="problema-ico-line" x1="61" y1="15" x2="61" y2="85" />
+          </svg>
+          <div data-hf-id="hf-cpj5" class="problema-tile-label">Excel</div>
+        </div>
+        <div data-hf-id="hf-gdm0" class="problema-morph-layer" id="problema-church-new">
+          <svg data-hf-id="hf-w27w" class="problema-church-icon" viewBox="0 0 100 100">
+            <polygon data-hf-id="hf-vu9q" class="problema-ico-line" points="50,8 82,38 18,38" />
+            <rect data-hf-id="hf-mjwc" class="problema-ico-line" x="24" y="38" width="52" height="46" />
+            <rect data-hf-id="hf-7o84" class="problema-ico-line" x="42" y="58" width="16" height="26" />
+            <line data-hf-id="hf-68sr" class="problema-ico-line" x1="50" y1="0" x2="50" y2="14" />
+            <line data-hf-id="hf-ksup" class="problema-ico-line" x1="44" y1="6" x2="56" y2="6" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- flank tile: WhatsApp -->
+      <div data-hf-id="hf-0q5c" class="problema-tile problema-tile--flank" id="problema-tile-whatsapp">
+        <svg data-hf-id="hf-96o7" class="problema-tile-icon" viewBox="0 0 100 100">
+          <path data-hf-id="hf-7ki8" class="problema-ico-line" d="M20 20 H80 A8 8 0 0 1 88 28 V64 A8 8 0 0 1 80 72 H40 L24 86 V72 H20 A8 8 0 0 1 12 64 V28 A8 8 0 0 1 20 20 Z" />
+          <circle data-hf-id="hf-c8q3" class="problema-ico-fill" cx="35" cy="46" r="4" />
+          <circle data-hf-id="hf-jr18" class="problema-ico-fill" cx="50" cy="46" r="4" />
+          <circle data-hf-id="hf-qaso" class="problema-ico-fill" cx="65" cy="46" r="4" />
+        </svg>
+        <div data-hf-id="hf-nhyk" class="problema-tile-label">WhatsApp</div>
+      </div>
+
+      <!-- flank tile: Cuaderno -->
+      <div data-hf-id="hf-xl9l" class="problema-tile problema-tile--flank" id="problema-tile-cuaderno">
+        <svg data-hf-id="hf-8sd6" class="problema-tile-icon" viewBox="0 0 100 100">
+          <rect data-hf-id="hf-q0bj" class="problema-ico-line" x="22" y="12" width="60" height="76" rx="6" />
+          <line data-hf-id="hf-tz0k" class="problema-ico-line" x1="34" y1="32" x2="70" y2="32" />
+          <line data-hf-id="hf-uit8" class="problema-ico-line" x1="34" y1="48" x2="70" y2="48" />
+          <line data-hf-id="hf-d1c6" class="problema-ico-line" x1="34" y1="64" x2="58" y2="64" />
+          <circle data-hf-id="hf-fhza" class="problema-ico-fill" cx="22" cy="22" r="3" />
+          <circle data-hf-id="hf-aeom" class="problema-ico-fill" cx="22" cy="40" r="3" />
+          <circle data-hf-id="hf-19e5" class="problema-ico-fill" cx="22" cy="58" r="3" />
+          <circle data-hf-id="hf-3rux" class="problema-ico-fill" cx="22" cy="76" r="3" />
+        </svg>
+        <div data-hf-id="hf-37en" class="problema-tile-label">Cuaderno</div>
+      </div>
+
+      <!-- density marker: generic other app -->
+      <div data-hf-id="hf-4gkk" class="problema-marker" id="problema-marker-otraapp">
+        <svg data-hf-id="hf-h6cx" class="problema-marker-icon" viewBox="0 0 100 100">
+          <rect data-hf-id="hf-zf2u" class="problema-ico-line" x="18" y="18" width="64" height="64" rx="16" />
+          <circle data-hf-id="hf-mauw" class="problema-ico-fill" cx="50" cy="50" r="9" />
+        </svg>
+        <div data-hf-id="hf-ms9h" class="problema-marker-label">Otra app</div>
+      </div>
+
+      <!-- density marker: phone (unlabeled, ambient) -->
+      <div data-hf-id="hf-30v7" class="problema-marker" id="problema-marker-phone">
+        <svg data-hf-id="hf-gzlw" class="problema-marker-icon" viewBox="0 0 60 100">
+          <rect data-hf-id="hf-dnzo" class="problema-ico-line" x="8" y="6" width="44" height="88" rx="10" />
+          <line data-hf-id="hf-qrvt" class="problema-ico-line" x1="8" y1="20" x2="52" y2="20" />
+          <circle data-hf-id="hf-ivjb" class="problema-ico-fill" cx="30" cy="86" r="5" />
+        </svg>
+      </div>
+
+      <!-- radial close-in task bubbles -->
+      <div data-hf-id="hf-8jqe" class="problema-bubble" id="problema-bubble-a"><span data-hf-id="hf-gubi">líder A</span></div>
+      <div data-hf-id="hf-4lmd" class="problema-bubble" id="problema-bubble-b"><span data-hf-id="hf-h8mj">líder B</span></div>
+      <div data-hf-id="hf-3tyk" class="problema-bubble" id="problema-bubble-c"><span data-hf-id="hf-hmxk">líder C</span></div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    /* ===== Scene 1 (0.0–2.4s): recognizable triptych assembly ===== */
+    tl.fromTo(
+      '#problema-tile-excel',
+      { scale: 0, opacity: 0, y: 18 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' },
+      0.05,
+    );
+    tl.fromTo(
+      '#problema-tile-whatsapp',
+      { scale: 0, opacity: 0, y: 22 },
+      { scale: 0.86, opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
+      0.18,
+    );
+    tl.fromTo(
+      '#problema-tile-cuaderno',
+      { scale: 0, opacity: 0, y: 22 },
+      { scale: 0.86, opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
+      0.26,
+    );
+
+    /* low-amplitude float once each tile has landed — phase-offset so they never sync */
+    tl.to(
+      '#problema-tile-excel',
+      { y: -3, duration: 1.15, ease: 'sine.inOut', yoyo: true, repeat: 3 },
+      0.9, // ends 5.5s — clears before the Scene 3 morph starts at 5.8s
+    );
+    tl.to(
+      '#problema-tile-whatsapp',
+      { y: -3, duration: 1.3, ease: 'sine.inOut', yoyo: true, repeat: 5 },
+      1.0,
+    );
+    tl.to(
+      '#problema-tile-cuaderno',
+      { y: -3, duration: 1.4, ease: 'sine.inOut', yoyo: true, repeat: 5 },
+      1.15,
+    );
+
+    /* ===== Scene 2 (2.4–5.6s): density markers scatter in around the triptych ===== */
+    tl.fromTo(
+      '#problema-marker-otraapp',
+      { scale: 0, opacity: 0, y: 14, rotation: -14 },
+      { scale: 0.62, opacity: 0.9, y: 0, rotation: -6, duration: 0.5, ease: 'power3.out' },
+      2.5,
+    );
+    tl.fromTo(
+      '#problema-marker-phone',
+      { scale: 0, opacity: 0, y: 14, rotation: 14 },
+      { scale: 0.55, opacity: 0.9, y: 0, rotation: 8, duration: 0.5, ease: 'power3.out' },
+      3.9,
+    );
+    tl.to(
+      '#problema-marker-otraapp',
+      { y: -2, duration: 1.2, ease: 'sine.inOut', yoyo: true, repeat: 4 },
+      3.2,
+    );
+    tl.to(
+      '#problema-marker-phone',
+      { y: -2, duration: 1.35, ease: 'sine.inOut', yoyo: true, repeat: 4 },
+      4.6,
+    );
+
+    /* ===== Scene 3 (5.6–7.6s): the morph — Excel container reshapes into the church glyph ===== */
+    const MORPH_START = 5.8;
+    const MORPH_DUR = 1.2;
+    tl.to(
+      '#problema-tile-excel',
+      {
+        scale: 1.18,
+        backgroundColor: 'rgba(0, 84, 173, 0.15)',
+        borderColor: 'rgba(0, 84, 173, 0.35)',
+        duration: MORPH_DUR,
+        ease: 'power2.inOut',
+      },
+      MORPH_START,
+    );
+    tl.to(
+      '#problema-excel-old',
+      { opacity: 0, duration: MORPH_DUR * 0.45, ease: 'power1.in' },
+      MORPH_START,
+    );
+    tl.to(
+      '#problema-church-new',
+      { opacity: 1, duration: MORPH_DUR * 0.45, ease: 'power1.out' },
+      MORPH_START + MORPH_DUR * (1 - 0.45),
+    );
+
+    /* ===== Scene 4 (7.6–12.016s): task bubbles close in from all sides, held crowded ===== */
+    tl.fromTo(
+      '#problema-bubble-a',
+      { x: 0, y: 0, scale: 0, opacity: 0 },
+      { x: 0, y: 104, scale: 1, opacity: 1, duration: 0.7, ease: 'power3.out' },
+      7.8,
+    );
+    tl.fromTo(
+      '#problema-bubble-b',
+      { x: 0, y: 0, scale: 0, opacity: 0 },
+      { x: 92, y: -80, scale: 1, opacity: 1, duration: 0.7, ease: 'power3.out' },
+      8.05,
+    );
+    tl.fromTo(
+      '#problema-bubble-c',
+      { x: 0, y: 0, scale: 0, opacity: 0 },
+      { x: -92, y: -80, scale: 1, opacity: 1, duration: 0.7, ease: 'power3.out' },
+      8.3,
+    );
+    // bubbles land by 9.0s; the crowded frame holds static (camera never pushes) through 12.016s.
+
+    window.__timelines['03-problema'] = tl;
+  </script>
+</template>

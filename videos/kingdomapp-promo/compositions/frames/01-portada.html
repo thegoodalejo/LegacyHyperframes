@@ -1,0 +1,142 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-700.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Full-bleed brand ground — lives on its own clip layer, never on #root. */
+    .portada01-bg {
+      background-color: #ffffff;
+      background-image: radial-gradient(
+        circle at 50% 34%,
+        rgba(0, 84, 173, 0.07),
+        rgba(0, 84, 173, 0) 46%
+      );
+    }
+
+    .portada01-lockup {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 214px;
+      row-gap: 40px;
+      transform-origin: 50% 40%;
+      will-change: transform;
+    }
+
+    #portada01-logo-mark {
+      display: block;
+      height: 340px;
+      width: auto;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+
+    .portada01-wordmark {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+    }
+
+    .portada01-letter {
+      display: inline-block;
+      font-family: "Poppins", sans-serif;
+      font-weight: 700;
+      font-size: 88px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: #002a78;
+      margin-right: -1.5px;
+      transform-origin: 50% 100%;
+      will-change: transform, opacity;
+    }
+
+    .portada01-letter:last-child {
+      margin-right: 0;
+    }
+  </style>
+
+  <div data-hf-id="hf-uyrh" id="root" data-composition-id="01-portada" data-width="1920" data-height="1080" data-duration="3.4">
+    <!-- Track 0 — full-bleed brand canvas (white/cream, faint cobalt glow). -->
+    <div data-hf-id="hf-mbwx" class="clip portada01-bg" data-start="0" data-duration="3.4" data-track-index="0"></div>
+
+    <!-- Track 1 — the lockup: mark, then wordmark, then a held creep. -->
+    <div data-hf-id="hf-q4we" class="clip" data-start="0" data-duration="3.4" data-track-index="1">
+      <div data-hf-id="hf-4p0q" id="portada01-lockup" class="portada01-lockup">
+        <img data-hf-id="hf-ayes" id="portada01-logo-mark" src="assets/kingdom_logo.png" alt="">
+        <div data-hf-id="hf-cnvk" class="portada01-wordmark">
+          <span data-hf-id="hf-4dzj" class="portada01-letter">K</span>
+          <span data-hf-id="hf-qvkl" class="portada01-letter">i</span>
+          <span data-hf-id="hf-tnps" class="portada01-letter">n</span>
+          <span data-hf-id="hf-q2yj" class="portada01-letter">g</span>
+          <span data-hf-id="hf-poni" class="portada01-letter">d</span>
+          <span data-hf-id="hf-t9er" class="portada01-letter">o</span>
+          <span data-hf-id="hf-sgsp" class="portada01-letter">m</span>
+          <span data-hf-id="hf-0ex9" class="portada01-letter">A</span>
+          <span data-hf-id="hf-ugbu" class="portada01-letter">p</span>
+          <span data-hf-id="hf-0j5a" class="portada01-letter">p</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Scene 1 (0.0-1.0s): white brand canvas; the mark spring-BLOOMS from zero
+    // at dead center — spring-pop-entrance, bouncy variant (back.out overshoot
+    // + a slight rotation from-value). Settles by ~0.65s, then holds as a
+    // deliberate bookend (no other element) through 1.0s.
+    tl.fromTo(
+      "#portada01-logo-mark",
+      { scale: 0, opacity: 0, rotation: -8 },
+      { scale: 1, opacity: 1, rotation: 0, duration: 0.55, ease: "back.out(1.7)" },
+      0.1,
+    );
+
+    // Scene 2 (1.0-2.2s): "KingdomApp" cascades in letter-by-letter below the
+    // mark — staggered per-letter pop (spring-pop-entrance group variant) with
+    // a light back.out overshoot on each letter, landing the balanced lockup.
+    const letters = gsap.utils.toArray("#root .portada01-letter");
+    const LETTER_STAGGER = 0.055;
+    letters.forEach((el, i) => {
+      tl.fromTo(
+        el,
+        { opacity: 0, y: 18, scale: 0.55 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "back.out(1.3)" },
+        1.0 + i * LETTER_STAGGER,
+      );
+    });
+
+    // Scene 3 (2.2-3.0s): lockup holds static; a near-imperceptible continuous
+    // scale-up creep keeps the held read alive (no motion rule needed — one
+    // long linear micro-tween). Resolves at 2.95s, just before the frame ends.
+    tl.fromTo(
+      "#portada01-lockup",
+      { scale: 1 },
+      { scale: 1.015, duration: 0.75, ease: "none" },
+      2.2,
+    );
+
+    window.__timelines["01-portada"] = tl;
+  </script>
+</template>

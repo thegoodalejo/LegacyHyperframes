@@ -1,0 +1,531 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      --billetera-bg: #ffffff;
+      --billetera-primary: #0054ad;
+      --billetera-text: #002a78;
+      --billetera-text-muted: #705d00;
+      --billetera-border: rgba(0, 84, 173, 0.2);
+      --billetera-card-bg: rgba(0, 84, 173, 0.04);
+      --billetera-accent-light: rgba(0, 84, 173, 0.08);
+      --billetera-positive: #059669;
+      --billetera-glow-color: 0, 42, 120;
+    }
+
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+
+    .billetera-bg {
+      background: var(--billetera-bg);
+    }
+
+    /* ===== camera rig ===== */
+    .billetera-scene {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .billetera-camera {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+    .billetera-stage {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* ===== Scene 1 — ring + count-up "Trazable" ===== */
+    .billetera-cardA {
+      position: absolute;
+      left: 790px;
+      top: 296px;
+      width: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      transform-origin: 50% 50%;
+      filter: blur(0px);
+      will-change: transform, opacity, filter;
+    }
+    .billetera-ring-box {
+      position: relative;
+      width: 260px;
+      height: 260px;
+    }
+    .billetera-ring-svg {
+      position: absolute;
+      inset: 0;
+    }
+    .billetera-ring-track {
+      fill: none;
+      stroke: var(--billetera-accent-light);
+      stroke-width: 14;
+    }
+    .billetera-ring-fill {
+      fill: none;
+      stroke: var(--billetera-primary);
+      stroke-width: 14;
+      stroke-linecap: round;
+      transform-origin: 130px 130px;
+      transform: rotate(-90deg);
+    }
+    .billetera-ring-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .billetera-count {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 92px;
+      color: var(--billetera-primary);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .billetera-count-unit {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 22px;
+      color: var(--billetera-text-muted);
+      letter-spacing: 0.02em;
+      opacity: 0;
+    }
+    .billetera-labelA {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 32px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--billetera-primary);
+      opacity: 0;
+    }
+
+    /* ===== Scene 2 — "Ingreso — Aprobado" card ===== */
+    .billetera-cardB {
+      position: absolute;
+      left: 700px;
+      top: 325px;
+      width: 520px;
+      height: 290px;
+      background: var(--billetera-card-bg);
+      border: 1.5px solid var(--billetera-border);
+      border-radius: 14px;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      filter: blur(0px);
+      will-change: transform, opacity, filter;
+    }
+    .billetera-cardB-eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 26px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--billetera-primary);
+    }
+    .billetera-cardB-row {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+    .billetera-cardB-status {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 62px;
+      color: var(--billetera-text);
+      line-height: 1;
+    }
+    .billetera-check {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--billetera-positive);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform-origin: 50% 50%;
+    }
+    .billetera-check svg {
+      width: 34px;
+      height: 34px;
+    }
+    .billetera-check-path {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ===== Scene 3 — "Auditoría" card + ledger draw + glow ===== */
+    .billetera-glow {
+      position: absolute;
+      left: 1340px;
+      top: 180px;
+      width: 800px;
+      height: 580px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(var(--billetera-glow-color), 0.38) 0%,
+        rgba(var(--billetera-glow-color), 0) 70%
+      );
+      opacity: 0;
+      z-index: 1;
+      will-change: transform, opacity;
+    }
+    .billetera-cardC {
+      position: absolute;
+      left: 1480px;
+      top: 325px;
+      width: 520px;
+      height: 290px;
+      background: var(--billetera-card-bg);
+      border: 1.5px solid var(--billetera-border);
+      border-radius: 14px;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      opacity: 0;
+      z-index: 2;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .billetera-cardC-eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 26px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--billetera-primary);
+    }
+    .billetera-ledger {
+      width: 220px;
+      height: 132px;
+    }
+    .billetera-ledger-line {
+      fill: none;
+      stroke: var(--billetera-primary);
+      stroke-width: 6;
+      stroke-linecap: round;
+    }
+    .billetera-ledger-check {
+      fill: none;
+      stroke: var(--billetera-positive);
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+
+  <div data-hf-id="hf-431n" id="root" data-composition-id="09-billetera" data-width="1920" data-height="1080" data-duration="12.072">
+    <div data-hf-id="hf-vods" class="clip billetera-bg" data-start="0" data-duration="12.072" data-track-index="0"></div>
+
+    <div data-hf-id="hf-bj67" class="clip" data-start="0" data-duration="12.072" data-track-index="1">
+      <div data-hf-id="hf-onud" class="billetera-scene">
+        <div data-hf-id="hf-ne2q" class="billetera-camera" id="billetera-camera">
+          <div data-hf-id="hf-kxfv" class="billetera-stage">
+            <!-- Scene 1: ring + count-up "donación" -> "Trazable" -->
+            <div data-hf-id="hf-monm" class="billetera-cardA" id="billetera-cardA">
+              <div data-hf-id="hf-yitt" class="billetera-ring-box">
+                <svg data-hf-id="hf-k0ht" class="billetera-ring-svg" viewBox="0 0 260 260" width="260" height="260">
+                  <circle data-hf-id="hf-xd4i" class="billetera-ring-track" cx="130" cy="130" r="112" />
+                  <circle data-hf-id="hf-llj6" class="billetera-ring-fill" id="billetera-ringfill" cx="130" cy="130" r="112" />
+                </svg>
+                <div data-hf-id="hf-6or6" class="billetera-ring-inner">
+                  <div data-hf-id="hf-asqa" class="billetera-count" id="billetera-count">0</div>
+                  <div data-hf-id="hf-05on" class="billetera-count-unit" id="billetera-count-unit">donación</div>
+                </div>
+              </div>
+              <div data-hf-id="hf-5ud3" class="billetera-labelA" id="billetera-labelA">Trazable</div>
+            </div>
+
+            <!-- Scene 2: push-through into "Ingreso — Aprobado ✓" -->
+            <div data-hf-id="hf-avuw" class="billetera-cardB" id="billetera-cardB">
+              <div data-hf-id="hf-otve" class="billetera-cardB-eyebrow">Ingreso</div>
+              <div data-hf-id="hf-d2pe" class="billetera-cardB-row">
+                <div data-hf-id="hf-rot6" class="billetera-cardB-status">Aprobado</div>
+                <div data-hf-id="hf-slmk" class="billetera-check" id="billetera-check">
+                  <svg data-hf-id="hf-flyh" viewBox="0 0 40 40">
+                    <path data-hf-id="hf-f3yq" class="billetera-check-path" id="billetera-check-path" d="M10 21 L17 28 L30 12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scene 3: pan into "Auditoría" + self-drawing ledger + glow bloom -->
+            <div data-hf-id="hf-48gy" class="billetera-glow" id="billetera-glow"></div>
+            <div data-hf-id="hf-22wu" class="billetera-cardC" id="billetera-cardC">
+              <div data-hf-id="hf-d83m" class="billetera-cardC-eyebrow">Auditoría</div>
+              <svg data-hf-id="hf-pyop" class="billetera-ledger" viewBox="0 0 200 120">
+                <line data-hf-id="hf-orfh" class="billetera-ledger-line" id="billetera-ledger-l1" x1="20" y1="20" x2="180" y2="20" />
+                <line data-hf-id="hf-jueo" class="billetera-ledger-line" id="billetera-ledger-l2" x1="20" y1="55" x2="180" y2="55" />
+                <line data-hf-id="hf-ermr" class="billetera-ledger-line" id="billetera-ledger-l3" x1="20" y1="90" x2="140" y2="90" />
+                <path data-hf-id="hf-8re5" class="billetera-ledger-check" id="billetera-ledger-check" d="M150 84 L160 94 L176 74" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    const TOTAL_DURATION = 11.572;
+
+    /* ---- synchronous SVG measurement setup ---- */
+    const ringFill = document.getElementById('billetera-ringfill');
+    const RING_LEN = ringFill.getTotalLength();
+    ringFill.style.strokeDasharray = RING_LEN;
+    ringFill.style.strokeDashoffset = RING_LEN;
+
+    const checkPath = document.getElementById('billetera-check-path');
+    const CHECK_LEN = checkPath.getTotalLength();
+    checkPath.style.strokeDasharray = CHECK_LEN;
+    checkPath.style.strokeDashoffset = CHECK_LEN;
+
+    ['billetera-ledger-l1', 'billetera-ledger-l2', 'billetera-ledger-l3', 'billetera-ledger-check'].forEach(
+      (id) => {
+        const el = document.getElementById(id);
+        const len = el.getTotalLength();
+        el.style.strokeDasharray = len;
+        el.style.strokeDashoffset = len;
+      },
+    );
+
+    /* ---- camera state (one writer at the bottom composes scale + pan + drift) ---- */
+    const camera = document.getElementById('billetera-camera');
+    const camPhase = { scale: 1 };
+    const camPan = { x: 0, y: 0 };
+
+    /* =========================================================
+       Scene 1 (0.0 – 3.306s): ring sweeps + "0 -> 1 donación"
+       count-up as one beat, label "Trazable" beneath, slow
+       continuous camera zoom-in underneath.
+       ========================================================= */
+    tl.fromTo(
+      '#billetera-cardA',
+      { scale: 0.85, opacity: 0, y: 14 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' },
+      0.0,
+    );
+    tl.fromTo(
+      '#billetera-labelA',
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+      0.15,
+    );
+
+    const countState = { value: 0 };
+    const COUNT_START = 0.25;
+    const COUNT_DUR = 1.0;
+    tl.to(
+      countState,
+      {
+        value: 1,
+        duration: COUNT_DUR,
+        ease: 'power2.out',
+        onUpdate: () => {
+          document.getElementById('billetera-count').textContent = Math.round(countState.value).toLocaleString();
+        },
+      },
+      COUNT_START,
+    );
+    tl.fromTo(
+      '#billetera-count',
+      { scale: 0.55 },
+      { scale: 1, duration: COUNT_DUR, ease: 'power2.out' },
+      COUNT_START,
+    );
+    tl.to(ringFill, { strokeDashoffset: 0, duration: COUNT_DUR, ease: 'power2.out' }, COUNT_START);
+    tl.fromTo(
+      '#billetera-count-unit',
+      { opacity: 0, y: 8 },
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power1.out' },
+      COUNT_START + 0.1,
+    );
+
+    /* subtle idle float once the ring has landed, clears well before the push-through */
+    tl.to('#billetera-cardA', { y: -4, duration: 1.0, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 0.9);
+
+    /* slow continuous camera zoom-in under Scene 1 */
+    tl.to(camPhase, { scale: 1.05, duration: 2.9, ease: 'sine.inOut' }, 0.0);
+
+    /* =========================================================
+       Scene 2 seam -> body (3.0 – 7.3s): z-depth push-THROUGH
+       the ring's center into "Ingreso — Aprobado ✓" (cut-catalog
+       Zoom-Through: exit accelerates + blurs, hard cut at peak,
+       incoming decelerates into focus), camera scale compounds
+       the same push. This is the blueprint's signature move.
+       ========================================================= */
+    const PUSH_START = 3.0;
+    const PUSH_EXIT_DUR = 0.4;
+    const PUSH_CUT = PUSH_START + PUSH_EXIT_DUR; // 3.4
+    const PUSH_ENTRY_DUR = 0.5;
+
+    // Phase 1 — CardA (ring instrument) accelerates toward the viewer and dissolves
+    tl.to('#billetera-cardA', { scale: 1.2, filter: 'blur(18px)', duration: PUSH_EXIT_DUR, ease: 'power3.in' }, PUSH_START);
+    tl.to('#billetera-cardA', { opacity: 0.15, duration: PUSH_EXIT_DUR, ease: 'none' }, PUSH_START);
+    // Camera compounds the push at the same velocity
+    tl.to(camPhase, { scale: 2.5, duration: PUSH_EXIT_DUR, ease: 'power3.in' }, PUSH_START);
+
+    // Phase 2 — hard cut at peak blur/velocity
+    tl.set('#billetera-cardA', { opacity: 0 }, PUSH_CUT);
+    tl.set('#billetera-cardB', { opacity: 0.15, scale: 0.75, filter: 'blur(18px)' }, PUSH_CUT);
+
+    // Phase 3 — CardB (Ingreso) arrives from behind the camera, resolving into focus
+    tl.to(
+      '#billetera-cardB',
+      { scale: 1, filter: 'blur(0px)', opacity: 1, duration: PUSH_ENTRY_DUR, ease: 'expo.out' },
+      PUSH_CUT,
+    );
+    tl.to(camPhase, { scale: 1.0, duration: PUSH_ENTRY_DUR, ease: 'expo.out' }, PUSH_CUT);
+
+    /* checkmark badge spring-pops in once the card has landed */
+    const BADGE_AT = PUSH_CUT + PUSH_ENTRY_DUR + 0.1; // 4.0
+    tl.fromTo(
+      '#billetera-check',
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' },
+      BADGE_AT,
+    );
+    tl.to(checkPath, { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, BADGE_AT + 0.15);
+
+    /* subtle idle float while "Aprobado" holds, clears before the pan begins */
+    tl.to('#billetera-cardB', { y: -4, duration: 1.0, ease: 'sine.inOut', yoyo: true, repeat: 2 }, 4.3);
+
+    /* =========================================================
+       Scene 3 (7.3 – 11.572s): camera PANS to the third card
+       "Auditoría"; a small ledger-line icon self-draws; the
+       shot settles centered as a soft accent glow blooms
+       behind it and holds to the end.
+       ========================================================= */
+    const PAN_START = 7.3;
+    const PAN_DUR = 1.0;
+    const PAN_DISTANCE = 780;
+
+    tl.to('#billetera-cardB', { opacity: 0, scale: 0.94, duration: 0.5, ease: 'power2.in' }, PAN_START);
+    tl.to(camPan, { x: -PAN_DISTANCE, duration: PAN_DUR, ease: 'power2.inOut' }, PAN_START);
+    tl.fromTo(
+      '#billetera-cardC',
+      { opacity: 0, scale: 0.9 },
+      { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out' },
+      PAN_START + 0.2,
+    );
+
+    /* gentle push-in climax as the shot settles on the final card, holding to the end */
+    tl.to(camPhase, { scale: 1.05, duration: TOTAL_DURATION - (PAN_START + PAN_DUR), ease: 'power2.out' }, PAN_START + PAN_DUR);
+
+    /* ledger lines self-draw left-to-right, staggered as one continuous trace */
+    const LEDGER_START = 8.4;
+    tl.to('#billetera-ledger-l1', { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, LEDGER_START);
+    tl.to('#billetera-ledger-l2', { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, LEDGER_START + 0.25);
+    tl.to('#billetera-ledger-l3', { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, LEDGER_START + 0.45);
+    tl.to(
+      document.getElementById('billetera-ledger-check'),
+      { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' },
+      LEDGER_START + 0.65,
+    );
+
+    /* soft accent glow blooms in behind the settled hero card */
+    const BLOOM_START = 8.5;
+    const BLOOM_DUR = 1.0;
+    const glow = document.getElementById('billetera-glow');
+    const GLOW_PEAK_OPACITY = 0.3;
+    tl.fromTo(
+      '#billetera-glow',
+      { opacity: 0, scale: 0.85 },
+      { opacity: GLOW_PEAK_OPACITY, scale: 1, duration: BLOOM_DUR, ease: 'power2.out' },
+      BLOOM_START,
+    );
+    const breathePhase = { p: 0 };
+    tl.to(
+      breathePhase,
+      {
+        p: Math.PI * 2 * 0.75,
+        duration: TOTAL_DURATION - (BLOOM_START + BLOOM_DUR),
+        ease: 'none',
+        onUpdate: () => {
+          const s = Math.sin(breathePhase.p);
+          glow.style.opacity = String(GLOW_PEAK_OPACITY + s * 0.04);
+          glow.style.transform = `scale(${1 + s * 0.025})`;
+        },
+      },
+      BLOOM_START + BLOOM_DUR,
+    );
+
+    /* subtle idle float on the final card through the hold */
+    tl.to('#billetera-cardC', { y: -4, duration: 1.08, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 9.4);
+
+    /* ---- single writer: composes phase scale + pan + organic drift onto the camera ---- */
+    const drift = { p: 0 };
+    tl.to(
+      drift,
+      {
+        p: Math.PI * 2 * 2,
+        duration: TOTAL_DURATION,
+        ease: 'none',
+        onUpdate: () => {
+          const dx = Math.sin(drift.p) * 5;
+          const dy = Math.sin(drift.p * 1.3) * 3;
+          camera.style.transform = `scale(${camPhase.scale}) translate(${camPan.x + dx}px, ${camPan.y + dy}px)`;
+        },
+      },
+      0,
+    );
+
+    window.__timelines['09-billetera'] = tl;
+  </script>
+</template>

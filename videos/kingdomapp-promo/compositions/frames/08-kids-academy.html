@@ -1,0 +1,513 @@
+<template>
+<style>
+@font-face {
+  font-family: "Poppins";
+  font-weight: 400;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 600;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 700;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-700.woff2") format("woff2");
+}
+
+#root {
+  --ka-bg: #ffffff;
+  --ka-primary: #0054ad;
+  --ka-text: #002a78;
+  --ka-text-muted: #705d00;
+  --ka-border: rgba(0, 84, 173, 0.2);
+  --ka-card-bg: rgba(0, 84, 173, 0.04);
+  --ka-accent-light: rgba(0, 84, 173, 0.08);
+  --ka-accent-medium: rgba(0, 84, 173, 0.15);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+}
+
+.clip {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- full-bleed ground (clip, never on #root) ---- */
+.kidsacademy-bg {
+  background: var(--ka-bg);
+}
+
+.kidsacademy-stage {
+  overflow: hidden;
+}
+
+/* ---- ambient side glows (dual accent bloom, comparison-split shot structure) ---- */
+.kidsacademy-glow {
+  position: absolute;
+  top: 200px;
+  width: 680px;
+  height: 680px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--ka-accent-medium) 0%, rgba(0, 84, 173, 0) 70%);
+  filter: blur(30px);
+  opacity: 0;
+  will-change: opacity, transform;
+}
+.kidsacademy-glow-left {
+  left: 260px;
+}
+.kidsacademy-glow-right {
+  left: 980px;
+}
+
+/* ---- Scene 1: title, T-shape above the cards ---- */
+.kidsacademy-title-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 96px;
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+.kidsacademy-title {
+  display: inline-block;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 52px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ka-text);
+}
+
+.kidsacademy-title-accent {
+  color: var(--ka-primary);
+}
+
+/* ---- Scene 2 + 3: split-tilt card stage ---- */
+.kidsacademy-stagewrap {
+  position: absolute;
+  left: 290px;
+  top: 270px;
+  width: 1340px;
+  height: 530px;
+  perspective: 1700px;
+}
+
+.kidsacademy-cards {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 100px;
+  transform-style: preserve-3d;
+}
+
+.kidsacademy-card {
+  width: 620px;
+  height: 530px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 48px;
+  box-sizing: border-box;
+  background: var(--ka-card-bg);
+  border: 1.5px solid var(--ka-border);
+  border-radius: 14px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.kidsacademy-card-left {
+  box-shadow: 22px 30px 60px rgba(0, 84, 173, 0.16);
+}
+.kidsacademy-card-right {
+  box-shadow: -22px 30px 60px rgba(0, 84, 173, 0.16);
+}
+
+.kidsacademy-icon-chip {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--ka-accent-light);
+  color: var(--ka-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.kidsacademy-icon-chip svg {
+  width: 32px;
+  height: 32px;
+}
+
+.kidsacademy-card-label {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--ka-text);
+  margin-bottom: 14px;
+}
+
+.kidsacademy-accent-line {
+  width: 60px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ka-primary);
+  margin-bottom: 24px;
+}
+
+/* ---- bullet list (Scene 3 cascade) ---- */
+.kidsacademy-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 420px;
+}
+
+.kidsacademy-bullet {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.kidsacademy-bullet-dot {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--ka-accent-light);
+  border: 1.5px solid var(--ka-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ka-primary);
+}
+.kidsacademy-bullet-dot svg {
+  width: 14px;
+  height: 14px;
+}
+
+.kidsacademy-bullet-text {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.35;
+  color: var(--ka-text-muted);
+  text-align: left;
+}
+
+/* Badges live OUTSIDE the tilted card divs (siblings), else they'd inherit rotateY. */
+.kidsacademy-badge-anchor {
+  position: absolute;
+  top: 452px;
+  width: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+.kidsacademy-badge-anchor-left {
+  left: 620px;
+}
+.kidsacademy-badge-anchor-right {
+  left: 720px;
+}
+
+.kidsacademy-badge {
+  white-space: nowrap;
+  padding: 14px 30px;
+  border-radius: 100px;
+  background: var(--ka-primary);
+  color: var(--ka-bg);
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 8px 20px rgba(0, 84, 173, 0.3);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+</style>
+
+<div id="root" data-composition-id="08-kids-academy" data-width="1920" data-height="1080" data-duration="11.21">
+  <div class="clip kidsacademy-bg" data-start="0" data-duration="11.21" data-track-index="0"></div>
+
+  <div class="clip kidsacademy-stage" data-start="0" data-duration="11.21" data-track-index="1">
+    <div class="kidsacademy-glow kidsacademy-glow-left" id="ka-glow-left"></div>
+    <div class="kidsacademy-glow kidsacademy-glow-right" id="ka-glow-right"></div>
+
+    <div class="kidsacademy-title-row" id="ka-title-row">
+      <div class="kidsacademy-title">Kids <span class="kidsacademy-title-accent">+ Academy</span></div>
+    </div>
+
+    <div class="kidsacademy-stagewrap">
+      <div class="kidsacademy-cards">
+        <div class="kidsacademy-card kidsacademy-card-left" id="ka-card-left">
+          <span class="kidsacademy-icon-chip ka-copy-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="7.5" r="3" />
+              <circle cx="8.4" cy="4.9" r="1.1" />
+              <circle cx="15.6" cy="4.9" r="1.1" />
+              <path d="M6.3 21c0-4.3 2.4-6.9 5.7-6.9s5.7 2.6 5.7 6.9" />
+            </svg>
+          </span>
+          <div class="kidsacademy-card-label ka-copy-left">Kids</div>
+          <div class="kidsacademy-accent-line ka-copy-left"></div>
+          <div class="kidsacademy-bullets">
+            <div class="kidsacademy-bullet" id="ka-bullet-left-1">
+              <span class="kidsacademy-bullet-dot">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7" /></svg>
+              </span>
+              <span class="kidsacademy-bullet-text">Check-in/out QR</span>
+            </div>
+            <div class="kidsacademy-bullet" id="ka-bullet-left-2">
+              <span class="kidsacademy-bullet-dot">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7" /></svg>
+              </span>
+              <span class="kidsacademy-bullet-text">Familiares verificados</span>
+            </div>
+            <div class="kidsacademy-bullet" id="ka-bullet-left-3">
+              <span class="kidsacademy-bullet-dot">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7" /></svg>
+              </span>
+              <span class="kidsacademy-bullet-text">Alertas visibles</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kidsacademy-card kidsacademy-card-right" id="ka-card-right">
+          <span class="kidsacademy-icon-chip ka-copy-right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3 1 8.5 12 14l11-5.5L12 3Z" />
+              <path d="M5 10.5v5c0 1.9 3.13 3.5 7 3.5s7-1.6 7-3.5v-5" />
+              <line x1="21" y1="9" x2="21" y2="15.5" />
+            </svg>
+          </span>
+          <div class="kidsacademy-card-label ka-copy-right">Academy</div>
+          <div class="kidsacademy-accent-line ka-copy-right"></div>
+          <div class="kidsacademy-bullets">
+            <div class="kidsacademy-bullet" id="ka-bullet-right-1">
+              <span class="kidsacademy-bullet-dot">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7" /></svg>
+              </span>
+              <span class="kidsacademy-bullet-text">Cursos y clases</span>
+            </div>
+            <div class="kidsacademy-bullet" id="ka-bullet-right-2">
+              <span class="kidsacademy-bullet-dot">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7" /></svg>
+              </span>
+              <span class="kidsacademy-bullet-text">Panel del alumno</span>
+            </div>
+            <div class="kidsacademy-bullet" id="ka-bullet-right-3">
+              <span class="kidsacademy-bullet-dot">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7" /></svg>
+              </span>
+              <span class="kidsacademy-bullet-text">Certificados</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kidsacademy-badge-anchor kidsacademy-badge-anchor-left">
+        <div class="kidsacademy-badge" id="ka-badge-left">Confianza</div>
+      </div>
+      <div class="kidsacademy-badge-anchor kidsacademy-badge-anchor-right">
+        <div class="kidsacademy-badge" id="ka-badge-right">Formación</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.__timelines = window.__timelines || {};
+
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+
+    var TOTAL = 10.71;
+
+    // -----------------------------------------------------------------
+    // Scene 1 (0.0 - ~0.8s): centered title "Kids + Academy" slides DOWN
+    // into place — forms a T-shape against the cards, which arrive next.
+    // -----------------------------------------------------------------
+    tl.fromTo(
+      "#ka-title-row",
+      { y: -40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
+      0
+    );
+
+    // -----------------------------------------------------------------
+    // Scene 2 (~0.4 - 3.0s, overlapping the title tail): the signature
+    // move — two equal-width cards arrive from opposite wings with
+    // mirrored book-open rotateY tilts. Left (Kids) leads as VO opens on
+    // "Cuida a los más pequeños...", right (Academy) follows ~0.24s
+    // behind toward "...y forma a tus líderes con Kingdom Academy".
+    // -----------------------------------------------------------------
+    var TILT = 14;
+    var TILT_OVERSHOOT = 8;
+    var LEFT_AT = 0.4;
+    var RIGHT_AT = LEFT_AT + 0.24; // 0.64
+    var ENTRY_DUR = 0.85;
+
+    tl.fromTo(
+      "#ka-card-left",
+      { x: -340, rotateY: TILT + TILT_OVERSHOOT, opacity: 0 },
+      { x: 0, rotateY: TILT, opacity: 1, duration: ENTRY_DUR, ease: "power3.out" },
+      LEFT_AT
+    );
+    tl.fromTo(
+      "#ka-card-right",
+      { x: 340, rotateY: -TILT - TILT_OVERSHOOT, opacity: 0 },
+      { x: 0, rotateY: -TILT, opacity: 1, duration: ENTRY_DUR, ease: "power3.out" },
+      RIGHT_AT
+    );
+
+    // Dual side-glow ambient — un-triggered bloom landing on each card's
+    // settle as one beat (glow + hero resolve together).
+    tl.fromTo(
+      "#ka-glow-left",
+      { opacity: 0, scale: 0.85 },
+      { opacity: 0.3, scale: 1, duration: ENTRY_DUR, ease: "power2.out" },
+      LEFT_AT
+    );
+    tl.fromTo(
+      "#ka-glow-right",
+      { opacity: 0, scale: 0.85 },
+      { opacity: 0.3, scale: 1, duration: ENTRY_DUR, ease: "power2.out" },
+      RIGHT_AT
+    );
+
+    // Icon + label + accent-line fade up during each card's settle tail.
+    tl.fromTo(
+      ".ka-copy-left",
+      { opacity: 0, y: 18 },
+      { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", stagger: 0.12 },
+      LEFT_AT + 0.37
+    );
+    tl.fromTo(
+      ".ka-copy-right",
+      { opacity: 0, y: 18 },
+      { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", stagger: 0.12 },
+      RIGHT_AT + 0.38
+    );
+
+    // -----------------------------------------------------------------
+    // Scene 3 (3.0 - 8.0s): under each card its bullets cascade — Kids
+    // as VO says "...check-in seguro y familiares verificados", Academy
+    // as VO says "...cursos, clases y certificados".
+    // -----------------------------------------------------------------
+    var bulletFrom = { opacity: 0, y: 16 };
+    var bulletTo = { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" };
+
+    tl.fromTo("#ka-bullet-left-1", bulletFrom, Object.assign({}, bulletTo), 3.0);
+    tl.fromTo("#ka-bullet-left-2", bulletFrom, Object.assign({}, bulletTo), 3.7);
+    tl.fromTo("#ka-bullet-left-3", bulletFrom, Object.assign({}, bulletTo), 4.4);
+
+    tl.fromTo("#ka-bullet-right-1", bulletFrom, Object.assign({}, bulletTo), 5.4);
+    tl.fromTo("#ka-bullet-right-2", bulletFrom, Object.assign({}, bulletTo), 6.1);
+    tl.fromTo("#ka-bullet-right-3", bulletFrom, Object.assign({}, bulletTo), 6.8);
+
+    // -----------------------------------------------------------------
+    // Scene 4 (8.0 - 10.71s): a pill badge lands at each card's inner
+    // corner — left "Confianza" then right "Formación" ~0.36s apart.
+    // The lone overshoot in the shot; it earns the punctuation.
+    // -----------------------------------------------------------------
+    var BADGE_LEFT_AT = 8.0;
+    var BADGE_RIGHT_AT = BADGE_LEFT_AT + 0.36;
+
+    tl.fromTo(
+      "#ka-badge-left",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)" },
+      BADGE_LEFT_AT
+    );
+    tl.fromTo(
+      "#ka-badge-right",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)" },
+      BADGE_RIGHT_AT
+    );
+
+    // Hold with a gentle phase-opposed idle float (left/right never
+    // synchronized) to the end of the shot.
+    var IDLE_START = BADGE_RIGHT_AT + 0.5 + 0.1; // ~8.96
+
+    tl.to(
+      "#ka-card-left",
+      { y: -6, duration: 0.85, ease: "sine.inOut", yoyo: true, repeat: 1 },
+      IDLE_START
+    );
+    tl.to(
+      "#ka-card-right",
+      { y: 6, duration: 0.85, ease: "sine.inOut", yoyo: true, repeat: 1 },
+      IDLE_START
+    );
+
+    // Bounded glow breathe, counter-phased with the cards (left sin(t),
+    // right sin(t+PI) so the pair never conveyor-belts).
+    var glowLeftEl = document.getElementById("ka-glow-left");
+    var glowRightEl = document.getElementById("ka-glow-right");
+    var BREATHE_DUR = Math.max(0.6, TOTAL - IDLE_START);
+    var CYCLES = BREATHE_DUR / 2.0;
+
+    var leftPhase = { p: 0 };
+    tl.to(
+      leftPhase,
+      {
+        p: Math.PI * 2 * CYCLES,
+        duration: BREATHE_DUR,
+        ease: "none",
+        onUpdate: function () {
+          var s = Math.sin(leftPhase.p);
+          glowLeftEl.style.opacity = String(0.3 + s * 0.03);
+          glowLeftEl.style.transform = "scale(" + (1 + s * 0.02) + ")";
+        },
+      },
+      IDLE_START
+    );
+
+    var rightPhase = { p: Math.PI };
+    tl.to(
+      rightPhase,
+      {
+        p: Math.PI + Math.PI * 2 * CYCLES,
+        duration: BREATHE_DUR,
+        ease: "none",
+        onUpdate: function () {
+          var s = Math.sin(rightPhase.p);
+          glowRightEl.style.opacity = String(0.3 + s * 0.03);
+          glowRightEl.style.transform = "scale(" + (1 + s * 0.02) + ")";
+        },
+      },
+      IDLE_START
+    );
+
+    window.__timelines["08-kids-academy"] = tl;
+  })();
+</script>
+</template>

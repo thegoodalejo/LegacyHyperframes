@@ -1,0 +1,558 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      --pd12-primary: #0054ad;
+      --pd12-text: #002a78;
+      --pd12-text-muted: #705d00;
+      --pd12-border: rgba(0, 84, 173, 0.2);
+      --pd12-card-bg: rgba(0, 84, 173, 0.04);
+      --pd12-accent-light: rgba(0, 84, 173, 0.08);
+    }
+
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+
+    .pd12-bg {
+      background: #ffffff;
+    }
+
+    .pd12-camera {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+
+    .pd12-glow {
+      position: absolute;
+      left: 960px;
+      top: 454px;
+      width: 800px;
+      height: 800px;
+      margin: -400px 0 0 -400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 84, 173, 0.35) 0%, rgba(0, 84, 173, 0) 70%);
+      opacity: 0;
+      z-index: 0;
+      pointer-events: none;
+      will-change: opacity, transform;
+    }
+
+    /* ===== device silhouette (no real chrome) ===== */
+    .pd12-device {
+      position: absolute;
+      left: 680px;
+      top: 64px;
+      width: 560px;
+      height: 780px;
+      border-radius: 56px;
+      background: rgba(0, 84, 173, 0.02);
+      border: 2px solid var(--pd12-border);
+      box-shadow: none;
+      overflow: hidden;
+      z-index: 1;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+
+    .pd12-topbar {
+      position: absolute;
+      left: 250px;
+      top: 44px;
+      width: 60px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--pd12-primary);
+      transform-origin: 50% 50%;
+      opacity: 0;
+    }
+
+    .pd12-sweep {
+      position: absolute;
+      left: 0;
+      top: -80px;
+      width: 560px;
+      height: 44px;
+      background: linear-gradient(180deg, rgba(0, 84, 173, 0), rgba(0, 84, 173, 0.25), rgba(0, 84, 173, 0));
+      opacity: 0;
+      z-index: 5;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    /* ===== section cards ===== */
+    .pd12-card {
+      position: absolute;
+      left: 40px;
+      width: 480px;
+      height: 190px;
+      box-sizing: border-box;
+      background: var(--pd12-card-bg);
+      border: 1.5px solid var(--pd12-border);
+      border-radius: 14px;
+      box-shadow: none;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .pd12-card1 { top: 80px; }
+    .pd12-card2 { top: 296px; }
+    .pd12-card3 { top: 512px; }
+
+    .pd12-eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 24px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--pd12-primary);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    /* --- Card 1: micrositio visual (carrusel + mapa) --- */
+    .pd12-tile-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .pd12-tile {
+      width: 96px;
+      height: 74px;
+      border-radius: 8px;
+      background: var(--pd12-accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .pd12-tile svg {
+      display: block;
+    }
+    .pd12-dot-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .pd12-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: transparent;
+      border: 1.5px solid var(--pd12-border);
+      opacity: 0;
+    }
+    .pd12-dot.is-active {
+      background: var(--pd12-primary);
+      border-color: var(--pd12-primary);
+    }
+
+    /* --- Card 2: formulario inteligente (arbol de 2 ramas) --- */
+    .pd12-tree-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pd12-tree-line {
+      fill: none;
+      stroke: var(--pd12-primary);
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+    .pd12-tree-root {
+      fill: var(--pd12-primary);
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+    }
+    .pd12-tree-leaf {
+      fill: #ffffff;
+      stroke: var(--pd12-primary);
+      stroke-width: 2.5;
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+    }
+
+    /* --- Card 3: auto-registro QR --- */
+    .pd12-qr-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+    .pd12-qr-finder-outer {
+      fill: var(--pd12-primary);
+    }
+    .pd12-qr-finder-mid {
+      fill: #ffffff;
+    }
+    .pd12-qr-finder-inner {
+      fill: var(--pd12-primary);
+    }
+    .pd12-qr-finder {
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+    }
+    .pd12-qr-module {
+      fill: var(--pd12-primary);
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+    }
+    .pd12-qr-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--pd12-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .pd12-qr-check {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+
+  <div id="root" data-composition-id="12-presencia-digital" data-width="1920" data-height="1080" data-duration="10.662">
+    <div class="clip pd12-bg" data-start="0" data-duration="10.662" data-track-index="0"></div>
+
+    <div class="clip" data-start="0" data-duration="10.662" data-track-index="1">
+      <div class="pd12-camera" id="pd12-camera">
+        <div class="pd12-glow" id="pd12-glow"></div>
+
+        <div class="pd12-device" id="pd12-device">
+          <div class="pd12-topbar" id="pd12-topbar"></div>
+          <div class="pd12-sweep" id="pd12-sweep"></div>
+
+          <!-- Scene 2a (~2.0s, "un micrositio para tu iglesia"): visual section -->
+          <div class="pd12-card pd12-card1" id="pd12-card1">
+            <div class="pd12-eyebrow">Micrositio visual</div>
+            <div class="pd12-tile-row">
+              <div class="pd12-tile" id="pd12-tile-0"></div>
+              <div class="pd12-tile" id="pd12-tile-1"></div>
+              <div class="pd12-tile" id="pd12-tile-2"></div>
+              <div class="pd12-tile" id="pd12-tile-3">
+                <svg viewBox="0 0 24 24" width="26" height="26">
+                  <path d="M12 2C8 2 5 5 5 9c0 5.5 7 13 7 13s7-7.5 7-13c0-4-3-7-7-7z" fill="#0054ad" />
+                  <circle cx="12" cy="9" r="2.6" fill="#ffffff" />
+                </svg>
+              </div>
+            </div>
+            <div class="pd12-dot-row">
+              <div class="pd12-dot is-active" id="pd12-dot-0"></div>
+              <div class="pd12-dot" id="pd12-dot-1"></div>
+              <div class="pd12-dot" id="pd12-dot-2"></div>
+            </div>
+          </div>
+
+          <!-- Scene 2b (~4.0s, "formularios inteligentes que se adaptan"): 2-branch tree -->
+          <div class="pd12-card pd12-card2" id="pd12-card2">
+            <div class="pd12-eyebrow">Formulario inteligente</div>
+            <div class="pd12-tree-wrap">
+              <svg viewBox="0 0 300 100" width="300" height="100">
+                <path class="pd12-tree-line" id="pd12-tree-line-0" d="M150,26 L78,72" />
+                <path class="pd12-tree-line" id="pd12-tree-line-1" d="M150,26 L222,72" />
+                <circle class="pd12-tree-root" id="pd12-tree-root" cx="150" cy="16" r="12" />
+                <circle class="pd12-tree-leaf" id="pd12-tree-leaf-0" cx="78" cy="78" r="11" />
+                <circle class="pd12-tree-leaf" id="pd12-tree-leaf-1" cx="222" cy="78" r="11" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Scene 2c (~6.0s, "auto-registro por codigo QR"): QR icon self-assembles -->
+          <div class="pd12-card pd12-card3" id="pd12-card3">
+            <div class="pd12-eyebrow">Auto-registro QR</div>
+            <div class="pd12-qr-row">
+              <svg viewBox="0 0 110 110" width="110" height="110">
+                <g class="pd12-qr-finder" id="pd12-qr-finder-0">
+                  <rect class="pd12-qr-finder-outer" x="4" y="4" width="26" height="26" />
+                  <rect class="pd12-qr-finder-mid" x="8" y="8" width="18" height="18" />
+                  <rect class="pd12-qr-finder-inner" x="12" y="12" width="10" height="10" />
+                </g>
+                <g class="pd12-qr-finder" id="pd12-qr-finder-1">
+                  <rect class="pd12-qr-finder-outer" x="80" y="4" width="26" height="26" />
+                  <rect class="pd12-qr-finder-mid" x="84" y="8" width="18" height="18" />
+                  <rect class="pd12-qr-finder-inner" x="88" y="12" width="10" height="10" />
+                </g>
+                <g class="pd12-qr-finder" id="pd12-qr-finder-2">
+                  <rect class="pd12-qr-finder-outer" x="4" y="80" width="26" height="26" />
+                  <rect class="pd12-qr-finder-mid" x="8" y="84" width="18" height="18" />
+                  <rect class="pd12-qr-finder-inner" x="12" y="88" width="10" height="10" />
+                </g>
+
+                <rect class="pd12-qr-module" x="46" y="10" width="8" height="8" />
+                <rect class="pd12-qr-module" x="64" y="10" width="8" height="8" />
+                <rect class="pd12-qr-module" x="10" y="46" width="8" height="8" />
+                <rect class="pd12-qr-module" x="10" y="64" width="8" height="8" />
+                <rect class="pd12-qr-module" x="46" y="46" width="8" height="8" />
+                <rect class="pd12-qr-module" x="60" y="46" width="8" height="8" />
+                <rect class="pd12-qr-module" x="46" y="60" width="8" height="8" />
+                <rect class="pd12-qr-module" x="72" y="50" width="8" height="8" />
+                <rect class="pd12-qr-module" x="88" y="50" width="8" height="8" />
+                <rect class="pd12-qr-module" x="98" y="50" width="8" height="8" />
+                <rect class="pd12-qr-module" x="52" y="76" width="8" height="8" />
+                <rect class="pd12-qr-module" x="66" y="76" width="8" height="8" />
+                <rect class="pd12-qr-module" x="80" y="88" width="8" height="8" />
+                <rect class="pd12-qr-module" x="96" y="74" width="8" height="8" />
+              </svg>
+
+              <div class="pd12-qr-badge" id="pd12-qr-badge">
+                <svg viewBox="0 0 40 40" width="26" height="26">
+                  <path class="pd12-qr-check" id="pd12-qr-check-path" d="M10 21 L17 28 L30 12" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    window.__timelines = window.__timelines || {};
+
+    var DURATION = 10.162;
+
+    /* ---- synchronous SVG measurement setup ---- */
+    var line0 = document.getElementById('pd12-tree-line-0');
+    var LEN0 = line0.getTotalLength();
+    line0.style.strokeDasharray = LEN0;
+    line0.style.strokeDashoffset = LEN0;
+
+    var line1 = document.getElementById('pd12-tree-line-1');
+    var LEN1 = line1.getTotalLength();
+    line1.style.strokeDasharray = LEN1;
+    line1.style.strokeDashoffset = LEN1;
+
+    var checkPath = document.getElementById('pd12-qr-check-path');
+    var CHECK_LEN = checkPath.getTotalLength();
+    checkPath.style.strokeDasharray = CHECK_LEN;
+    checkPath.style.strokeDashoffset = CHECK_LEN;
+
+    var camera = document.getElementById('pd12-camera');
+    var glow = document.getElementById('pd12-glow');
+    var device = document.getElementById('pd12-device');
+    var sweep = document.getElementById('pd12-sweep');
+
+    var tl = gsap.timeline({ paused: true });
+
+    /* =========================================================
+       Scene 1 (0.0 - 2.0s): the "micrositio" frame establishes —
+       a bare device silhouette (no real browser/phone chrome),
+       hero visible well before 0.5s, with a thin top accent bar.
+       ========================================================= */
+    tl.fromTo(
+      device,
+      { opacity: 0, scale: 0.9, y: 16 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: 'back.out(1.15)' },
+      0,
+    );
+    tl.fromTo(
+      '#pd12-topbar',
+      { opacity: 0, scaleX: 0 },
+      { opacity: 1, scaleX: 1, duration: 0.4, ease: 'power2.out' },
+      0.25,
+    );
+    tl.fromTo(glow, { opacity: 0, scale: 0.85 }, { opacity: 0.12, scale: 1, duration: 0.8, ease: 'power2.out' }, 0.3);
+
+    /* =========================================================
+       Scene 2 (2.0 - 7.0s): 3 sections cascade inside the frame,
+       one per voiceover phrase — visual / formulario / QR.
+       ========================================================= */
+
+    /* --- 2a @2.0s: "un micrositio para tu iglesia" — visual card --- */
+    var CARD1_AT = 2.0;
+    tl.fromTo(
+      '#pd12-card1',
+      { opacity: 0, y: 22, scale: 0.94 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.2)' },
+      CARD1_AT,
+    );
+    var TILE_IDS = ['#pd12-tile-0', '#pd12-tile-1', '#pd12-tile-2', '#pd12-tile-3'];
+    TILE_IDS.forEach(function (id, i) {
+      tl.fromTo(
+        id,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.3)' },
+        CARD1_AT + 0.25 + i * 0.08,
+      );
+    });
+    var DOT_IDS = ['#pd12-dot-0', '#pd12-dot-1', '#pd12-dot-2'];
+    DOT_IDS.forEach(function (id, i) {
+      tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power1.out' }, CARD1_AT + 0.65 + i * 0.06);
+    });
+
+    /* --- 2b @4.0s: "formularios inteligentes que se adaptan" — branching tree --- */
+    var CARD2_AT = 4.0;
+    tl.fromTo(
+      '#pd12-card2',
+      { opacity: 0, y: 22, scale: 0.94 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.2)' },
+      CARD2_AT,
+    );
+    tl.fromTo(
+      '#pd12-tree-root',
+      { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.4)' },
+      CARD2_AT + 0.25,
+    );
+    tl.to(line0, { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, CARD2_AT + 0.55);
+    tl.to(line1, { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, CARD2_AT + 0.65);
+    tl.fromTo(
+      '#pd12-tree-leaf-0',
+      { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(1.5)' },
+      CARD2_AT + 0.85,
+    );
+    tl.fromTo(
+      '#pd12-tree-leaf-1',
+      { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(1.5)' },
+      CARD2_AT + 0.95,
+    );
+
+    /* --- 2c @6.0s: "auto-registro por codigo QR" — QR self-assembles --- */
+    var CARD3_AT = 6.0;
+    tl.fromTo(
+      '#pd12-card3',
+      { opacity: 0, y: 22, scale: 0.94 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.2)' },
+      CARD3_AT,
+    );
+    var FINDER_IDS = ['#pd12-qr-finder-0', '#pd12-qr-finder-1', '#pd12-qr-finder-2'];
+    FINDER_IDS.forEach(function (id, i) {
+      tl.fromTo(
+        id,
+        { opacity: 0, scale: 0.5 },
+        { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(1.3)' },
+        CARD3_AT + 0.25 + i * 0.08,
+      );
+    });
+    var moduleEls = document.querySelectorAll('.pd12-qr-module');
+    moduleEls.forEach(function (el, i) {
+      tl.fromTo(
+        el,
+        { opacity: 0, scale: 0.4 },
+        { opacity: 1, scale: 1, duration: 0.25, ease: 'power2.out' },
+        CARD3_AT + 0.55 + i * 0.035,
+      );
+    });
+    var badgeAt = CARD3_AT + 0.95;
+    tl.fromTo(
+      '#pd12-qr-badge',
+      { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' },
+      badgeAt,
+    );
+    tl.to(checkPath, { strokeDashoffset: 0, duration: 0.25, ease: 'power2.out' }, badgeAt + 0.15);
+
+    /* =========================================================
+       Scene 3 (7.0 - 10.162s): hold, soft glow — a gentle bloom
+       intensifies behind the assembled micrositio and a single
+       soft light sweep travels down the frame, then breathes to
+       the end (final scene — no exit).
+       ========================================================= */
+    tl.to(glow, { opacity: 0.28, scale: 1.05, duration: 0.8, ease: 'power2.out' }, 7.0);
+
+    tl.set(sweep, { y: 0, opacity: 0 }, 7.2);
+    tl.to(sweep, { opacity: 0.5, duration: 0.2, ease: 'power1.out' }, 7.2);
+    tl.to(sweep, { y: 980, duration: 1.0, ease: 'power1.inOut' }, 7.2);
+    tl.to(sweep, { opacity: 0, duration: 0.3, ease: 'power1.in' }, 7.9);
+
+    var breathePhase = { p: 0 };
+    tl.to(
+      breathePhase,
+      {
+        p: Math.PI * 2 * 0.7,
+        duration: DURATION - 7.8,
+        ease: 'none',
+        onUpdate: function () {
+          var s = Math.sin(breathePhase.p);
+          glow.style.opacity = String(0.28 + s * 0.05);
+          glow.style.transform = 'scale(' + (1.05 + s * 0.02) + ')';
+        },
+      },
+      7.8,
+    );
+
+    /* subtle idle float on the whole device through the hold */
+    tl.to(device, { y: -6, duration: 1.08, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 8.0);
+
+    /* =========================================================
+       Camera: near-static establish, gentle push-in that deepens
+       through the hold, plus a faint organic drift throughout.
+       ========================================================= */
+    var camPhase = { scale: 1 };
+    tl.to(camPhase, { scale: 1.015, duration: 7.0, ease: 'sine.inOut' }, 0);
+    tl.to(camPhase, { scale: 1.04, duration: DURATION - 7.0, ease: 'power2.out' }, 7.0);
+
+    var drift = { p: 0 };
+    tl.to(
+      drift,
+      {
+        p: Math.PI * 2 * 1.6,
+        duration: DURATION,
+        ease: 'none',
+        onUpdate: function () {
+          var dx = Math.sin(drift.p) * 4;
+          var dy = Math.sin(drift.p * 1.3) * 3;
+          gsap.set(camera, { scale: camPhase.scale, x: dx, y: dy });
+        },
+      },
+      0,
+    );
+
+    window.__timelines['12-presencia-digital'] = tl;
+  </script>
+</template>

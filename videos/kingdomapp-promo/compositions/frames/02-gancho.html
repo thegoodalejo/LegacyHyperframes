@@ -1,0 +1,197 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-700.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      container-type: size;
+      font-family: "Poppins", sans-serif;
+      --gancho02-ink: #002a78;
+      --gancho02-accent: #0054ad;
+    }
+
+    .gancho02-bg {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+    }
+
+    .gancho02-stage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5cqw;
+    }
+
+    .gancho02-stage-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .gancho02-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.9cqw;
+    }
+
+    .gancho02-row1,
+    .gancho02-row2 {
+      font-size: 4.8cqw;
+      font-weight: 700;
+      color: var(--gancho02-ink);
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+    }
+
+    .gancho02-row3 {
+      font-size: 4.3cqw;
+      font-weight: 700;
+      color: var(--gancho02-accent);
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      margin-top: 4px;
+    }
+
+    .gancho02-row4 {
+      margin-top: 8px;
+    }
+
+    .gancho02-word {
+      display: inline-block;
+      will-change: opacity, transform, filter;
+    }
+
+    .gancho02-keyword-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .gancho02-keyword {
+      display: inline-block;
+      font-size: 5.4cqw;
+      font-weight: 700;
+      color: var(--gancho02-accent);
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      will-change: opacity, transform;
+    }
+
+    .gancho02-qmark {
+      display: inline-block;
+    }
+
+    .gancho02-underline {
+      position: absolute;
+      left: 2px;
+      right: 2px;
+      bottom: -16px;
+      height: 10px;
+      border-radius: 6px;
+      background: var(--gancho02-accent);
+      transform-origin: left center;
+    }
+  </style>
+
+  <div data-hf-id="hf-iw5t" id="root" data-composition-id="02-gancho" data-width="1920" data-height="1080" data-duration="7.161">
+    <div data-hf-id="hf-5xbl" class="gancho02-bg clip" data-start="0" data-duration="7.161" data-track-index="0"></div>
+
+    <div data-hf-id="hf-aurb" class="gancho02-stage clip" data-start="0" data-duration="7.161" data-track-index="1">
+      <div data-hf-id="hf-k8se" class="gancho02-stage-inner">
+        <div data-hf-id="hf-vf67" class="gancho02-row gancho02-row1">
+          <span data-hf-id="hf-gort" class="gancho02-word gancho02-w1">¿Cuántas</span>
+          <span data-hf-id="hf-tsq1" class="gancho02-word gancho02-w2">herramientas</span>
+          <span data-hf-id="hf-8srm" class="gancho02-word gancho02-w3">distintas</span>
+        </div>
+        <div data-hf-id="hf-mrac" class="gancho02-row gancho02-row2">
+          <span data-hf-id="hf-lpsk" class="gancho02-word gancho02-w4">necesita</span>
+          <span data-hf-id="hf-9i18" class="gancho02-word gancho02-w5">tu</span>
+          <span data-hf-id="hf-jzq6" class="gancho02-word gancho02-w6">iglesia</span>
+        </div>
+        <div data-hf-id="hf-gnuf" class="gancho02-row gancho02-row3">para hacer una sola cosa:</div>
+        <div data-hf-id="hf-6anu" class="gancho02-row gancho02-row4">
+          <span data-hf-id="hf-g0m0" class="gancho02-keyword-wrap">
+            <span data-hf-id="hf-iivz" class="gancho02-keyword">cuidar a su gente<span data-hf-id="hf-sn09" class="gancho02-qmark">?</span></span>
+            <span data-hf-id="hf-jkey" class="gancho02-underline"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      // Scene 1 (~0.0-2.9s): line 1 lands word-by-word, dead-center,
+      // near-black, as the VO speaks "¿Cuántas herramientas distintas
+      // necesita tu iglesia" — per-word staggered fade + soft blur clear.
+      var line1Words = [
+        ".gancho02-w1",
+        ".gancho02-w2",
+        ".gancho02-w3",
+        ".gancho02-w4",
+        ".gancho02-w5",
+        ".gancho02-w6",
+      ];
+      var line1Times = [0.08, 0.38, 0.68, 0.98, 1.28, 1.58];
+      line1Words.forEach(function (sel, i) {
+        tl.fromTo(
+          sel,
+          { opacity: 0, y: 26, filter: "blur(10px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, ease: "power3.out" },
+          line1Times[i],
+        );
+      });
+
+      // Scene 2 (~2.95-6.661s): as the VO reaches "— para hacer una sola
+      // cosa: cuidar a su gente?", line 2 lands below in accent blue.
+      tl.fromTo(
+        ".gancho02-row3",
+        { opacity: 0, y: 22, filter: "blur(8px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, ease: "power2.out" },
+        2.95,
+      );
+
+      // Keyword payoff — "cuidar a su gente" spring-pops in, larger, on its own beat.
+      tl.fromTo(
+        ".gancho02-keyword",
+        { opacity: 0, y: 18, scale: 1.22 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.6)" },
+        3.65,
+      );
+
+      // Drawn underline sweep beneath the keyword (keyword emphasis).
+      tl.fromTo(".gancho02-underline", { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: "power2.out" }, 4.25);
+
+      // Final-token punctuation/emphasis snap on "?" right as the underline lands.
+      tl.fromTo(".gancho02-qmark", { scale: 1 }, { scale: 1.3, duration: 0.18, ease: "power2.out" }, 4.8);
+      tl.to(".gancho02-qmark", { scale: 1, duration: 0.25, ease: "back.out(3)" }, 4.98);
+
+      // Holds to end with a subtle settle jitter only (no exit — this is not the final frame).
+      tl.fromTo(
+        ".gancho02-stage-inner",
+        { scale: 1.016 },
+        { scale: 1, duration: 0.55, ease: "elastic.out(1, 0.65)" },
+        5.95,
+      );
+
+      window.__timelines["02-gancho"] = tl;
+    })();
+  </script>
+</template>

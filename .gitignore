@@ -1,0 +1,8 @@
+node_modules/
+
+# HyperFrames CLI local state/cache (rebuildable, not source)
+videos/*/.hyperframes/
+videos/*/.thumbnails/
+videos/*/.media/
+
+.DS_Store

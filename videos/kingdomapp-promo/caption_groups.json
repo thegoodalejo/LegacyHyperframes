@@ -1,0 +1,3250 @@
+{
+  "total_duration_s": 161.511,
+  "width": 1920,
+  "height": 1080,
+  "groups": [
+    {
+      "id": "caption-group-0",
+      "frame": 2,
+      "start": 3.179,
+      "end": 4.899,
+      "text": "¿Cuántas herramientas distintas",
+      "words": [
+        {
+          "id": "caption-word-0-0",
+          "text": "¿Cuántas",
+          "start": 3.179,
+          "end": 3.479
+        },
+        {
+          "id": "caption-word-0-1",
+          "text": "herramientas",
+          "start": 3.56,
+          "end": 4.1
+        },
+        {
+          "id": "caption-word-0-2",
+          "text": "distintas",
+          "start": 4.139,
+          "end": 4.779
+        }
+      ]
+    },
+    {
+      "id": "caption-group-1",
+      "frame": 2,
+      "start": 5.119,
+      "end": 6.339,
+      "text": "necesita tu iglesia",
+      "words": [
+        {
+          "id": "caption-word-1-0",
+          "text": "necesita",
+          "start": 5.119,
+          "end": 5.579
+        },
+        {
+          "id": "caption-word-1-1",
+          "text": "tu",
+          "start": 5.599,
+          "end": 5.759
+        },
+        {
+          "id": "caption-word-1-2",
+          "text": "iglesia",
+          "start": 5.799,
+          "end": 6.299
+        }
+      ]
+    },
+    {
+      "id": "caption-group-2",
+      "frame": 2,
+      "start": 6.339,
+      "end": 7,
+      "text": "para hacer",
+      "words": [
+        {
+          "id": "caption-word-2-0",
+          "text": "para",
+          "start": 6.339,
+          "end": 6.5
+        },
+        {
+          "id": "caption-word-2-1",
+          "text": "hacer",
+          "start": 6.519,
+          "end": 6.919
+        }
+      ]
+    },
+    {
+      "id": "caption-group-3",
+      "frame": 2,
+      "start": 7,
+      "end": 7.999,
+      "text": "una sola cosa:",
+      "words": [
+        {
+          "id": "caption-word-3-0",
+          "text": "una",
+          "start": 7,
+          "end": 7.119
+        },
+        {
+          "id": "caption-word-3-1",
+          "text": "sola",
+          "start": 7.239,
+          "end": 7.44
+        },
+        {
+          "id": "caption-word-3-2",
+          "text": "cosa:",
+          "start": 7.539,
+          "end": 7.879
+        }
+      ]
+    },
+    {
+      "id": "caption-group-4",
+      "frame": 2,
+      "start": 8.4,
+      "end": 8.839,
+      "text": "cuidar a",
+      "words": [
+        {
+          "id": "caption-word-4-0",
+          "text": "cuidar",
+          "start": 8.4,
+          "end": 8.699
+        },
+        {
+          "id": "caption-word-4-1",
+          "text": "a",
+          "start": 8.739,
+          "end": 8.799
+        }
+      ]
+    },
+    {
+      "id": "caption-group-5",
+      "frame": 2,
+      "start": 8.839,
+      "end": 9.479,
+      "text": "su gente?",
+      "words": [
+        {
+          "id": "caption-word-5-0",
+          "text": "su",
+          "start": 8.839,
+          "end": 8.9
+        },
+        {
+          "id": "caption-word-5-1",
+          "text": "gente?",
+          "start": 8.98,
+          "end": 9.359
+        }
+      ]
+    },
+    {
+      "id": "caption-group-6",
+      "frame": 3,
+      "start": 9.9,
+      "end": 10.66,
+      "text": "Membresía",
+      "words": [
+        {
+          "id": "caption-word-6-0",
+          "text": "Membresía",
+          "start": 9.9,
+          "end": 10.54
+        }
+      ]
+    },
+    {
+      "id": "caption-group-7",
+      "frame": 3,
+      "start": 10.74,
+      "end": 11.42,
+      "text": "en Excel.",
+      "words": [
+        {
+          "id": "caption-word-7-0",
+          "text": "en",
+          "start": 10.74,
+          "end": 10.84
+        },
+        {
+          "id": "caption-word-7-1",
+          "text": "Excel.",
+          "start": 10.881,
+          "end": 11.3
+        }
+      ]
+    },
+    {
+      "id": "caption-group-8",
+      "frame": 3,
+      "start": 12.121,
+      "end": 13.56,
+      "text": "Seguimiento por WhatsApp",
+      "words": [
+        {
+          "id": "caption-word-8-0",
+          "text": "Seguimiento",
+          "start": 12.121,
+          "end": 12.7
+        },
+        {
+          "id": "caption-word-8-1",
+          "text": "por",
+          "start": 12.8,
+          "end": 12.881
+        },
+        {
+          "id": "caption-word-8-2",
+          "text": "WhatsApp",
+          "start": 13,
+          "end": 13.44
+        }
+      ]
+    },
+    {
+      "id": "caption-group-9",
+      "frame": 3,
+      "start": 13.58,
+      "end": 14.201,
+      "text": "personal.",
+      "words": [
+        {
+          "id": "caption-word-9-0",
+          "text": "personal.",
+          "start": 13.58,
+          "end": 14.081
+        }
+      ]
+    },
+    {
+      "id": "caption-group-10",
+      "frame": 3,
+      "start": 15.061,
+      "end": 16.2,
+      "text": "Finanzas en otro",
+      "words": [
+        {
+          "id": "caption-word-10-0",
+          "text": "Finanzas",
+          "start": 15.061,
+          "end": 15.74
+        },
+        {
+          "id": "caption-word-10-1",
+          "text": "en",
+          "start": 15.8,
+          "end": 15.88
+        },
+        {
+          "id": "caption-word-10-2",
+          "text": "otro",
+          "start": 15.94,
+          "end": 16.141
+        }
+      ]
+    },
+    {
+      "id": "caption-group-11",
+      "frame": 3,
+      "start": 16.2,
+      "end": 16.82,
+      "text": "cuaderno.",
+      "words": [
+        {
+          "id": "caption-word-11-0",
+          "text": "cuaderno.",
+          "start": 16.2,
+          "end": 16.7
+        }
+      ]
+    },
+    {
+      "id": "caption-group-12",
+      "frame": 3,
+      "start": 17.42,
+      "end": 18.421,
+      "text": "Cada líder con",
+      "words": [
+        {
+          "id": "caption-word-12-0",
+          "text": "Cada",
+          "start": 17.42,
+          "end": 17.641
+        },
+        {
+          "id": "caption-word-12-1",
+          "text": "líder",
+          "start": 17.74,
+          "end": 18.2
+        },
+        {
+          "id": "caption-word-12-2",
+          "text": "con",
+          "start": 18.24,
+          "end": 18.34
+        }
+      ]
+    },
+    {
+      "id": "caption-group-13",
+      "frame": 3,
+      "start": 18.421,
+      "end": 19.56,
+      "text": "su propio método",
+      "words": [
+        {
+          "id": "caption-word-13-0",
+          "text": "su",
+          "start": 18.421,
+          "end": 18.501
+        },
+        {
+          "id": "caption-word-13-1",
+          "text": "propio",
+          "start": 18.6,
+          "end": 18.9
+        },
+        {
+          "id": "caption-word-13-2",
+          "text": "método",
+          "start": 18.94,
+          "end": 19.5
+        }
+      ]
+    },
+    {
+      "id": "caption-group-14",
+      "frame": 3,
+      "start": 19.56,
+      "end": 20.28,
+      "text": "y nadie",
+      "words": [
+        {
+          "id": "caption-word-14-0",
+          "text": "y",
+          "start": 19.56,
+          "end": 19.6
+        },
+        {
+          "id": "caption-word-14-1",
+          "text": "nadie",
+          "start": 19.74,
+          "end": 20.22
+        }
+      ]
+    },
+    {
+      "id": "caption-group-15",
+      "frame": 3,
+      "start": 20.28,
+      "end": 20.541,
+      "text": "con la",
+      "words": [
+        {
+          "id": "caption-word-15-0",
+          "text": "con",
+          "start": 20.28,
+          "end": 20.38
+        },
+        {
+          "id": "caption-word-15-1",
+          "text": "la",
+          "start": 20.421,
+          "end": 20.48
+        }
+      ]
+    },
+    {
+      "id": "caption-group-16",
+      "frame": 3,
+      "start": 20.541,
+      "end": 21.5,
+      "text": "vista completa.",
+      "words": [
+        {
+          "id": "caption-word-16-0",
+          "text": "vista",
+          "start": 20.541,
+          "end": 20.84
+        },
+        {
+          "id": "caption-word-16-1",
+          "text": "completa.",
+          "start": 20.88,
+          "end": 21.38
+        }
+      ]
+    },
+    {
+      "id": "caption-group-17",
+      "frame": 4,
+      "start": 21.756,
+      "end": 23.537,
+      "text": "Te presentamos KingdomApp:",
+      "words": [
+        {
+          "id": "caption-word-17-0",
+          "text": "Te",
+          "start": 21.756,
+          "end": 21.876
+        },
+        {
+          "id": "caption-word-17-1",
+          "text": "presentamos",
+          "start": 21.916,
+          "end": 22.596
+        },
+        {
+          "id": "caption-word-17-2",
+          "text": "KingdomApp:",
+          "start": 22.716,
+          "end": 23.417
+        }
+      ]
+    },
+    {
+      "id": "caption-group-18",
+      "frame": 4,
+      "start": 23.816,
+      "end": 25.196,
+      "text": "una sola plataforma",
+      "words": [
+        {
+          "id": "caption-word-18-0",
+          "text": "una",
+          "start": 23.816,
+          "end": 24.096
+        },
+        {
+          "id": "caption-word-18-1",
+          "text": "sola",
+          "start": 24.137,
+          "end": 24.377
+        },
+        {
+          "id": "caption-word-18-2",
+          "text": "plataforma",
+          "start": 24.436,
+          "end": 25.157
+        }
+      ]
+    },
+    {
+      "id": "caption-group-19",
+      "frame": 4,
+      "start": 25.196,
+      "end": 26.157,
+      "text": "para administrar",
+      "words": [
+        {
+          "id": "caption-word-19-0",
+          "text": "para",
+          "start": 25.196,
+          "end": 25.376
+        },
+        {
+          "id": "caption-word-19-1",
+          "text": "administrar",
+          "start": 25.376,
+          "end": 26.037
+        }
+      ]
+    },
+    {
+      "id": "caption-group-20",
+      "frame": 4,
+      "start": 26.276,
+      "end": 27.416,
+      "text": "toda tu iglesia",
+      "words": [
+        {
+          "id": "caption-word-20-0",
+          "text": "toda",
+          "start": 26.276,
+          "end": 26.516
+        },
+        {
+          "id": "caption-word-20-1",
+          "text": "tu",
+          "start": 26.597,
+          "end": 26.677
+        },
+        {
+          "id": "caption-word-20-2",
+          "text": "iglesia",
+          "start": 26.716,
+          "end": 27.336
+        }
+      ]
+    },
+    {
+      "id": "caption-group-21",
+      "frame": 4,
+      "start": 27.416,
+      "end": 28.356,
+      "text": "sede por sede.",
+      "words": [
+        {
+          "id": "caption-word-21-0",
+          "text": "sede",
+          "start": 27.416,
+          "end": 27.657
+        },
+        {
+          "id": "caption-word-21-1",
+          "text": "por",
+          "start": 27.696,
+          "end": 27.796
+        },
+        {
+          "id": "caption-word-21-2",
+          "text": "sede.",
+          "start": 27.936,
+          "end": 28.236
+        }
+      ]
+    },
+    {
+      "id": "caption-group-22",
+      "frame": 5,
+      "start": 28.588,
+      "end": 29.689,
+      "text": "Toda tu membresía",
+      "words": [
+        {
+          "id": "caption-word-22-0",
+          "text": "Toda",
+          "start": 28.588,
+          "end": 28.788
+        },
+        {
+          "id": "caption-word-22-1",
+          "text": "tu",
+          "start": 28.868,
+          "end": 28.948
+        },
+        {
+          "id": "caption-word-22-2",
+          "text": "membresía",
+          "start": 28.988,
+          "end": 29.648
+        }
+      ]
+    },
+    {
+      "id": "caption-group-23",
+      "frame": 5,
+      "start": 29.689,
+      "end": 29.908,
+      "text": "en un",
+      "words": [
+        {
+          "id": "caption-word-23-0",
+          "text": "en",
+          "start": 29.689,
+          "end": 29.768
+        },
+        {
+          "id": "caption-word-23-1",
+          "text": "un",
+          "start": 29.808,
+          "end": 29.888
+        }
+      ]
+    },
+    {
+      "id": "caption-group-24",
+      "frame": 5,
+      "start": 29.908,
+      "end": 31.148,
+      "text": "directorio datos,",
+      "words": [
+        {
+          "id": "caption-word-24-0",
+          "text": "directorio",
+          "start": 29.908,
+          "end": 30.469
+        },
+        {
+          "id": "caption-word-24-1",
+          "text": "datos,",
+          "start": 30.568,
+          "end": 31.028
+        }
+      ]
+    },
+    {
+      "id": "caption-group-25",
+      "frame": 5,
+      "start": 31.488,
+      "end": 32.069,
+      "text": "redes,",
+      "words": [
+        {
+          "id": "caption-word-25-0",
+          "text": "redes,",
+          "start": 31.488,
+          "end": 31.949
+        }
+      ]
+    },
+    {
+      "id": "caption-group-26",
+      "frame": 5,
+      "start": 32.128,
+      "end": 32.908,
+      "text": "etiquetas,",
+      "words": [
+        {
+          "id": "caption-word-26-0",
+          "text": "etiquetas,",
+          "start": 32.128,
+          "end": 32.788
+        }
+      ]
+    },
+    {
+      "id": "caption-group-27",
+      "frame": 5,
+      "start": 33.168,
+      "end": 34.668,
+      "text": "credenciales con QR.",
+      "words": [
+        {
+          "id": "caption-word-27-0",
+          "text": "credenciales",
+          "start": 33.168,
+          "end": 33.869
+        },
+        {
+          "id": "caption-word-27-1",
+          "text": "con",
+          "start": 33.929,
+          "end": 34.068
+        },
+        {
+          "id": "caption-word-27-2",
+          "text": "QR.",
+          "start": 34.228,
+          "end": 34.548
+        }
+      ]
+    },
+    {
+      "id": "caption-group-28",
+      "frame": 5,
+      "start": 35.028,
+      "end": 36.068,
+      "text": "Búsqueda y filtros",
+      "words": [
+        {
+          "id": "caption-word-28-0",
+          "text": "Búsqueda",
+          "start": 35.028,
+          "end": 35.409
+        },
+        {
+          "id": "caption-word-28-1",
+          "text": "y",
+          "start": 35.488,
+          "end": 35.508
+        },
+        {
+          "id": "caption-word-28-2",
+          "text": "filtros",
+          "start": 35.628,
+          "end": 36.028
+        }
+      ]
+    },
+    {
+      "id": "caption-group-29",
+      "frame": 5,
+      "start": 36.068,
+      "end": 36.888,
+      "text": "al instante.",
+      "words": [
+        {
+          "id": "caption-word-29-0",
+          "text": "al",
+          "start": 36.068,
+          "end": 36.148
+        },
+        {
+          "id": "caption-word-29-1",
+          "text": "instante.",
+          "start": 36.188,
+          "end": 36.768
+        }
+      ]
+    },
+    {
+      "id": "caption-group-30",
+      "frame": 6,
+      "start": 37.23,
+      "end": 38.91,
+      "text": "Discipulado y liderazgo,",
+      "words": [
+        {
+          "id": "caption-word-30-0",
+          "text": "Discipulado",
+          "start": 37.23,
+          "end": 37.97
+        },
+        {
+          "id": "caption-word-30-1",
+          "text": "y",
+          "start": 38.011,
+          "end": 38.05
+        },
+        {
+          "id": "caption-word-30-2",
+          "text": "liderazgo,",
+          "start": 38.111,
+          "end": 38.79
+        }
+      ]
+    },
+    {
+      "id": "caption-group-31",
+      "frame": 6,
+      "start": 39.231,
+      "end": 40.05,
+      "text": "separados:",
+      "words": [
+        {
+          "id": "caption-word-31-0",
+          "text": "separados:",
+          "start": 39.231,
+          "end": 39.93
+        }
+      ]
+    },
+    {
+      "id": "caption-group-32",
+      "frame": 6,
+      "start": 40.491,
+      "end": 41.81,
+      "text": "cada discípulo con su",
+      "words": [
+        {
+          "id": "caption-word-32-0",
+          "text": "cada",
+          "start": 40.491,
+          "end": 40.69
+        },
+        {
+          "id": "caption-word-32-1",
+          "text": "discípulo",
+          "start": 40.79,
+          "end": 41.371
+        },
+        {
+          "id": "caption-word-32-2",
+          "text": "con",
+          "start": 41.491,
+          "end": 41.57
+        },
+        {
+          "id": "caption-word-32-3",
+          "text": "su",
+          "start": 41.65,
+          "end": 41.77
+        }
+      ]
+    },
+    {
+      "id": "caption-group-33",
+      "frame": 6,
+      "start": 41.81,
+      "end": 43.43,
+      "text": "cuidado pastoral completo,",
+      "words": [
+        {
+          "id": "caption-word-33-0",
+          "text": "cuidado",
+          "start": 41.81,
+          "end": 42.17
+        },
+        {
+          "id": "caption-word-33-1",
+          "text": "pastoral",
+          "start": 42.25,
+          "end": 42.69
+        },
+        {
+          "id": "caption-word-33-2",
+          "text": "completo,",
+          "start": 42.79,
+          "end": 43.31
+        }
+      ]
+    },
+    {
+      "id": "caption-group-34",
+      "frame": 6,
+      "start": 43.79,
+      "end": 45.11,
+      "text": "cada miembro liderado",
+      "words": [
+        {
+          "id": "caption-word-34-0",
+          "text": "cada",
+          "start": 43.79,
+          "end": 43.991
+        },
+        {
+          "id": "caption-word-34-1",
+          "text": "miembro",
+          "start": 44.11,
+          "end": 44.511
+        },
+        {
+          "id": "caption-word-34-2",
+          "text": "liderado",
+          "start": 44.57,
+          "end": 45.07
+        }
+      ]
+    },
+    {
+      "id": "caption-group-35",
+      "frame": 6,
+      "start": 45.11,
+      "end": 46.21,
+      "text": "con su seguimiento",
+      "words": [
+        {
+          "id": "caption-word-35-0",
+          "text": "con",
+          "start": 45.11,
+          "end": 45.21
+        },
+        {
+          "id": "caption-word-35-1",
+          "text": "su",
+          "start": 45.29,
+          "end": 45.391
+        },
+        {
+          "id": "caption-word-35-2",
+          "text": "seguimiento",
+          "start": 45.45,
+          "end": 46.09
+        }
+      ]
+    },
+    {
+      "id": "caption-group-36",
+      "frame": 6,
+      "start": 46.29,
+      "end": 47.33,
+      "text": "y un organigrama",
+      "words": [
+        {
+          "id": "caption-word-36-0",
+          "text": "y",
+          "start": 46.29,
+          "end": 46.351
+        },
+        {
+          "id": "caption-word-36-1",
+          "text": "un",
+          "start": 46.431,
+          "end": 46.511
+        },
+        {
+          "id": "caption-word-36-2",
+          "text": "organigrama",
+          "start": 46.61,
+          "end": 47.23
+        }
+      ]
+    },
+    {
+      "id": "caption-group-37",
+      "frame": 6,
+      "start": 47.33,
+      "end": 48.011,
+      "text": "que muestra",
+      "words": [
+        {
+          "id": "caption-word-37-0",
+          "text": "que",
+          "start": 47.33,
+          "end": 47.431
+        },
+        {
+          "id": "caption-word-37-1",
+          "text": "muestra",
+          "start": 47.49,
+          "end": 47.971
+        }
+      ]
+    },
+    {
+      "id": "caption-group-38",
+      "frame": 6,
+      "start": 48.011,
+      "end": 48.91,
+      "text": "toda la cadena,",
+      "words": [
+        {
+          "id": "caption-word-38-0",
+          "text": "toda",
+          "start": 48.011,
+          "end": 48.21
+        },
+        {
+          "id": "caption-word-38-1",
+          "text": "la",
+          "start": 48.27,
+          "end": 48.351
+        },
+        {
+          "id": "caption-word-38-2",
+          "text": "cadena,",
+          "start": 48.41,
+          "end": 48.79
+        }
+      ]
+    },
+    {
+      "id": "caption-group-39",
+      "frame": 6,
+      "start": 49.23,
+      "end": 49.65,
+      "text": "para que",
+      "words": [
+        {
+          "id": "caption-word-39-0",
+          "text": "para",
+          "start": 49.23,
+          "end": 49.37
+        },
+        {
+          "id": "caption-word-39-1",
+          "text": "que",
+          "start": 49.471,
+          "end": 49.531
+        }
+      ]
+    },
+    {
+      "id": "caption-group-40",
+      "frame": 6,
+      "start": 49.65,
+      "end": 50.391,
+      "text": "nadie quede",
+      "words": [
+        {
+          "id": "caption-word-40-0",
+          "text": "nadie",
+          "start": 49.65,
+          "end": 49.931
+        },
+        {
+          "id": "caption-word-40-1",
+          "text": "quede",
+          "start": 50.07,
+          "end": 50.351
+        }
+      ]
+    },
+    {
+      "id": "caption-group-41",
+      "frame": 6,
+      "start": 50.391,
+      "end": 51.11,
+      "text": "sin cubrir.",
+      "words": [
+        {
+          "id": "caption-word-41-0",
+          "text": "sin",
+          "start": 50.391,
+          "end": 50.55
+        },
+        {
+          "id": "caption-word-41-1",
+          "text": "cubrir.",
+          "start": 50.59,
+          "end": 50.99
+        }
+      ]
+    },
+    {
+      "id": "caption-group-42",
+      "frame": 7,
+      "start": 51.453,
+      "end": 52.733,
+      "text": "Organiza cada evento",
+      "words": [
+        {
+          "id": "caption-word-42-0",
+          "text": "Organiza",
+          "start": 51.453,
+          "end": 51.993
+        },
+        {
+          "id": "caption-word-42-1",
+          "text": "cada",
+          "start": 52.093,
+          "end": 52.274
+        },
+        {
+          "id": "caption-word-42-2",
+          "text": "evento",
+          "start": 52.353,
+          "end": 52.713
+        }
+      ]
+    },
+    {
+      "id": "caption-group-43",
+      "frame": 7,
+      "start": 52.733,
+      "end": 53.474,
+      "text": "de principio",
+      "words": [
+        {
+          "id": "caption-word-43-0",
+          "text": "de",
+          "start": 52.733,
+          "end": 52.833
+        },
+        {
+          "id": "caption-word-43-1",
+          "text": "principio",
+          "start": 52.873,
+          "end": 53.433
+        }
+      ]
+    },
+    {
+      "id": "caption-group-44",
+      "frame": 7,
+      "start": 53.474,
+      "end": 54.033,
+      "text": "a fin:",
+      "words": [
+        {
+          "id": "caption-word-44-0",
+          "text": "a",
+          "start": 53.474,
+          "end": 53.494
+        },
+        {
+          "id": "caption-word-44-1",
+          "text": "fin:",
+          "start": 53.613,
+          "end": 53.913
+        }
+      ]
+    },
+    {
+      "id": "caption-group-45",
+      "frame": 7,
+      "start": 54.433,
+      "end": 55.653,
+      "text": "calendario visual,",
+      "words": [
+        {
+          "id": "caption-word-45-0",
+          "text": "calendario",
+          "start": 54.433,
+          "end": 54.953
+        },
+        {
+          "id": "caption-word-45-1",
+          "text": "visual,",
+          "start": 55.033,
+          "end": 55.533
+        }
+      ]
+    },
+    {
+      "id": "caption-group-46",
+      "frame": 7,
+      "start": 55.953,
+      "end": 56.854,
+      "text": "asistencia por",
+      "words": [
+        {
+          "id": "caption-word-46-0",
+          "text": "asistencia",
+          "start": 55.953,
+          "end": 56.593
+        },
+        {
+          "id": "caption-word-46-1",
+          "text": "por",
+          "start": 56.633,
+          "end": 56.734
+        }
+      ]
+    },
+    {
+      "id": "caption-group-47",
+      "frame": 7,
+      "start": 56.953,
+      "end": 57.553,
+      "text": "QR,",
+      "words": [
+        {
+          "id": "caption-word-47-0",
+          "text": "QR,",
+          "start": 56.953,
+          "end": 57.433
+        }
+      ]
+    },
+    {
+      "id": "caption-group-48",
+      "frame": 7,
+      "start": 57.913,
+      "end": 59.993,
+      "text": "credenciales impresas en lote,",
+      "words": [
+        {
+          "id": "caption-word-48-0",
+          "text": "credenciales",
+          "start": 57.913,
+          "end": 58.693
+        },
+        {
+          "id": "caption-word-48-1",
+          "text": "impresas",
+          "start": 58.774,
+          "end": 59.313
+        },
+        {
+          "id": "caption-word-48-2",
+          "text": "en",
+          "start": 59.353,
+          "end": 59.433
+        },
+        {
+          "id": "caption-word-48-3",
+          "text": "lote,",
+          "start": 59.513,
+          "end": 59.873
+        }
+      ]
+    },
+    {
+      "id": "caption-group-49",
+      "frame": 7,
+      "start": 60.373,
+      "end": 61.673,
+      "text": "y equipos programados",
+      "words": [
+        {
+          "id": "caption-word-49-0",
+          "text": "y",
+          "start": 60.373,
+          "end": 60.413
+        },
+        {
+          "id": "caption-word-49-1",
+          "text": "equipos",
+          "start": 60.473,
+          "end": 60.893
+        },
+        {
+          "id": "caption-word-49-2",
+          "text": "programados",
+          "start": 60.973,
+          "end": 61.633
+        }
+      ]
+    },
+    {
+      "id": "caption-group-50",
+      "frame": 7,
+      "start": 61.673,
+      "end": 63.933,
+      "text": "con confirmación tipo semáforo.",
+      "words": [
+        {
+          "id": "caption-word-50-0",
+          "text": "con",
+          "start": 61.673,
+          "end": 61.813
+        },
+        {
+          "id": "caption-word-50-1",
+          "text": "confirmación",
+          "start": 61.853,
+          "end": 62.654
+        },
+        {
+          "id": "caption-word-50-2",
+          "text": "tipo",
+          "start": 62.793,
+          "end": 63.073
+        },
+        {
+          "id": "caption-word-50-3",
+          "text": "semáforo.",
+          "start": 63.194,
+          "end": 63.813
+        }
+      ]
+    },
+    {
+      "id": "caption-group-51",
+      "frame": 8,
+      "start": 64.285,
+      "end": 64.825,
+      "text": "Cuida a",
+      "words": [
+        {
+          "id": "caption-word-51-0",
+          "text": "Cuida",
+          "start": 64.285,
+          "end": 64.645
+        },
+        {
+          "id": "caption-word-51-1",
+          "text": "a",
+          "start": 64.725,
+          "end": 64.765
+        }
+      ]
+    },
+    {
+      "id": "caption-group-52",
+      "frame": 8,
+      "start": 64.825,
+      "end": 65.866,
+      "text": "los más pequeños",
+      "words": [
+        {
+          "id": "caption-word-52-0",
+          "text": "los",
+          "start": 64.825,
+          "end": 64.965
+        },
+        {
+          "id": "caption-word-52-1",
+          "text": "más",
+          "start": 65.045,
+          "end": 65.205
+        },
+        {
+          "id": "caption-word-52-2",
+          "text": "pequeños",
+          "start": 65.265,
+          "end": 65.785
+        }
+      ]
+    },
+    {
+      "id": "caption-group-53",
+      "frame": 8,
+      "start": 65.866,
+      "end": 67.106,
+      "text": "con check-in seguro",
+      "words": [
+        {
+          "id": "caption-word-53-0",
+          "text": "con",
+          "start": 65.866,
+          "end": 65.986
+        },
+        {
+          "id": "caption-word-53-1",
+          "text": "check-in",
+          "start": 66.085,
+          "end": 66.465
+        },
+        {
+          "id": "caption-word-53-2",
+          "text": "seguro",
+          "start": 66.545,
+          "end": 67.065
+        }
+      ]
+    },
+    {
+      "id": "caption-group-54",
+      "frame": 8,
+      "start": 67.106,
+      "end": 68.746,
+      "text": "y familiares verificados",
+      "words": [
+        {
+          "id": "caption-word-54-0",
+          "text": "y",
+          "start": 67.106,
+          "end": 67.126
+        },
+        {
+          "id": "caption-word-54-1",
+          "text": "familiares",
+          "start": 67.225,
+          "end": 67.765
+        },
+        {
+          "id": "caption-word-54-2",
+          "text": "verificados",
+          "start": 67.846,
+          "end": 68.626
+        }
+      ]
+    },
+    {
+      "id": "caption-group-55",
+      "frame": 8,
+      "start": 69.145,
+      "end": 69.665,
+      "text": "y forma",
+      "words": [
+        {
+          "id": "caption-word-55-0",
+          "text": "y",
+          "start": 69.145,
+          "end": 69.165
+        },
+        {
+          "id": "caption-word-55-1",
+          "text": "forma",
+          "start": 69.305,
+          "end": 69.626
+        }
+      ]
+    },
+    {
+      "id": "caption-group-56",
+      "frame": 8,
+      "start": 69.665,
+      "end": 70.046,
+      "text": "a tus",
+      "words": [
+        {
+          "id": "caption-word-56-0",
+          "text": "a",
+          "start": 69.665,
+          "end": 69.705
+        },
+        {
+          "id": "caption-word-56-1",
+          "text": "tus",
+          "start": 69.785,
+          "end": 69.965
+        }
+      ]
+    },
+    {
+      "id": "caption-group-57",
+      "frame": 8,
+      "start": 70.046,
+      "end": 71.185,
+      "text": "líderes con Kingdom",
+      "words": [
+        {
+          "id": "caption-word-57-0",
+          "text": "líderes",
+          "start": 70.046,
+          "end": 70.485
+        },
+        {
+          "id": "caption-word-57-1",
+          "text": "con",
+          "start": 70.546,
+          "end": 70.665
+        },
+        {
+          "id": "caption-word-57-2",
+          "text": "Kingdom",
+          "start": 70.785,
+          "end": 71.126
+        }
+      ]
+    },
+    {
+      "id": "caption-group-58",
+      "frame": 8,
+      "start": 71.185,
+      "end": 71.845,
+      "text": "Academy:",
+      "words": [
+        {
+          "id": "caption-word-58-0",
+          "text": "Academy:",
+          "start": 71.185,
+          "end": 71.725
+        }
+      ]
+    },
+    {
+      "id": "caption-group-59",
+      "frame": 8,
+      "start": 72.165,
+      "end": 72.785,
+      "text": "cursos,",
+      "words": [
+        {
+          "id": "caption-word-59-0",
+          "text": "cursos,",
+          "start": 72.165,
+          "end": 72.665
+        }
+      ]
+    },
+    {
+      "id": "caption-group-60",
+      "frame": 8,
+      "start": 72.865,
+      "end": 74.645,
+      "text": "clases y certificados.",
+      "words": [
+        {
+          "id": "caption-word-60-0",
+          "text": "clases",
+          "start": 72.865,
+          "end": 73.426
+        },
+        {
+          "id": "caption-word-60-1",
+          "text": "y",
+          "start": 73.485,
+          "end": 73.506
+        },
+        {
+          "id": "caption-word-60-2",
+          "text": "certificados.",
+          "start": 73.626,
+          "end": 74.525
+        }
+      ]
+    },
+    {
+      "id": "caption-group-61",
+      "frame": 9,
+      "start": 74.955,
+      "end": 75.956,
+      "text": "Cada donación,",
+      "words": [
+        {
+          "id": "caption-word-61-0",
+          "text": "Cada",
+          "start": 74.955,
+          "end": 75.176
+        },
+        {
+          "id": "caption-word-61-1",
+          "text": "donación,",
+          "start": 75.255,
+          "end": 75.836
+        }
+      ]
+    },
+    {
+      "id": "caption-group-62",
+      "frame": 9,
+      "start": 76.196,
+      "end": 76.875,
+      "text": "trazable.",
+      "words": [
+        {
+          "id": "caption-word-62-0",
+          "text": "trazable.",
+          "start": 76.196,
+          "end": 76.755
+        }
+      ]
+    },
+    {
+      "id": "caption-group-63",
+      "frame": 9,
+      "start": 77.235,
+      "end": 78.075,
+      "text": "Cada ingreso,",
+      "words": [
+        {
+          "id": "caption-word-63-0",
+          "text": "Cada",
+          "start": 77.235,
+          "end": 77.395
+        },
+        {
+          "id": "caption-word-63-1",
+          "text": "ingreso,",
+          "start": 77.455,
+          "end": 77.955
+        }
+      ]
+    },
+    {
+      "id": "caption-group-64",
+      "frame": 9,
+      "start": 78.455,
+      "end": 79.175,
+      "text": "revisado",
+      "words": [
+        {
+          "id": "caption-word-64-0",
+          "text": "revisado",
+          "start": 78.455,
+          "end": 79.055
+        }
+      ]
+    },
+    {
+      "id": "caption-group-65",
+      "frame": 9,
+      "start": 79.256,
+      "end": 79.995,
+      "text": "y aprobado.",
+      "words": [
+        {
+          "id": "caption-word-65-0",
+          "text": "y",
+          "start": 79.256,
+          "end": 79.296
+        },
+        {
+          "id": "caption-word-65-1",
+          "text": "aprobado.",
+          "start": 79.375,
+          "end": 79.875
+        }
+      ]
+    },
+    {
+      "id": "caption-group-66",
+      "frame": 9,
+      "start": 80.495,
+      "end": 81.575,
+      "text": "Centros de costo,",
+      "words": [
+        {
+          "id": "caption-word-66-0",
+          "text": "Centros",
+          "start": 80.495,
+          "end": 80.875
+        },
+        {
+          "id": "caption-word-66-1",
+          "text": "de",
+          "start": 80.935,
+          "end": 80.975
+        },
+        {
+          "id": "caption-word-66-2",
+          "text": "costo,",
+          "start": 81.075,
+          "end": 81.455
+        }
+      ]
+    },
+    {
+      "id": "caption-group-67",
+      "frame": 9,
+      "start": 81.595,
+      "end": 83.176,
+      "text": "presupuesto y auditoría",
+      "words": [
+        {
+          "id": "caption-word-67-0",
+          "text": "presupuesto",
+          "start": 81.595,
+          "end": 82.375
+        },
+        {
+          "id": "caption-word-67-1",
+          "text": "y",
+          "start": 82.435,
+          "end": 82.455
+        },
+        {
+          "id": "caption-word-67-2",
+          "text": "auditoría",
+          "start": 82.555,
+          "end": 83.075
+        }
+      ]
+    },
+    {
+      "id": "caption-group-68",
+      "frame": 9,
+      "start": 83.176,
+      "end": 84.836,
+      "text": "completa finanzas claras,",
+      "words": [
+        {
+          "id": "caption-word-68-0",
+          "text": "completa",
+          "start": 83.176,
+          "end": 83.655
+        },
+        {
+          "id": "caption-word-68-1",
+          "text": "finanzas",
+          "start": 83.796,
+          "end": 84.275
+        },
+        {
+          "id": "caption-word-68-2",
+          "text": "claras,",
+          "start": 84.355,
+          "end": 84.716
+        }
+      ]
+    },
+    {
+      "id": "caption-group-69",
+      "frame": 9,
+      "start": 85.155,
+      "end": 85.735,
+      "text": "sin hojas",
+      "words": [
+        {
+          "id": "caption-word-69-0",
+          "text": "sin",
+          "start": 85.155,
+          "end": 85.315
+        },
+        {
+          "id": "caption-word-69-1",
+          "text": "hojas",
+          "start": 85.375,
+          "end": 85.676
+        }
+      ]
+    },
+    {
+      "id": "caption-group-70",
+      "frame": 9,
+      "start": 85.735,
+      "end": 86.995,
+      "text": "de cálculo sueltas.",
+      "words": [
+        {
+          "id": "caption-word-70-0",
+          "text": "de",
+          "start": 85.735,
+          "end": 85.815
+        },
+        {
+          "id": "caption-word-70-1",
+          "text": "cálculo",
+          "start": 85.875,
+          "end": 86.256
+        },
+        {
+          "id": "caption-word-70-2",
+          "text": "sueltas.",
+          "start": 86.355,
+          "end": 86.875
+        }
+      ]
+    },
+    {
+      "id": "caption-group-71",
+      "frame": 10,
+      "start": 87.299,
+      "end": 87.679,
+      "text": "Un muro",
+      "words": [
+        {
+          "id": "caption-word-71-0",
+          "text": "Un",
+          "start": 87.299,
+          "end": 87.359
+        },
+        {
+          "id": "caption-word-71-1",
+          "text": "muro",
+          "start": 87.459,
+          "end": 87.619
+        }
+      ]
+    },
+    {
+      "id": "caption-group-72",
+      "frame": 10,
+      "start": 87.679,
+      "end": 88.36,
+      "text": "de novedades",
+      "words": [
+        {
+          "id": "caption-word-72-0",
+          "text": "de",
+          "start": 87.679,
+          "end": 87.719
+        },
+        {
+          "id": "caption-word-72-1",
+          "text": "novedades",
+          "start": 87.779,
+          "end": 88.299
+        }
+      ]
+    },
+    {
+      "id": "caption-group-73",
+      "frame": 10,
+      "start": 88.36,
+      "end": 88.819,
+      "text": "para toda",
+      "words": [
+        {
+          "id": "caption-word-73-0",
+          "text": "para",
+          "start": 88.36,
+          "end": 88.519
+        },
+        {
+          "id": "caption-word-73-1",
+          "text": "toda",
+          "start": 88.599,
+          "end": 88.779
+        }
+      ]
+    },
+    {
+      "id": "caption-group-74",
+      "frame": 10,
+      "start": 88.819,
+      "end": 89.5,
+      "text": "la iglesia,",
+      "words": [
+        {
+          "id": "caption-word-74-0",
+          "text": "la",
+          "start": 88.819,
+          "end": 88.88
+        },
+        {
+          "id": "caption-word-74-1",
+          "text": "iglesia,",
+          "start": 88.919,
+          "end": 89.38
+        }
+      ]
+    },
+    {
+      "id": "caption-group-75",
+      "frame": 10,
+      "start": 89.84,
+      "end": 91.439,
+      "text": "notificaciones segmentadas,",
+      "words": [
+        {
+          "id": "caption-word-75-0",
+          "text": "notificaciones",
+          "start": 89.84,
+          "end": 90.519
+        },
+        {
+          "id": "caption-word-75-1",
+          "text": "segmentadas,",
+          "start": 90.559,
+          "end": 91.319
+        }
+      ]
+    },
+    {
+      "id": "caption-group-76",
+      "frame": 10,
+      "start": 91.699,
+      "end": 92.939,
+      "text": "campañas de WhatsApp",
+      "words": [
+        {
+          "id": "caption-word-76-0",
+          "text": "campañas",
+          "start": 91.699,
+          "end": 92.159
+        },
+        {
+          "id": "caption-word-76-1",
+          "text": "de",
+          "start": 92.219,
+          "end": 92.259
+        },
+        {
+          "id": "caption-word-76-2",
+          "text": "WhatsApp",
+          "start": 92.339,
+          "end": 92.899
+        }
+      ]
+    },
+    {
+      "id": "caption-group-77",
+      "frame": 10,
+      "start": 92.939,
+      "end": 93.259,
+      "text": "con tu",
+      "words": [
+        {
+          "id": "caption-word-77-0",
+          "text": "con",
+          "start": 92.939,
+          "end": 93.039
+        },
+        {
+          "id": "caption-word-77-1",
+          "text": "tu",
+          "start": 93.12,
+          "end": 93.199
+        }
+      ]
+    },
+    {
+      "id": "caption-group-78",
+      "frame": 10,
+      "start": 93.259,
+      "end": 94.019,
+      "text": "propia línea,",
+      "words": [
+        {
+          "id": "caption-word-78-0",
+          "text": "propia",
+          "start": 93.259,
+          "end": 93.519
+        },
+        {
+          "id": "caption-word-78-1",
+          "text": "línea,",
+          "start": 93.6,
+          "end": 93.899
+        }
+      ]
+    },
+    {
+      "id": "caption-group-79",
+      "frame": 10,
+      "start": 94.359,
+      "end": 95.659,
+      "text": "y automatizaciones que se",
+      "words": [
+        {
+          "id": "caption-word-79-0",
+          "text": "y",
+          "start": 94.359,
+          "end": 94.399
+        },
+        {
+          "id": "caption-word-79-1",
+          "text": "automatizaciones",
+          "start": 94.499,
+          "end": 95.379
+        },
+        {
+          "id": "caption-word-79-2",
+          "text": "que",
+          "start": 95.44,
+          "end": 95.48
+        },
+        {
+          "id": "caption-word-79-3",
+          "text": "se",
+          "start": 95.56,
+          "end": 95.619
+        }
+      ]
+    },
+    {
+      "id": "caption-group-80",
+      "frame": 10,
+      "start": 95.659,
+      "end": 97.14,
+      "text": "disparan solas sin que",
+      "words": [
+        {
+          "id": "caption-word-80-0",
+          "text": "disparan",
+          "start": 95.659,
+          "end": 96.12
+        },
+        {
+          "id": "caption-word-80-1",
+          "text": "solas",
+          "start": 96.219,
+          "end": 96.679
+        },
+        {
+          "id": "caption-word-80-2",
+          "text": "sin",
+          "start": 96.779,
+          "end": 96.9
+        },
+        {
+          "id": "caption-word-80-3",
+          "text": "que",
+          "start": 96.98,
+          "end": 97.1
+        }
+      ]
+    },
+    {
+      "id": "caption-group-81",
+      "frame": 10,
+      "start": 97.14,
+      "end": 97.759,
+      "text": "nadie tenga",
+      "words": [
+        {
+          "id": "caption-word-81-0",
+          "text": "nadie",
+          "start": 97.14,
+          "end": 97.44
+        },
+        {
+          "id": "caption-word-81-1",
+          "text": "tenga",
+          "start": 97.48,
+          "end": 97.679
+        }
+      ]
+    },
+    {
+      "id": "caption-group-82",
+      "frame": 10,
+      "start": 97.759,
+      "end": 98.56,
+      "text": "que acordarse.",
+      "words": [
+        {
+          "id": "caption-word-82-0",
+          "text": "que",
+          "start": 97.759,
+          "end": 97.799
+        },
+        {
+          "id": "caption-word-82-1",
+          "text": "acordarse.",
+          "start": 97.879,
+          "end": 98.44
+        }
+      ]
+    },
+    {
+      "id": "caption-group-83",
+      "frame": 11,
+      "start": 98.805,
+      "end": 99.485,
+      "text": "Tu biblioteca",
+      "words": [
+        {
+          "id": "caption-word-83-0",
+          "text": "Tu",
+          "start": 98.805,
+          "end": 98.865
+        },
+        {
+          "id": "caption-word-83-1",
+          "text": "biblioteca",
+          "start": 98.925,
+          "end": 99.445
+        }
+      ]
+    },
+    {
+      "id": "caption-group-84",
+      "frame": 11,
+      "start": 99.485,
+      "end": 100.465,
+      "text": "de partituras,",
+      "words": [
+        {
+          "id": "caption-word-84-0",
+          "text": "de",
+          "start": 99.485,
+          "end": 99.585
+        },
+        {
+          "id": "caption-word-84-1",
+          "text": "partituras,",
+          "start": 99.625,
+          "end": 100.345
+        }
+      ]
+    },
+    {
+      "id": "caption-group-85",
+      "frame": 11,
+      "start": 100.725,
+      "end": 102.046,
+      "text": "transposición de tono",
+      "words": [
+        {
+          "id": "caption-word-85-0",
+          "text": "transposición",
+          "start": 100.725,
+          "end": 101.445
+        },
+        {
+          "id": "caption-word-85-1",
+          "text": "de",
+          "start": 101.485,
+          "end": 101.525
+        },
+        {
+          "id": "caption-word-85-2",
+          "text": "tono",
+          "start": 101.646,
+          "end": 101.926
+        }
+      ]
+    },
+    {
+      "id": "caption-group-86",
+      "frame": 11,
+      "start": 102.065,
+      "end": 102.806,
+      "text": "en un clic,",
+      "words": [
+        {
+          "id": "caption-word-86-0",
+          "text": "en",
+          "start": 102.065,
+          "end": 102.146
+        },
+        {
+          "id": "caption-word-86-1",
+          "text": "un",
+          "start": 102.186,
+          "end": 102.325
+        },
+        {
+          "id": "caption-word-86-2",
+          "text": "clic,",
+          "start": 102.365,
+          "end": 102.686
+        }
+      ]
+    },
+    {
+      "id": "caption-group-87",
+      "frame": 11,
+      "start": 103.066,
+      "end": 104.605,
+      "text": "repertorios por servicio",
+      "words": [
+        {
+          "id": "caption-word-87-0",
+          "text": "repertorios",
+          "start": 103.066,
+          "end": 103.705
+        },
+        {
+          "id": "caption-word-87-1",
+          "text": "por",
+          "start": 103.745,
+          "end": 103.845
+        },
+        {
+          "id": "caption-word-87-2",
+          "text": "servicio",
+          "start": 103.925,
+          "end": 104.485
+        }
+      ]
+    },
+    {
+      "id": "caption-group-88",
+      "frame": 11,
+      "start": 104.845,
+      "end": 105.106,
+      "text": "y un",
+      "words": [
+        {
+          "id": "caption-word-88-0",
+          "text": "y",
+          "start": 104.845,
+          "end": 104.905
+        },
+        {
+          "id": "caption-word-88-1",
+          "text": "un",
+          "start": 104.925,
+          "end": 105.005
+        }
+      ]
+    },
+    {
+      "id": "caption-group-89",
+      "frame": 11,
+      "start": 105.106,
+      "end": 106.545,
+      "text": "marketplace para comprar",
+      "words": [
+        {
+          "id": "caption-word-89-0",
+          "text": "marketplace",
+          "start": 105.106,
+          "end": 105.745
+        },
+        {
+          "id": "caption-word-89-1",
+          "text": "para",
+          "start": 105.825,
+          "end": 105.965
+        },
+        {
+          "id": "caption-word-89-2",
+          "text": "comprar",
+          "start": 106.045,
+          "end": 106.425
+        }
+      ]
+    },
+    {
+      "id": "caption-group-90",
+      "frame": 11,
+      "start": 106.565,
+      "end": 107.825,
+      "text": "e intercambiar música",
+      "words": [
+        {
+          "id": "caption-word-90-0",
+          "text": "e",
+          "start": 106.565,
+          "end": 106.605
+        },
+        {
+          "id": "caption-word-90-1",
+          "text": "intercambiar",
+          "start": 106.646,
+          "end": 107.205
+        },
+        {
+          "id": "caption-word-90-2",
+          "text": "música",
+          "start": 107.325,
+          "end": 107.765
+        }
+      ]
+    },
+    {
+      "id": "caption-group-91",
+      "frame": 11,
+      "start": 107.825,
+      "end": 109.025,
+      "text": "con otras iglesias.",
+      "words": [
+        {
+          "id": "caption-word-91-0",
+          "text": "con",
+          "start": 107.825,
+          "end": 107.925
+        },
+        {
+          "id": "caption-word-91-1",
+          "text": "otras",
+          "start": 107.986,
+          "end": 108.225
+        },
+        {
+          "id": "caption-word-91-2",
+          "text": "iglesias.",
+          "start": 108.285,
+          "end": 108.905
+        }
+      ]
+    },
+    {
+      "id": "caption-group-92",
+      "frame": 12,
+      "start": 109.249,
+      "end": 110.288,
+      "text": "Un micrositio para",
+      "words": [
+        {
+          "id": "caption-word-92-0",
+          "text": "Un",
+          "start": 109.249,
+          "end": 109.348
+        },
+        {
+          "id": "caption-word-92-1",
+          "text": "micrositio",
+          "start": 109.408,
+          "end": 110.008
+        },
+        {
+          "id": "caption-word-92-2",
+          "text": "para",
+          "start": 110.088,
+          "end": 110.209
+        }
+      ]
+    },
+    {
+      "id": "caption-group-93",
+      "frame": 12,
+      "start": 110.288,
+      "end": 111.068,
+      "text": "tu iglesia,",
+      "words": [
+        {
+          "id": "caption-word-93-0",
+          "text": "tu",
+          "start": 110.288,
+          "end": 110.368
+        },
+        {
+          "id": "caption-word-93-1",
+          "text": "iglesia,",
+          "start": 110.408,
+          "end": 110.948
+        }
+      ]
+    },
+    {
+      "id": "caption-group-94",
+      "frame": 12,
+      "start": 111.569,
+      "end": 113.268,
+      "text": "formularios inteligentes que se",
+      "words": [
+        {
+          "id": "caption-word-94-0",
+          "text": "formularios",
+          "start": 111.569,
+          "end": 112.089
+        },
+        {
+          "id": "caption-word-94-1",
+          "text": "inteligentes",
+          "start": 112.168,
+          "end": 112.908
+        },
+        {
+          "id": "caption-word-94-2",
+          "text": "que",
+          "start": 112.988,
+          "end": 113.028
+        },
+        {
+          "id": "caption-word-94-3",
+          "text": "se",
+          "start": 113.109,
+          "end": 113.188
+        }
+      ]
+    },
+    {
+      "id": "caption-group-95",
+      "frame": 12,
+      "start": 113.268,
+      "end": 113.948,
+      "text": "adaptan a",
+      "words": [
+        {
+          "id": "caption-word-95-0",
+          "text": "adaptan",
+          "start": 113.268,
+          "end": 113.748
+        },
+        {
+          "id": "caption-word-95-1",
+          "text": "a",
+          "start": 113.808,
+          "end": 113.828
+        }
+      ]
+    },
+    {
+      "id": "caption-group-96",
+      "frame": 12,
+      "start": 114.009,
+      "end": 115.088,
+      "text": "cada visitante,",
+      "words": [
+        {
+          "id": "caption-word-96-0",
+          "text": "cada",
+          "start": 114.009,
+          "end": 114.208
+        },
+        {
+          "id": "caption-word-96-1",
+          "text": "visitante,",
+          "start": 114.288,
+          "end": 114.968
+        }
+      ]
+    },
+    {
+      "id": "caption-group-97",
+      "frame": 12,
+      "start": 115.529,
+      "end": 116.828,
+      "text": "e invitaciones con",
+      "words": [
+        {
+          "id": "caption-word-97-0",
+          "text": "e",
+          "start": 115.529,
+          "end": 115.569
+        },
+        {
+          "id": "caption-word-97-1",
+          "text": "invitaciones",
+          "start": 115.628,
+          "end": 116.468
+        },
+        {
+          "id": "caption-word-97-2",
+          "text": "con",
+          "start": 116.528,
+          "end": 116.728
+        }
+      ]
+    },
+    {
+      "id": "caption-group-98",
+      "frame": 12,
+      "start": 116.828,
+      "end": 119.109,
+      "text": "auto-registro por código QR.",
+      "words": [
+        {
+          "id": "caption-word-98-0",
+          "text": "auto-registro",
+          "start": 116.828,
+          "end": 117.648
+        },
+        {
+          "id": "caption-word-98-1",
+          "text": "por",
+          "start": 117.768,
+          "end": 117.869
+        },
+        {
+          "id": "caption-word-98-2",
+          "text": "código",
+          "start": 118.008,
+          "end": 118.449
+        },
+        {
+          "id": "caption-word-98-3",
+          "text": "QR.",
+          "start": 118.588,
+          "end": 118.989
+        }
+      ]
+    },
+    {
+      "id": "caption-group-99",
+      "frame": 13,
+      "start": 119.411,
+      "end": 121.07,
+      "text": "Dashboards ejecutivos,",
+      "words": [
+        {
+          "id": "caption-word-99-0",
+          "text": "Dashboards",
+          "start": 119.411,
+          "end": 120.07
+        },
+        {
+          "id": "caption-word-99-1",
+          "text": "ejecutivos,",
+          "start": 120.13,
+          "end": 120.95
+        }
+      ]
+    },
+    {
+      "id": "caption-group-100",
+      "frame": 13,
+      "start": 121.471,
+      "end": 122.07,
+      "text": "mapas de",
+      "words": [
+        {
+          "id": "caption-word-100-0",
+          "text": "mapas",
+          "start": 121.471,
+          "end": 121.89
+        },
+        {
+          "id": "caption-word-100-1",
+          "text": "de",
+          "start": 121.95,
+          "end": 121.991
+        }
+      ]
+    },
+    {
+      "id": "caption-group-101",
+      "frame": 13,
+      "start": 122.07,
+      "end": 123.01,
+      "text": "tu territorio,",
+      "words": [
+        {
+          "id": "caption-word-101-0",
+          "text": "tu",
+          "start": 122.07,
+          "end": 122.13
+        },
+        {
+          "id": "caption-word-101-1",
+          "text": "territorio,",
+          "start": 122.231,
+          "end": 122.89
+        }
+      ]
+    },
+    {
+      "id": "caption-group-102",
+      "frame": 13,
+      "start": 123.31,
+      "end": 123.51,
+      "text": "y el",
+      "words": [
+        {
+          "id": "caption-word-102-0",
+          "text": "y",
+          "start": 123.31,
+          "end": 123.33
+        },
+        {
+          "id": "caption-word-102-1",
+          "text": "el",
+          "start": 123.39,
+          "end": 123.45
+        }
+      ]
+    },
+    {
+      "id": "caption-group-103",
+      "frame": 13,
+      "start": 123.51,
+      "end": 125.07,
+      "text": "reporte que necesites,",
+      "words": [
+        {
+          "id": "caption-word-103-0",
+          "text": "reporte",
+          "start": 123.51,
+          "end": 123.99
+        },
+        {
+          "id": "caption-word-103-1",
+          "text": "que",
+          "start": 124.09,
+          "end": 124.13
+        },
+        {
+          "id": "caption-word-103-2",
+          "text": "necesites,",
+          "start": 124.191,
+          "end": 124.95
+        }
+      ]
+    },
+    {
+      "id": "caption-group-104",
+      "frame": 13,
+      "start": 125.41,
+      "end": 126.57,
+      "text": "exportado con un",
+      "words": [
+        {
+          "id": "caption-word-104-0",
+          "text": "exportado",
+          "start": 125.41,
+          "end": 126.13
+        },
+        {
+          "id": "caption-word-104-1",
+          "text": "con",
+          "start": 126.17,
+          "end": 126.33
+        },
+        {
+          "id": "caption-word-104-2",
+          "text": "un",
+          "start": 126.37,
+          "end": 126.53
+        }
+      ]
+    },
+    {
+      "id": "caption-group-105",
+      "frame": 13,
+      "start": 126.57,
+      "end": 126.99,
+      "text": "clic",
+      "words": [
+        {
+          "id": "caption-word-105-0",
+          "text": "clic",
+          "start": 126.57,
+          "end": 126.87
+        }
+      ]
+    },
+    {
+      "id": "caption-group-106",
+      "frame": 13,
+      "start": 127.251,
+      "end": 128.851,
+      "text": "decisiones con datos,",
+      "words": [
+        {
+          "id": "caption-word-106-0",
+          "text": "decisiones",
+          "start": 127.251,
+          "end": 127.93
+        },
+        {
+          "id": "caption-word-106-1",
+          "text": "con",
+          "start": 128.031,
+          "end": 128.13
+        },
+        {
+          "id": "caption-word-106-2",
+          "text": "datos,",
+          "start": 128.231,
+          "end": 128.731
+        }
+      ]
+    },
+    {
+      "id": "caption-group-107",
+      "frame": 13,
+      "start": 129.29,
+      "end": 130.47,
+      "text": "no con intuición.",
+      "words": [
+        {
+          "id": "caption-word-107-0",
+          "text": "no",
+          "start": 129.29,
+          "end": 129.43
+        },
+        {
+          "id": "caption-word-107-1",
+          "text": "con",
+          "start": 129.571,
+          "end": 129.67
+        },
+        {
+          "id": "caption-word-107-2",
+          "text": "intuición.",
+          "start": 129.731,
+          "end": 130.35
+        }
+      ]
+    },
+    {
+      "id": "caption-group-108",
+      "frame": 14,
+      "start": 130.787,
+      "end": 131.087,
+      "text": "Y si",
+      "words": [
+        {
+          "id": "caption-word-108-0",
+          "text": "Y",
+          "start": 130.787,
+          "end": 130.847
+        },
+        {
+          "id": "caption-word-108-1",
+          "text": "si",
+          "start": 130.907,
+          "end": 130.987
+        }
+      ]
+    },
+    {
+      "id": "caption-group-109",
+      "frame": 14,
+      "start": 131.087,
+      "end": 131.647,
+      "text": "tu iglesia",
+      "words": [
+        {
+          "id": "caption-word-109-0",
+          "text": "tu",
+          "start": 131.087,
+          "end": 131.127
+        },
+        {
+          "id": "caption-word-109-1",
+          "text": "iglesia",
+          "start": 131.187,
+          "end": 131.608
+        }
+      ]
+    },
+    {
+      "id": "caption-group-110",
+      "frame": 14,
+      "start": 131.647,
+      "end": 132.287,
+      "text": "también sale",
+      "words": [
+        {
+          "id": "caption-word-110-0",
+          "text": "también",
+          "start": 131.647,
+          "end": 132.027
+        },
+        {
+          "id": "caption-word-110-1",
+          "text": "sale",
+          "start": 132.067,
+          "end": 132.247
+        }
+      ]
+    },
+    {
+      "id": "caption-group-111",
+      "frame": 14,
+      "start": 132.287,
+      "end": 132.887,
+      "text": "al campo:",
+      "words": [
+        {
+          "id": "caption-word-111-0",
+          "text": "al",
+          "start": 132.287,
+          "end": 132.387
+        },
+        {
+          "id": "caption-word-111-1",
+          "text": "campo:",
+          "start": 132.427,
+          "end": 132.767
+        }
+      ]
+    },
+    {
+      "id": "caption-group-112",
+      "frame": 14,
+      "start": 133.447,
+      "end": 134.188,
+      "text": "registro,",
+      "words": [
+        {
+          "id": "caption-word-112-0",
+          "text": "registro,",
+          "start": 133.447,
+          "end": 134.068
+        }
+      ]
+    },
+    {
+      "id": "caption-group-113",
+      "frame": 14,
+      "start": 134.467,
+      "end": 135.128,
+      "text": "conteo,",
+      "words": [
+        {
+          "id": "caption-word-113-0",
+          "text": "conteo,",
+          "start": 134.467,
+          "end": 135.008
+        }
+      ]
+    },
+    {
+      "id": "caption-group-114",
+      "frame": 14,
+      "start": 135.447,
+      "end": 137.147,
+      "text": "testimonios y cada nueva",
+      "words": [
+        {
+          "id": "caption-word-114-0",
+          "text": "testimonios",
+          "start": 135.447,
+          "end": 136.207
+        },
+        {
+          "id": "caption-word-114-1",
+          "text": "y",
+          "start": 136.267,
+          "end": 136.427
+        },
+        {
+          "id": "caption-word-114-2",
+          "text": "cada",
+          "start": 136.487,
+          "end": 136.707
+        },
+        {
+          "id": "caption-word-114-3",
+          "text": "nueva",
+          "start": 136.807,
+          "end": 137.048
+        }
+      ]
+    },
+    {
+      "id": "caption-group-115",
+      "frame": 14,
+      "start": 137.147,
+      "end": 138.187,
+      "text": "alma conectada con",
+      "words": [
+        {
+          "id": "caption-word-115-0",
+          "text": "alma",
+          "start": 137.147,
+          "end": 137.367
+        },
+        {
+          "id": "caption-word-115-1",
+          "text": "conectada",
+          "start": 137.487,
+          "end": 137.967
+        },
+        {
+          "id": "caption-word-115-2",
+          "text": "con",
+          "start": 138.048,
+          "end": 138.147
+        }
+      ]
+    },
+    {
+      "id": "caption-group-116",
+      "frame": 14,
+      "start": 138.187,
+      "end": 139.247,
+      "text": "la iglesia local",
+      "words": [
+        {
+          "id": "caption-word-116-0",
+          "text": "la",
+          "start": 138.187,
+          "end": 138.227
+        },
+        {
+          "id": "caption-word-116-1",
+          "text": "iglesia",
+          "start": 138.267,
+          "end": 138.687
+        },
+        {
+          "id": "caption-word-116-2",
+          "text": "local",
+          "start": 138.767,
+          "end": 139.127
+        }
+      ]
+    },
+    {
+      "id": "caption-group-117",
+      "frame": 14,
+      "start": 139.427,
+      "end": 140.327,
+      "text": "más cercana.",
+      "words": [
+        {
+          "id": "caption-word-117-0",
+          "text": "más",
+          "start": 139.427,
+          "end": 139.647
+        },
+        {
+          "id": "caption-word-117-1",
+          "text": "cercana.",
+          "start": 139.687,
+          "end": 140.207
+        }
+      ]
+    },
+    {
+      "id": "caption-group-118",
+      "frame": 15,
+      "start": 140.641,
+      "end": 141.021,
+      "text": "Y si",
+      "words": [
+        {
+          "id": "caption-word-118-0",
+          "text": "Y",
+          "start": 140.641,
+          "end": 140.781
+        },
+        {
+          "id": "caption-word-118-1",
+          "text": "si",
+          "start": 140.822,
+          "end": 140.901
+        }
+      ]
+    },
+    {
+      "id": "caption-group-119",
+      "frame": 15,
+      "start": 141.021,
+      "end": 142.141,
+      "text": "tu iglesia crece",
+      "words": [
+        {
+          "id": "caption-word-119-0",
+          "text": "tu",
+          "start": 141.021,
+          "end": 141.061
+        },
+        {
+          "id": "caption-word-119-1",
+          "text": "iglesia",
+          "start": 141.121,
+          "end": 141.681
+        },
+        {
+          "id": "caption-word-119-2",
+          "text": "crece",
+          "start": 141.722,
+          "end": 142.081
+        }
+      ]
+    },
+    {
+      "id": "caption-group-120",
+      "frame": 15,
+      "start": 142.141,
+      "end": 143.201,
+      "text": "a varias sedes,",
+      "words": [
+        {
+          "id": "caption-word-120-0",
+          "text": "a",
+          "start": 142.141,
+          "end": 142.201
+        },
+        {
+          "id": "caption-word-120-1",
+          "text": "varias",
+          "start": 142.261,
+          "end": 142.621
+        },
+        {
+          "id": "caption-word-120-2",
+          "text": "sedes,",
+          "start": 142.662,
+          "end": 143.081
+        }
+      ]
+    },
+    {
+      "id": "caption-group-121",
+      "frame": 15,
+      "start": 143.601,
+      "end": 144.181,
+      "text": "una sola",
+      "words": [
+        {
+          "id": "caption-word-121-0",
+          "text": "una",
+          "start": 143.601,
+          "end": 143.741
+        },
+        {
+          "id": "caption-word-121-1",
+          "text": "sola",
+          "start": 143.861,
+          "end": 144.061
+        }
+      ]
+    },
+    {
+      "id": "caption-group-122",
+      "frame": 15,
+      "start": 144.181,
+      "end": 145.401,
+      "text": "cuenta lo administra",
+      "words": [
+        {
+          "id": "caption-word-122-0",
+          "text": "cuenta",
+          "start": 144.181,
+          "end": 144.521
+        },
+        {
+          "id": "caption-word-122-1",
+          "text": "lo",
+          "start": 144.581,
+          "end": 144.641
+        },
+        {
+          "id": "caption-word-122-2",
+          "text": "administra",
+          "start": 144.681,
+          "end": 145.281
+        }
+      ]
+    },
+    {
+      "id": "caption-group-123",
+      "frame": 15,
+      "start": 145.402,
+      "end": 145.841,
+      "text": "todo.",
+      "words": [
+        {
+          "id": "caption-word-123-0",
+          "text": "todo.",
+          "start": 145.402,
+          "end": 145.721
+        }
+      ]
+    },
+    {
+      "id": "caption-group-124",
+      "frame": 15,
+      "start": 146.301,
+      "end": 147.321,
+      "text": "Todo se adapta",
+      "words": [
+        {
+          "id": "caption-word-124-0",
+          "text": "Todo",
+          "start": 146.301,
+          "end": 146.581
+        },
+        {
+          "id": "caption-word-124-1",
+          "text": "se",
+          "start": 146.641,
+          "end": 146.701
+        },
+        {
+          "id": "caption-word-124-2",
+          "text": "adapta",
+          "start": 146.781,
+          "end": 147.261
+        }
+      ]
+    },
+    {
+      "id": "caption-group-125",
+      "frame": 15,
+      "start": 147.321,
+      "end": 148.321,
+      "text": "a cómo funciona",
+      "words": [
+        {
+          "id": "caption-word-125-0",
+          "text": "a",
+          "start": 147.321,
+          "end": 147.442
+        },
+        {
+          "id": "caption-word-125-1",
+          "text": "cómo",
+          "start": 147.482,
+          "end": 147.661
+        },
+        {
+          "id": "caption-word-125-2",
+          "text": "funciona",
+          "start": 147.781,
+          "end": 148.221
+        }
+      ]
+    },
+    {
+      "id": "caption-group-126",
+      "frame": 15,
+      "start": 148.321,
+      "end": 149.082,
+      "text": "tu iglesia:",
+      "words": [
+        {
+          "id": "caption-word-126-0",
+          "text": "tu",
+          "start": 148.321,
+          "end": 148.381
+        },
+        {
+          "id": "caption-word-126-1",
+          "text": "iglesia:",
+          "start": 148.422,
+          "end": 148.962
+        }
+      ]
+    },
+    {
+      "id": "caption-group-127",
+      "frame": 15,
+      "start": 149.581,
+      "end": 150.141,
+      "text": "roles,",
+      "words": [
+        {
+          "id": "caption-word-127-0",
+          "text": "roles,",
+          "start": 149.581,
+          "end": 150.021
+        }
+      ]
+    },
+    {
+      "id": "caption-group-128",
+      "frame": 15,
+      "start": 150.482,
+      "end": 151.741,
+      "text": "redes y permisos",
+      "words": [
+        {
+          "id": "caption-word-128-0",
+          "text": "redes",
+          "start": 150.482,
+          "end": 150.862
+        },
+        {
+          "id": "caption-word-128-1",
+          "text": "y",
+          "start": 151.021,
+          "end": 151.041
+        },
+        {
+          "id": "caption-word-128-2",
+          "text": "permisos",
+          "start": 151.141,
+          "end": 151.681
+        }
+      ]
+    },
+    {
+      "id": "caption-group-129",
+      "frame": 15,
+      "start": 151.741,
+      "end": 152.861,
+      "text": "definidos por ti",
+      "words": [
+        {
+          "id": "caption-word-129-0",
+          "text": "definidos",
+          "start": 151.741,
+          "end": 152.302
+        },
+        {
+          "id": "caption-word-129-1",
+          "text": "por",
+          "start": 152.381,
+          "end": 152.482
+        },
+        {
+          "id": "caption-word-129-2",
+          "text": "ti",
+          "start": 152.601,
+          "end": 152.741
+        }
+      ]
+    },
+    {
+      "id": "caption-group-130",
+      "frame": 15,
+      "start": 152.902,
+      "end": 154.022,
+      "text": "sin escribir una",
+      "words": [
+        {
+          "id": "caption-word-130-0",
+          "text": "sin",
+          "start": 152.902,
+          "end": 153.021
+        },
+        {
+          "id": "caption-word-130-1",
+          "text": "escribir",
+          "start": 153.121,
+          "end": 153.661
+        },
+        {
+          "id": "caption-word-130-2",
+          "text": "una",
+          "start": 153.761,
+          "end": 153.902
+        }
+      ]
+    },
+    {
+      "id": "caption-group-131",
+      "frame": 15,
+      "start": 154.041,
+      "end": 154.681,
+      "text": "sola línea",
+      "words": [
+        {
+          "id": "caption-word-131-0",
+          "text": "sola",
+          "start": 154.041,
+          "end": 154.241
+        },
+        {
+          "id": "caption-word-131-1",
+          "text": "línea",
+          "start": 154.341,
+          "end": 154.641
+        }
+      ]
+    },
+    {
+      "id": "caption-group-132",
+      "frame": 15,
+      "start": 154.681,
+      "end": 155.401,
+      "text": "de código.",
+      "words": [
+        {
+          "id": "caption-word-132-0",
+          "text": "de",
+          "start": 154.681,
+          "end": 154.721
+        },
+        {
+          "id": "caption-word-132-1",
+          "text": "código.",
+          "start": 154.841,
+          "end": 155.281
+        }
+      ]
+    },
+    {
+      "id": "caption-group-133",
+      "frame": 16,
+      "start": 155.714,
+      "end": 156.574,
+      "text": "KingdomApp.",
+      "words": [
+        {
+          "id": "caption-word-133-0",
+          "text": "KingdomApp.",
+          "start": 155.714,
+          "end": 156.454
+        }
+      ]
+    },
+    {
+      "id": "caption-group-134",
+      "frame": 16,
+      "start": 157.035,
+      "end": 158.094,
+      "text": "Toda tu iglesia,",
+      "words": [
+        {
+          "id": "caption-word-134-0",
+          "text": "Toda",
+          "start": 157.035,
+          "end": 157.254
+        },
+        {
+          "id": "caption-word-134-1",
+          "text": "tu",
+          "start": 157.334,
+          "end": 157.415
+        },
+        {
+          "id": "caption-word-134-2",
+          "text": "iglesia,",
+          "start": 157.454,
+          "end": 157.974
+        }
+      ]
+    },
+    {
+      "id": "caption-group-135",
+      "frame": 16,
+      "start": 158.295,
+      "end": 158.634,
+      "text": "en un",
+      "words": [
+        {
+          "id": "caption-word-135-0",
+          "text": "en",
+          "start": 158.295,
+          "end": 158.374
+        },
+        {
+          "id": "caption-word-135-1",
+          "text": "un",
+          "start": 158.434,
+          "end": 158.515
+        }
+      ]
+    },
+    {
+      "id": "caption-group-136",
+      "frame": 16,
+      "start": 158.634,
+      "end": 159.415,
+      "text": "solo lugar.",
+      "words": [
+        {
+          "id": "caption-word-136-0",
+          "text": "solo",
+          "start": 158.634,
+          "end": 158.854
+        },
+        {
+          "id": "caption-word-136-1",
+          "text": "lugar.",
+          "start": 158.934,
+          "end": 159.295
+        }
+      ]
+    },
+    {
+      "id": "caption-group-137",
+      "frame": 16,
+      "start": 159.894,
+      "end": 160.955,
+      "text": "Agenda tu demo",
+      "words": [
+        {
+          "id": "caption-word-137-0",
+          "text": "Agenda",
+          "start": 159.894,
+          "end": 160.334
+        },
+        {
+          "id": "caption-word-137-1",
+          "text": "tu",
+          "start": 160.414,
+          "end": 160.515
+        },
+        {
+          "id": "caption-word-137-2",
+          "text": "demo",
+          "start": 160.574,
+          "end": 160.854
+        }
+      ]
+    },
+    {
+      "id": "caption-group-138",
+      "frame": 16,
+      "start": 160.955,
+      "end": 161.314,
+      "text": "hoy.",
+      "words": [
+        {
+          "id": "caption-word-138-0",
+          "text": "hoy.",
+          "start": 160.955,
+          "end": 161.194
+        }
+      ]
+    }
+  ]
+}

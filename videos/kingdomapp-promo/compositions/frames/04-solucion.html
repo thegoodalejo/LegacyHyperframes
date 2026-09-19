@@ -1,0 +1,349 @@
+<template>
+<style>
+@font-face {
+  font-family: "Poppins";
+  font-weight: 400;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 600;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 700;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-700.woff2") format("woff2");
+}
+
+#root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+}
+
+.clip {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- full-bleed ground (clip, never on #root) ---- */
+.solucion-bg {
+  background:
+    radial-gradient(ellipse 1400px 900px at 50% 38%, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0) 62%),
+    radial-gradient(circle at 8% 92%, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0) 45%),
+    radial-gradient(circle at 94% 6%, rgba(0, 0, 0, 0.16) 0%, rgba(0, 0, 0, 0) 42%),
+    repeating-radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.05) 0, rgba(255, 255, 255, 0.05) 2px, rgba(255, 255, 255, 0) 3px, rgba(255, 255, 255, 0) 46px),
+    #0054ad;
+}
+
+.solucion-stage {
+  overflow: hidden;
+}
+
+/* ---- Scene 1: accent word ---- */
+.solucion-word1-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 370px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.solucion-word1 {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 24px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 132px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.solucion-underline {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  height: 8px;
+  border-radius: 4px;
+  background: #ffffff;
+  transform-origin: left center;
+}
+
+/* ---- Scene 2 + 3: brand lockup + subtitle ---- */
+.solucion-brand-group {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 385px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+}
+
+.solucion-lockup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  height: 170px;
+}
+
+.solucion-logo-wrap {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.solucion-glow {
+  position: absolute;
+  inset: -140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 68%);
+  opacity: 0;
+  z-index: 1;
+}
+
+.solucion-logo {
+  position: relative;
+  z-index: 2;
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  opacity: 0;
+}
+
+.solucion-wordmark {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 140px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.solucion-subtitle-row {
+  margin-top: 36px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.solucion-subtitle {
+  display: flex;
+  align-items: baseline;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 50px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: pre;
+}
+
+.solucion-caret {
+  display: inline-block;
+  width: 6px;
+  height: 46px;
+  margin-left: 6px;
+  background: #ffffff;
+  opacity: 0;
+  vertical-align: -6px;
+}
+</style>
+
+<div data-hf-id="hf-7v9r" id="root" data-composition-id="04-solucion" data-width="1920" data-height="1080" data-duration="7.192">
+  <div data-hf-id="hf-oh67" class="clip solucion-bg" data-start="0" data-duration="7.192" data-track-index="0"></div>
+
+  <div data-hf-id="hf-t9zj" class="clip solucion-stage" data-start="0" data-duration="7.192" data-track-index="1">
+    <div data-hf-id="hf-bamy" class="solucion-word1-row" id="sol-word1-row">
+      <div data-hf-id="hf-0ym3" class="solucion-word1" id="sol-word1">
+        Presentamos
+        <span data-hf-id="hf-uj4t" class="solucion-underline" id="sol-underline"></span>
+      </div>
+    </div>
+
+    <div data-hf-id="hf-kfto" class="solucion-brand-group" id="sol-brand-group">
+      <div data-hf-id="hf-vnwr" class="solucion-lockup">
+        <div data-hf-id="hf-7nmx" class="solucion-logo-wrap">
+          <div data-hf-id="hf-i1xw" class="solucion-glow" id="sol-glow"></div>
+          <img data-hf-id="hf-edb3" class="solucion-logo" id="sol-logo" src="assets/kingdom_logo.png" alt="">
+        </div>
+        <div data-hf-id="hf-c31s" class="solucion-wordmark" id="sol-wordmark">KingdomApp</div>
+      </div>
+      <div data-hf-id="hf-h78u" class="solucion-subtitle-row">
+        <div data-hf-id="hf-36yl" class="solucion-subtitle">
+          <span data-hf-id="hf-fy77" id="sol-sub-text"></span><span data-hf-id="hf-47g7" class="solucion-caret" id="sol-caret"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.__timelines = window.__timelines || {};
+
+  (function () {
+    var tl = gsap.timeline({ paused: true });
+
+    var TOTAL = 6.792;
+    var S2_START = 1.698; // 0.0-1.5s scene1 window scaled by 6.792/6.0
+    var S3_START = 4.528; // 1.5-4.0s scene2 window scaled
+
+    // ---------------------------------------------------------------
+    // Scene 1 (0.0 - 1.698s): "Presentamos" pops in, underline draws.
+    // ---------------------------------------------------------------
+    tl.fromTo(
+      "#sol-word1",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" },
+      0.05
+    );
+
+    tl.fromTo(
+      "#sol-underline",
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.45, ease: "power2.out" },
+      0.55
+    );
+
+    // Hard cut out (instant, no fade/slide) exactly on the beat swap.
+    tl.set("#sol-word1-row", { opacity: 0 }, S2_START);
+
+    // ---------------------------------------------------------------
+    // Scene 2 (1.698 - 4.528s): wordmark hard-cuts in, logo spring-pops
+    // beside it, resolving the brand lockup; then holds.
+    // ---------------------------------------------------------------
+    tl.set("#sol-brand-group", { opacity: 1 }, S2_START);
+
+    // Wordmark: instant appear + a tiny landing-weight settle (no slide/fade).
+    tl.fromTo(
+      "#sol-wordmark",
+      { scale: 1.06, opacity: 1 },
+      { scale: 1, opacity: 1, duration: 0.16, ease: "power2.out" },
+      S2_START
+    );
+
+    // Logo: canonical spring-pop entrance, small, beside the wordmark.
+    tl.fromTo(
+      "#sol-logo",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" },
+      1.848
+    );
+
+    // Ambient glow bloom lands on the logo's settle as one beat, then holds
+    // (bloom-and-hold — the later group jitter is this element's own idle).
+    tl.fromTo(
+      "#sol-glow",
+      { opacity: 0, scale: 0.85 },
+      { opacity: 0.32, scale: 1, duration: 0.5, ease: "power2.out" },
+      1.798
+    );
+
+    // ---------------------------------------------------------------
+    // Scene 3 (4.528 - 6.792s): one-line subtitle types on beneath the
+    // lockup and holds — the deliberate pivot-beat before the feature run.
+    // ---------------------------------------------------------------
+    var subtitleText = "Todo en una sola app.";
+    var subTextEl = document.getElementById("sol-sub-text");
+    var caretEl = document.getElementById("sol-caret");
+
+    tl.fromTo(
+      "#sol-caret",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.15, ease: "power1.out" },
+      S3_START
+    );
+
+    var TYPE_START = 4.608;
+    var TYPE_DUR = 1.26; // 21 chars * 0.06s
+    var TYPE_END = TYPE_START + TYPE_DUR; // 5.868
+
+    var typer = { v: 0 };
+    tl.to(
+      typer,
+      {
+        v: subtitleText.length,
+        duration: TYPE_DUR,
+        ease: "power1.inOut",
+        onUpdate: function () {
+          subTextEl.textContent = subtitleText.substring(0, Math.floor(typer.v));
+        },
+      },
+      TYPE_START
+    );
+
+    // Caret stays solid through typing (no tween touches it, holds at 1),
+    // then blinks once as the held pivot-beat settles in — cosine phase so
+    // it resumes exactly from the solid "on" state, no flicker at the seam.
+    var BLINK_START = TYPE_END;
+    var BLINK_DUR = TOTAL - BLINK_START; // 0.924s
+    var blink = { p: 0 };
+    tl.to(
+      blink,
+      {
+        p: Math.PI * 2 * 1, // whole number of cycles
+        duration: BLINK_DUR,
+        ease: "none",
+        onUpdate: function () {
+          caretEl.style.opacity = Math.cos(blink.p) > 0 ? "1" : "0";
+        },
+      },
+      BLINK_START
+    );
+
+    // Subtle jitter only on the held final beat (no further reveal, no exit) —
+    // the deliberate pivot-beat hold called out in the shot sequence.
+    var brandGroupEl = document.getElementById("sol-brand-group");
+    var JITTER_START = 5.9;
+    var JITTER_DUR = TOTAL - JITTER_START; // ~0.892s
+    var jitter = { p: 0 };
+    tl.to(
+      jitter,
+      {
+        p: Math.PI * 0.5, // half a cycle — one gentle sway, never a repeating breathe
+        duration: JITTER_DUR,
+        ease: "none",
+        onUpdate: function () {
+          var s = Math.sin(jitter.p);
+          brandGroupEl.style.transform = "translateY(" + (s * 2) + "px)";
+        },
+      },
+      JITTER_START
+    );
+
+    window.__timelines["04-solucion"] = tl;
+  })();
+</script>
+</template>

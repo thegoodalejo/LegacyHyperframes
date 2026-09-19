@@ -1,0 +1,608 @@
+<template>
+  <style>
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-400.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-500.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-600.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Poppins';
+      src: url('assets/fonts/Poppins-700.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      --wallet-bg: #ffffff;
+      --wallet-primary: #0054ad;
+      --wallet-text: #002a78;
+      --wallet-text-muted: #705d00;
+      --wallet-border: rgba(0, 84, 173, 0.2);
+      --wallet-card-bg: rgba(0, 84, 173, 0.04);
+      --wallet-accent-light: rgba(0, 84, 173, 0.08);
+      --wallet-positive: #059669;
+      --wallet-glow-color: 0, 42, 120;
+    }
+
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+
+    .wallet-bg {
+      background: var(--wallet-bg);
+    }
+
+    /* ===== camera rig ===== */
+    .wallet-scene {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .wallet-camera {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+    .wallet-stage {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* ===== Scene 1 — ring + count-up "donación" -> "Trazable" ===== */
+    .wallet-cardA {
+      position: absolute;
+      left: 790px;
+      top: 296px;
+      width: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      transform-origin: 50% 50%;
+      filter: blur(0px);
+      will-change: transform, opacity, filter;
+    }
+    .wallet-ring-box {
+      position: relative;
+      width: 260px;
+      height: 260px;
+    }
+    .wallet-ring-svg {
+      position: absolute;
+      inset: 0;
+    }
+    .wallet-ring-track {
+      fill: none;
+      stroke: var(--wallet-accent-light);
+      stroke-width: 14;
+    }
+    .wallet-ring-fill {
+      fill: none;
+      stroke: var(--wallet-primary);
+      stroke-width: 14;
+      stroke-linecap: round;
+      transform-origin: 130px 130px;
+      transform: rotate(-90deg);
+    }
+    .wallet-ring-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .wallet-count {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 92px;
+      color: var(--wallet-primary);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .wallet-count-unit {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 22px;
+      color: var(--wallet-text-muted);
+      letter-spacing: 0.02em;
+      opacity: 0;
+    }
+    .wallet-labelA {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 32px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--wallet-primary);
+      opacity: 0;
+    }
+
+    /* ===== Scene 2 — "Ingreso — Aprobado" card ===== */
+    .wallet-cardB {
+      position: absolute;
+      left: 700px;
+      top: 325px;
+      width: 520px;
+      height: 290px;
+      background: var(--wallet-card-bg);
+      border: 1.5px solid var(--wallet-border);
+      border-radius: 14px;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      filter: blur(0px);
+      will-change: transform, opacity, filter;
+    }
+    .wallet-cardB-eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 26px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--wallet-primary);
+    }
+    .wallet-cardB-row {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+    .wallet-cardB-status {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 62px;
+      color: var(--wallet-text);
+      line-height: 1;
+    }
+    .wallet-check {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--wallet-positive);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform-origin: 50% 50%;
+    }
+    .wallet-check svg {
+      width: 34px;
+      height: 34px;
+    }
+    .wallet-check-path {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ===== Scene 3 — "Centros de costo" card: folder icon + budget bar ===== */
+    .wallet-cardD {
+      position: absolute;
+      left: 1480px;
+      top: 325px;
+      width: 520px;
+      height: 290px;
+      background: var(--wallet-card-bg);
+      border: 1.5px solid var(--wallet-border);
+      border-radius: 14px;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .wallet-cardD-eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 26px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--wallet-primary);
+      white-space: nowrap;
+    }
+    .wallet-folder {
+      width: 140px;
+      height: 110px;
+    }
+    .wallet-folder-path {
+      fill: none;
+      stroke: var(--wallet-primary);
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .wallet-bar-track {
+      width: 360px;
+      height: 16px;
+      background: var(--wallet-accent-light);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .wallet-bar-fill {
+      width: 100%;
+      height: 100%;
+      background: var(--wallet-primary);
+      transform: scaleX(0);
+      transform-origin: left center;
+      display: block;
+    }
+    .wallet-cardD-sub {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 22px;
+      color: var(--wallet-text-muted);
+      letter-spacing: 0.02em;
+      opacity: 0;
+    }
+
+    /* ===== Scene 4 — "Auditoría" card + ledger draw + glow ===== */
+    .wallet-glow {
+      position: absolute;
+      left: 2120px;
+      top: 180px;
+      width: 800px;
+      height: 580px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(var(--wallet-glow-color), 0.38) 0%,
+        rgba(var(--wallet-glow-color), 0) 70%
+      );
+      opacity: 0;
+      z-index: 1;
+      will-change: transform, opacity;
+    }
+    .wallet-cardC {
+      position: absolute;
+      left: 2260px;
+      top: 325px;
+      width: 520px;
+      height: 290px;
+      background: var(--wallet-card-bg);
+      border: 1.5px solid var(--wallet-border);
+      border-radius: 14px;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      opacity: 0;
+      z-index: 2;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .wallet-cardC-eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 26px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--wallet-primary);
+    }
+    .wallet-ledger {
+      width: 220px;
+      height: 132px;
+    }
+    .wallet-ledger-line {
+      fill: none;
+      stroke: var(--wallet-primary);
+      stroke-width: 6;
+      stroke-linecap: round;
+    }
+    .wallet-ledger-check {
+      fill: none;
+      stroke: var(--wallet-positive);
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+
+  <div id="root" data-composition-id="09-wallet" data-width="1920" data-height="1080" data-duration="12.804">
+    <div class="clip wallet-bg" data-start="0" data-duration="12.804" data-track-index="0"></div>
+
+    <div class="clip" data-start="0" data-duration="12.804" data-track-index="1">
+      <div class="wallet-scene">
+        <div class="wallet-camera" id="wallet-camera">
+          <div class="wallet-stage">
+            <!-- Scene 1 (0.0-3.0s): ring + count-up "donación" -> "Trazable" -->
+            <div class="wallet-cardA" id="wallet-cardA">
+              <div class="wallet-ring-box">
+                <svg class="wallet-ring-svg" viewBox="0 0 260 260" width="260" height="260">
+                  <circle class="wallet-ring-track" cx="130" cy="130" r="112" />
+                  <circle class="wallet-ring-fill" id="wallet-ringfill" cx="130" cy="130" r="112" />
+                </svg>
+                <div class="wallet-ring-inner">
+                  <div class="wallet-count" id="wallet-count">0</div>
+                  <div class="wallet-count-unit" id="wallet-count-unit">donación</div>
+                </div>
+              </div>
+              <div class="wallet-labelA" id="wallet-labelA">Trazable</div>
+            </div>
+
+            <!-- Scene 2 (3.0-6.0s): push-through into "Ingreso - Aprobado check" -->
+            <div class="wallet-cardB" id="wallet-cardB">
+              <div class="wallet-cardB-eyebrow">Ingreso</div>
+              <div class="wallet-cardB-row">
+                <div class="wallet-cardB-status">Aprobado</div>
+                <div class="wallet-check" id="wallet-check">
+                  <svg viewBox="0 0 40 40">
+                    <path class="wallet-check-path" id="wallet-check-path" d="M10 21 L17 28 L30 12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scene 3 (6.0-9.0s): pan+push into "Centros de costo" - folder icon + budget bar fill -->
+            <div class="wallet-cardD" id="wallet-cardD">
+              <div class="wallet-cardD-eyebrow">Centros de costo</div>
+              <svg class="wallet-folder" viewBox="0 0 140 110">
+                <path
+                  class="wallet-folder-path"
+                  id="wallet-folder-path"
+                  d="M10,30 L10,95 Q10,100 15,100 L125,100 Q130,100 130,95 L130,45 Q130,40 125,40 L65,40 L55,25 Q52,20 46,20 L15,20 Q10,20 10,25 Z"
+                />
+              </svg>
+              <div class="wallet-bar-track">
+                <div class="wallet-bar-fill" id="wallet-bar-fill"></div>
+              </div>
+              <div class="wallet-cardD-sub" id="wallet-cardD-sub">Presupuesto</div>
+            </div>
+
+            <!-- Scene 4 (9.0-12.304s): pan into "Auditoría" + self-drawing ledger + glow bloom -->
+            <div class="wallet-glow" id="wallet-glow"></div>
+            <div class="wallet-cardC" id="wallet-cardC">
+              <div class="wallet-cardC-eyebrow">Auditoría</div>
+              <svg class="wallet-ledger" viewBox="0 0 200 120">
+                <line class="wallet-ledger-line" id="wallet-ledger-l1" x1="20" y1="20" x2="180" y2="20" />
+                <line class="wallet-ledger-line" id="wallet-ledger-l2" x1="20" y1="55" x2="180" y2="55" />
+                <line class="wallet-ledger-line" id="wallet-ledger-l3" x1="20" y1="90" x2="140" y2="90" />
+                <path class="wallet-ledger-check" id="wallet-ledger-check" d="M150 84 L160 94 L176 74" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    const TOTAL_DURATION = 12.304;
+
+    /* ---- synchronous SVG measurement setup ---- */
+    const ringFill = document.getElementById('wallet-ringfill');
+    const RING_LEN = ringFill.getTotalLength();
+    ringFill.style.strokeDasharray = RING_LEN;
+    ringFill.style.strokeDashoffset = RING_LEN;
+
+    const checkPath = document.getElementById('wallet-check-path');
+    const CHECK_LEN = checkPath.getTotalLength();
+    checkPath.style.strokeDasharray = CHECK_LEN;
+    checkPath.style.strokeDashoffset = CHECK_LEN;
+
+    const folderPath = document.getElementById('wallet-folder-path');
+    const FOLDER_LEN = folderPath.getTotalLength();
+    folderPath.style.strokeDasharray = FOLDER_LEN;
+    folderPath.style.strokeDashoffset = FOLDER_LEN;
+
+    ['wallet-ledger-l1', 'wallet-ledger-l2', 'wallet-ledger-l3', 'wallet-ledger-check'].forEach((id) => {
+      const el = document.getElementById(id);
+      const len = el.getTotalLength();
+      el.style.strokeDasharray = len;
+      el.style.strokeDashoffset = len;
+    });
+
+    /* ---- camera state (one writer at the bottom composes scale + pan + drift) ---- */
+    const camera = document.getElementById('wallet-camera');
+    const camPhase = { scale: 1 };
+    const camPan = { x: 0, y: 0 };
+
+    /* =========================================================
+       Scene 1 (0.0 - 3.0s): ring sweeps + "0 -> 1 donación"
+       count-up as one beat, label "Trazable" beneath, slow
+       continuous camera zoom-in underneath.
+       ========================================================= */
+    tl.fromTo(
+      '#wallet-cardA',
+      { scale: 0.85, opacity: 0, y: 14 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' },
+      0.0,
+    );
+    tl.fromTo('#wallet-labelA', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.15);
+
+    const countState = { value: 0 };
+    const COUNT_START = 0.25;
+    const COUNT_DUR = 1.0;
+    tl.to(
+      countState,
+      {
+        value: 1,
+        duration: COUNT_DUR,
+        ease: 'power2.out',
+        onUpdate: () => {
+          document.getElementById('wallet-count').textContent = Math.round(countState.value).toLocaleString();
+        },
+      },
+      COUNT_START,
+    );
+    tl.fromTo('#wallet-count', { scale: 0.55 }, { scale: 1, duration: COUNT_DUR, ease: 'power2.out' }, COUNT_START);
+    tl.to(ringFill, { strokeDashoffset: 0, duration: COUNT_DUR, ease: 'power2.out' }, COUNT_START);
+    tl.fromTo(
+      '#wallet-count-unit',
+      { opacity: 0, y: 8 },
+      { opacity: 1, y: 0, duration: 0.4, ease: 'power1.out' },
+      COUNT_START + 0.1,
+    );
+
+    /* subtle idle float once the ring has landed, clears well before the push-through */
+    tl.to('#wallet-cardA', { y: -4, duration: 1.0, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 0.9);
+
+    /* slow continuous camera zoom-in under Scene 1, landing exactly at the push-through */
+    tl.to(camPhase, { scale: 1.05, duration: 3.0, ease: 'sine.inOut' }, 0.0);
+
+    /* =========================================================
+       Scene 2 seam (3.0 - 3.9s): z-depth push-THROUGH the ring's
+       center into "Ingreso - Aprobado check" (cut-catalog
+       Zoom-Through: exit accelerates + blurs, hard cut at peak,
+       incoming decelerates into focus), camera scale compounds
+       the same push. This is the blueprint's signature move.
+       ========================================================= */
+    const PUSH_START = 3.0;
+    const PUSH_EXIT_DUR = 0.4;
+    const PUSH_CUT = PUSH_START + PUSH_EXIT_DUR; // 3.4
+    const PUSH_ENTRY_DUR = 0.5; // resolves at 3.9
+
+    tl.to('#wallet-cardA', { scale: 1.2, filter: 'blur(18px)', duration: PUSH_EXIT_DUR, ease: 'power3.in' }, PUSH_START);
+    tl.to('#wallet-cardA', { opacity: 0.15, duration: PUSH_EXIT_DUR, ease: 'none' }, PUSH_START);
+    tl.to(camPhase, { scale: 2.6, duration: PUSH_EXIT_DUR, ease: 'power3.in' }, PUSH_START);
+
+    tl.set('#wallet-cardA', { opacity: 0 }, PUSH_CUT);
+    tl.set('#wallet-cardB', { opacity: 0.15, scale: 0.75, filter: 'blur(18px)' }, PUSH_CUT);
+
+    tl.to('#wallet-cardB', { scale: 1, filter: 'blur(0px)', opacity: 1, duration: PUSH_ENTRY_DUR, ease: 'expo.out' }, PUSH_CUT);
+    tl.to(camPhase, { scale: 1.0, duration: PUSH_ENTRY_DUR, ease: 'expo.out' }, PUSH_CUT);
+
+    /* checkmark badge spring-pops in once the card has landed */
+    const BADGE_AT = PUSH_CUT + PUSH_ENTRY_DUR + 0.1; // 4.0
+    tl.fromTo('#wallet-check', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' }, BADGE_AT);
+    tl.to(checkPath, { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, BADGE_AT + 0.15);
+
+    /* subtle idle float while "Aprobado" holds, clears exactly before the pan+push begins */
+    tl.to('#wallet-cardB', { y: -4, duration: 0.85, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 4.3);
+
+    /* =========================================================
+       Scene 3 (6.0 - 9.0s): camera PANS+PUSHES laterally to the
+       new "Centros de costo" instrument - a folder icon self-draws
+       and a budget progress bar fills as the voiceover says
+       "Centros de costo, presupuesto".
+       ========================================================= */
+    const PAN1_START = 6.0;
+    const PAN1_DUR = 1.0;
+    const PAN1_DISTANCE = 780;
+
+    tl.to('#wallet-cardB', { opacity: 0, scale: 0.94, duration: 0.5, ease: 'power2.in' }, PAN1_START);
+    tl.to(camPan, { x: -PAN1_DISTANCE, duration: PAN1_DUR, ease: 'power2.inOut' }, PAN1_START);
+    /* "push" pulse riding on the pan, matching the packet's "pan/push" cue */
+    tl.to(camPhase, { scale: 1.07, duration: 0.5, ease: 'power2.out' }, PAN1_START);
+    tl.to(camPhase, { scale: 1.0, duration: 0.5, ease: 'power2.in' }, PAN1_START + 0.5);
+
+    tl.fromTo('#wallet-cardD', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out' }, PAN1_START + 0.2);
+
+    /* folder icon self-draws once the card has landed */
+    const FOLDER_DRAW_AT = 6.9;
+    tl.to(folderPath, { strokeDashoffset: 0, duration: 0.55, ease: 'power2.out' }, FOLDER_DRAW_AT);
+
+    /* budget bar fills right after, paired with the "Presupuesto" sub-label */
+    const BAR_FILL_AT = 7.3;
+    const BUDGET_PCT = 0.72;
+    tl.to('#wallet-bar-fill', { scaleX: BUDGET_PCT, duration: 1.0, ease: 'power2.out' }, BAR_FILL_AT);
+    tl.fromTo('#wallet-cardD-sub', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power1.out' }, BAR_FILL_AT + 0.1);
+
+    /* subtle idle float on Centros de costo before the next pan begins */
+    tl.to('#wallet-cardD', { y: -4, duration: 0.75, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 8.2);
+
+    /* =========================================================
+       Scene 4 (9.0 - 12.304s): camera PANS to the final card
+       "Auditoría"; a small ledger-line icon self-draws; the
+       shot settles centered as a soft accent glow blooms
+       behind it and holds to the end.
+       ========================================================= */
+    const PAN2_START = 9.0;
+    const PAN2_DUR = 1.0;
+    const PAN2_DISTANCE = 780;
+
+    tl.to('#wallet-cardD', { opacity: 0, scale: 0.94, duration: 0.5, ease: 'power2.in' }, PAN2_START);
+    tl.to(camPan, { x: -(PAN1_DISTANCE + PAN2_DISTANCE), duration: PAN2_DUR, ease: 'power2.inOut' }, PAN2_START);
+    tl.fromTo('#wallet-cardC', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out' }, PAN2_START + 0.2);
+
+    /* gentle push-in climax as the shot settles on the final card, holding to the end */
+    tl.to(camPhase, { scale: 1.05, duration: TOTAL_DURATION - (PAN2_START + PAN2_DUR), ease: 'power2.out' }, PAN2_START + PAN2_DUR);
+
+    /* ledger lines self-draw left-to-right, staggered as one continuous trace */
+    const LEDGER_START = 10.1;
+    tl.to('#wallet-ledger-l1', { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, LEDGER_START);
+    tl.to('#wallet-ledger-l2', { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, LEDGER_START + 0.25);
+    tl.to('#wallet-ledger-l3', { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, LEDGER_START + 0.45);
+    tl.to(document.getElementById('wallet-ledger-check'), { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, LEDGER_START + 0.65);
+
+    /* soft accent glow blooms in behind the settled hero card, then breathes to the end */
+    const BLOOM_START = 10.2;
+    const BLOOM_DUR = 1.0;
+    const glow = document.getElementById('wallet-glow');
+    const GLOW_PEAK_OPACITY = 0.3;
+    tl.fromTo('#wallet-glow', { opacity: 0, scale: 0.85 }, { opacity: GLOW_PEAK_OPACITY, scale: 1, duration: BLOOM_DUR, ease: 'power2.out' }, BLOOM_START);
+    const breathePhase = { p: 0 };
+    tl.to(
+      breathePhase,
+      {
+        p: Math.PI * 2 * 0.6,
+        duration: TOTAL_DURATION - (BLOOM_START + BLOOM_DUR),
+        ease: 'none',
+        onUpdate: () => {
+          const s = Math.sin(breathePhase.p);
+          glow.style.opacity = String(GLOW_PEAK_OPACITY + s * 0.04);
+          glow.style.transform = `scale(${1 + s * 0.025})`;
+        },
+      },
+      BLOOM_START + BLOOM_DUR,
+    );
+
+    /* subtle idle float on the final card through the hold */
+    tl.to('#wallet-cardC', { y: -4, duration: 0.6, ease: 'sine.inOut', yoyo: true, repeat: 1 }, 11.1);
+
+    /* ---- single writer: composes phase scale + pan + organic drift onto the camera ---- */
+    const drift = { p: 0 };
+    tl.to(
+      drift,
+      {
+        p: Math.PI * 2 * 2,
+        duration: TOTAL_DURATION,
+        ease: 'none',
+        onUpdate: () => {
+          const dx = Math.sin(drift.p) * 5;
+          const dy = Math.sin(drift.p * 1.3) * 3;
+          camera.style.transform = `scale(${camPhase.scale}) translate(${camPan.x + dx}px, ${camPan.y + dy}px)`;
+        },
+      },
+      0,
+    );
+
+    window.__timelines['09-wallet'] = tl;
+  </script>
+</template>

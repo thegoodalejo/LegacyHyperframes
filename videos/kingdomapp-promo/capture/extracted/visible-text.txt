@@ -1,0 +1,95 @@
+FUENTE: docs/modulos-app.md (KingdomApp) + Kingdom-App-Propuesta-Comercial.pdf (referencia de profundidad,
+un poco desactualizada, aportada por el usuario) — extracto curado para guion v2. Ángulo: problema → solución.
+Mensaje único: KingdomApp reemplaza hojas de cálculo, chats sueltos y apps separadas por una sola
+plataforma que administra toda la operación de una iglesia multi-sede. Audiencia: pastores y líderes
+administrativos evaluando o adoptando software de gestión. Tono: profesional pero cálido, confiable.
+Duración objetivo: ~145s (v2 — cobertura completa de las 9 categorías del PDF, pedido explícito del
+usuario tras revisar el preview v1: "le veo muy simplificada la información... falta más detalle").
+Idioma: español.
+
+=== EL PROBLEMA (hoy, sin KingdomApp) ===
+Una iglesia coordina su membresía en hojas de Excel, el seguimiento pastoral por WhatsApp personal,
+la logística de eventos a mano, las finanzas en cuadernos o Excel aparte, y usa varias apps sueltas
+para cada cosa — nada conectado entre sí, información perdida entre líderes, nadie con una vista
+completa de la congregación.
+
+=== LA SOLUCIÓN: KINGDOMAPP ===
+Una sola plataforma multi-tenant (multi-sede) que centraliza toda la operación de la iglesia.
+
+--- Categoría 1a: Membresía ---
+Directorio central de todas las personas de la iglesia: datos personales, red, etiquetas, notas,
+foto y credencial con QR. Búsqueda y filtros avanzados, exportación a PDF, detección de duplicados,
+importación masiva desde Excel para arrancar con la base de datos existente.
+
+--- Categoría 1b: Discipulado, Liderazgo y Organigrama (lo más reciente de la app) ---
+Separa dos relaciones de cuidado: Discipulado (cuidado pastoral completo, con reporte mensual) y
+Liderazgo (seguimiento puntual, más plano). Un líder gestiona sus discípulos y sus miembros liderados
+por separado, con semáforo de reportes pendientes y notificación push. El Organigrama de discipulado
+(página independiente en el menú) dibuja el árbol completo de la cadena de cuidado pastoral desde un
+miembro raíz — quién discipula a quién, discípulos directos y total de la red — para asegurar que
+nadie quede sin cuidado pastoral.
+
+--- Categoría 2: Eventos, Asistencia y Accesos ---
+Creación y administración de toda actividad (cultos, retiros, campañas) con fecha, ubicación con mapa,
+calendario visual para toda la congregación, asistencia y control de acceso por código QR, credenciales
+imprimibles en lote para los asistentes, y equipos/colaboradores programados con confirmación tipo
+semáforo (confirmado/pendiente/rechazado).
+
+--- Categoría 3: Kids ---
+Check-in y check-out de niños con código QR, verificando que quien lo retira sea la persona autorizada
+(familiar verificado), con alertas visibles al momento de la entrega (ej. alergias, indicaciones
+especiales) — seguridad y tranquilidad para cada familia.
+
+--- Categoría 4: Kingdom Academy ---
+Plataforma de formación de líderes: cursos y clases estructuradas, panel de progreso del alumno, y
+certificados al completar — para levantar y capacitar liderazgo dentro de la misma app.
+
+--- Categoría 5: Finanzas (Wallet) ---
+Módulo de tesorería con roles de cajero y supervisor: donaciones trazables por código o QR, carga
+manual de ingresos, revisión y aprobación antes de contabilizar, centros de costo y presupuesto por
+área, estadísticas por período y divisa, y auditoría completa de cada corrección — transparencia y
+control financiero, sin hojas de cálculo sueltas.
+
+--- Categoría 6: Comunicación ---
+Muro de novedades para toda la iglesia, notificaciones push segmentadas por audiencia, campañas de
+WhatsApp con plantillas aprobadas por Meta enviadas desde la línea propia de WhatsApp Business de cada
+sede (con chatbot y Call Center para conversaciones entrantes), y Automatizaciones que disparan mensajes
+solos cuando pasa algo en el sistema (una etiqueta, un logro, una fecha) — seguimiento que no depende de
+que un líder se acuerde de enviarlo a mano.
+
+--- Categoría 7: Alabanza ---
+Biblioteca de partituras (importación MusicXML), transposición de tono en un clic, armado de
+repertorios por servicio, y un marketplace entre iglesias para comprar e intercambiar partituras usando
+la moneda interna (Koins).
+
+--- Categoría 8: Presencia Digital ---
+Micrositio público configurable por sede (builder visual, sin código), formularios inteligentes que se
+ramifican según las respuestas del visitante, e invitaciones con auto-registro por código QR o URL
+permanente — la primera impresión digital de la iglesia.
+
+--- Categoría 9: Analítica y Decisiones ---
+Dashboards ejecutivos con las métricas clave de la congregación, mapas de territorio (ej. ubicación de
+miembros, iglesias aliadas), y generación de reportes a demanda (PDF/Excel) exportables con un clic —
+decisiones basadas en datos, no en intuición.
+
+--- Diferenciador adicional: Misiones (no está en el PDF, es reciente) ---
+Suite para jornadas evangelísticas de campo: registro de ingreso inmediato con manilla física opcional,
+conteo de asistencia (identificado o aforo analógico rápido), testimonios de fe recogidos en el momento,
+logística de equipos, e Iglesias Locales + Collabs — la persona que toma una decisión de fe elige, según
+distancia y su propia preferencia, a cuál iglesia aliada cercana asistir, quedando conectada al instante.
+
+--- Cierre de sección de módulos: Multi-sede y Totalmente Parametrizable ---
+Una misma cuenta puede tener acceso a varias sedes/iglesias, conservando su propio rol y privilegios en
+cada una — todo lo que registra queda asociado a la sede donde está trabajando en ese momento. Toda la
+app es configurable por el propio cliente sin escribir código: roles, redes internas y permisos se
+definen desde Usuarios/Admin, no vienen fijos de fábrica.
+
+=== CIERRE / CTA ===
+Todo lo anterior — cuidado pastoral, eventos, finanzas, comunicación, formación, analítica — en una sola
+app, para una o varias sedes, adaptada a cómo funciona tu iglesia. KingdomApp. (Logo de cierre + llamado
+a la acción: agenda una demo / conoce más.)
+
+=== IDENTIDAD DE MARCA ===
+Logo: ícono cuadrado de esquinas redondeadas, fondo azul de marca, letra "K" blanca con una pequeña
+corona/almena encima (motivo "reino"). Color primario #0054ad (azul), acentos dorado #705d00 y morado
+#565992, tipografía Poppins. Debe abrir el video como portada (requisito explícito del usuario).

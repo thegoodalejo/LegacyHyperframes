@@ -1,0 +1,321 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-500.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-600.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-700.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      container-type: size;
+      font-family: "Poppins", sans-serif;
+      --bg: #ffffff;
+      --primary: #0054ad;
+      --text: #002a78;
+      --accent-light: rgba(0, 84, 173, 0.08);
+      --accent-medium: rgba(0, 84, 173, 0.15);
+      --border: rgba(0, 84, 173, 0.2);
+      --card-bg: rgba(0, 84, 173, 0.04);
+    }
+
+    /* ---- background / atmosphere (full-bleed clip, never on #root) ---- */
+    .fr12cierre-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+    }
+    .fr12cierre-bg-glow {
+      position: absolute;
+      width: 1300px;
+      height: 1300px;
+      left: 50%;
+      top: 360px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, var(--accent-light) 0%, rgba(0, 84, 173, 0) 62%);
+    }
+    .fr12cierre-bg-dots {
+      position: absolute;
+      inset: 0;
+      opacity: 0.6;
+      background-image: radial-gradient(var(--accent-light) 2px, transparent 2px);
+      background-size: 54px 54px;
+      background-position: 27px 27px;
+    }
+    .fr12cierre-bg-rings {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* ---- content layer ---- */
+    .fr12cierre-content {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* feature-icon chips (Scene 1 — disperse off all four edges) */
+    .fr12cierre-icon-chip {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      will-change: transform, opacity;
+    }
+    .fr12cierre-icon-chip svg {
+      width: 48px;
+      height: 48px;
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* logo mark (Scene 2 — stroke-draws, then fills with the real mark) */
+    .fr12cierre-mark-wrap {
+      position: absolute;
+      left: 50%;
+      top: 230px;
+      width: 260px;
+      height: 260px;
+      transform: translateX(-50%);
+    }
+    .fr12cierre-mark-outline {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .fr12cierre-mark-outline path {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .fr12cierre-mark-image {
+      position: absolute;
+      inset: 13px;
+      width: calc(100% - 26px);
+      height: calc(100% - 26px);
+      object-fit: contain;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    /* wordmark (Scene 3 — joins to complete the lockup) */
+    .fr12cierre-wordmark {
+      position: absolute;
+      left: 50%;
+      top: 555px;
+      width: max-content;
+      font-family: "Poppins", sans-serif;
+      font-weight: 700;
+      font-size: 4.6cqw;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    /* CTA pill (Scene 4 — the one earned spring-pop overshoot) */
+    .fr12cierre-cta {
+      position: absolute;
+      left: 50%;
+      top: 700px;
+      width: max-content;
+      padding: 1.35cqh 2.9cqw;
+      background: var(--primary);
+      color: var(--bg);
+      border-radius: 100px;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      font-size: 1.7cqw;
+      letter-spacing: 0.01em;
+      box-shadow: 0 18px 46px rgba(0, 84, 173, 0.28);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+  </style>
+
+  <div data-hf-id="hf-hapi" id="root" data-composition-id="12-cierre" data-width="1920" data-height="1080" data-duration="5.956">
+    <div data-hf-id="hf-iof6" class="fr12cierre-bg clip" data-start="0" data-duration="5.956" data-track-index="0">
+      <div data-hf-id="hf-w0yh" class="fr12cierre-bg-glow"></div>
+      <svg data-hf-id="hf-sqxu" class="fr12cierre-bg-rings" viewBox="0 0 1920 1080">
+        <circle data-hf-id="hf-tvin" cx="960" cy="360" r="220" fill="none" stroke="var(--border)" stroke-width="1.5" opacity="0.55" />
+        <circle data-hf-id="hf-a040" cx="960" cy="360" r="340" fill="none" stroke="var(--border)" stroke-width="1.5" opacity="0.4" />
+        <circle data-hf-id="hf-mklx" cx="960" cy="360" r="460" fill="none" stroke="var(--accent-medium)" stroke-width="1.5" opacity="0.28" />
+        <circle data-hf-id="hf-7vsd" cx="960" cy="360" r="580" fill="none" stroke="var(--accent-medium)" stroke-width="1.5" opacity="0.16" />
+      </svg>
+      <div data-hf-id="hf-sut2" class="fr12cierre-bg-dots"></div>
+    </div>
+
+    <div data-hf-id="hf-3jrp" class="fr12cierre-content clip" data-start="0" data-duration="5.956" data-track-index="1">
+      <!-- Scene 1 — echoes of the prior beats, pre-arranged, about to disperse -->
+      <div data-hf-id="hf-vk1n" class="fr12cierre-icon-chip" style="left:258px; top:100px;" data-exit-x="-460" data-exit-y="-420">
+        <svg data-hf-id="hf-b65t" viewBox="0 0 44 44">
+          <rect data-hf-id="hf-eqhb" x="7" y="10" width="30" height="27" rx="4" />
+          <line data-hf-id="hf-zg67" x1="7" y1="18" x2="37" y2="18" />
+          <line data-hf-id="hf-4obj" x1="15" y1="5" x2="15" y2="13" />
+          <line data-hf-id="hf-801b" x1="29" y1="5" x2="29" y2="13" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-djh5" class="fr12cierre-icon-chip" style="left:638px; top:100px;" data-exit-x="-160" data-exit-y="-500">
+        <svg data-hf-id="hf-57mt" viewBox="0 0 44 44">
+          <path data-hf-id="hf-07we" d="M8 10 H33 A4 4 0 0 1 37 14 V27 A4 4 0 0 1 33 31 H19 L11 38 V31 H8 A4 4 0 0 1 4 27 V14 A4 4 0 0 1 8 10 Z" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-ue6x" class="fr12cierre-icon-chip" style="left:1182px; top:100px;" data-exit-x="160" data-exit-y="-500">
+        <svg data-hf-id="hf-6ejw" viewBox="0 0 44 44">
+          <line data-hf-id="hf-6ouf" x1="10" y1="36" x2="10" y2="20" />
+          <line data-hf-id="hf-66ab" x1="22" y1="36" x2="22" y2="8" />
+          <line data-hf-id="hf-lgcx" x1="34" y1="36" x2="34" y2="26" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-j8hz" class="fr12cierre-icon-chip" style="left:1562px; top:100px;" data-exit-x="460" data-exit-y="-420">
+        <svg data-hf-id="hf-608v" viewBox="0 0 44 44">
+          <path data-hf-id="hf-0o19" d="M22 5c8 0 14 6.5 14 14.5C36 30 22 40 22 40S8 30 8 19.5C8 11.5 14 5 22 5Z" />
+          <circle data-hf-id="hf-e3fs" cx="22" cy="18" r="5" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-3agu" class="fr12cierre-icon-chip" style="left:258px; top:760px;" data-exit-x="-460" data-exit-y="420">
+        <svg data-hf-id="hf-775y" viewBox="0 0 44 44">
+          <circle data-hf-id="hf-209x" cx="15" cy="14" r="6" />
+          <path data-hf-id="hf-u9zz" d="M4 36c0-8 5-13 11-13s11 5 11 13" />
+          <circle data-hf-id="hf-57q6" cx="31" cy="16" r="5" />
+          <path data-hf-id="hf-h9zd" d="M25 36c0-6 4-10 10-10s7 3 8 8" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-21du" class="fr12cierre-icon-chip" style="left:638px; top:760px;" data-exit-x="-160" data-exit-y="500">
+        <svg data-hf-id="hf-6sux" viewBox="0 0 44 44">
+          <circle data-hf-id="hf-it2o" cx="22" cy="22" r="15" />
+          <line data-hf-id="hf-jwco" x1="22" y1="10" x2="22" y2="34" />
+          <path data-hf-id="hf-057h" d="M16 17c0-3 3-5 6-5s6 2 6 4c0 5-12 3-12 8 0 2 3 4 6 4s6-2 6-5" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-ho2y" class="fr12cierre-icon-chip" style="left:1182px; top:760px;" data-exit-x="160" data-exit-y="500">
+        <svg data-hf-id="hf-7zs0" viewBox="0 0 44 44">
+          <path data-hf-id="hf-y7xe" d="M22 6c-2 0-3 1.5-3 3v1c-5 1.5-8 6-8 11v9l-3 4h28l-3-4v-9c0-5-3-9.5-8-11v-1c0-1.5-1-3-3-3Z" />
+          <path data-hf-id="hf-z312" d="M18 38a4 4 0 0 0 8 0" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-j5ka" class="fr12cierre-icon-chip" style="left:1562px; top:760px;" data-exit-x="460" data-exit-y="420">
+        <svg data-hf-id="hf-7lgz" viewBox="0 0 44 44">
+          <path data-hf-id="hf-4ijj" d="M22 5 L35 10 V20 C35 30 29 36 22 39 C15 36 9 30 9 20 V10 Z" />
+          <path data-hf-id="hf-88k4" d="M15 21 L20 27 L30 15" />
+        </svg>
+      </div>
+
+      <!-- Scene 2 — the mark stroke-draws itself on, then fills with the real logo -->
+      <div data-hf-id="hf-f5cc" class="fr12cierre-mark-wrap">
+        <svg data-hf-id="hf-33rs" class="fr12cierre-mark-outline" viewBox="0 0 200 200">
+          <path data-hf-id="hf-yl16" id="fr12cierre-mark-outline-path" d="M 42 10 H 158 A 32 32 0 0 1 190 42 V 158 A 32 32 0 0 1 158 190 H 42 A 32 32 0 0 1 10 158 V 42 A 32 32 0 0 1 42 10 Z" />
+        </svg>
+        <img data-hf-id="hf-grj8" class="fr12cierre-mark-image" src="assets/kingdom_logo.png" alt="">
+      </div>
+
+      <!-- Scene 3 — the wordmark joins to complete the lockup -->
+      <div data-hf-id="hf-20ar" class="fr12cierre-wordmark">KingdomApp</div>
+
+      <!-- Scene 4 — the one earned spring-pop CTA pill -->
+      <div data-hf-id="hf-knr8" class="fr12cierre-cta">Agenda tu demo hoy</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      var outlinePath = document.getElementById("fr12cierre-mark-outline-path");
+      var outlineLen = outlinePath.getTotalLength();
+      outlinePath.style.strokeDasharray = String(outlineLen);
+      outlinePath.style.strokeDashoffset = String(outlineLen);
+
+      // Scene 1 (0.0-1.28s) — pre-arranged feature-icon formation disperses
+      // off all four frame edges, emptying the frame (center-outward-expansion,
+      // run outward: formation position -> offscreen target).
+      var chips = gsap.utils.toArray(".fr12cierre-icon-chip");
+      chips.forEach(function (el, i) {
+        var dx = Number(el.dataset.exitX);
+        var dy = Number(el.dataset.exitY);
+        tl.to(
+          el,
+          { x: dx, y: dy, opacity: 0, scale: 0.75, duration: 0.65, ease: "power2.out" },
+          i * 0.07
+        );
+      });
+
+      // Scene 2 (1.28-2.98s) — the mark stroke-draws on (svg-path-draw), then
+      // the real logo fills in inside the drawn outline.
+      tl.to(
+        outlinePath,
+        { strokeDashoffset: 0, duration: 0.8, ease: "power2.out" },
+        1.28
+      );
+      tl.fromTo(
+        ".fr12cierre-mark-image",
+        { opacity: 0, scale: 0.94 },
+        { opacity: 1, scale: 1, duration: 0.55, ease: "power2.out" },
+        1.28 + 0.8
+      );
+      tl.to(
+        outlinePath,
+        { strokeOpacity: 0.32, duration: 0.4, ease: "power1.out" },
+        1.28 + 0.8
+      );
+
+      // Scene 3 (2.98-4.26s) — the wordmark reveals to complete the lockup.
+      tl.fromTo(
+        ".fr12cierre-wordmark",
+        { xPercent: -50, y: 16, opacity: 0 },
+        { xPercent: -50, y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+        2.99
+      );
+
+      // Scene 4 (4.26-5.956s) — the CTA pill spring-pops in (the shot's one
+      // earned overshoot), then holds dead-static to the end.
+      tl.fromTo(
+        ".fr12cierre-cta",
+        { xPercent: -50, y: 14, scale: 0.4, opacity: 0 },
+        { xPercent: -50, y: 0, scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.6)" },
+        4.3
+      );
+
+      window.__timelines["12-cierre"] = tl;
+    })();
+  </script>
+</template>

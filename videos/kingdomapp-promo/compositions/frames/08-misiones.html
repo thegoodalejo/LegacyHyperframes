@@ -1,0 +1,698 @@
+<template>
+<style>
+@font-face {
+  font-family: "Poppins";
+  font-weight: 400;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 600;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 700;
+  font-style: normal;
+  src: url("assets/fonts/Poppins-700.woff2") format("woff2");
+}
+
+#root {
+  --mis-bg: #ffffff;
+  --mis-primary: #0054ad;
+  --mis-text: #002a78;
+  --mis-text-muted: #705d00;
+  --mis-border: rgba(0, 84, 173, 0.2);
+  --mis-card-bg: rgba(0, 84, 173, 0.04);
+  --mis-accent-light: rgba(0, 84, 173, 0.08);
+  --mis-accent-medium: rgba(0, 84, 173, 0.15);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+}
+
+.clip {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- full-bleed ground (clip, never on #root) ---- */
+.misiones-bg {
+  background: var(--mis-bg);
+}
+
+.misiones-stage {
+  overflow: hidden; /* the traveling camera moves world content past frame edges */
+}
+
+/* ---- the camera: one wrapper carries the whole journey ---- */
+.misiones-world {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  filter: url(#mis-streak-filter);
+}
+
+/* ---- Station A: Registro / Conteo icon circle ---- */
+.misiones-icon-circle {
+  position: absolute;
+  left: 380px;
+  top: 290px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: var(--mis-accent-light);
+  border: 2px solid var(--mis-border);
+  will-change: transform, opacity;
+}
+
+.misiones-icon-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mis-primary);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.misiones-icon-layer svg {
+  width: 104px;
+  height: 104px;
+}
+
+.misiones-icon-check {
+  z-index: 2;
+}
+
+.misiones-label-pill {
+  position: absolute;
+  left: 380px;
+  top: 528px;
+  width: 220px;
+  height: 56px;
+  border-radius: 100px;
+  background: var(--mis-accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+
+.misiones-label-text {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 0.01em;
+  color: var(--mis-primary);
+}
+
+/* ---- tally counter chip (Conteo beat — literal tally strokes, no invented figures) ---- */
+.misiones-counter-chip {
+  position: absolute;
+  left: 560px;
+  top: 250px;
+  width: 140px;
+  height: 56px;
+  border-radius: 100px;
+  background: var(--mis-bg);
+  border: 1.5px solid var(--mis-border);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+
+.misiones-tally-svg {
+  width: 72px;
+  height: 24px;
+  overflow: visible;
+}
+
+.misiones-tally-svg line {
+  stroke: var(--mis-primary);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+/* ---- Testimony card ---- */
+.misiones-testimony-card {
+  position: absolute;
+  left: 660px;
+  top: 420px;
+  width: 340px;
+  height: 160px;
+  background: var(--mis-card-bg);
+  border: 1.5px solid var(--mis-border);
+  border-radius: 14px;
+  box-sizing: border-box;
+  overflow: hidden;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.misiones-testimony-quote {
+  position: absolute;
+  top: -14px;
+  left: 18px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 120px;
+  line-height: 0.5;
+  color: var(--mis-primary);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.misiones-testimony-bubble {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  width: 28px;
+  height: 28px;
+  color: var(--mis-primary);
+}
+
+.misiones-testimony-label {
+  position: absolute;
+  left: 24px;
+  bottom: 22px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mis-primary);
+}
+
+/* ---- connector line (testimony -> map pin) ---- */
+.misiones-connector-svg {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+}
+
+.misiones-connector-path {
+  fill: none;
+  stroke: var(--mis-primary);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+/* ---- Station B: the map ---- */
+.misiones-map-panel {
+  position: absolute;
+  left: 1240px;
+  top: 260px;
+  width: 420px;
+  height: 340px;
+  background: var(--mis-card-bg);
+  border: 1.5px solid var(--mis-border);
+  border-radius: 14px;
+  box-sizing: border-box;
+  overflow: hidden;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.misiones-map-routes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.misiones-map-routes path {
+  fill: none;
+  stroke: var(--mis-accent-medium);
+  stroke-width: 2;
+  stroke-dasharray: 3 10;
+  stroke-linecap: round;
+}
+
+.misiones-map-routes circle {
+  fill: var(--mis-accent-medium);
+}
+
+.misiones-map-eyebrow {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mis-primary);
+  will-change: opacity, transform;
+}
+
+.misiones-pin {
+  position: absolute;
+  left: 1404px;
+  top: 326px;
+  width: 56px;
+  height: 72px;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.misiones-pin svg {
+  width: 100%;
+  height: 100%;
+}
+
+.misiones-pin-ring {
+  position: absolute;
+  left: 1400px;
+  top: 366px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid var(--mis-primary);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.misiones-pin-label {
+  position: absolute;
+  left: 1310px;
+  top: 430px;
+  width: 250px;
+  height: 56px;
+  border-radius: 100px;
+  background: var(--mis-accent-light);
+  border: 1.5px solid var(--mis-border);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.misiones-pin-label-text {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: 0.005em;
+  color: var(--mis-primary);
+  white-space: nowrap;
+}
+
+/* invisible measurement anchors — never painted, only used to bake camera targets */
+.misiones-anchor {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+</style>
+
+<div data-hf-id="hf-17b8" id="root" data-composition-id="08-misiones" data-width="1920" data-height="1080" data-duration="10.274">
+  <div data-hf-id="hf-9oy0" class="clip misiones-bg" data-start="0" data-duration="10.274" data-track-index="0"></div>
+
+  <div data-hf-id="hf-soxw" class="clip misiones-stage" data-start="0" data-duration="10.274" data-track-index="1">
+    <svg data-hf-id="hf-p3r6" width="0" height="0" aria-hidden="true" style="position: absolute">
+      <filter data-hf-id="hf-ohv3" id="mis-streak-filter" x="-50%" y="-50%" width="200%" height="200%">
+        <fegaussianblur data-hf-id="hf-sx35" id="mis-streak-blur" in="SourceGraphic" stdDeviation="0 0" />
+      </filter>
+    </svg>
+
+    <div data-hf-id="hf-6lah" class="misiones-world" id="mis-world" data-layout-allow-overflow="">
+
+      <!-- Station A: Registro -> Conteo -->
+      <div data-hf-id="hf-2mnq" class="misiones-icon-circle" id="mis-icon-circle">
+        <div data-hf-id="hf-uzxl" class="misiones-icon-layer misiones-icon-registro" id="mis-icon-registro">
+          <svg data-hf-id="hf-h0hq" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle data-hf-id="hf-20cz" cx="9" cy="7" r="3.2" />
+            <path data-hf-id="hf-repd" d="M3 20v-1.5A5.5 5.5 0 0 1 8.5 13H10" />
+            <line data-hf-id="hf-fxbq" x1="18" y1="10" x2="18" y2="18" />
+            <line data-hf-id="hf-jlgh" x1="14" y1="14" x2="22" y2="14" />
+          </svg>
+        </div>
+        <div data-hf-id="hf-nyev" class="misiones-icon-layer misiones-icon-check" id="mis-icon-check">
+          <svg data-hf-id="hf-pmle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle data-hf-id="hf-0ldo" cx="12" cy="12" r="9.5" />
+            <path data-hf-id="hf-liwt" d="m7.5 12.5 3 3 6-6.5" />
+          </svg>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-664q" class="misiones-label-pill" id="mis-label-pill">
+        <span data-hf-id="hf-40wg" class="misiones-label-text" id="mis-label-text">Registro</span>
+      </div>
+
+      <div data-hf-id="hf-f8tq" class="misiones-counter-chip" id="mis-counter-chip">
+        <svg data-hf-id="hf-bb8y" class="misiones-tally-svg" viewBox="0 0 72 24">
+          <line data-hf-id="hf-mgu6" id="mis-tally-1" x1="8" y1="2" x2="8" y2="22" />
+          <line data-hf-id="hf-8wjx" id="mis-tally-2" x1="24" y1="2" x2="24" y2="22" />
+          <line data-hf-id="hf-gmcm" id="mis-tally-3" x1="40" y1="2" x2="40" y2="22" />
+          <line data-hf-id="hf-404z" id="mis-tally-4" x1="56" y1="2" x2="56" y2="22" />
+        </svg>
+      </div>
+
+      <!-- Testimonio -->
+      <div data-hf-id="hf-gn36" class="misiones-testimony-card" id="mis-testimony-card">
+        <div data-hf-id="hf-u1d9" class="misiones-testimony-quote">“</div>
+        <div data-hf-id="hf-slzj" class="misiones-testimony-bubble">
+          <svg data-hf-id="hf-q0wf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path data-hf-id="hf-6luc" d="M4 4h16v12H8l-4 4V4z" />
+          </svg>
+        </div>
+        <div data-hf-id="hf-tjdq" class="misiones-testimony-label">Testimonio</div>
+      </div>
+
+      <svg data-hf-id="hf-vlkd" class="misiones-connector-svg" viewBox="0 0 1920 1080">
+        <path data-hf-id="hf-x849" class="misiones-connector-path" id="mis-connector-path" d="M 1000 500 Q 1220 430 1432 398" />
+      </svg>
+
+      <!-- Station B: Mapa -->
+      <div data-hf-id="hf-uazw" class="misiones-map-panel" id="mis-map-panel">
+        <svg data-hf-id="hf-ie90" class="misiones-map-routes" viewBox="0 0 420 340">
+          <path data-hf-id="hf-1y7x" d="M 20 260 Q 140 200 200 250 T 380 220" />
+          <path data-hf-id="hf-1qxf" d="M 60 60 Q 160 120 240 90 T 400 130" />
+          <circle data-hf-id="hf-mt36" cx="60" cy="60" r="4" />
+          <circle data-hf-id="hf-8uwr" cx="240" cy="90" r="4" />
+          <circle data-hf-id="hf-07dy" cx="20" cy="260" r="4" />
+          <circle data-hf-id="hf-ds9f" cx="200" cy="250" r="4" />
+        </svg>
+        <div data-hf-id="hf-37k3" class="misiones-map-eyebrow" id="mis-map-eyebrow">Mapa</div>
+      </div>
+
+      <div data-hf-id="hf-bcc0" class="misiones-pin" id="mis-pin">
+        <svg data-hf-id="hf-f9id" viewBox="0 0 56 72">
+          <path data-hf-id="hf-erof" d="M28 4C16.4 4 7 13.4 7 25c0 15.5 21 43 21 43s21-27.5 21-43C49 13.4 39.6 4 28 4z" fill="#0054ad" />
+          <circle data-hf-id="hf-q5ql" cx="28" cy="25" r="8.5" fill="#ffffff" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-3xh2" class="misiones-pin-ring" id="mis-pin-ring"></div>
+
+      <div data-hf-id="hf-vsba" class="misiones-pin-label" id="mis-pin-label">
+        <span data-hf-id="hf-4snu" class="misiones-pin-label-text">Iglesia Nueva Vida</span>
+      </div>
+
+      <div data-hf-id="hf-tgci" class="misiones-anchor" id="mis-travel-anchor" style="left: 1225px; top: 450px;"></div>
+      <div data-hf-id="hf-kphy" class="misiones-anchor" id="mis-pin-anchor" style="left: 1433px; top: 410px;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.__timelines = window.__timelines || {};
+
+  (async function () {
+    // Measurement is async (fonts must settle before rects are trustworthy) —
+    // build + register the timeline inside this same setup so the baked
+    // camera targets are ready before window.__timelines is published.
+    await document.fonts.ready;
+
+    var W = 1920,
+      H = 1080;
+    var rootEl = document.getElementById("root");
+    var worldEl = document.getElementById("mis-world");
+    var iconCircleEl = document.getElementById("mis-icon-circle");
+    var travelAnchorEl = document.getElementById("mis-travel-anchor");
+    var pinAnchorEl = document.getElementById("mis-pin-anchor");
+    var labelTextEl = document.getElementById("mis-label-text");
+    var connectorPathEl = document.getElementById("mis-connector-path");
+    var blurNode = document.getElementById("mis-streak-blur");
+
+    function measureCenterOffset(el) {
+      var r = el.getBoundingClientRect();
+      var rr = rootEl.getBoundingClientRect();
+      return {
+        x: r.left - rr.left + r.width / 2 - W / 2,
+        y: r.top - rr.top + r.height / 2 - H / 2,
+      };
+    }
+
+    // ---- camera targets, measured once at setup and baked ----
+    var S1_SCALE = 1.75; // leg 1 — dive tight onto the Registro icon
+    var S3_SCALE = 1.5; // leg 3 — travel framing wide enough to hold both ends of the connector
+    var S4_SCALE = 2.3; // leg 4 — rest tight on the map pin
+
+    var offA = measureCenterOffset(iconCircleEl);
+    var T1x = -offA.x * S1_SCALE,
+      T1y = -offA.y * S1_SCALE;
+
+    var offTravel = measureCenterOffset(travelAnchorEl);
+    var T3x = -offTravel.x * S3_SCALE,
+      T3y = -offTravel.y * S3_SCALE;
+
+    var offPin = measureCenterOffset(pinAnchorEl);
+    var T4x = -offPin.x * S4_SCALE,
+      T4y = -offPin.y * S4_SCALE;
+
+    // ---- connector path draw geometry ----
+    var pathLen = connectorPathEl.getTotalLength();
+    connectorPathEl.style.strokeDasharray = String(pathLen);
+    connectorPathEl.style.strokeDashoffset = String(pathLen);
+
+    // ---- single camera writer: phase state + continuous drift compose here ONLY ----
+    var cam = { scale: 1, x: 0, y: 0 };
+    var drift = { p: 0 };
+    var DRIFT_AMP_X = 5,
+      DRIFT_AMP_Y = 3,
+      DRIFT_FREQ_RATIO = 1.3;
+
+    function renderCamera() {
+      var dx = Math.sin(drift.p) * DRIFT_AMP_X;
+      var dy = Math.sin(drift.p * DRIFT_FREQ_RATIO) * DRIFT_AMP_Y;
+      worldEl.style.transform =
+        "translate(" + (cam.x + dx) + "px, " + (cam.y + dy) + "px) scale(" + cam.scale + ")";
+    }
+    renderCamera(); // seed frame 0
+
+    function writeBlurBB(v) {
+      blurNode.setAttribute("stdDeviation", v + " " + v);
+    }
+    function writeBlurX(v) {
+      blurNode.setAttribute("stdDeviation", v + " 0");
+    }
+
+    var tl = gsap.timeline({ paused: true });
+
+    // -----------------------------------------------------------------
+    // Packet's rough Scene windows were authored against a ~7.0s estimate;
+    // this frame's real synced duration is 9.874s, so every window is
+    // stretched by K, proportionally, never front-loaded.
+    // -----------------------------------------------------------------
+    var TOTAL = 9.874;
+    var K = TOTAL / 7.0; // ~1.4404
+    var S1_END = 1.5 * K; // ~2.161 — "...registra"
+    var S2_END = 3.5 * K; // ~5.042 — "cuenta, recoge testimonios"
+    var S3_END = 5.5 * K; // ~7.922 — "y conecta a cada nueva alma"
+    // Scene 4 runs S3_END -> TOTAL — "con la iglesia local mas cercana"
+
+    // ===================================================================
+    // Scene 1 (0 - ~2.16s): LEG 1 — the camera dives FAST and TIGHT onto
+    // the Registro icon station as it pops in — commitment, not a polite
+    // zoom. Motion-blur streak rides the world wrapper (camera-travel
+    // carve-out), symmetric B-B axis for a depth/push move.
+    // ===================================================================
+    var DIVE_AT = 0,
+      DIVE_DUR = 1.9;
+
+    var blurProxy1 = { v: 18 };
+    writeBlurBB(blurProxy1.v); // entrance shape: seed at PEAK, t=0 shows the streaked start
+
+    tl.to(
+      cam,
+      { scale: S1_SCALE, x: T1x, y: T1y, duration: DIVE_DUR, ease: "power4.out", onUpdate: renderCamera },
+      DIVE_AT
+    );
+    tl.to(
+      blurProxy1,
+      { v: 0, duration: DIVE_DUR, ease: "power4.out", onUpdate: function () { writeBlurBB(blurProxy1.v); } },
+      DIVE_AT
+    );
+
+    // Continuous sine drift spans the whole shot so no hold ever goes dead.
+    tl.to(
+      drift,
+      { p: Math.PI * 2 * 2.4, duration: TOTAL, ease: "none", onUpdate: renderCamera },
+      0
+    );
+
+    // The hero station pops in with the dive — visible well inside t<=0.5s.
+    tl.fromTo(
+      "#mis-icon-circle",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" },
+      0
+    );
+    tl.fromTo(
+      "#mis-label-pill",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" },
+      0.08
+    );
+
+    // ===================================================================
+    // Scene 2 (~2.16 - ~5.04s): LEG 2 — the camera holds/drifts while the
+    // icon self-acts: Registro flips to a checkmark (scale-swap-transition),
+    // a tally counter draws in, a testimony card pops in beside it — no
+    // cursor anywhere. VO: "cuenta, recoge testimonios".
+    // ===================================================================
+    var CHECK_TRIGGER = S1_END + 0.19;
+    var CHECK_EXIT_DUR = 0.4,
+      CHECK_ENTER_DUR = 0.55,
+      CHECK_OVERLAP = 0.15;
+    var CHECK_ENTER_AT = CHECK_TRIGGER + CHECK_EXIT_DUR - CHECK_OVERLAP;
+
+    tl.to(
+      "#mis-icon-registro",
+      { scale: 0.7, opacity: 0, duration: CHECK_EXIT_DUR, ease: "power2.in" },
+      CHECK_TRIGGER
+    );
+    tl.fromTo(
+      "#mis-icon-check",
+      { scale: 0.7, opacity: 0 },
+      { scale: 1, opacity: 1, duration: CHECK_ENTER_DUR, ease: "back.out(1.6)" },
+      CHECK_ENTER_AT
+    );
+
+    // Label swap rides the same beat as the incoming checkmark.
+    tl.to("#mis-label-pill", { opacity: 0.15, duration: 0.12, ease: "power1.in" }, CHECK_ENTER_AT - 0.12);
+    tl.call(function () { labelTextEl.textContent = "Conteo"; }, [], CHECK_ENTER_AT);
+    tl.to("#mis-label-pill", { opacity: 1, duration: 0.18, ease: "power1.out" }, CHECK_ENTER_AT);
+
+    // Tally strokes draw in one at a time — a literal tally, no invented figure.
+    var COUNTER_AT = CHECK_ENTER_AT + CHECK_ENTER_DUR + 0.15;
+    tl.fromTo(
+      "#mis-counter-chip",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" },
+      COUNTER_AT
+    );
+    ["mis-tally-1", "mis-tally-2", "mis-tally-3", "mis-tally-4"].forEach(function (id, i) {
+      var lineEl = document.getElementById(id);
+      var len = lineEl.getTotalLength();
+      lineEl.style.strokeDasharray = String(len);
+      lineEl.style.strokeDashoffset = String(len);
+      tl.to(
+        lineEl,
+        { strokeDashoffset: 0, duration: 0.25, ease: "power2.out" },
+        COUNTER_AT + 0.2 + i * 0.18
+      );
+    });
+
+    // Testimony card pops in beside the station.
+    var TESTIMONY_AT = COUNTER_AT + 1.0;
+    tl.fromTo(
+      "#mis-testimony-card",
+      { scale: 0.6, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.55, ease: "power3.out" },
+      TESTIMONY_AT
+    );
+
+    // ===================================================================
+    // Scene 3 (~5.04 - ~7.92s): LEG 3 — travel/pan to the map region while
+    // a connecting line draws from the testimony card to the pin. Blur
+    // envelope splits at the leg's velocity peak (inOut repositioning leg),
+    // lateral X-axis smear. VO: "y conecta a cada nueva alma".
+    // ===================================================================
+    var PAN_START = S2_END;
+    var PAN_DUR = 2.1;
+    var PAN_HALF = PAN_DUR / 2;
+
+    tl.to(
+      cam,
+      { scale: S3_SCALE, x: T3x, y: T3y, duration: PAN_DUR, ease: "power2.inOut", onUpdate: renderCamera },
+      PAN_START
+    );
+
+    var blurProxy3 = { v: 0 };
+    tl.to(
+      blurProxy3,
+      { v: 13, duration: PAN_HALF, ease: "power2.in", onUpdate: function () { writeBlurX(blurProxy3.v); } },
+      PAN_START
+    );
+    tl.to(
+      blurProxy3,
+      { v: 0, duration: PAN_HALF, ease: "power2.out", onUpdate: function () { writeBlurX(blurProxy3.v); } },
+      PAN_START + PAN_HALF
+    );
+
+    var CONNECTOR_START = PAN_START + 0.25;
+    tl.to(
+      "#mis-connector-path",
+      { strokeDashoffset: 0, duration: 1.7, ease: "power2.out" },
+      CONNECTOR_START
+    );
+
+    var MAP_REVEAL_AT = PAN_START + 1.25;
+    tl.fromTo(
+      "#mis-map-panel",
+      { scale: 0.92, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.6, ease: "power3.out" },
+      MAP_REVEAL_AT
+    );
+    tl.fromTo(
+      "#mis-map-eyebrow",
+      { opacity: 0, y: -10 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+      MAP_REVEAL_AT + 0.2
+    );
+
+    var PIN_REVEAL_AT = MAP_REVEAL_AT + 0.3;
+    tl.fromTo(
+      "#mis-pin",
+      { scale: 0, opacity: 0, y: -24 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+      PIN_REVEAL_AT
+    );
+
+    var PAN_END = PAN_START + PAN_DUR;
+
+    // ===================================================================
+    // Scene 4 (~7.92s - end): LEG 4 — the camera comes to REST on the pin;
+    // the world is now visibly changed (connected). No exit — this is not
+    // the final frame. VO: "con la iglesia local mas cercana".
+    // ===================================================================
+    var LEG4_START = Math.max(S3_END, PAN_END + 0.3);
+    var LEG4_DUR = 1.1;
+
+    tl.to(
+      cam,
+      { scale: S4_SCALE, x: T4x, y: T4y, duration: LEG4_DUR, ease: "power4.out", onUpdate: renderCamera },
+      LEG4_START
+    );
+
+    var RING_AT = LEG4_START + 0.6;
+    tl.fromTo(
+      "#mis-pin-ring",
+      { scale: 0.5, opacity: 0.7 },
+      { scale: 2.0, opacity: 0, duration: 0.9, ease: "power2.out" },
+      RING_AT
+    );
+
+    var PINLABEL_AT = LEG4_START + 0.7;
+    tl.fromTo(
+      "#mis-pin-label",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" },
+      PINLABEL_AT
+    );
+
+    window.__timelines["08-misiones"] = tl;
+  })();
+</script>
+</template>

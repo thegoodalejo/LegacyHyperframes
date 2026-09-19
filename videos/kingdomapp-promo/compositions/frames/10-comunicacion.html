@@ -1,0 +1,629 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-500.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Poppins";
+      src: url("assets/fonts/Poppins-600.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #ffffff;
+      font-family: "Poppins", sans-serif;
+      --bg: #ffffff;
+      --primary: #0054ad;
+      --text: #002a78;
+      --text-muted: #705d00;
+      --accent-light: rgba(0, 84, 173, 0.08);
+      --accent-medium: rgba(0, 84, 173, 0.15);
+      --border: rgba(0, 84, 173, 0.2);
+      --card-bg: rgba(0, 84, 173, 0.04);
+    }
+
+    .com10-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+    }
+
+    .com10-content {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* ---------- member card + trigger tag (Scene 1) ---------- */
+    .com10-member-card {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      top: 90px;
+      width: 640px;
+      height: 112px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      transform-origin: 50% 50%;
+      opacity: 0;
+    }
+    .com10-avatar {
+      position: absolute;
+      left: 20px;
+      top: 28px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 20px;
+    }
+    .com10-member-name {
+      position: absolute;
+      left: 92px;
+      top: 24px;
+      font-size: 23px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .com10-member-sub {
+      position: absolute;
+      left: 92px;
+      top: 56px;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .com10-tag-chip {
+      position: absolute;
+      right: 20px;
+      top: 36px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px 0 10px;
+      background: var(--accent-light);
+      border-radius: 100px;
+      transform-origin: 90% 50%;
+      opacity: 0;
+      white-space: nowrap;
+    }
+    .com10-tag-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--primary);
+    }
+    .com10-spin-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    .com10-spin-icon circle {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+
+    /* ---------- loader lockup (Scene 2) ---------- */
+    .com10-loader {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 244px;
+      display: flex;
+      justify-content: center;
+    }
+    .com10-loader-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+    }
+    .com10-loader-spin {
+      width: 36px;
+      height: 36px;
+      display: block;
+      flex-shrink: 0;
+    }
+    .com10-loader-spin circle {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+    .com10-loader-text {
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .com10-loader-caret {
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-left: 2px;
+    }
+
+    /* ---------- receipt card (Scene 3) ---------- */
+    .com10-receipt-zoom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      top: 320px;
+      width: 820px;
+      transform-origin: 50% 100%;
+    }
+    .com10-receipt-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 30px 36px 34px;
+      opacity: 0;
+      transform: scale(0.92);
+      transform-origin: 50% 50%;
+    }
+    .com10-receipt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .com10-receipt-eyebrow {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .com10-receipt-status {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--primary);
+      background: var(--accent-light);
+      border-radius: 100px;
+      padding: 6px 14px;
+      opacity: 0;
+      transform: scale(0.85);
+      transform-origin: 50% 50%;
+    }
+    .com10-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .com10-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      opacity: 0;
+    }
+    .com10-badge-slot {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+    .com10-badge-outline,
+    .com10-badge-check {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+    }
+    .com10-badge-outline svg,
+    .com10-badge-check svg {
+      width: 40px;
+      height: 40px;
+      display: block;
+    }
+    .com10-badge-check {
+      opacity: 0;
+    }
+    .com10-badge-track {
+      fill: none;
+      stroke: var(--accent-medium);
+      stroke-width: 3;
+    }
+    .com10-badge-arc {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 3;
+      stroke-linecap: round;
+      transform: rotate(-90deg);
+      transform-origin: 20px 20px;
+    }
+    .com10-badge-num {
+      fill: var(--primary);
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .com10-badge-solid {
+      fill: var(--primary);
+    }
+    .com10-badge-check-path {
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .com10-row-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .com10-row-label {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .com10-row-meta {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+  </style>
+
+  <div id="root" data-composition-id="10-comunicacion" data-width="1920" data-height="1080" data-duration="12.046">
+    <div class="com10-bg clip" data-start="0" data-duration="12.046" data-track-index="0"></div>
+
+    <div class="com10-content clip" data-start="0" data-duration="12.046" data-track-index="1">
+      <!-- Scene 1 (0.0-1.5s): trigger — a tag attaches itself to the member card, no click -->
+      <div class="com10-member-card" id="com10-member-card">
+        <div class="com10-avatar">CR</div>
+        <div class="com10-member-name">Camila Ruiz</div>
+        <div class="com10-member-sub">Voluntaria de alabanza</div>
+        <div class="com10-tag-chip" id="com10-tag-chip">
+          <svg class="com10-spin-icon" id="com10-chip-spin" viewBox="0 0 24 24">
+            <circle id="com10-chip-spin-arc" cx="12" cy="12" r="9" stroke-dasharray="34 22" />
+          </svg>
+          <span class="com10-tag-label">Cumpleaños hoy</span>
+        </div>
+      </div>
+
+      <!-- Scene 2 (1.5-4.0s): the working state — "tu propia línea" named explicitly -->
+      <div class="com10-loader">
+        <div class="com10-loader-inner" id="com10-loader-inner">
+          <svg class="com10-loader-spin" id="com10-loader-spin" viewBox="0 0 36 36">
+            <circle id="com10-loader-spin-arc" cx="18" cy="18" r="14" stroke-dasharray="53 35" />
+          </svg>
+          <span class="com10-loader-text" id="com10-loader-text"></span><span class="com10-loader-caret" id="com10-loader-caret">|</span>
+        </div>
+      </div>
+
+      <!-- Scene 3 (4.0-11.546s): the "Comunicación" receipt cascades in + mutates, 4 rows -->
+      <div class="com10-receipt-zoom" id="com10-receipt-zoom">
+        <div class="com10-receipt-card" id="com10-receipt-card">
+          <div class="com10-receipt-header">
+            <span class="com10-receipt-eyebrow">Comunicación</span>
+            <span class="com10-receipt-status" id="com10-receipt-status">En curso</span>
+          </div>
+          <div class="com10-rows">
+            <div class="com10-row" id="com10-row-1">
+              <div class="com10-badge-slot">
+                <div class="com10-badge-outline">
+                  <svg viewBox="0 0 40 40">
+                    <circle class="com10-badge-track" cx="20" cy="20" r="16" />
+                    <circle class="com10-badge-arc" id="com10-arc-1" cx="20" cy="20" r="16" />
+                    <text class="com10-badge-num" x="20" y="21">1</text>
+                  </svg>
+                </div>
+                <div class="com10-badge-check">
+                  <svg viewBox="0 0 40 40">
+                    <circle class="com10-badge-solid" cx="20" cy="20" r="20" />
+                    <path class="com10-badge-check-path" id="com10-check-1" d="M12 21 L17 26 L29 13" />
+                  </svg>
+                </div>
+              </div>
+              <div class="com10-row-text">
+                <span class="com10-row-label">Novedad publicada</span>
+                <span class="com10-row-meta" id="com10-meta-1">Muro de la iglesia</span>
+              </div>
+            </div>
+
+            <div class="com10-row" id="com10-row-2">
+              <div class="com10-badge-slot">
+                <div class="com10-badge-outline">
+                  <svg viewBox="0 0 40 40">
+                    <circle class="com10-badge-track" cx="20" cy="20" r="16" />
+                    <circle class="com10-badge-arc" id="com10-arc-2" cx="20" cy="20" r="16" />
+                    <text class="com10-badge-num" x="20" y="21">2</text>
+                  </svg>
+                </div>
+                <div class="com10-badge-check">
+                  <svg viewBox="0 0 40 40">
+                    <circle class="com10-badge-solid" cx="20" cy="20" r="20" />
+                    <path class="com10-badge-check-path" id="com10-check-2" d="M12 21 L17 26 L29 13" />
+                  </svg>
+                </div>
+              </div>
+              <div class="com10-row-text">
+                <span class="com10-row-label">Notificación enviada</span>
+                <span class="com10-row-meta" id="com10-meta-2">Segmento seleccionado</span>
+              </div>
+            </div>
+
+            <div class="com10-row" id="com10-row-3">
+              <div class="com10-badge-slot">
+                <div class="com10-badge-outline">
+                  <svg viewBox="0 0 40 40">
+                    <circle class="com10-badge-track" cx="20" cy="20" r="16" />
+                    <circle class="com10-badge-arc" id="com10-arc-3" cx="20" cy="20" r="16" />
+                    <text class="com10-badge-num" x="20" y="21">3</text>
+                  </svg>
+                </div>
+                <div class="com10-badge-check">
+                  <svg viewBox="0 0 40 40">
+                    <circle class="com10-badge-solid" cx="20" cy="20" r="20" />
+                    <path class="com10-badge-check-path" id="com10-check-3" d="M12 21 L17 26 L29 13" />
+                  </svg>
+                </div>
+              </div>
+              <div class="com10-row-text">
+                <span class="com10-row-label">WhatsApp enviado — línea propia</span>
+                <span class="com10-row-meta" id="com10-meta-3">Número propio de la sede</span>
+              </div>
+            </div>
+
+            <div class="com10-row" id="com10-row-4">
+              <div class="com10-badge-slot">
+                <div class="com10-badge-outline">
+                  <svg viewBox="0 0 40 40">
+                    <circle class="com10-badge-track" cx="20" cy="20" r="16" />
+                    <circle class="com10-badge-arc" id="com10-arc-4" cx="20" cy="20" r="16" />
+                    <text class="com10-badge-num" x="20" y="21">4</text>
+                  </svg>
+                </div>
+              </div>
+              <div class="com10-row-text">
+                <span class="com10-row-label">Automatización disparada</span>
+                <span class="com10-row-meta" id="com10-meta-4">Verificando…</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // ---- setup: measure pending-arc circles + checkmark paths (real geometry, not guessed) ----
+    const com10ArcLens = {};
+    ["com10-arc-1", "com10-arc-2", "com10-arc-3", "com10-arc-4"].forEach((id) => {
+      const el = document.getElementById(id);
+      const len = el.getTotalLength();
+      com10ArcLens[id] = len;
+      el.style.strokeDasharray = String(len);
+      el.style.strokeDashoffset = String(len); // fully hidden until drawn
+    });
+    ["com10-check-1", "com10-check-2", "com10-check-3"].forEach((id) => {
+      const el = document.getElementById(id);
+      const len = el.getTotalLength();
+      el.style.strokeDasharray = String(len);
+      el.style.strokeDashoffset = String(len);
+    });
+
+    // =========================================================
+    // SCENE 1 (0.00 - 1.50s) — trigger: tag attaches, no click
+    // =========================================================
+    tl.fromTo(
+      "#com10-member-card",
+      { scale: 0.94, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" },
+      0,
+    );
+
+    tl.fromTo(
+      "#com10-tag-chip",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.35, ease: "power3.out" },
+      0.35,
+    );
+
+    // small accent spinner beside the chip — svg-icon-enrichment rotation, the only cue "something fired"
+    (function () {
+      const arc = document.getElementById("com10-chip-spin-arc");
+      const state = { deg: 0 };
+      tl.to(
+        state,
+        {
+          deg: 360 * 1.3,
+          duration: 0.8,
+          ease: "none",
+          onUpdate: () => arc.setAttribute("transform", `rotate(${state.deg} 12 12)`),
+        },
+        0.55,
+      );
+    })();
+    tl.to("#com10-chip-spin", { opacity: 0, duration: 0.12, ease: "power1.out" }, 1.35);
+
+    // =========================================================
+    // SCENE 2 (1.50 - 4.00s) — the working state: machine performs, names its own line
+    // =========================================================
+    tl.fromTo(
+      "#com10-loader-inner",
+      { y: 14, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" },
+      1.5,
+    );
+
+    (function () {
+      const arc = document.getElementById("com10-loader-spin-arc");
+      const state = { deg: 0 };
+      tl.to(
+        state,
+        {
+          deg: 360 * 3.5,
+          duration: 2.35,
+          ease: "none",
+          onUpdate: () => arc.setAttribute("transform", `rotate(${state.deg} 18 18)`),
+        },
+        1.5,
+      );
+    })();
+
+    // typed-on loader label — discrete text states, names "línea propia" explicitly
+    (function () {
+      const textEl = document.getElementById("com10-loader-text");
+      const SEQUENCE = [
+        { t: 0.0, text: "" },
+        { t: 0.1, text: "En" },
+        { t: 0.22, text: "Enviando" },
+        { t: 0.42, text: "Enviando What" },
+        { t: 0.58, text: "Enviando WhatsApp" },
+        { t: 0.75, text: "Enviando WhatsApp (" },
+        { t: 0.95, text: "Enviando WhatsApp (línea" },
+        { t: 1.15, text: "Enviando WhatsApp (línea propia)" },
+        { t: 1.35, text: "Enviando WhatsApp (línea propia)…" },
+      ];
+      function textAt(time) {
+        for (let i = SEQUENCE.length - 1; i >= 0; i--) {
+          if (time >= SEQUENCE[i].t) return SEQUENCE[i].text;
+        }
+        return "";
+      }
+      const driver = { t: 0 };
+      tl.to(
+        driver,
+        {
+          t: 1.35,
+          duration: 1.35,
+          ease: "none",
+          onUpdate: () => {
+            textEl.textContent = textAt(driver.t);
+          },
+        },
+        1.6,
+      );
+
+      // caret blink, sin-driven, only while typing
+      const caretEl = document.getElementById("com10-loader-caret");
+      const blink = { p: 0 };
+      tl.to(
+        blink,
+        {
+          p: Math.PI * 2 * 4,
+          duration: 1.35,
+          ease: "none",
+          onUpdate: () => {
+            caretEl.style.opacity = Math.sin(blink.p) > 0 ? "1" : "0";
+          },
+        },
+        1.6,
+      );
+      tl.to("#com10-loader-caret", { opacity: 0, duration: 0.12, ease: "power1.out" }, 2.95);
+    })();
+
+    // the pulse dies the instant the result lands — loader fades right as the receipt pops in
+    tl.to("#com10-loader-inner", { opacity: 0, duration: 0.18, ease: "power2.in" }, 3.85);
+
+    // =========================================================
+    // SCENE 3 (4.00 - 11.546s) — "Comunicación" receipt cascades in + mutates, 4 rows
+    // =========================================================
+    tl.fromTo(
+      "#com10-receipt-card",
+      { scale: 0.92, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" },
+      4.0,
+    );
+    tl.fromTo(
+      "#com10-receipt-status",
+      { scale: 0.85, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" },
+      4.15,
+    );
+
+    // slow continuous push into the card once it has landed (header drifts off the top as it grows)
+    tl.to(
+      "#com10-receipt-zoom",
+      { scale: 1.07, duration: 6.9, ease: "power1.inOut" },
+      4.5,
+    );
+
+    // rows stagger in — slide-up + fade, one per beat
+    tl.fromTo("#com10-row-1", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 4.5);
+    tl.fromTo("#com10-row-2", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 4.82);
+    tl.fromTo("#com10-row-3", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 5.14);
+    tl.fromTo("#com10-row-4", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 5.46);
+
+    // pending arcs draw partially as each row lands (still "in progress")
+    tl.to("#com10-arc-1", { strokeDashoffset: com10ArcLens["com10-arc-1"] * 0.34, duration: 0.3, ease: "power2.out" }, 4.5);
+    tl.to("#com10-arc-2", { strokeDashoffset: com10ArcLens["com10-arc-2"] * 0.4, duration: 0.3, ease: "power2.out" }, 4.82);
+    tl.to("#com10-arc-3", { strokeDashoffset: com10ArcLens["com10-arc-3"] * 0.46, duration: 0.3, ease: "power2.out" }, 5.14);
+    tl.to("#com10-arc-4", { strokeDashoffset: com10ArcLens["com10-arc-4"] * 0.42, duration: 0.3, ease: "power2.out" }, 5.46);
+    // row 4 keeps visibly working for the rest of the shot — never completes
+    tl.to("#com10-arc-4", { strokeDashoffset: com10ArcLens["com10-arc-4"] * 0.2, duration: 5.6, ease: "none" }, 5.76);
+
+    // badge 1 flips: outline -> solid check, scale-swap-transition (bouncy only on the incoming)
+    tl.to("#com10-row-1 .com10-badge-outline", { scale: 0.7, opacity: 0, duration: 0.3, ease: "power2.in" }, 6.6);
+    tl.fromTo("#com10-row-1 .com10-badge-check", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.5)" }, 6.75);
+    tl.to("#com10-check-1", { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, 6.75);
+    tl.to("#com10-meta-1", { opacity: 0.65, duration: 0.3, ease: "power1.out" }, 6.75);
+
+    // badge 2 flips: outline -> solid check
+    tl.to("#com10-row-2 .com10-badge-outline", { scale: 0.7, opacity: 0, duration: 0.3, ease: "power2.in" }, 8.0);
+    tl.fromTo("#com10-row-2 .com10-badge-check", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.5)" }, 8.15);
+    tl.to("#com10-check-2", { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, 8.15);
+    tl.to("#com10-meta-2", { opacity: 0.65, duration: 0.3, ease: "power1.out" }, 8.15);
+
+    // badge 3 flips: outline -> solid check ("tu propia línea" lands here)
+    tl.to("#com10-row-3 .com10-badge-outline", { scale: 0.7, opacity: 0, duration: 0.3, ease: "power2.in" }, 9.7);
+    tl.fromTo("#com10-row-3 .com10-badge-check", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.5)" }, 9.85);
+    tl.to("#com10-check-3", { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, 9.85);
+    tl.to("#com10-meta-3", { opacity: 0.65, duration: 0.3, ease: "power1.out" }, 9.85);
+
+    // row 4 stays pending — "Verificando…" pulses, the machine still visibly capable of more
+    (function () {
+      const metaEl = document.getElementById("com10-meta-4");
+      const pulse = { p: 0 };
+      tl.to(
+        pulse,
+        {
+          p: Math.PI * 2 * 4,
+          duration: 5.6,
+          ease: "none",
+          onUpdate: () => {
+            metaEl.style.opacity = String(0.62 + Math.sin(pulse.p) * 0.32);
+          },
+        },
+        5.76,
+      );
+    })();
+
+    window.__timelines["10-comunicacion"] = tl;
+  </script>
+</template>

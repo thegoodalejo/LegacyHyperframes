@@ -1,0 +1,414 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Poppins";
+      font-weight: 400;
+      font-style: normal;
+      src: url("assets/fonts/Poppins-400.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Poppins";
+      font-weight: 500;
+      font-style: normal;
+      src: url("assets/fonts/Poppins-500.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Poppins";
+      font-weight: 600;
+      font-style: normal;
+      src: url("assets/fonts/Poppins-600.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Poppins";
+      font-weight: 700;
+      font-style: normal;
+      src: url("assets/fonts/Poppins-700.woff2") format("woff2");
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      container-type: size;
+      font-family: "Poppins", sans-serif;
+      --m05-bg: #ffffff;
+      --m05-primary: #0054ad;
+      --m05-text: #002a78;
+      --m05-tint: rgba(0, 84, 173, 0.04);
+      --m05-tint-strong: rgba(0, 84, 173, 0.08);
+      --m05-border: rgba(0, 84, 173, 0.2);
+      --m05-border-strong: rgba(0, 84, 173, 0.35);
+      --m05-glow: rgba(0, 42, 120, 0.4);
+    }
+
+    .clip {
+      position: absolute;
+      inset: 0;
+    }
+
+    .m05-bg {
+      background: var(--m05-bg);
+    }
+
+    .m05-camera {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+      will-change: transform;
+    }
+
+    .m05-links {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .m05-line {
+      fill: none;
+      stroke: var(--m05-border-strong);
+      stroke-width: 2;
+      stroke-dasharray: 6 7;
+      stroke-linecap: round;
+      opacity: 0;
+    }
+
+    .m05-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 460px;
+      height: 560px;
+      box-sizing: border-box;
+      background: var(--m05-tint);
+      border: 1.5px solid var(--m05-border);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 46px;
+      opacity: 0;
+    }
+    .m05-avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: var(--m05-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      opacity: 0;
+    }
+    .m05-avatar svg {
+      width: 42px;
+      height: 42px;
+    }
+    .m05-eyebrow {
+      margin-top: 24px;
+      font-size: 1cqw;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--m05-primary);
+      opacity: 0;
+    }
+    .m05-rows {
+      margin-top: 36px;
+      width: 340px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .m05-row {
+      height: 14px;
+      border-radius: 7px;
+      background: var(--m05-tint-strong);
+      opacity: 0;
+    }
+
+    .m05-chip {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 140px;
+      box-sizing: border-box;
+      background: var(--m05-tint);
+      border: 1.5px solid var(--m05-border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      opacity: 0;
+    }
+    .m05-chip-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--m05-tint-strong);
+      color: var(--m05-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+    }
+    .m05-chip-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    .m05-chip-label {
+      font-size: 1.15cqw;
+      font-weight: 600;
+      color: var(--m05-text);
+      text-align: center;
+      opacity: 0;
+    }
+
+    .m05-sweep {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+    .m05-sweep-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 280px;
+      height: 280px;
+      margin: -140px 0 0 -140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--m05-glow), rgba(0, 42, 120, 0) 70%);
+      filter: blur(1px);
+      opacity: 0;
+    }
+    .m05-sweep-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 52px;
+      height: 52px;
+      margin: -26px 0 0 -26px;
+      border-radius: 50%;
+      background: var(--m05-bg);
+      border: 1.5px solid var(--m05-border);
+      color: var(--m05-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+    }
+    .m05-sweep-icon svg {
+      width: 26px;
+      height: 26px;
+    }
+  </style>
+
+  <div data-hf-id="hf-fx9r" id="root" data-composition-id="05-membresia" data-width="1920" data-height="1080" data-duration="9.042">
+    <div data-hf-id="hf-dh0b" class="clip m05-bg" data-start="0" data-duration="9.042" data-track-index="0"></div>
+
+    <div data-hf-id="hf-inti" class="clip" data-start="0" data-duration="9.042" data-track-index="1">
+      <div data-hf-id="hf-lrdi" class="m05-camera" id="m05-camera">
+        <svg data-hf-id="hf-bkkj" class="m05-links" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+          <line data-hf-id="hf-7zzj" class="m05-line" id="m05-line-1" x1="960" y1="540" x2="530" y2="310" />
+          <line data-hf-id="hf-ogmv" class="m05-line" id="m05-line-2" x1="960" y1="540" x2="1390" y2="310" />
+          <line data-hf-id="hf-2zeb" class="m05-line" id="m05-line-3" x1="960" y1="540" x2="530" y2="770" />
+          <line data-hf-id="hf-8apb" class="m05-line" id="m05-line-4" x1="960" y1="540" x2="1390" y2="770" />
+        </svg>
+
+        <div data-hf-id="hf-psx6" class="m05-card" id="m05-card">
+          <div data-hf-id="hf-7rj6" class="m05-avatar" id="m05-avatar">
+            <svg data-hf-id="hf-el4y" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle data-hf-id="hf-ggcr" cx="12" cy="8.2" r="3.9" />
+              <path data-hf-id="hf-2fv8" d="M4.3 20c0-4.1 3.6-6.1 7.7-6.1s7.7 2 7.7 6.1" />
+            </svg>
+          </div>
+          <div data-hf-id="hf-xbu2" class="m05-eyebrow" id="m05-eyebrow">Directorio</div>
+          <div data-hf-id="hf-i8q6" class="m05-rows">
+            <div data-hf-id="hf-22yf" class="m05-row" style="width:78%"></div>
+            <div data-hf-id="hf-fxv9" class="m05-row" style="width:58%"></div>
+            <div data-hf-id="hf-v16m" class="m05-row" style="width:68%"></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-gtc1" class="m05-chip" id="m05-chip-1" data-target-x="-430" data-target-y="-230">
+          <div data-hf-id="hf-a1zf" class="m05-chip-icon">
+            <svg data-hf-id="hf-dvkw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect data-hf-id="hf-8gje" x="2.6" y="5" width="18.8" height="14" rx="2.4" />
+              <circle data-hf-id="hf-92nw" cx="8.4" cy="12" r="2.1" />
+              <path data-hf-id="hf-5pgg" d="M13 10h6.1M13 14h4.1" />
+            </svg>
+          </div>
+          <div data-hf-id="hf-lc9l" class="m05-chip-label">Datos</div>
+        </div>
+
+        <div data-hf-id="hf-hse9" class="m05-chip" id="m05-chip-2" data-target-x="430" data-target-y="-230">
+          <div data-hf-id="hf-1dyj" class="m05-chip-icon">
+            <svg data-hf-id="hf-9w60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle data-hf-id="hf-2m33" cx="6" cy="7" r="2.2" />
+              <circle data-hf-id="hf-i3sc" cx="18" cy="7" r="2.2" />
+              <circle data-hf-id="hf-rgbe" cx="12" cy="18" r="2.2" />
+              <path data-hf-id="hf-9bw5" d="M7.7 8.6L10.4 16.2M16.3 8.6L13.6 16.2M8.2 7H15.8" />
+            </svg>
+          </div>
+          <div data-hf-id="hf-ffv9" class="m05-chip-label">Redes</div>
+        </div>
+
+        <div data-hf-id="hf-6brw" class="m05-chip" id="m05-chip-3" data-target-x="-430" data-target-y="230">
+          <div data-hf-id="hf-0zni" class="m05-chip-icon">
+            <svg data-hf-id="hf-8p8x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path data-hf-id="hf-quy6" d="M11.3 3.5H5.6A1.6 1.6 0 0 0 4 5.1v5.9c0 .43.17.83.47 1.13l9.4 9.4c.62.62 1.63.62 2.26 0l6.1-6.1c.62-.62.62-1.63 0-2.26l-9.4-9.4a1.6 1.6 0 0 0-1.16-.53Z" />
+              <circle data-hf-id="hf-6t4n" cx="8.2" cy="8.4" r="1.5" fill="currentColor" stroke="none" />
+            </svg>
+          </div>
+          <div data-hf-id="hf-9n09" class="m05-chip-label">Etiquetas</div>
+        </div>
+
+        <div data-hf-id="hf-caqa" class="m05-chip" id="m05-chip-4" data-target-x="430" data-target-y="230">
+          <div data-hf-id="hf-0lch" class="m05-chip-icon">
+            <svg data-hf-id="hf-1cgu" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+              <rect data-hf-id="hf-jbys" x="3" y="3" width="7" height="7" rx="1" />
+              <rect data-hf-id="hf-4pxk" x="14" y="3" width="7" height="7" rx="1" />
+              <rect data-hf-id="hf-uzwe" x="3" y="14" width="7" height="7" rx="1" />
+              <rect data-hf-id="hf-pxj7" x="5.3" y="5.3" width="2.4" height="2.4" fill="#ffffff" />
+              <rect data-hf-id="hf-9jfx" x="16.3" y="5.3" width="2.4" height="2.4" fill="#ffffff" />
+              <rect data-hf-id="hf-wxv1" x="5.3" y="16.3" width="2.4" height="2.4" fill="#ffffff" />
+              <rect data-hf-id="hf-s27i" x="14" y="14" width="3" height="3" />
+              <rect data-hf-id="hf-vnmf" x="18.5" y="14" width="2.5" height="2.5" />
+              <rect data-hf-id="hf-izj1" x="14" y="18.5" width="2.5" height="2.5" />
+              <rect data-hf-id="hf-ekqu" x="18" y="18" width="3" height="3" />
+            </svg>
+          </div>
+          <div data-hf-id="hf-5v37" class="m05-chip-label">Credencial QR</div>
+        </div>
+
+        <div data-hf-id="hf-wwhc" class="m05-sweep" id="m05-sweep">
+          <div data-hf-id="hf-pxne" class="m05-sweep-glow" id="m05-sweep-glow"></div>
+          <div data-hf-id="hf-8b0u" class="m05-sweep-icon" id="m05-sweep-icon">
+            <svg data-hf-id="hf-jkmu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <circle data-hf-id="hf-ui0l" cx="10.2" cy="10.2" r="6.3" />
+              <path data-hf-id="hf-t4cf" d="M19 19l-4.4-4.4" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    window.__timelines = window.__timelines || {};
+    (function () {
+      var TOTAL = 8.542;
+      var S2_START = 2.4406;
+      var S3_START = 6.1014;
+
+      var tl = gsap.timeline({ paused: true });
+
+      var card = document.getElementById("m05-card");
+      var avatar = document.getElementById("m05-avatar");
+      var eyebrow = document.getElementById("m05-eyebrow");
+      var rows = document.querySelectorAll(".m05-row");
+      var chips = document.querySelectorAll(".m05-chip");
+      var lines = document.querySelectorAll(".m05-line");
+      var camera = document.getElementById("m05-camera");
+      var sweep = document.getElementById("m05-sweep");
+      var sweepGlow = document.getElementById("m05-sweep-glow");
+      var sweepIcon = document.getElementById("m05-sweep-icon");
+
+      // ---- Scene 1 (0 - 2.44s): the central directory card establishes ----
+      tl.fromTo(
+        card,
+        { xPercent: -50, yPercent: -50, x: 0, y: 26, scale: 0.86, opacity: 0 },
+        { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.6)" },
+        0.1
+      );
+      tl.fromTo(
+        avatar,
+        { xPercent: 0, yPercent: 0, scale: 0.4, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2.2)" },
+        0.3
+      );
+      tl.fromTo(
+        eyebrow,
+        { y: 10, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" },
+        0.62
+      );
+      rows.forEach(function (row, i) {
+        tl.fromTo(
+          row,
+          { x: -14, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" },
+          0.85 + i * 0.1
+        );
+      });
+
+      // ---- Scene 2 (2.44 - 6.10s): four data chips cascade into a 2x2 grid ----
+      var chipAt = [2.55, 3.45, 4.35, 5.25];
+      chips.forEach(function (chip, i) {
+        var tx = Number(chip.dataset.targetX);
+        var ty = Number(chip.dataset.targetY);
+        var icon = chip.querySelector(".m05-chip-icon");
+        var label = chip.querySelector(".m05-chip-label");
+        var at = chipAt[i];
+
+        tl.fromTo(
+          chip,
+          { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 0.6, opacity: 0 },
+          { x: tx, y: ty, scale: 1, opacity: 1, duration: 0.55, ease: "power3.out" },
+          at
+        );
+        tl.fromTo(
+          icon,
+          { scale: 0.5, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)" },
+          at
+        );
+        tl.fromTo(
+          label,
+          { y: 8, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" },
+          at + 0.08
+        );
+        if (lines[i]) {
+          tl.fromTo(lines[i], { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, at);
+        }
+      });
+
+      // ---- Scene 3 (6.10 - 8.542s): grid resolves, slow push-in + traveling search glow ----
+      var phase = { scale: 1 };
+      tl.to(phase, { scale: 1.045, duration: TOTAL - S3_START, ease: "power2.out" }, S3_START);
+
+      var drift = { p: 0 };
+      tl.to(
+        drift,
+        {
+          p: Math.PI * 2 * 2.2,
+          duration: TOTAL,
+          ease: "none",
+          onUpdate: function () {
+            var dx = Math.sin(drift.p) * 4;
+            var dy = Math.sin(drift.p * 1.3) * 2.5;
+            camera.style.transform = "scale(" + phase.scale + ") translate(" + dx + "px, " + dy + "px)";
+          },
+        },
+        0
+      );
+
+      tl.fromTo(sweep, { x: -760 }, { x: 760, duration: 1.3, ease: "none" }, 6.35);
+      tl.fromTo(sweepGlow, { opacity: 0 }, { opacity: 0.4, duration: 0.5, ease: "power1.out" }, 6.35);
+      tl.to(sweepGlow, { opacity: 0, duration: 0.5, ease: "power1.in" }, 7.15);
+      tl.fromTo(sweepIcon, { opacity: 0 }, { opacity: 0.95, duration: 0.5, ease: "power1.out" }, 6.35);
+      tl.to(sweepIcon, { opacity: 0, duration: 0.5, ease: "power1.in" }, 7.15);
+
+      window.__timelines["05-membresia"] = tl;
+    })();
+  </script>
+</template>

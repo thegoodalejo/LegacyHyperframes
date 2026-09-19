@@ -1,0 +1,2196 @@
+{
+  "bgm": {
+    "path": "assets/bgm/track.mp3",
+    "volume": 0.12,
+    "query": "confident warm corporate underscore, hopeful build, no lyrics",
+    "duration_s": 38
+  },
+  "bgm_pending": false,
+  "voices": [
+    {
+      "frame": 2,
+      "path": "assets/voice/02.wav",
+      "duration_s": 6.661,
+      "words": [
+        {
+          "id": "w0",
+          "text": "¿Cuántas",
+          "start": 0.179,
+          "end": 0.479
+        },
+        {
+          "id": "w1",
+          "text": "herramientas",
+          "start": 0.56,
+          "end": 1.1
+        },
+        {
+          "id": "w2",
+          "text": "distintas",
+          "start": 1.139,
+          "end": 1.779
+        },
+        {
+          "id": "w3",
+          "text": "necesita",
+          "start": 2.119,
+          "end": 2.579
+        },
+        {
+          "id": "w4",
+          "text": "tu",
+          "start": 2.599,
+          "end": 2.759
+        },
+        {
+          "id": "w5",
+          "text": "iglesia",
+          "start": 2.799,
+          "end": 3.299
+        },
+        {
+          "id": "w6",
+          "text": "—",
+          "start": 3.299,
+          "end": 3.299
+        },
+        {
+          "id": "w7",
+          "text": "para",
+          "start": 3.339,
+          "end": 3.5
+        },
+        {
+          "id": "w8",
+          "text": "hacer",
+          "start": 3.519,
+          "end": 3.919
+        },
+        {
+          "id": "w9",
+          "text": "una",
+          "start": 4,
+          "end": 4.119
+        },
+        {
+          "id": "w10",
+          "text": "sola",
+          "start": 4.239,
+          "end": 4.44
+        },
+        {
+          "id": "w11",
+          "text": "cosa:",
+          "start": 4.539,
+          "end": 4.879
+        },
+        {
+          "id": "w12",
+          "text": "cuidar",
+          "start": 5.4,
+          "end": 5.699
+        },
+        {
+          "id": "w13",
+          "text": "a",
+          "start": 5.739,
+          "end": 5.799
+        },
+        {
+          "id": "w14",
+          "text": "su",
+          "start": 5.839,
+          "end": 5.9
+        },
+        {
+          "id": "w15",
+          "text": "gente?",
+          "start": 5.98,
+          "end": 6.359
+        }
+      ]
+    },
+    {
+      "frame": 3,
+      "path": "assets/voice/03.wav",
+      "duration_s": 12.016,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Membresía",
+          "start": 0.239,
+          "end": 0.879
+        },
+        {
+          "id": "w1",
+          "text": "en",
+          "start": 1.079,
+          "end": 1.179
+        },
+        {
+          "id": "w2",
+          "text": "Excel.",
+          "start": 1.22,
+          "end": 1.639
+        },
+        {
+          "id": "w3",
+          "text": "Seguimiento",
+          "start": 2.46,
+          "end": 3.039
+        },
+        {
+          "id": "w4",
+          "text": "por",
+          "start": 3.139,
+          "end": 3.22
+        },
+        {
+          "id": "w5",
+          "text": "WhatsApp",
+          "start": 3.339,
+          "end": 3.779
+        },
+        {
+          "id": "w6",
+          "text": "personal.",
+          "start": 3.919,
+          "end": 4.42
+        },
+        {
+          "id": "w7",
+          "text": "Finanzas",
+          "start": 5.4,
+          "end": 6.079
+        },
+        {
+          "id": "w8",
+          "text": "en",
+          "start": 6.139,
+          "end": 6.219
+        },
+        {
+          "id": "w9",
+          "text": "otro",
+          "start": 6.279,
+          "end": 6.48
+        },
+        {
+          "id": "w10",
+          "text": "cuaderno.",
+          "start": 6.539,
+          "end": 7.039
+        },
+        {
+          "id": "w11",
+          "text": "Cada",
+          "start": 7.759,
+          "end": 7.98
+        },
+        {
+          "id": "w12",
+          "text": "líder",
+          "start": 8.079,
+          "end": 8.539
+        },
+        {
+          "id": "w13",
+          "text": "con",
+          "start": 8.579,
+          "end": 8.679
+        },
+        {
+          "id": "w14",
+          "text": "su",
+          "start": 8.76,
+          "end": 8.84
+        },
+        {
+          "id": "w15",
+          "text": "propio",
+          "start": 8.939,
+          "end": 9.239
+        },
+        {
+          "id": "w16",
+          "text": "método",
+          "start": 9.279,
+          "end": 9.839
+        },
+        {
+          "id": "w17",
+          "text": "—",
+          "start": 9.839,
+          "end": 9.839
+        },
+        {
+          "id": "w18",
+          "text": "y",
+          "start": 9.899,
+          "end": 9.939
+        },
+        {
+          "id": "w19",
+          "text": "nadie",
+          "start": 10.079,
+          "end": 10.559
+        },
+        {
+          "id": "w20",
+          "text": "con",
+          "start": 10.619,
+          "end": 10.719
+        },
+        {
+          "id": "w21",
+          "text": "la",
+          "start": 10.76,
+          "end": 10.819
+        },
+        {
+          "id": "w22",
+          "text": "vista",
+          "start": 10.88,
+          "end": 11.179
+        },
+        {
+          "id": "w23",
+          "text": "completa.",
+          "start": 11.219,
+          "end": 11.719
+        }
+      ]
+    },
+    {
+      "frame": 4,
+      "path": "assets/voice/04.wav",
+      "duration_s": 6.792,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Te",
+          "start": 0.079,
+          "end": 0.199
+        },
+        {
+          "id": "w1",
+          "text": "presentamos",
+          "start": 0.239,
+          "end": 0.919
+        },
+        {
+          "id": "w2",
+          "text": "KingdomApp:",
+          "start": 1.039,
+          "end": 1.74
+        },
+        {
+          "id": "w3",
+          "text": "una",
+          "start": 2.139,
+          "end": 2.419
+        },
+        {
+          "id": "w4",
+          "text": "sola",
+          "start": 2.46,
+          "end": 2.7
+        },
+        {
+          "id": "w5",
+          "text": "plataforma",
+          "start": 2.759,
+          "end": 3.48
+        },
+        {
+          "id": "w6",
+          "text": "para",
+          "start": 3.519,
+          "end": 3.699
+        },
+        {
+          "id": "w7",
+          "text": "administrar",
+          "start": 3.699,
+          "end": 4.36
+        },
+        {
+          "id": "w8",
+          "text": "toda",
+          "start": 4.599,
+          "end": 4.839
+        },
+        {
+          "id": "w9",
+          "text": "tu",
+          "start": 4.92,
+          "end": 5
+        },
+        {
+          "id": "w10",
+          "text": "iglesia",
+          "start": 5.039,
+          "end": 5.659
+        },
+        {
+          "id": "w11",
+          "text": "—",
+          "start": 5.659,
+          "end": 5.659
+        },
+        {
+          "id": "w12",
+          "text": "sede",
+          "start": 5.739,
+          "end": 5.98
+        },
+        {
+          "id": "w13",
+          "text": "por",
+          "start": 6.019,
+          "end": 6.119
+        },
+        {
+          "id": "w14",
+          "text": "sede.",
+          "start": 6.259,
+          "end": 6.559
+        }
+      ]
+    },
+    {
+      "frame": 5,
+      "path": "assets/voice/05.wav",
+      "duration_s": 8.542,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Toda",
+          "start": 0.119,
+          "end": 0.319
+        },
+        {
+          "id": "w1",
+          "text": "tu",
+          "start": 0.399,
+          "end": 0.479
+        },
+        {
+          "id": "w2",
+          "text": "membresía",
+          "start": 0.519,
+          "end": 1.179
+        },
+        {
+          "id": "w3",
+          "text": "en",
+          "start": 1.22,
+          "end": 1.299
+        },
+        {
+          "id": "w4",
+          "text": "un",
+          "start": 1.339,
+          "end": 1.419
+        },
+        {
+          "id": "w5",
+          "text": "directorio",
+          "start": 1.439,
+          "end": 2
+        },
+        {
+          "id": "w6",
+          "text": "—",
+          "start": 2,
+          "end": 2
+        },
+        {
+          "id": "w7",
+          "text": "datos,",
+          "start": 2.099,
+          "end": 2.559
+        },
+        {
+          "id": "w8",
+          "text": "redes,",
+          "start": 3.019,
+          "end": 3.48
+        },
+        {
+          "id": "w9",
+          "text": "etiquetas,",
+          "start": 3.659,
+          "end": 4.319
+        },
+        {
+          "id": "w10",
+          "text": "credenciales",
+          "start": 4.699,
+          "end": 5.4
+        },
+        {
+          "id": "w11",
+          "text": "con",
+          "start": 5.46,
+          "end": 5.599
+        },
+        {
+          "id": "w12",
+          "text": "QR.",
+          "start": 5.759,
+          "end": 6.079
+        },
+        {
+          "id": "w13",
+          "text": "Búsqueda",
+          "start": 6.559,
+          "end": 6.94
+        },
+        {
+          "id": "w14",
+          "text": "y",
+          "start": 7.019,
+          "end": 7.039
+        },
+        {
+          "id": "w15",
+          "text": "filtros",
+          "start": 7.159,
+          "end": 7.559
+        },
+        {
+          "id": "w16",
+          "text": "al",
+          "start": 7.599,
+          "end": 7.679
+        },
+        {
+          "id": "w17",
+          "text": "instante.",
+          "start": 7.719,
+          "end": 8.299
+        }
+      ]
+    },
+    {
+      "frame": 6,
+      "path": "assets/voice/06.wav",
+      "duration_s": 14.263,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Discipulado",
+          "start": 0.219,
+          "end": 0.959
+        },
+        {
+          "id": "w1",
+          "text": "y",
+          "start": 1,
+          "end": 1.039
+        },
+        {
+          "id": "w2",
+          "text": "liderazgo,",
+          "start": 1.1,
+          "end": 1.779
+        },
+        {
+          "id": "w3",
+          "text": "separados:",
+          "start": 2.22,
+          "end": 2.919
+        },
+        {
+          "id": "w4",
+          "text": "cada",
+          "start": 3.48,
+          "end": 3.679
+        },
+        {
+          "id": "w5",
+          "text": "discípulo",
+          "start": 3.779,
+          "end": 4.36
+        },
+        {
+          "id": "w6",
+          "text": "con",
+          "start": 4.48,
+          "end": 4.559
+        },
+        {
+          "id": "w7",
+          "text": "su",
+          "start": 4.639,
+          "end": 4.759
+        },
+        {
+          "id": "w8",
+          "text": "cuidado",
+          "start": 4.799,
+          "end": 5.159
+        },
+        {
+          "id": "w9",
+          "text": "pastoral",
+          "start": 5.239,
+          "end": 5.679
+        },
+        {
+          "id": "w10",
+          "text": "completo,",
+          "start": 5.779,
+          "end": 6.299
+        },
+        {
+          "id": "w11",
+          "text": "cada",
+          "start": 6.779,
+          "end": 6.98
+        },
+        {
+          "id": "w12",
+          "text": "miembro",
+          "start": 7.099,
+          "end": 7.5
+        },
+        {
+          "id": "w13",
+          "text": "liderado",
+          "start": 7.559,
+          "end": 8.059
+        },
+        {
+          "id": "w14",
+          "text": "con",
+          "start": 8.099,
+          "end": 8.199
+        },
+        {
+          "id": "w15",
+          "text": "su",
+          "start": 8.279,
+          "end": 8.38
+        },
+        {
+          "id": "w16",
+          "text": "seguimiento",
+          "start": 8.439,
+          "end": 9.079
+        },
+        {
+          "id": "w17",
+          "text": "—",
+          "start": 9.079,
+          "end": 9.079
+        },
+        {
+          "id": "w18",
+          "text": "y",
+          "start": 9.279,
+          "end": 9.34
+        },
+        {
+          "id": "w19",
+          "text": "un",
+          "start": 9.42,
+          "end": 9.5
+        },
+        {
+          "id": "w20",
+          "text": "organigrama",
+          "start": 9.599,
+          "end": 10.219
+        },
+        {
+          "id": "w21",
+          "text": "que",
+          "start": 10.319,
+          "end": 10.42
+        },
+        {
+          "id": "w22",
+          "text": "muestra",
+          "start": 10.479,
+          "end": 10.96
+        },
+        {
+          "id": "w23",
+          "text": "toda",
+          "start": 11,
+          "end": 11.199
+        },
+        {
+          "id": "w24",
+          "text": "la",
+          "start": 11.259,
+          "end": 11.34
+        },
+        {
+          "id": "w25",
+          "text": "cadena,",
+          "start": 11.399,
+          "end": 11.779
+        },
+        {
+          "id": "w26",
+          "text": "para",
+          "start": 12.219,
+          "end": 12.359
+        },
+        {
+          "id": "w27",
+          "text": "que",
+          "start": 12.46,
+          "end": 12.52
+        },
+        {
+          "id": "w28",
+          "text": "nadie",
+          "start": 12.639,
+          "end": 12.92
+        },
+        {
+          "id": "w29",
+          "text": "quede",
+          "start": 13.059,
+          "end": 13.34
+        },
+        {
+          "id": "w30",
+          "text": "sin",
+          "start": 13.38,
+          "end": 13.539
+        },
+        {
+          "id": "w31",
+          "text": "cubrir.",
+          "start": 13.579,
+          "end": 13.979
+        }
+      ]
+    },
+    {
+      "frame": 7,
+      "path": "assets/voice/07.wav",
+      "duration_s": 12.852,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Organiza",
+          "start": 0.179,
+          "end": 0.719
+        },
+        {
+          "id": "w1",
+          "text": "cada",
+          "start": 0.819,
+          "end": 1
+        },
+        {
+          "id": "w2",
+          "text": "evento",
+          "start": 1.079,
+          "end": 1.439
+        },
+        {
+          "id": "w3",
+          "text": "de",
+          "start": 1.459,
+          "end": 1.559
+        },
+        {
+          "id": "w4",
+          "text": "principio",
+          "start": 1.599,
+          "end": 2.159
+        },
+        {
+          "id": "w5",
+          "text": "a",
+          "start": 2.2,
+          "end": 2.22
+        },
+        {
+          "id": "w6",
+          "text": "fin:",
+          "start": 2.339,
+          "end": 2.639
+        },
+        {
+          "id": "w7",
+          "text": "calendario",
+          "start": 3.159,
+          "end": 3.679
+        },
+        {
+          "id": "w8",
+          "text": "visual,",
+          "start": 3.759,
+          "end": 4.259
+        },
+        {
+          "id": "w9",
+          "text": "asistencia",
+          "start": 4.679,
+          "end": 5.319
+        },
+        {
+          "id": "w10",
+          "text": "por",
+          "start": 5.359,
+          "end": 5.46
+        },
+        {
+          "id": "w11",
+          "text": "QR,",
+          "start": 5.679,
+          "end": 6.159
+        },
+        {
+          "id": "w12",
+          "text": "credenciales",
+          "start": 6.639,
+          "end": 7.419
+        },
+        {
+          "id": "w13",
+          "text": "impresas",
+          "start": 7.5,
+          "end": 8.039
+        },
+        {
+          "id": "w14",
+          "text": "en",
+          "start": 8.079,
+          "end": 8.159
+        },
+        {
+          "id": "w15",
+          "text": "lote,",
+          "start": 8.239,
+          "end": 8.599
+        },
+        {
+          "id": "w16",
+          "text": "y",
+          "start": 9.099,
+          "end": 9.139
+        },
+        {
+          "id": "w17",
+          "text": "equipos",
+          "start": 9.199,
+          "end": 9.619
+        },
+        {
+          "id": "w18",
+          "text": "programados",
+          "start": 9.699,
+          "end": 10.359
+        },
+        {
+          "id": "w19",
+          "text": "con",
+          "start": 10.399,
+          "end": 10.539
+        },
+        {
+          "id": "w20",
+          "text": "confirmación",
+          "start": 10.579,
+          "end": 11.38
+        },
+        {
+          "id": "w21",
+          "text": "tipo",
+          "start": 11.519,
+          "end": 11.799
+        },
+        {
+          "id": "w22",
+          "text": "semáforo.",
+          "start": 11.92,
+          "end": 12.539
+        }
+      ]
+    },
+    {
+      "frame": 8,
+      "path": "assets/voice/08.wav",
+      "duration_s": 10.71,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Cuida",
+          "start": 0.159,
+          "end": 0.519
+        },
+        {
+          "id": "w1",
+          "text": "a",
+          "start": 0.599,
+          "end": 0.639
+        },
+        {
+          "id": "w2",
+          "text": "los",
+          "start": 0.699,
+          "end": 0.839
+        },
+        {
+          "id": "w3",
+          "text": "más",
+          "start": 0.919,
+          "end": 1.079
+        },
+        {
+          "id": "w4",
+          "text": "pequeños",
+          "start": 1.139,
+          "end": 1.659
+        },
+        {
+          "id": "w5",
+          "text": "con",
+          "start": 1.74,
+          "end": 1.86
+        },
+        {
+          "id": "w6",
+          "text": "check-in",
+          "start": 1.959,
+          "end": 2.339
+        },
+        {
+          "id": "w7",
+          "text": "seguro",
+          "start": 2.419,
+          "end": 2.939
+        },
+        {
+          "id": "w8",
+          "text": "y",
+          "start": 2.98,
+          "end": 3
+        },
+        {
+          "id": "w9",
+          "text": "familiares",
+          "start": 3.099,
+          "end": 3.639
+        },
+        {
+          "id": "w10",
+          "text": "verificados",
+          "start": 3.72,
+          "end": 4.5
+        },
+        {
+          "id": "w11",
+          "text": "—",
+          "start": 4.5,
+          "end": 4.5
+        },
+        {
+          "id": "w12",
+          "text": "y",
+          "start": 5.019,
+          "end": 5.039
+        },
+        {
+          "id": "w13",
+          "text": "forma",
+          "start": 5.179,
+          "end": 5.5
+        },
+        {
+          "id": "w14",
+          "text": "a",
+          "start": 5.539,
+          "end": 5.579
+        },
+        {
+          "id": "w15",
+          "text": "tus",
+          "start": 5.659,
+          "end": 5.839
+        },
+        {
+          "id": "w16",
+          "text": "líderes",
+          "start": 5.92,
+          "end": 6.359
+        },
+        {
+          "id": "w17",
+          "text": "con",
+          "start": 6.42,
+          "end": 6.539
+        },
+        {
+          "id": "w18",
+          "text": "Kingdom",
+          "start": 6.659,
+          "end": 7
+        },
+        {
+          "id": "w19",
+          "text": "Academy:",
+          "start": 7.059,
+          "end": 7.599
+        },
+        {
+          "id": "w20",
+          "text": "cursos,",
+          "start": 8.039,
+          "end": 8.539
+        },
+        {
+          "id": "w21",
+          "text": "clases",
+          "start": 8.739,
+          "end": 9.3
+        },
+        {
+          "id": "w22",
+          "text": "y",
+          "start": 9.359,
+          "end": 9.38
+        },
+        {
+          "id": "w23",
+          "text": "certificados.",
+          "start": 9.5,
+          "end": 10.399
+        }
+      ]
+    },
+    {
+      "frame": 9,
+      "path": "assets/voice/09.wav",
+      "duration_s": 12.304,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Cada",
+          "start": 0.119,
+          "end": 0.34
+        },
+        {
+          "id": "w1",
+          "text": "donación,",
+          "start": 0.419,
+          "end": 1
+        },
+        {
+          "id": "w2",
+          "text": "trazable.",
+          "start": 1.36,
+          "end": 1.919
+        },
+        {
+          "id": "w3",
+          "text": "Cada",
+          "start": 2.399,
+          "end": 2.559
+        },
+        {
+          "id": "w4",
+          "text": "ingreso,",
+          "start": 2.619,
+          "end": 3.119
+        },
+        {
+          "id": "w5",
+          "text": "revisado",
+          "start": 3.619,
+          "end": 4.219
+        },
+        {
+          "id": "w6",
+          "text": "y",
+          "start": 4.42,
+          "end": 4.46
+        },
+        {
+          "id": "w7",
+          "text": "aprobado.",
+          "start": 4.539,
+          "end": 5.039
+        },
+        {
+          "id": "w8",
+          "text": "Centros",
+          "start": 5.659,
+          "end": 6.039
+        },
+        {
+          "id": "w9",
+          "text": "de",
+          "start": 6.099,
+          "end": 6.139
+        },
+        {
+          "id": "w10",
+          "text": "costo,",
+          "start": 6.239,
+          "end": 6.619
+        },
+        {
+          "id": "w11",
+          "text": "presupuesto",
+          "start": 6.759,
+          "end": 7.539
+        },
+        {
+          "id": "w12",
+          "text": "y",
+          "start": 7.599,
+          "end": 7.619
+        },
+        {
+          "id": "w13",
+          "text": "auditoría",
+          "start": 7.719,
+          "end": 8.239
+        },
+        {
+          "id": "w14",
+          "text": "completa",
+          "start": 8.34,
+          "end": 8.819
+        },
+        {
+          "id": "w15",
+          "text": "—",
+          "start": 8.819,
+          "end": 8.819
+        },
+        {
+          "id": "w16",
+          "text": "finanzas",
+          "start": 8.96,
+          "end": 9.439
+        },
+        {
+          "id": "w17",
+          "text": "claras,",
+          "start": 9.519,
+          "end": 9.88
+        },
+        {
+          "id": "w18",
+          "text": "sin",
+          "start": 10.319,
+          "end": 10.479
+        },
+        {
+          "id": "w19",
+          "text": "hojas",
+          "start": 10.539,
+          "end": 10.84
+        },
+        {
+          "id": "w20",
+          "text": "de",
+          "start": 10.899,
+          "end": 10.979
+        },
+        {
+          "id": "w21",
+          "text": "cálculo",
+          "start": 11.039,
+          "end": 11.42
+        },
+        {
+          "id": "w22",
+          "text": "sueltas.",
+          "start": 11.519,
+          "end": 12.039
+        }
+      ]
+    },
+    {
+      "frame": 10,
+      "path": "assets/voice/10.wav",
+      "duration_s": 11.546,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Un",
+          "start": 0.159,
+          "end": 0.219
+        },
+        {
+          "id": "w1",
+          "text": "muro",
+          "start": 0.319,
+          "end": 0.479
+        },
+        {
+          "id": "w2",
+          "text": "de",
+          "start": 0.539,
+          "end": 0.579
+        },
+        {
+          "id": "w3",
+          "text": "novedades",
+          "start": 0.639,
+          "end": 1.159
+        },
+        {
+          "id": "w4",
+          "text": "para",
+          "start": 1.22,
+          "end": 1.379
+        },
+        {
+          "id": "w5",
+          "text": "toda",
+          "start": 1.459,
+          "end": 1.639
+        },
+        {
+          "id": "w6",
+          "text": "la",
+          "start": 1.679,
+          "end": 1.74
+        },
+        {
+          "id": "w7",
+          "text": "iglesia,",
+          "start": 1.779,
+          "end": 2.24
+        },
+        {
+          "id": "w8",
+          "text": "notificaciones",
+          "start": 2.7,
+          "end": 3.379
+        },
+        {
+          "id": "w9",
+          "text": "segmentadas,",
+          "start": 3.419,
+          "end": 4.179
+        },
+        {
+          "id": "w10",
+          "text": "campañas",
+          "start": 4.559,
+          "end": 5.019
+        },
+        {
+          "id": "w11",
+          "text": "de",
+          "start": 5.079,
+          "end": 5.119
+        },
+        {
+          "id": "w12",
+          "text": "WhatsApp",
+          "start": 5.199,
+          "end": 5.759
+        },
+        {
+          "id": "w13",
+          "text": "con",
+          "start": 5.799,
+          "end": 5.899
+        },
+        {
+          "id": "w14",
+          "text": "tu",
+          "start": 5.98,
+          "end": 6.059
+        },
+        {
+          "id": "w15",
+          "text": "propia",
+          "start": 6.119,
+          "end": 6.379
+        },
+        {
+          "id": "w16",
+          "text": "línea,",
+          "start": 6.46,
+          "end": 6.759
+        },
+        {
+          "id": "w17",
+          "text": "y",
+          "start": 7.219,
+          "end": 7.259
+        },
+        {
+          "id": "w18",
+          "text": "automatizaciones",
+          "start": 7.359,
+          "end": 8.239
+        },
+        {
+          "id": "w19",
+          "text": "que",
+          "start": 8.3,
+          "end": 8.34
+        },
+        {
+          "id": "w20",
+          "text": "se",
+          "start": 8.42,
+          "end": 8.479
+        },
+        {
+          "id": "w21",
+          "text": "disparan",
+          "start": 8.519,
+          "end": 8.98
+        },
+        {
+          "id": "w22",
+          "text": "solas",
+          "start": 9.079,
+          "end": 9.539
+        },
+        {
+          "id": "w23",
+          "text": "—",
+          "start": 9.539,
+          "end": 9.539
+        },
+        {
+          "id": "w24",
+          "text": "sin",
+          "start": 9.639,
+          "end": 9.76
+        },
+        {
+          "id": "w25",
+          "text": "que",
+          "start": 9.84,
+          "end": 9.96
+        },
+        {
+          "id": "w26",
+          "text": "nadie",
+          "start": 10,
+          "end": 10.3
+        },
+        {
+          "id": "w27",
+          "text": "tenga",
+          "start": 10.34,
+          "end": 10.539
+        },
+        {
+          "id": "w28",
+          "text": "que",
+          "start": 10.619,
+          "end": 10.659
+        },
+        {
+          "id": "w29",
+          "text": "acordarse.",
+          "start": 10.739,
+          "end": 11.3
+        }
+      ]
+    },
+    {
+      "frame": 11,
+      "path": "assets/voice/11.wav",
+      "duration_s": 10.423,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Tu",
+          "start": 0.119,
+          "end": 0.179
+        },
+        {
+          "id": "w1",
+          "text": "biblioteca",
+          "start": 0.239,
+          "end": 0.759
+        },
+        {
+          "id": "w2",
+          "text": "de",
+          "start": 0.799,
+          "end": 0.899
+        },
+        {
+          "id": "w3",
+          "text": "partituras,",
+          "start": 0.939,
+          "end": 1.659
+        },
+        {
+          "id": "w4",
+          "text": "transposición",
+          "start": 2.039,
+          "end": 2.759
+        },
+        {
+          "id": "w5",
+          "text": "de",
+          "start": 2.799,
+          "end": 2.839
+        },
+        {
+          "id": "w6",
+          "text": "tono",
+          "start": 2.96,
+          "end": 3.24
+        },
+        {
+          "id": "w7",
+          "text": "en",
+          "start": 3.379,
+          "end": 3.46
+        },
+        {
+          "id": "w8",
+          "text": "un",
+          "start": 3.5,
+          "end": 3.639
+        },
+        {
+          "id": "w9",
+          "text": "clic,",
+          "start": 3.679,
+          "end": 4
+        },
+        {
+          "id": "w10",
+          "text": "repertorios",
+          "start": 4.38,
+          "end": 5.019
+        },
+        {
+          "id": "w11",
+          "text": "por",
+          "start": 5.059,
+          "end": 5.159
+        },
+        {
+          "id": "w12",
+          "text": "servicio",
+          "start": 5.239,
+          "end": 5.799
+        },
+        {
+          "id": "w13",
+          "text": "—",
+          "start": 5.799,
+          "end": 5.799
+        },
+        {
+          "id": "w14",
+          "text": "y",
+          "start": 6.159,
+          "end": 6.219
+        },
+        {
+          "id": "w15",
+          "text": "un",
+          "start": 6.239,
+          "end": 6.319
+        },
+        {
+          "id": "w16",
+          "text": "marketplace",
+          "start": 6.42,
+          "end": 7.059
+        },
+        {
+          "id": "w17",
+          "text": "para",
+          "start": 7.139,
+          "end": 7.279
+        },
+        {
+          "id": "w18",
+          "text": "comprar",
+          "start": 7.359,
+          "end": 7.739
+        },
+        {
+          "id": "w19",
+          "text": "e",
+          "start": 7.879,
+          "end": 7.919
+        },
+        {
+          "id": "w20",
+          "text": "intercambiar",
+          "start": 7.96,
+          "end": 8.519
+        },
+        {
+          "id": "w21",
+          "text": "música",
+          "start": 8.639,
+          "end": 9.079
+        },
+        {
+          "id": "w22",
+          "text": "con",
+          "start": 9.139,
+          "end": 9.239
+        },
+        {
+          "id": "w23",
+          "text": "otras",
+          "start": 9.3,
+          "end": 9.539
+        },
+        {
+          "id": "w24",
+          "text": "iglesias.",
+          "start": 9.599,
+          "end": 10.219
+        }
+      ]
+    },
+    {
+      "frame": 12,
+      "path": "assets/voice/12.wav",
+      "duration_s": 10.162,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Un",
+          "start": 0.14,
+          "end": 0.239
+        },
+        {
+          "id": "w1",
+          "text": "micrositio",
+          "start": 0.299,
+          "end": 0.899
+        },
+        {
+          "id": "w2",
+          "text": "para",
+          "start": 0.979,
+          "end": 1.1
+        },
+        {
+          "id": "w3",
+          "text": "tu",
+          "start": 1.179,
+          "end": 1.259
+        },
+        {
+          "id": "w4",
+          "text": "iglesia,",
+          "start": 1.299,
+          "end": 1.839
+        },
+        {
+          "id": "w5",
+          "text": "formularios",
+          "start": 2.46,
+          "end": 2.98
+        },
+        {
+          "id": "w6",
+          "text": "inteligentes",
+          "start": 3.059,
+          "end": 3.799
+        },
+        {
+          "id": "w7",
+          "text": "que",
+          "start": 3.879,
+          "end": 3.919
+        },
+        {
+          "id": "w8",
+          "text": "se",
+          "start": 4,
+          "end": 4.079
+        },
+        {
+          "id": "w9",
+          "text": "adaptan",
+          "start": 4.159,
+          "end": 4.639
+        },
+        {
+          "id": "w10",
+          "text": "a",
+          "start": 4.699,
+          "end": 4.719
+        },
+        {
+          "id": "w11",
+          "text": "cada",
+          "start": 4.9,
+          "end": 5.099
+        },
+        {
+          "id": "w12",
+          "text": "visitante,",
+          "start": 5.179,
+          "end": 5.859
+        },
+        {
+          "id": "w13",
+          "text": "e",
+          "start": 6.42,
+          "end": 6.46
+        },
+        {
+          "id": "w14",
+          "text": "invitaciones",
+          "start": 6.519,
+          "end": 7.359
+        },
+        {
+          "id": "w15",
+          "text": "con",
+          "start": 7.419,
+          "end": 7.619
+        },
+        {
+          "id": "w16",
+          "text": "auto-registro",
+          "start": 7.719,
+          "end": 8.539
+        },
+        {
+          "id": "w17",
+          "text": "por",
+          "start": 8.659,
+          "end": 8.76
+        },
+        {
+          "id": "w18",
+          "text": "código",
+          "start": 8.899,
+          "end": 9.34
+        },
+        {
+          "id": "w19",
+          "text": "QR.",
+          "start": 9.479,
+          "end": 9.88
+        }
+      ]
+    },
+    {
+      "frame": 13,
+      "path": "assets/voice/13.wav",
+      "duration_s": 11.337,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Dashboards",
+          "start": 0.14,
+          "end": 0.799
+        },
+        {
+          "id": "w1",
+          "text": "ejecutivos,",
+          "start": 0.859,
+          "end": 1.679
+        },
+        {
+          "id": "w2",
+          "text": "mapas",
+          "start": 2.2,
+          "end": 2.619
+        },
+        {
+          "id": "w3",
+          "text": "de",
+          "start": 2.679,
+          "end": 2.72
+        },
+        {
+          "id": "w4",
+          "text": "tu",
+          "start": 2.799,
+          "end": 2.859
+        },
+        {
+          "id": "w5",
+          "text": "territorio,",
+          "start": 2.96,
+          "end": 3.619
+        },
+        {
+          "id": "w6",
+          "text": "y",
+          "start": 4.039,
+          "end": 4.059
+        },
+        {
+          "id": "w7",
+          "text": "el",
+          "start": 4.119,
+          "end": 4.179
+        },
+        {
+          "id": "w8",
+          "text": "reporte",
+          "start": 4.239,
+          "end": 4.719
+        },
+        {
+          "id": "w9",
+          "text": "que",
+          "start": 4.819,
+          "end": 4.859
+        },
+        {
+          "id": "w10",
+          "text": "necesites,",
+          "start": 4.92,
+          "end": 5.679
+        },
+        {
+          "id": "w11",
+          "text": "exportado",
+          "start": 6.139,
+          "end": 6.859
+        },
+        {
+          "id": "w12",
+          "text": "con",
+          "start": 6.899,
+          "end": 7.059
+        },
+        {
+          "id": "w13",
+          "text": "un",
+          "start": 7.099,
+          "end": 7.259
+        },
+        {
+          "id": "w14",
+          "text": "clic",
+          "start": 7.299,
+          "end": 7.599
+        },
+        {
+          "id": "w15",
+          "text": "—",
+          "start": 7.599,
+          "end": 7.599
+        },
+        {
+          "id": "w16",
+          "text": "decisiones",
+          "start": 7.98,
+          "end": 8.659
+        },
+        {
+          "id": "w17",
+          "text": "con",
+          "start": 8.76,
+          "end": 8.859
+        },
+        {
+          "id": "w18",
+          "text": "datos,",
+          "start": 8.96,
+          "end": 9.46
+        },
+        {
+          "id": "w19",
+          "text": "no",
+          "start": 10.019,
+          "end": 10.159
+        },
+        {
+          "id": "w20",
+          "text": "con",
+          "start": 10.3,
+          "end": 10.399
+        },
+        {
+          "id": "w21",
+          "text": "intuición.",
+          "start": 10.46,
+          "end": 11.079
+        }
+      ]
+    },
+    {
+      "frame": 14,
+      "path": "assets/voice/14.wav",
+      "duration_s": 9.874,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Y",
+          "start": 0.179,
+          "end": 0.239
+        },
+        {
+          "id": "w1",
+          "text": "si",
+          "start": 0.299,
+          "end": 0.379
+        },
+        {
+          "id": "w2",
+          "text": "tu",
+          "start": 0.479,
+          "end": 0.519
+        },
+        {
+          "id": "w3",
+          "text": "iglesia",
+          "start": 0.579,
+          "end": 1
+        },
+        {
+          "id": "w4",
+          "text": "también",
+          "start": 1.039,
+          "end": 1.419
+        },
+        {
+          "id": "w5",
+          "text": "sale",
+          "start": 1.459,
+          "end": 1.639
+        },
+        {
+          "id": "w6",
+          "text": "al",
+          "start": 1.679,
+          "end": 1.779
+        },
+        {
+          "id": "w7",
+          "text": "campo:",
+          "start": 1.819,
+          "end": 2.159
+        },
+        {
+          "id": "w8",
+          "text": "registro,",
+          "start": 2.839,
+          "end": 3.46
+        },
+        {
+          "id": "w9",
+          "text": "conteo,",
+          "start": 3.859,
+          "end": 4.4
+        },
+        {
+          "id": "w10",
+          "text": "testimonios",
+          "start": 4.839,
+          "end": 5.599
+        },
+        {
+          "id": "w11",
+          "text": "—",
+          "start": 5.599,
+          "end": 5.599
+        },
+        {
+          "id": "w12",
+          "text": "y",
+          "start": 5.659,
+          "end": 5.819
+        },
+        {
+          "id": "w13",
+          "text": "cada",
+          "start": 5.879,
+          "end": 6.099
+        },
+        {
+          "id": "w14",
+          "text": "nueva",
+          "start": 6.199,
+          "end": 6.44
+        },
+        {
+          "id": "w15",
+          "text": "alma",
+          "start": 6.539,
+          "end": 6.759
+        },
+        {
+          "id": "w16",
+          "text": "conectada",
+          "start": 6.879,
+          "end": 7.359
+        },
+        {
+          "id": "w17",
+          "text": "con",
+          "start": 7.44,
+          "end": 7.539
+        },
+        {
+          "id": "w18",
+          "text": "la",
+          "start": 7.579,
+          "end": 7.619
+        },
+        {
+          "id": "w19",
+          "text": "iglesia",
+          "start": 7.659,
+          "end": 8.079
+        },
+        {
+          "id": "w20",
+          "text": "local",
+          "start": 8.159,
+          "end": 8.519
+        },
+        {
+          "id": "w21",
+          "text": "más",
+          "start": 8.819,
+          "end": 9.039
+        },
+        {
+          "id": "w22",
+          "text": "cercana.",
+          "start": 9.079,
+          "end": 9.599
+        }
+      ]
+    },
+    {
+      "frame": 15,
+      "path": "assets/voice/15.wav",
+      "duration_s": 15.073,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Y",
+          "start": 0.159,
+          "end": 0.299
+        },
+        {
+          "id": "w1",
+          "text": "si",
+          "start": 0.34,
+          "end": 0.419
+        },
+        {
+          "id": "w2",
+          "text": "tu",
+          "start": 0.539,
+          "end": 0.579
+        },
+        {
+          "id": "w3",
+          "text": "iglesia",
+          "start": 0.639,
+          "end": 1.199
+        },
+        {
+          "id": "w4",
+          "text": "crece",
+          "start": 1.24,
+          "end": 1.599
+        },
+        {
+          "id": "w5",
+          "text": "a",
+          "start": 1.659,
+          "end": 1.719
+        },
+        {
+          "id": "w6",
+          "text": "varias",
+          "start": 1.779,
+          "end": 2.139
+        },
+        {
+          "id": "w7",
+          "text": "sedes,",
+          "start": 2.18,
+          "end": 2.599
+        },
+        {
+          "id": "w8",
+          "text": "una",
+          "start": 3.119,
+          "end": 3.259
+        },
+        {
+          "id": "w9",
+          "text": "sola",
+          "start": 3.379,
+          "end": 3.579
+        },
+        {
+          "id": "w10",
+          "text": "cuenta",
+          "start": 3.699,
+          "end": 4.039
+        },
+        {
+          "id": "w11",
+          "text": "lo",
+          "start": 4.099,
+          "end": 4.159
+        },
+        {
+          "id": "w12",
+          "text": "administra",
+          "start": 4.199,
+          "end": 4.799
+        },
+        {
+          "id": "w13",
+          "text": "todo.",
+          "start": 4.92,
+          "end": 5.239
+        },
+        {
+          "id": "w14",
+          "text": "Todo",
+          "start": 5.819,
+          "end": 6.099
+        },
+        {
+          "id": "w15",
+          "text": "se",
+          "start": 6.159,
+          "end": 6.219
+        },
+        {
+          "id": "w16",
+          "text": "adapta",
+          "start": 6.299,
+          "end": 6.779
+        },
+        {
+          "id": "w17",
+          "text": "a",
+          "start": 6.839,
+          "end": 6.96
+        },
+        {
+          "id": "w18",
+          "text": "cómo",
+          "start": 7,
+          "end": 7.179
+        },
+        {
+          "id": "w19",
+          "text": "funciona",
+          "start": 7.299,
+          "end": 7.739
+        },
+        {
+          "id": "w20",
+          "text": "tu",
+          "start": 7.839,
+          "end": 7.899
+        },
+        {
+          "id": "w21",
+          "text": "iglesia:",
+          "start": 7.94,
+          "end": 8.48
+        },
+        {
+          "id": "w22",
+          "text": "roles,",
+          "start": 9.099,
+          "end": 9.539
+        },
+        {
+          "id": "w23",
+          "text": "redes",
+          "start": 10,
+          "end": 10.38
+        },
+        {
+          "id": "w24",
+          "text": "y",
+          "start": 10.539,
+          "end": 10.559
+        },
+        {
+          "id": "w25",
+          "text": "permisos",
+          "start": 10.659,
+          "end": 11.199
+        },
+        {
+          "id": "w26",
+          "text": "definidos",
+          "start": 11.259,
+          "end": 11.82
+        },
+        {
+          "id": "w27",
+          "text": "por",
+          "start": 11.899,
+          "end": 12
+        },
+        {
+          "id": "w28",
+          "text": "ti",
+          "start": 12.119,
+          "end": 12.259
+        },
+        {
+          "id": "w29",
+          "text": "—",
+          "start": 12.259,
+          "end": 12.259
+        },
+        {
+          "id": "w30",
+          "text": "sin",
+          "start": 12.42,
+          "end": 12.539
+        },
+        {
+          "id": "w31",
+          "text": "escribir",
+          "start": 12.639,
+          "end": 13.179
+        },
+        {
+          "id": "w32",
+          "text": "una",
+          "start": 13.279,
+          "end": 13.42
+        },
+        {
+          "id": "w33",
+          "text": "sola",
+          "start": 13.559,
+          "end": 13.759
+        },
+        {
+          "id": "w34",
+          "text": "línea",
+          "start": 13.859,
+          "end": 14.159
+        },
+        {
+          "id": "w35",
+          "text": "de",
+          "start": 14.199,
+          "end": 14.239
+        },
+        {
+          "id": "w36",
+          "text": "código.",
+          "start": 14.359,
+          "end": 14.799
+        }
+      ]
+    },
+    {
+      "frame": 16,
+      "path": "assets/voice/16.wav",
+      "duration_s": 5.956,
+      "words": [
+        {
+          "id": "w0",
+          "text": "KingdomApp.",
+          "start": 0.159,
+          "end": 0.899
+        },
+        {
+          "id": "w1",
+          "text": "Toda",
+          "start": 1.48,
+          "end": 1.699
+        },
+        {
+          "id": "w2",
+          "text": "tu",
+          "start": 1.779,
+          "end": 1.86
+        },
+        {
+          "id": "w3",
+          "text": "iglesia,",
+          "start": 1.899,
+          "end": 2.419
+        },
+        {
+          "id": "w4",
+          "text": "en",
+          "start": 2.74,
+          "end": 2.819
+        },
+        {
+          "id": "w5",
+          "text": "un",
+          "start": 2.879,
+          "end": 2.96
+        },
+        {
+          "id": "w6",
+          "text": "solo",
+          "start": 3.079,
+          "end": 3.299
+        },
+        {
+          "id": "w7",
+          "text": "lugar.",
+          "start": 3.379,
+          "end": 3.74
+        },
+        {
+          "id": "w8",
+          "text": "Agenda",
+          "start": 4.339,
+          "end": 4.779
+        },
+        {
+          "id": "w9",
+          "text": "tu",
+          "start": 4.859,
+          "end": 4.96
+        },
+        {
+          "id": "w10",
+          "text": "demo",
+          "start": 5.019,
+          "end": 5.299
+        },
+        {
+          "id": "w11",
+          "text": "hoy.",
+          "start": 5.4,
+          "end": 5.639
+        }
+      ]
+    }
+  ],
+  "sfx": [
+    {
+      "frame": 1,
+      "file": "assets/sfx/riser-soft.mp3",
+      "offset_s": 0,
+      "duration_s": 4.97,
+      "volume": 0.35
+    },
+    {
+      "frame": 16,
+      "file": "assets/sfx/chime-soft.mp3",
+      "offset_s": 0,
+      "duration_s": 1.273,
+      "volume": 0.35
+    }
+  ]
+}

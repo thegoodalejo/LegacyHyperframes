@@ -1,0 +1,19 @@
+{
+  "lines": [
+    {
+      "id": "01",
+      "sfx": [
+        "riser-soft"
+      ]
+    },
+    {
+      "id": "16",
+      "sfx": [
+        "chime-soft"
+      ]
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  }
+}
