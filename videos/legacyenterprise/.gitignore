@@ -1,0 +1,15 @@
+# Videos de LegacyEnterprise: en git solo el código del video (docs/videos/hyperframes.md → «Dónde viven los proyectos»).
+# Grabaciones, voces, música, renders y hojas de contacto van al bucket de la ayuda, no a git.
+*/assets/captura/
+*/assets/voice/
+*/assets/musica/
+*/renders/
+*/snapshots/
+# Generados en cada preparación (por idioma) desde guion.mjs y el kit:
+*/identidad/
+*/index.html
+*/tiempos-*.json
+# Caché local del CLI de HyperFrames (la regla de la raíz solo cubre videos/*/)
+*/.hyperframes/
+*/.thumbnails/
+*/.media/

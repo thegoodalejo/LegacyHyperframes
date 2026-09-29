@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "fecha": "2026-09-29",
+  "fuente": "LegacyEnterprise docs/videos/identidad.md",
+  "favicon_sha256": "01e95310db30699624d4f9361bb2e07cede4c33ea0d5deaad55bbcc63535a2b1",
+  "intro": { "archivo": "intro-wiki.html", "id": "intro-wiki", "duracion": 3.0, "sonido": 0.95 },
+  "cierre": { "archivo": "cierre-wiki.html", "id": "cierre-wiki", "duracion": 4.0, "sonido": 2.45, "sinSiguiente": { "duracion": 2.5, "sonido": 0.95 } },
+  "bucket_publico": "https://pub-1dd29ece4f6b46c6936d497c4e58d428.r2.dev",
+  "sonido": {
+    "clave": "marketing/v1/fuente/identidad/sonido-marca-kenney-confirmation_002-33b17a9a.ogg",
+    "sha256": "33b17a9a9a2397c62b285c52c33a907fdffb476909c99e42dde603f6a7a8b12c",
+    "lufs": -20,
+    "duracion": 0.54
+  },
+  "voz": { "lufs": -16, "es": { "voz": "em_alex", "velocidad": 1.0 }, "en": { "voz": "af_heart", "velocidad": 1.0 } }
+}

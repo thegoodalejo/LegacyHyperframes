@@ -1,0 +1,199 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"titulo","type":"string","label":"Título del tutorial (máx. ~40 caracteres)","default":"Entrar por primera vez","maxLength":48},
+    {"id":"modulo","type":"enum","label":"Módulo","default":"base","options":[
+      {"value":"base","label":"Empieza aquí"},{"value":"crm","label":"CRM"},{"value":"comunicaciones","label":"Comunicaciones"},
+      {"value":"agenda","label":"Agenda"},{"value":"portal","label":"Portal de clientes"}]},
+    {"id":"idioma","type":"enum","label":"Idioma","default":"es","options":[{"value":"es","label":"Español"},{"value":"en","label":"English"}]}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Intro del Tipo Wiki, kit de identidad v1 (LegacyEnterprise docs/videos/identidad.md → «Intro (3,0 s)»). NO se edita por video: cada
+         tutorial la monta con sus variables. Las rutas son relativas al proyecto (el kit se monta en <proyecto>/identidad/). -->
+  </head>
+  <body>
+    <template>
+      <link rel="stylesheet" href="identidad/fuentes/inter.css" />
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #fbf8fd;
+          font-family: 'Inter', sans-serif;
+          color: #1b1b1f;
+        }
+        .grupo {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .contenido {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 28px;
+          max-width: 1500px;
+        }
+        .marca {
+          display: flex;
+          align-items: center;
+          gap: 32px;
+        }
+        .favicon {
+          display: block;
+          width: 144px;
+          height: 144px;
+        }
+        .favicon svg {
+          display: block;
+          width: 144px;
+          height: 144px;
+          overflow: visible;
+        }
+        .textos {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .nombre {
+          font-size: 64px;
+          font-weight: 600;
+          line-height: 1.1;
+          letter-spacing: -0.5px;
+        }
+        .ayuda {
+          font-size: 40px;
+          font-weight: 500;
+          line-height: 1.2;
+          color: #48626e;
+        }
+        .chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 14px;
+          padding: 12px 24px 12px 18px;
+          border-radius: 999px;
+          background: color-mix(in srgb, var(--mod-color) 12%, transparent);
+          color: var(--mod-color);
+          font-size: 32px;
+          font-weight: 600;
+        }
+        .chip-icono {
+          display: block;
+          width: 40px;
+          height: 40px;
+          background: var(--mod-color);
+          -webkit-mask: var(--mod-icono) center / contain no-repeat;
+          mask: var(--mod-icono) center / contain no-repeat;
+        }
+        .titulo-caja {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 14px;
+        }
+        .titulo {
+          font-size: 64px;
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: -0.5px;
+        }
+        .subrayado {
+          display: block;
+          width: 100%;
+          height: 8px;
+          border-radius: 4px;
+          background: var(--mod-color);
+        }
+      </style>
+
+      <div id="root" data-composition-id="intro-wiki" data-width="1920" data-height="1080" data-duration="3">
+        <div class="grupo">
+          <div class="contenido">
+            <div class="marca">
+              <div class="favicon" id="intro-wiki-favicon">
+                <!-- Piezas de frontend/public/favicon.svg (sha256 01e95310…), sin redibujar; la baldosa lleva el redondeo del ícono instalado (22 %). -->
+                <svg viewBox="0 0 512 512" aria-label="Legacy Enterprise">
+                  <rect id="intro-wiki-baldosa" width="512" height="512" rx="112.64" fill="#3949AB" />
+                  <rect id="intro-wiki-b1" x="96" y="96" width="144" height="144" rx="32" fill="#FFFFFF" />
+                  <rect id="intro-wiki-b2" x="96" y="272" width="144" height="144" rx="32" fill="#FFFFFF" />
+                  <rect id="intro-wiki-b3" x="272" y="272" width="144" height="144" rx="32" fill="#FFFFFF" />
+                  <circle id="intro-wiki-circulo" cx="344" cy="168" r="72" fill="#4DD8C4" />
+                </svg>
+              </div>
+              <div class="textos" id="intro-wiki-textos">
+                <div class="nombre">Legacy Enterprise</div>
+                <div class="ayuda" id="intro-wiki-ayuda">Ayuda</div>
+              </div>
+            </div>
+            <div class="chip" id="intro-wiki-chip"><span class="chip-icono"></span><span id="intro-wiki-modulo">Empieza aquí</span></div>
+            <div class="titulo-caja">
+              <div class="titulo" id="intro-wiki-titulo" data-var-text="titulo">Entrar por primera vez</div>
+              <span class="subrayado" id="intro-wiki-subrayado"></span>
+            </div>
+          </div>
+        </div>
+        <!-- El sonido de marca lo pone el proyecto (host) en el tiempo que declara identidad/kit.json. -->
+      </div>
+
+      <script>
+        (function () {
+          const MODULOS = {
+            base: { color: '#4555B7', icono: 'rocket_launch', es: 'Empieza aquí', en: 'Start here' },
+            crm: { color: '#4555B7', icono: 'handshake', es: 'CRM', en: 'CRM' },
+            comunicaciones: { color: '#48626E', icono: 'forum', es: 'Comunicaciones', en: 'Communications' },
+            agenda: { color: '#006B5C', icono: 'calendar_month', es: 'Agenda', en: 'Scheduling' },
+            portal: { color: '#4555B7', icono: 'storefront', es: 'Portal de clientes', en: 'Customer portal' },
+          };
+          const v = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+          const idioma = v.idioma === 'en' ? 'en' : 'es';
+          const mod = MODULOS[v.modulo] || MODULOS.base;
+          const root = document.querySelector('[data-composition-id="intro-wiki"]');
+          root.style.setProperty('--mod-color', mod.color);
+          root.style.setProperty('--mod-icono', `url(identidad/iconos/${mod.icono}.svg)`);
+          document.getElementById('intro-wiki-modulo').textContent = mod[idioma];
+          document.getElementById('intro-wiki-ayuda').textContent = idioma === 'en' ? 'Help' : 'Ayuda';
+
+          const construir = () => {
+            // El favicon arranca grande en el centro de la pantalla y termina en su lugar junto al nombre (su caja final manda).
+            const fav = document.getElementById('intro-wiki-favicon');
+            const r = fav.getBoundingClientRect();
+            const rr = root.getBoundingClientRect();
+            const escala = 240 / 144;
+            const dx = rr.left + 960 - (r.left + r.width / 2);
+            const dy = rr.top + 540 - (r.top + r.height / 2);
+            const pieza = { transformOrigin: '50% 50%' };
+
+            const tl = gsap.timeline({ paused: true });
+            tl.fromTo(fav, { x: dx, y: dy, scale: escala * 0.85, autoAlpha: 0 },
+              { x: dx, y: dy, scale: escala, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, 0);
+            ['#intro-wiki-b1', '#intro-wiki-b2', '#intro-wiki-b3'].forEach((sel, i) => {
+              tl.fromTo(sel, { ...pieza, scale: 0.6, autoAlpha: 0 }, { ...pieza, scale: 1, autoAlpha: 1, duration: 0.2, ease: 'power2.out' }, 0.35 + i * 0.2);
+            });
+            tl.fromTo('#intro-wiki-circulo', { ...pieza, scale: 0.7, autoAlpha: 0 }, { ...pieza, scale: 1, autoAlpha: 1, duration: 0.3, ease: 'power2.out' }, 0.95);
+            tl.to(fav, { x: 0, y: 0, scale: 1, duration: 0.55, ease: 'power3.inOut' }, 1.25);
+            tl.fromTo('#intro-wiki-textos', { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: 'power2.out' }, 1.35);
+            tl.fromTo('#intro-wiki-chip', { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.3, ease: 'power2.out' }, 1.8);
+            tl.fromTo('#intro-wiki-titulo', { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power2.out' }, 1.9);
+            tl.fromTo('#intro-wiki-subrayado', { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, transformOrigin: '0% 50%', duration: 0.4, ease: 'power2.inOut' }, 2.0);
+            tl.set({}, {}, 3);
+            window.__timelines['intro-wiki'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

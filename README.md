@@ -34,6 +34,12 @@ videos/
     renders/                — MP4 final
 ```
 
+## Videos de LegacyEnterprise
+
+`videos/legacyenterprise/` tiene su propio flujo (tutoriales de la wiki con la **interfaz real** grabada, kit de identidad y voz Kokoro local
+fija): ver [`videos/legacyenterprise/README.md`](videos/legacyenterprise/README.md). La voz usa el entorno `.venv-tts/` (fuera de git), creado
+desde `requirements-tts.txt`.
+
 ## Ejemplo incluido
 
 `videos/kingdomapp-promo/` — video de presentación funcional de KingdomApp (161.5s, es),

@@ -6,3 +6,6 @@ videos/*/.thumbnails/
 videos/*/.media/
 
 .DS_Store
+
+# Entorno de Python de la voz (Kokoro), se recrea desde requirements-tts.txt
+.venv-tts/

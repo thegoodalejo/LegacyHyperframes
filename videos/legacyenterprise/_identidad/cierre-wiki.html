@@ -1,0 +1,193 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"siguiente","type":"string","label":"Título del artículo recomendado (vacío = sin «Sigue con»)","default":""},
+    {"id":"modulo","type":"enum","label":"Módulo","default":"base","options":[
+      {"value":"base","label":"Empieza aquí"},{"value":"crm","label":"CRM"},{"value":"comunicaciones","label":"Comunicaciones"},
+      {"value":"agenda","label":"Agenda"},{"value":"portal","label":"Portal de clientes"}]},
+    {"id":"idioma","type":"enum","label":"Idioma","default":"es","options":[{"value":"es","label":"Español"},{"value":"en","label":"English"}]}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Cierre del Tipo Wiki, kit de identidad v1 (LegacyEnterprise docs/videos/identidad.md → «Cierre (4,0 s)»). NO se edita por video.
+         Con «siguiente» dura 4,0 s; sin él, 2,5 s (el host pone data-duration="2.5" y la marca se arma desde el inicio). -->
+  </head>
+  <body>
+    <template>
+      <link rel="stylesheet" href="identidad/fuentes/inter.css" />
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #fbf8fd;
+          font-family: 'Inter', sans-serif;
+          color: #1b1b1f;
+        }
+        .capa {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1920px;
+          height: 1080px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .tarjeta {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 24px;
+          min-width: 900px;
+          max-width: 1400px;
+          padding: 56px 72px;
+          border-radius: 32px;
+          background: #ffffff;
+          border: 2px solid #c7c5d0;
+          box-shadow: 0 12px 40px rgba(27, 27, 31, 0.08);
+        }
+        .sigue {
+          font-size: 36px;
+          font-weight: 500;
+          color: #48626e;
+        }
+        .siguiente {
+          font-size: 60px;
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: -0.5px;
+        }
+        .chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 14px;
+          padding: 12px 24px 12px 18px;
+          border-radius: 999px;
+          background: color-mix(in srgb, var(--mod-color) 12%, transparent);
+          color: var(--mod-color);
+          font-size: 30px;
+          font-weight: 600;
+        }
+        .chip-icono {
+          display: block;
+          width: 38px;
+          height: 38px;
+          background: var(--mod-color);
+          -webkit-mask: var(--mod-icono) center / contain no-repeat;
+          mask: var(--mod-icono) center / contain no-repeat;
+        }
+        .marca {
+          display: flex;
+          align-items: center;
+          gap: 40px;
+        }
+        .favicon {
+          display: block;
+          width: 176px;
+          height: 176px;
+        }
+        .favicon svg {
+          display: block;
+          width: 176px;
+          height: 176px;
+          overflow: visible;
+        }
+        .textos {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .nombre {
+          font-size: 72px;
+          font-weight: 600;
+          line-height: 1.1;
+          letter-spacing: -0.5px;
+        }
+        .frase {
+          font-size: 38px;
+          font-weight: 500;
+          line-height: 1.25;
+          color: #48626e;
+          max-width: 1000px;
+        }
+      </style>
+
+      <div id="root" data-composition-id="cierre-wiki" data-width="1920" data-height="1080" data-duration="4">
+        <div class="capa" id="cierre-wiki-capa-siguiente">
+          <div class="tarjeta" id="cierre-wiki-tarjeta">
+            <div class="sigue" id="cierre-wiki-sigue">Sigue con:</div>
+            <div class="siguiente" id="cierre-wiki-siguiente" data-var-text="siguiente"></div>
+            <div class="chip"><span class="chip-icono"></span><span id="cierre-wiki-modulo">Empieza aquí</span></div>
+          </div>
+        </div>
+        <div class="capa" id="cierre-wiki-capa-marca">
+          <div class="marca">
+            <div class="favicon" id="cierre-wiki-favicon">
+              <!-- Piezas de frontend/public/favicon.svg (sha256 01e95310…), sin redibujar; baldosa con el redondeo del ícono instalado (22 %). -->
+              <svg viewBox="0 0 512 512" aria-label="Legacy Enterprise">
+                <rect id="cierre-wiki-baldosa" width="512" height="512" rx="112.64" fill="#3949AB" />
+                <rect id="cierre-wiki-b1" x="96" y="96" width="144" height="144" rx="32" fill="#FFFFFF" />
+                <rect id="cierre-wiki-b2" x="96" y="272" width="144" height="144" rx="32" fill="#FFFFFF" />
+                <rect id="cierre-wiki-b3" x="272" y="272" width="144" height="144" rx="32" fill="#FFFFFF" />
+                <circle id="cierre-wiki-circulo" cx="344" cy="168" r="72" fill="#4DD8C4" />
+              </svg>
+            </div>
+            <div class="textos" id="cierre-wiki-textos">
+              <div class="nombre">Legacy Enterprise</div>
+              <div class="frase" id="cierre-wiki-frase">Encuentra esta guía y más en la Ayuda de la app</div>
+            </div>
+          </div>
+        </div>
+        <!-- El sonido de marca lo pone el proyecto (host) en el tiempo que declara identidad/kit.json. -->
+      </div>
+
+      <script>
+        (function () {
+          const MODULOS = {
+            base: { color: '#4555B7', icono: 'rocket_launch', es: 'Empieza aquí', en: 'Start here' },
+            crm: { color: '#4555B7', icono: 'handshake', es: 'CRM', en: 'CRM' },
+            comunicaciones: { color: '#48626E', icono: 'forum', es: 'Comunicaciones', en: 'Communications' },
+            agenda: { color: '#006B5C', icono: 'calendar_month', es: 'Agenda', en: 'Scheduling' },
+            portal: { color: '#4555B7', icono: 'storefront', es: 'Portal de clientes', en: 'Customer portal' },
+          };
+          const v = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+          const idioma = v.idioma === 'en' ? 'en' : 'es';
+          const mod = MODULOS[v.modulo] || MODULOS.base;
+          const hay = !!(v.siguiente && String(v.siguiente).trim());
+          const root = document.querySelector('[data-composition-id="cierre-wiki"]');
+          root.style.setProperty('--mod-color', mod.color);
+          root.style.setProperty('--mod-icono', `url(identidad/iconos/${mod.icono}.svg)`);
+          document.getElementById('cierre-wiki-modulo').textContent = mod[idioma];
+          document.getElementById('cierre-wiki-sigue').textContent = idioma === 'en' ? 'Up next:' : 'Sigue con:';
+          document.getElementById('cierre-wiki-frase').textContent = idioma === 'en'
+            ? "Find this guide and more in the app's Help" : 'Encuentra esta guía y más en la Ayuda de la app';
+
+          // Sin «siguiente», la marca se arma desde el segundo 0 (el cierre dura 2,5 s).
+          const m = hay ? 1.5 : 0;
+          const pieza = { transformOrigin: '50% 50%' };
+          const tl = gsap.timeline({ paused: true });
+          if (hay) {
+            tl.fromTo('#cierre-wiki-tarjeta', { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, 0);
+            tl.to('#cierre-wiki-capa-siguiente', { autoAlpha: 0, duration: 0.2, ease: 'power1.in' }, 1.3);
+          } else {
+            tl.set('#cierre-wiki-capa-siguiente', { autoAlpha: 0 }, 0);
+          }
+          tl.fromTo('#cierre-wiki-favicon', { scale: 0.85, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, m);
+          ['#cierre-wiki-b1', '#cierre-wiki-b2', '#cierre-wiki-b3'].forEach((sel, i) => {
+            tl.fromTo(sel, { ...pieza, scale: 0.6, autoAlpha: 0 }, { ...pieza, scale: 1, autoAlpha: 1, duration: 0.2, ease: 'power2.out' }, m + 0.35 + i * 0.2);
+          });
+          tl.fromTo('#cierre-wiki-circulo', { ...pieza, scale: 0.7, autoAlpha: 0 }, { ...pieza, scale: 1, autoAlpha: 1, duration: 0.3, ease: 'power2.out' }, m + 0.95);
+          tl.fromTo('#cierre-wiki-textos', { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: 'power2.out' }, m + 1.1);
+          tl.to('#cierre-wiki-capa-marca', { autoAlpha: 0, duration: 0.6, ease: 'power1.in' }, m + 1.9);
+          tl.set({}, {}, m + 2.5);
+          window.__timelines['cierre-wiki'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

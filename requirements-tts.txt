@@ -1,0 +1,9 @@
+# Voz de los videos (Kokoro local; docs/videos/hyperframes.md → Voz en LegacyEnterprise). Versiones fijas: con el mismo modelo, voz y texto,
+# sale el mismo audio. Entorno: py -3.11 -m venv .venv-tts && .venv-tts\Scripts\python -m pip install -r requirements-tts.txt
+# HYPERFRAMES_PYTHON debe apuntar a .venv-tts\Scripts\python.exe para que `hyperframes tts` lo use.
+kokoro-onnx==0.6.1
+onnxruntime==1.30.0
+phonemizer==3.4.0
+espeakng-loader==0.2.4
+soundfile==0.14.0
+numpy==2.4.6
