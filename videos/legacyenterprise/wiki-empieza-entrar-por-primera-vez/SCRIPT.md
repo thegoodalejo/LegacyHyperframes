@@ -34,9 +34,10 @@ Artículo: `empieza/entrar-por-primera-vez` · Módulo: base
 - Toca «Editar acceso», elige su rol y marca los módulos que va a usar. _(desde el paso 13)_
 - Deja encendido «Acceso activo» y guarda. _(desde el paso 17)_
 
-### 6. listo — llamada «Inicio»
+### 6. listo — llamada «Bienvenida»
 
-- Cuando la persona vuelve a abrir la app, en Inicio ya ve sus módulos.
+- Cuando la persona vuelve a abrir la app, la bienvenida le muestra su rol y sus módulos.
+- Toca «Empezar» y en Inicio ya ve sus módulos, cada uno con sus primeros pasos. _(desde el paso 22)_
 - Si ves un mensaje que no esperabas, revisa «Problemas comunes» en este artículo de la Ayuda.
 
 ## English — «Signing in for the first time»
@@ -69,7 +70,8 @@ Artículo: `empieza/entrar-por-primera-vez` · Módulo: base
 - Tap "Edit access", choose their role and check the modules they will use. _(desde el paso 13)_
 - Leave "Access enabled" on and save. _(desde el paso 17)_
 
-### 6. listo — llamada «Home»
+### 6. listo — llamada «Welcome»
 
-- When they open the app again, their modules appear on Home.
+- When they open the app again, the welcome shows their role and their modules.
+- They tap "Get started" and their modules appear on Home, each with its first steps. _(desde el paso 22)_
 - If you see a message you did not expect, check "Common problems" in this Help article.

@@ -59,9 +59,12 @@ export default {
     },
     {
       tramo: 'listo',
-      llamada: { es: 'Inicio', en: 'Home' },
+      llamada: { es: 'Bienvenida', en: 'Welcome' },
       frases: [
-        { es: 'Cuando la persona vuelve a abrir la app, en Inicio ya ve sus módulos.', en: 'When they open the app again, their modules appear on Home.' },
+        { es: 'Cuando la persona vuelve a abrir la app, la bienvenida le muestra su rol y sus módulos.',
+          en: 'When they open the app again, the welcome shows their role and their modules.' },
+        { desde: 22, es: 'Toca «Empezar» y en Inicio ya ve sus módulos, cada uno con sus primeros pasos.',
+          en: 'They tap "Get started" and their modules appear on Home, each with its first steps.' },
         { es: 'Si ves un mensaje que no esperabas, revisa «Problemas comunes» en este artículo de la Ayuda.',
           en: 'If you see a message you did not expect, check "Common problems" in this Help article.' },
       ],
