@@ -1,10 +1,24 @@
 {
-  "version": "v1",
-  "fecha": "2026-09-29",
+  "version": "v1.1",
+  "fecha": "2026-09-30",
   "fuente": "LegacyEnterprise docs/videos/identidad.md",
   "favicon_sha256": "01e95310db30699624d4f9361bb2e07cede4c33ea0d5deaad55bbcc63535a2b1",
-  "intro": { "archivo": "intro-wiki.html", "id": "intro-wiki", "duracion": 3.0, "sonido": 0.95 },
-  "cierre": { "archivo": "cierre-wiki.html", "id": "cierre-wiki", "duracion": 4.0, "sonido": 2.45, "sinSiguiente": { "duracion": 2.5, "sonido": 0.95 } },
+  "intro": {
+    "archivo": "intro-wiki.html",
+    "id": "intro-wiki",
+    "duracion": 3,
+    "sonido": 0.95
+  },
+  "cierre": {
+    "archivo": "cierre-wiki.html",
+    "id": "cierre-wiki",
+    "duracion": 4,
+    "sonido": 2.45,
+    "sinSiguiente": {
+      "duracion": 2.5,
+      "sonido": 0.95
+    }
+  },
   "bucket_publico": "https://pub-1dd29ece4f6b46c6936d497c4e58d428.r2.dev",
   "sonido": {
     "clave": "marketing/v1/fuente/identidad/sonido-marca-kenney-confirmation_002-33b17a9a.ogg",
@@ -12,5 +26,18 @@
     "lufs": -20,
     "duracion": 0.54
   },
-  "voz": { "lufs": -16, "es": { "voz": "em_alex", "velocidad": 1.0 }, "en": { "voz": "af_heart", "velocidad": 1.0 } }
+  "voz": {
+    "lufs": -16,
+    "es": {
+      "voz": "em_alex",
+      "velocidad": 1
+    },
+    "en": {
+      "voz": "af_heart",
+      "velocidad": 1
+    }
+  },
+  "cambios": {
+    "v1.1": "Agrega el módulo «Puesta en marcha» (implementacion, ícono construction) a la intro y al cierre, para las guías de puesta en marcha (W4). No cambia cómo se ven los módulos que ya existían: los tutoriales hechos con v1 siguen congruentes. Aprobado por el dueño el 2026-09-30."
+  }
 }

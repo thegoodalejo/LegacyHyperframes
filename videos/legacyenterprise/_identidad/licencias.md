@@ -1,4 +1,4 @@
-# Licencias del kit de identidad (v1)
+# Licencias del kit de identidad (v1.1)
 
 | Recurso | Archivo | Origen | Licencia |
 |---|---|---|---|

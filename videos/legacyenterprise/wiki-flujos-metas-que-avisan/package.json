@@ -1,0 +1,16 @@
+{
+  "name": "wiki-flujos-metas-que-avisan",
+  "private": true,
+  "type": "module",
+  "description": "Tutorial narrado de la wiki de LegacyEnterprise: «Metas que avisan a tus clientes» (flujos/metas-que-avisan).",
+  "scripts": {
+    "preparar:es": "node ../_herramientas/tutorial-wiki.mjs preparar --idioma es",
+    "preparar:en": "node ../_herramientas/tutorial-wiki.mjs preparar --idioma en",
+    "dev": "npx --yes hyperframes@0.8.62 preview",
+    "check": "npx --yes hyperframes@0.8.62 check",
+    "render:es": "npx --yes hyperframes@0.8.62 render --quality high --output renders/tutorial-es.mp4",
+    "render:en": "npx --yes hyperframes@0.8.62 render --quality high --output renders/tutorial-en.mp4",
+    "entregar:es": "node ../_herramientas/tutorial-wiki.mjs entregar --idioma es",
+    "entregar:en": "node ../_herramientas/tutorial-wiki.mjs entregar --idioma en"
+  }
+}

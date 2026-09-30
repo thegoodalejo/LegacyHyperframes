@@ -5,7 +5,8 @@
     {"id":"siguiente","type":"string","label":"Título del artículo recomendado (vacío = sin «Sigue con»)","default":""},
     {"id":"modulo","type":"enum","label":"Módulo","default":"base","options":[
       {"value":"base","label":"Empieza aquí"},{"value":"crm","label":"CRM"},{"value":"comunicaciones","label":"Comunicaciones"},
-      {"value":"agenda","label":"Agenda"},{"value":"portal","label":"Portal de clientes"}]},
+      {"value":"agenda","label":"Agenda"},{"value":"portal","label":"Portal de clientes"},
+      {"value":"implementacion","label":"Puesta en marcha"}]},
     {"id":"idioma","type":"enum","label":"Idioma","default":"es","options":[{"value":"es","label":"Español"},{"value":"en","label":"English"}]}
   ]'
 >
@@ -154,6 +155,7 @@
             comunicaciones: { color: '#48626E', icono: 'forum', es: 'Comunicaciones', en: 'Communications' },
             agenda: { color: '#006B5C', icono: 'calendar_month', es: 'Agenda', en: 'Scheduling' },
             portal: { color: '#4555B7', icono: 'storefront', es: 'Portal de clientes', en: 'Client portal' },
+            implementacion: { color: '#4555B7', icono: 'construction', es: 'Puesta en marcha', en: 'Setup' },
           };
           const v = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
           const idioma = v.idioma === 'en' ? 'en' : 'es';
