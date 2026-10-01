@@ -23,7 +23,7 @@ Artículo: `flujos/recordatorios-de-citas` · Módulo: agenda
 
 ### 1. atajos — llamada «WhatsApp»
 
-- With Scheduling and Communications, appointments announce themselves. In the Calendar settings, the WhatsApp tab.
+- With Scheduling and Communications, appointments announce themselves. In the Scheduling settings, the WhatsApp tab.
 - Shortcuts create each notice with the when and the who ready: reminders, confirmation, time changes, cancellations. _(desde el paso 3)_
 
 ### 2. automatizacion — llamada «Automations»

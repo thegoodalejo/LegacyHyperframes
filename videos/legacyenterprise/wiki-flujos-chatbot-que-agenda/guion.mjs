@@ -17,7 +17,7 @@ export default {
       "frases": [
         {
           "es": "El chatbot puede agendar por WhatsApp a cualquier hora. En los Ajustes de la agenda, pestaña WhatsApp, «Crear el flujo de ejemplo».",
-          "en": "The chatbot can book on WhatsApp at any hour. In the Calendar settings, WhatsApp tab, \"Create the sample flow\"."
+          "en": "The chatbot can book on WhatsApp at any hour. In the Scheduling settings, WhatsApp tab, \"Create the sample flow\"."
         }
       ]
     },

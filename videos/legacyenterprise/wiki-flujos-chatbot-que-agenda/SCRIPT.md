@@ -23,7 +23,7 @@ Artículo: `flujos/chatbot-que-agenda` · Módulo: comunicaciones
 
 ### 1. crear — llamada «Appointments chatbot»
 
-- The chatbot can book on WhatsApp at any hour. In the Calendar settings, WhatsApp tab, "Create the sample flow".
+- The chatbot can book on WhatsApp at any hour. In the Scheduling settings, WhatsApp tab, "Create the sample flow".
 
 ### 2. editor — llamada «Book on WhatsApp»
 

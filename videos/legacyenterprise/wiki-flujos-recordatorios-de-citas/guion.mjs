@@ -21,7 +21,7 @@ export default {
       "frases": [
         {
           "es": "Con la Agenda y Comunicaciones, las citas se avisan solas. En los Ajustes de la agenda, la pestaña WhatsApp.",
-          "en": "With Scheduling and Communications, appointments announce themselves. In the Calendar settings, the WhatsApp tab."
+          "en": "With Scheduling and Communications, appointments announce themselves. In the Scheduling settings, the WhatsApp tab."
         },
         {
           "desde": 3,
