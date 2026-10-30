@@ -1,0 +1,272 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"publico","type":"enum","label":"A quién le habla (define la frase)","default":"iglesia","options":[
+      {"value":"iglesia","label":"Iglesias: «Kingdom es para toda la iglesia»"},{"value":"ministerio","label":"Ministerios: «Cuida la visión en cada iglesia de tu red»"}]},
+    {"id":"llamado","type":"enum","label":"Llamado a la acción (solo los aprobados)","default":"prueba","options":[
+      {"value":"prueba","label":"Prueba gratis 30 días"},{"value":"asesoria","label":"Agenda una asesoría por WhatsApp"},{"value":"ninguno","label":"Sin llamado"}]},
+    {"id":"contacto","type":"enum","label":"Contacto","default":"sitio","options":[
+      {"value":"sitio","label":"Sitio público"},{"value":"whatsapp","label":"WhatsApp de ventas"},{"value":"instagram","label":"Instagram"},{"value":"ninguno","label":"Sin contacto"}]},
+    {"id":"fondo","type":"enum","label":"Fondo","default":"noche","options":[{"value":"noche","label":"Noche (como el sitio)"},{"value":"claro","label":"Claro"}]},
+    {"id":"idioma","type":"enum","label":"Idioma","default":"es","options":[{"value":"es","label":"Español"},{"value":"en","label":"English"},{"value":"pt","label":"Português"}]}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Cierre de marca del Tipo Comercial (16:9, 5,0 s), kit de identidad de Kingdom v1 (KingdomApp docs/videos/identidad.md → «Cierre del
+         Comercial»). NO se edita por video: los textos salen de listas cerradas (lo publicado en el sitio público) para no inventar ofertas. -->
+  </head>
+  <body>
+    <template>
+      <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #060d1f;
+          font-family: 'Inter', sans-serif;
+        }
+        .lienzo {
+          position: absolute;
+          inset: 0;
+          background: #060d1f;
+          color: #eaf0ff;
+          --ceja: #e8b95a;
+          --enfasis: #e8b95a;
+          --suave: #a9b6d6;
+          --boton: #e8b95a;
+          --sobre-boton: #060d1f;
+        }
+        .lienzo.claro {
+          background: #f7f8fc;
+          color: #0e1a33;
+          --ceja: #7d5800;
+          --enfasis: #7d5800;
+          --suave: #46526d;
+          --boton: #1f56b8;
+          --sobre-boton: #ffffff;
+        }
+        /* Halo y puntos: los del sitio público (sitio/scripts/og.cjs), a la escala del cuadro. */
+        .halo {
+          position: absolute;
+          inset: -60px;
+          background:
+            radial-gradient(860px 620px at 86% 18%, rgba(53, 118, 218, 0.45), transparent 70%),
+            radial-gradient(640px 500px at 6% 100%, rgba(217, 162, 52, 0.22), transparent 70%);
+        }
+        .claro .halo {
+          background:
+            radial-gradient(860px 620px at 86% 18%, rgba(53, 118, 218, 0.16), transparent 70%),
+            radial-gradient(640px 500px at 6% 100%, rgba(217, 162, 52, 0.16), transparent 70%);
+        }
+        .puntos {
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(rgba(169, 190, 235, 0.35) 2px, transparent 2.2px);
+          background-size: 42px 42px;
+          -webkit-mask-image: linear-gradient(90deg, transparent 35%, #000);
+          mask-image: linear-gradient(90deg, transparent 35%, #000);
+        }
+        .claro .puntos {
+          background-image: radial-gradient(rgba(14, 26, 51, 0.12) 2px, transparent 2.2px);
+        }
+        .columna {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0;
+          text-align: center;
+        }
+        .marca {
+          display: flex;
+          align-items: center;
+          gap: 30px;
+          margin-bottom: 56px;
+        }
+        .favicon {
+          display: block;
+          width: 128px;
+          height: 128px;
+        }
+        .favicon svg {
+          display: block;
+          width: 128px;
+          height: 128px;
+          overflow: visible;
+        }
+        .nombre {
+          font-family: 'Fraunces', serif;
+          font-size: 92px;
+          font-weight: 600;
+          line-height: 1;
+          letter-spacing: -1.8px;
+        }
+        .ceja {
+          color: var(--ceja);
+          font-size: 28px;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          margin-bottom: 22px;
+        }
+        .lema {
+          max-width: 1500px;
+          font-family: 'Fraunces', serif;
+          font-size: 84px;
+          font-weight: 560;
+          line-height: 1.04;
+          letter-spacing: -1.6px;
+          text-wrap: balance;
+          margin-bottom: 56px;
+        }
+        .lema em {
+          color: var(--enfasis);
+          font-style: italic;
+          font-weight: 500;
+        }
+        .boton {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+          min-height: 84px;
+          max-width: 1400px;
+          padding: 14px 48px;
+          border-radius: 42px;
+          line-height: 1.15;
+          text-align: center;
+          background: var(--boton);
+          color: var(--sobre-boton);
+          font-size: 38px;
+          font-weight: 700;
+          margin-bottom: 30px;
+        }
+        .contacto {
+          color: var(--suave);
+          font-size: 34px;
+          font-weight: 500;
+          letter-spacing: 0.01em;
+        }
+        .oculto {
+          display: none;
+        }
+      </style>
+
+      <div id="root" data-composition-id="cierre-comercial" data-width="1920" data-height="1080" data-duration="5">
+        <div class="lienzo" id="cierre-comercial-lienzo">
+          <div class="halo" id="cierre-comercial-halo"></div>
+          <div class="puntos"></div>
+          <div class="columna">
+            <div class="marca">
+              <div class="favicon" id="cierre-comercial-favicon">
+                <!-- frontend-v2/public/favicon.svg (sha256 2d3dcdff…) en piezas, sin redibujar (ver intro-wiki.html). -->
+                <svg viewBox="0 0 300 300" aria-label="Kingdom">
+                  <defs><clipPath id="cierre-comercial-recorte"><rect x="79" y="34" width="134.58" height="36.1558" /></clipPath></defs>
+                  <rect id="cierre-comercial-baldosa" width="300" height="300" rx="26" fill="#3576DA" />
+                  <g id="cierre-comercial-corona" clip-path="url(#cierre-comercial-recorte)" fill="#FFFFFF">
+                    <rect x="79" y="34" width="19.2013" height="38" rx="2" />
+                    <rect x="97.6006" y="51.1113" width="20.4014" height="20.8887" />
+                    <rect x="117.402" y="34" width="19.201" height="38" rx="2" />
+                    <rect x="136.003" y="51.1113" width="20.401" height="20.8887" />
+                    <rect x="155.39" y="34" width="19.615" height="38" rx="2" />
+                    <rect x="174.405" y="51.1113" width="20.401" height="20.8887" />
+                    <rect x="193.791" y="34" width="19.616" height="38" rx="2" />
+                  </g>
+                  <path id="cierre-comercial-k" fill="#FFFFFF" d="M102.046 171.722L149.25 166.042C164.799 182.891 178.683 197.942 190.9 211.194C203.117 224.446 213.021 235.047 220.61 242.998C220.61 250.192 218.296 255.872 213.669 260.037C209.041 264.012 203.673 266 197.564 266C190.9 266 185.439 264.296 181.182 260.889C176.924 257.481 172.852 253.505 168.964 248.962L102.046 171.722ZM150.361 186.772L96.493 189.328L183.681 89.3698C194.232 89.3698 201.914 91.5469 206.727 95.9011C211.54 100.066 213.946 104.988 213.946 110.668C213.946 115.022 212.836 119.187 210.614 123.162C208.578 126.949 205.154 131.114 200.341 135.657L150.361 186.772ZM79 142.756H121.205V262.876C119.539 263.444 116.855 264.012 113.153 264.58C109.451 265.148 105.656 265.432 101.769 265.432C93.4387 265.432 87.5151 263.918 83.998 260.889C80.666 257.67 79 252.369 79 244.986V142.756ZM121.205 197.279H79V90.5057C80.8511 90.127 83.6278 89.6538 87.33 89.0858C91.2174 88.5179 94.9196 88.2339 98.4367 88.2339C106.582 88.2339 112.413 89.6537 115.93 92.4935C119.447 95.3332 121.205 100.729 121.205 108.68V197.279Z" />
+                </svg>
+              </div>
+              <div class="nombre" id="cierre-comercial-nombre">Kingdom</div>
+            </div>
+            <div class="ceja" id="cierre-comercial-ceja">La app para iglesias</div>
+            <div class="lema" id="cierre-comercial-lema">Kingdom es para <em>toda la iglesia</em></div>
+            <div class="boton" id="cierre-comercial-boton">Prueba gratis 30 días</div>
+            <div class="contacto" id="cierre-comercial-contacto">kingdom-sitio.web.app</div>
+          </div>
+        </div>
+        <!-- El sonido de marca lo pone el proyecto (host) en el tiempo que declara identidad/kit.json. -->
+      </div>
+
+      <script>
+        (function () {
+          // Solo textos publicados en el sitio público (sitio/src/data/sitio.ts y las imágenes de og.cjs) y sus traducciones. Un texto nuevo
+          // es una decisión del dueño y sube la versión del kit.
+          const TEXTOS = {
+            es: {
+              iglesia: { ceja: 'La app para iglesias', lema: 'Kingdom es para <em>toda la iglesia</em>' },
+              ministerio: { ceja: 'Kingdom Ministry', lema: 'Cuida la visión en <em>cada iglesia</em> de tu red' },
+              prueba: 'Prueba gratis 30 días', asesoria: 'Agenda una asesoría por WhatsApp',
+            },
+            en: {
+              iglesia: { ceja: 'The app for churches', lema: 'Kingdom is for <em>the whole church</em>' },
+              ministerio: { ceja: 'Kingdom Ministry', lema: 'Care for the vision in <em>every church</em> in your network' },
+              prueba: 'Try it free for 30 days', asesoria: 'Book a consultation on WhatsApp',
+            },
+            pt: {
+              iglesia: { ceja: 'O app para igrejas', lema: 'Kingdom é para <em>toda a igreja</em>' },
+              ministerio: { ceja: 'Kingdom Ministry', lema: 'Cuide da visão em <em>cada igreja</em> da sua rede' },
+              prueba: 'Teste grátis por 30 dias', asesoria: 'Agende uma consultoria pelo WhatsApp',
+            },
+          };
+          const CONTACTOS = { sitio: 'kingdom-sitio.web.app', whatsapp: 'WhatsApp +57 300 471 2642', instagram: 'Instagram @kingdomapp_' };
+
+          const v = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+          const idioma = TEXTOS[v.idioma] ? v.idioma : 'es';
+          const t = TEXTOS[idioma];
+          const publico = v.publico === 'ministerio' ? 'ministerio' : 'iglesia';
+          const llamado = ['prueba', 'asesoria', 'ninguno'].includes(v.llamado) ? v.llamado : 'prueba';
+          const contacto = ['sitio', 'whatsapp', 'instagram', 'ninguno'].includes(v.contacto) ? v.contacto : 'sitio';
+
+          if (v.fondo === 'claro') document.getElementById('cierre-comercial-lienzo').classList.add('claro');
+          document.getElementById('cierre-comercial-ceja').textContent = t[publico].ceja;
+          document.getElementById('cierre-comercial-lema').innerHTML = t[publico].lema;
+          const boton = document.getElementById('cierre-comercial-boton');
+          if (llamado === 'ninguno') boton.classList.add('oculto');
+          else boton.textContent = t[llamado];
+          const cont = document.getElementById('cierre-comercial-contacto');
+          if (contacto === 'ninguno') cont.classList.add('oculto');
+          else cont.textContent = CONTACTOS[contacto];
+
+          const corona = (tl, t0) => {
+            tl.fromTo('#cierre-comercial-baldosa', { transformOrigin: '50% 50%', scale: 0.85, autoAlpha: 0 },
+              { transformOrigin: '50% 50%', scale: 1, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, t0);
+            tl.fromTo('#cierre-comercial-k', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, t0 + 0.2);
+            tl.fromTo('#cierre-comercial-corona rect', { transformOrigin: '50% 100%', scaleY: 0 },
+              { transformOrigin: '50% 100%', scaleY: 1, duration: 0.25, ease: 'back.out(2.2)', stagger: 0.05 }, t0 + 0.45);
+          };
+
+          const construir = () => {
+            // El favicon se arma grande en el centro del cuadro y sube a su lugar junto al nombre.
+            const root = document.querySelector('[data-composition-id="cierre-comercial"]');
+            const fav = document.getElementById('cierre-comercial-favicon');
+            const r = fav.getBoundingClientRect();
+            const rr = root.getBoundingClientRect();
+            const escala = 240 / 128;
+            const dx = rr.left + 960 - (r.left + r.width / 2);
+            const dy = rr.top + 540 - (r.top + r.height / 2);
+
+            const tl = gsap.timeline({ paused: true });
+            tl.fromTo('#cierre-comercial-halo', { scale: 1.08, autoAlpha: 0.35 }, { scale: 1, autoAlpha: 1, duration: 5, ease: 'sine.out' }, 0);
+            tl.set(fav, { x: dx, y: dy, scale: escala }, 0);
+            corona(tl, 0);
+            tl.to(fav, { x: 0, y: 0, scale: 1, duration: 0.45, ease: 'power3.inOut' }, 1.1);
+            tl.fromTo('#cierre-comercial-nombre', { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: 'power2.out' }, 1.45);
+            tl.fromTo('#cierre-comercial-ceja', { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power2.out' }, 1.65);
+            tl.fromTo('#cierre-comercial-lema', { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'power3.out' }, 1.78);
+            tl.fromTo('#cierre-comercial-boton', { scale: 0.92, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.4, ease: 'back.out(1.8)' }, 2.3);
+            tl.fromTo('#cierre-comercial-contacto', { y: 10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power2.out' }, 2.55);
+            tl.set({}, {}, 5);
+            window.__timelines['cierre-comercial'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

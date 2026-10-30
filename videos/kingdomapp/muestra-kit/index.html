@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Muestra del kit de identidad de Kingdom (16:9)</title>
+    <!-- Prueba del kit v1: intro del Tipo Wiki → cuerpo con una captura real de la ayuda → cierre del Tipo Wiki → cierre del Comercial.
+         No es un video para publicar. Antes: npm run kit (monta ../_identidad en identidad/ con el sonido de marca). -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #faf9fd; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #faf9fd; font-family: 'Inter', sans-serif; }
+      #root > div[data-composition-src] { position: absolute; inset: 0; }
+      img.k-pantalla { object-fit: cover; object-position: top left; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="root" data-start="0" data-width="1920" data-height="1080" data-duration="16">
+      <div id="intro-wiki" data-composition-id="intro-wiki" data-composition-src="identidad/intro-wiki.html"
+        data-variable-values='{"titulo":"Crear, editar o inactivar un evento","seccion":"eventos","idioma":"es"}'
+        data-start="0" data-duration="3" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <div id="escenario" class="clip k-escenario" data-start="3" data-duration="4" data-track-index="0"></div>
+      <img id="escena-01" class="clip k-pantalla" src="assets/captura/crear-evento.webp" alt="" data-start="3" data-duration="4" data-track-index="2" />
+      <div id="llamada-01" class="clip k-llamada" data-start="3" data-duration="4" data-track-index="3"><span id="llamada-01-texto">Llamada: el nombre exacto de la pantalla</span></div>
+      <div id="subtitulo-01" class="clip k-subtitulo" data-start="3" data-duration="4" data-track-index="4"><span>Subtítulos quemados: Inter 500 de 40 px, blancos sobre la franja oscura y en dos líneas como máximo</span></div>
+
+      <div id="cierre-wiki" data-composition-id="cierre-wiki" data-composition-src="identidad/cierre-wiki.html"
+        data-variable-values='{"siguiente":"Aprobar solicitudes de eventos y reportes","seccion":"eventos","idioma":"es"}'
+        data-start="7" data-duration="4" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <div id="cierre-comercial" data-composition-id="cierre-comercial" data-composition-src="identidad/cierre-comercial.html"
+        data-variable-values='{"publico":"iglesia","llamado":"prueba","contacto":"sitio","fondo":"noche","idioma":"es"}'
+        data-start="11" data-duration="5" data-track-index="1" data-width="1920" data-height="1080"></div>
+
+      <!-- Sonido de marca en los tiempos de identidad/kit.json (inicio de la pieza + su «sonido»). -->
+      <audio id="marca-intro" src="identidad/audio/sonido-marca.wav" data-start="0.38" data-duration="2.1" data-track-index="11" data-volume="1"></audio>
+      <audio id="marca-cierre" src="identidad/audio/sonido-marca.wav" data-start="8.88" data-duration="2.1" data-track-index="12" data-volume="1"></audio>
+      <audio id="marca-comercial" src="identidad/audio/sonido-marca.wav" data-start="11.38" data-duration="2.1" data-track-index="11" data-volume="1"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo('#llamada-01-texto', { y: -10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' }, 3.15);
+      tl.set({}, {}, 16);
+      window.__timelines['root'] = tl;
+    </script>
+  </body>
+</html>

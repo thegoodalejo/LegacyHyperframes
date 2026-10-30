@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Escena de muestra de un Corto (9:16) armada solo con los componentes de identidad/kit.css, que el host (index.html) enlaza en su
+         <head>. Cada escena de un video es una subcomposición como esta. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+        }
+        .gancho {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          gap: 28px;
+          padding-top: 40px;
+        }
+      </style>
+      <div id="root" data-composition-id="gancho" data-width="1080" data-height="1920" data-duration="3">
+        <div class="k-noche k-vertical">
+          <div class="k-halo" data-layout-allow-overflow></div>
+          <div class="k-puntos"></div>
+          <div class="k-segura gancho">
+            <div class="k-ceja" id="gancho-ceja">Gancho · primer segundo y medio</div>
+            <div class="k-titular" id="gancho-titular">Una sola idea, con <em>énfasis dorado</em></div>
+            <div class="k-texto" id="gancho-texto">Fraunces para el titular, Inter para todo lo demás. Debajo va la app real en el celular.</div>
+          </div>
+          <div class="k-subtitulo-corto" id="gancho-subtitulo"><span>Subtítulos quemados, <span class="k-activa">grandes</span> y dentro de la zona segura</span></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo('#gancho-ceja', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.05);
+          tl.fromTo('#gancho-titular', { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, 0.12);
+          tl.fromTo('#gancho-texto', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }, 0.5);
+          tl.fromTo('#gancho-subtitulo', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.25, ease: 'power2.out' }, 0.7);
+          tl.set({}, {}, 3);
+          window.__timelines['gancho'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "version": "v1",
+  "fecha": "2026-10-30",
+  "estado": "Aprobado por el dueño el 2026-10-30, con el sonido de marca «campanas» (opción C) elegido ese mismo día (KingdomApp docs/pendientes.md 40)",
+  "fuente": "KingdomApp docs/videos/identidad.md",
+  "favicon": {
+    "archivo": "favicon.svg",
+    "origen": "KingdomApp frontend-v2/public/favicon.svg (= logo.svg y sitio/public/favicon.svg)",
+    "sha256": "2d3dcdff8f1544022a2fb1a7a774f12defba67078b4bb1492b4346ff89ab8658"
+  },
+  "archivos": ["intro-wiki.html", "cierre-wiki.html", "cierre-comercial.html", "cierre-corto.html", "kit.css", "kit.json", "favicon.svg"],
+  "piezas": {
+    "intro-wiki": { "archivo": "intro-wiki.html", "ancho": 1920, "alto": 1080, "duracion": 3, "sonido": 0.38 },
+    "cierre-wiki": {
+      "archivo": "cierre-wiki.html",
+      "ancho": 1920,
+      "alto": 1080,
+      "duracion": 4,
+      "sonido": 1.88,
+      "variantes": { "sinSiguiente": { "duracion": 2.5, "sonido": 0.38 } }
+    },
+    "cierre-comercial": { "archivo": "cierre-comercial.html", "ancho": 1920, "alto": 1080, "duracion": 5, "sonido": 0.38 },
+    "cierre-corto": { "archivo": "cierre-corto.html", "ancho": 1080, "alto": 1920, "duracion": 2.5, "sonido": 0.38 }
+  },
+  "sonido": {
+    "archivo": "sonido-marca.mjs",
+    "receta": "campanas",
+    "descripcion": "Campanas suaves «din, din… don» (Sol#5, Si5 y Mi5, Mi mayor), la última más larga. Elegido por el dueño el 2026-10-30 (opción C). El último acento (0,52 s) cae con la corona completa, 0,9 s después de que empieza la firma",
+    "sha256": "e3b44d1e43fb9920a348a0f7453db4b94d239c11043278db60271e5811c51c77",
+    "lufs": -20,
+    "duracion": 2.1,
+    "acentos": [0, 0.2, 0.52]
+  },
+  "voz": {
+    "lufs": -16,
+    "es": { "voz": "ef_dora", "velocidad": 1.1 },
+    "en": { "voz": "af_heart", "velocidad": 1 },
+    "pt": { "voz": "pm_alex", "velocidad": 1 }
+  },
+  "musica": {
+    "biblioteca": null,
+    "nota": "Pendiente: 2–4 pistas fijas con licencia comercial, elegidas por el dueño. Bajo la voz: 18–24 dB por debajo; sin voz: −18 LUFS"
+  },
+  "colores": {
+    "marca": { "azul": "#3576DA", "dorado": "#D9A234", "verde": "#00897B" },
+    "noche": { "fondo": "#060D1F", "fondo2": "#0C1A3A", "tinta": "#EAF0FF", "tinta2": "#A9B6D6", "dorado": "#E8B95A" },
+    "claro": { "fondo": "#F7F8FC", "fondo2": "#EEF1F8", "tinta": "#0E1A33", "tinta2": "#46526D", "azulFuerte": "#1F56B8" },
+    "app": { "fondo": "#FAF9FD", "texto": "#1B1B1F", "texto2": "#44474F", "borde": "#C4C6D0", "primario": "#015BBE", "secundario": "#7D5800", "terciario": "#006B5F" }
+  },
+  "cambios": {
+    "v1-voz": "2026-10-30: la voz en español pasa de em_alex (1,0) a ef_dora (1,1), femenina y más fluida; la eligió el dueño entre Kokoro y Chatterbox (muestras en muestra-kit/renders/voces/).",
+    "v1": "Primera versión (2026-10-30): firma «la corona se levanta», intro y cierre del Tipo Wiki, cierres de marca del Comercial (16:9) y del Corto (9:16, 2,5 s), sonido de marca propio «campanas», kit.css y frame-*.md. Aprobada por el dueño el mismo día."
+  }
+}

@@ -40,6 +40,12 @@ videos/
 fija): ver [`videos/legacyenterprise/README.md`](videos/legacyenterprise/README.md). La voz usa el entorno `.venv-tts/` (fuera de git), creado
 desde `requirements-tts.txt`.
 
+## Videos de Kingdom
+
+`videos/kingdomapp/` tiene el **kit de identidad de Kingdom** (intro y cierre de los tutoriales de la wiki, cierres de marca del Comercial y
+del Corto, `kit.css`, `frame-*.md` y un sonido de marca propio) y las muestras que lo prueban: ver
+[`videos/kingdomapp/README.md`](videos/kingdomapp/README.md). Las directivas viven en `KingdomApp/docs/videos/`.
+
 ## Ejemplo incluido
 
 `videos/kingdomapp-promo/` — video de presentación funcional de KingdomApp (161.5s, es),

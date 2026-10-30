@@ -1,0 +1,212 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"llamado","type":"enum","label":"Llamado a la acción (solo los aprobados)","default":"prueba","options":[
+      {"value":"prueba","label":"Prueba gratis 30 días"},{"value":"asesoria","label":"Agenda una asesoría por WhatsApp"},{"value":"ninguno","label":"Sin llamado"}]},
+    {"id":"fondo","type":"enum","label":"Fondo","default":"azul","options":[{"value":"azul","label":"Azul a sangre (la baldosa ocupa la pantalla)"},{"value":"noche","label":"Noche (como el sitio)"}]},
+    {"id":"idioma","type":"enum","label":"Idioma","default":"es","options":[{"value":"es","label":"Español"},{"value":"en","label":"English"},{"value":"pt","label":"Português"}]}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Cierre de marca del Tipo Corto (9:16, 2,5 s), kit de identidad de Kingdom v1 (KingdomApp docs/videos/identidad.md → «Cierre del
+         Corto»). NO se edita por video. Todo queda dentro de la zona segura de Reels, TikTok y Shorts (250 px arriba, 420 px abajo). -->
+  </head>
+  <body>
+    <template>
+      <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: #060d1f;
+          font-family: 'Inter', sans-serif;
+        }
+        .lienzo {
+          position: absolute;
+          inset: 0;
+          background: #060d1f;
+          color: #ffffff;
+          --boton: #ffffff;
+          --sobre-boton: #1f56b8;
+        }
+        .lienzo.noche {
+          color: #eaf0ff;
+          --boton: #e8b95a;
+          --sobre-boton: #060d1f;
+        }
+        .expansion {
+          position: absolute;
+          left: 330px;
+          top: 505px;
+          width: 420px;
+          height: 420px;
+          border-radius: 36px;
+          background: #3576da;
+        }
+        .noche .expansion {
+          display: none;
+        }
+        .halo,
+        .puntos {
+          display: none;
+        }
+        .noche .halo {
+          display: block;
+          position: absolute;
+          inset: -80px;
+          background:
+            radial-gradient(760px 900px at 90% 12%, rgba(53, 118, 218, 0.45), transparent 70%),
+            radial-gradient(640px 760px at 4% 100%, rgba(217, 162, 52, 0.22), transparent 70%);
+        }
+        .noche .puntos {
+          display: block;
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(rgba(169, 190, 235, 0.35) 2px, transparent 2.2px);
+          background-size: 42px 42px;
+          -webkit-mask-image: linear-gradient(180deg, transparent 30%, #000);
+          mask-image: linear-gradient(180deg, transparent 30%, #000);
+        }
+        /* Zona segura: el contenido vive entre los 250 px de arriba y los 420 px de abajo. */
+        .segura {
+          position: absolute;
+          left: 60px;
+          right: 60px;
+          top: 250px;
+          bottom: 420px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+        .favicon {
+          display: block;
+          width: 320px;
+          height: 320px;
+          margin-bottom: 44px;
+        }
+        .favicon svg {
+          display: block;
+          width: 320px;
+          height: 320px;
+          overflow: visible;
+        }
+        /* Sin baldosa (la pantalla ya es la baldosa), la K y la corona van más grandes. */
+        .lienzo:not(.noche) .favicon {
+          width: 400px;
+          height: 400px;
+          margin-bottom: 4px;
+        }
+        .lienzo:not(.noche) .favicon svg {
+          width: 400px;
+          height: 400px;
+        }
+        .nombre {
+          font-family: 'Fraunces', serif;
+          font-size: 136px;
+          font-weight: 600;
+          line-height: 1;
+          letter-spacing: -2.6px;
+          margin-bottom: 64px;
+        }
+        /* Un llamado largo (portugués) pasa a dos líneas equilibradas en vez de salirse de la zona segura. */
+        .boton {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+          min-height: 116px;
+          max-width: 900px;
+          padding: 18px 60px;
+          border-radius: 58px;
+          background: var(--boton);
+          color: var(--sobre-boton);
+          font-size: 50px;
+          font-weight: 700;
+          line-height: 1.15;
+          text-align: center;
+          text-wrap: balance;
+        }
+        .oculto {
+          display: none;
+        }
+      </style>
+
+      <div id="root" data-composition-id="cierre-corto" data-width="1080" data-height="1920" data-duration="2.5">
+        <div class="lienzo" id="cierre-corto-lienzo">
+          <div class="halo" id="cierre-corto-halo"></div>
+          <div class="puntos"></div>
+          <div class="expansion" id="cierre-corto-expansion"></div>
+          <div class="segura">
+            <div class="favicon">
+              <!-- frontend-v2/public/favicon.svg (sha256 2d3dcdff…) en piezas, sin redibujar (ver intro-wiki.html). Con fondo azul, la baldosa
+                   ES la pantalla (la expansión) y aquí solo quedan la K y la corona en blanco. -->
+              <svg viewBox="0 0 300 300" aria-label="Kingdom">
+                <defs><clipPath id="cierre-corto-recorte"><rect x="79" y="34" width="134.58" height="36.1558" /></clipPath></defs>
+                <rect id="cierre-corto-baldosa" width="300" height="300" rx="26" fill="#3576DA" />
+                <g id="cierre-corto-corona" clip-path="url(#cierre-corto-recorte)" fill="#FFFFFF">
+                  <rect x="79" y="34" width="19.2013" height="38" rx="2" />
+                  <rect x="97.6006" y="51.1113" width="20.4014" height="20.8887" />
+                  <rect x="117.402" y="34" width="19.201" height="38" rx="2" />
+                  <rect x="136.003" y="51.1113" width="20.401" height="20.8887" />
+                  <rect x="155.39" y="34" width="19.615" height="38" rx="2" />
+                  <rect x="174.405" y="51.1113" width="20.401" height="20.8887" />
+                  <rect x="193.791" y="34" width="19.616" height="38" rx="2" />
+                </g>
+                <path id="cierre-corto-k" fill="#FFFFFF" d="M102.046 171.722L149.25 166.042C164.799 182.891 178.683 197.942 190.9 211.194C203.117 224.446 213.021 235.047 220.61 242.998C220.61 250.192 218.296 255.872 213.669 260.037C209.041 264.012 203.673 266 197.564 266C190.9 266 185.439 264.296 181.182 260.889C176.924 257.481 172.852 253.505 168.964 248.962L102.046 171.722ZM150.361 186.772L96.493 189.328L183.681 89.3698C194.232 89.3698 201.914 91.5469 206.727 95.9011C211.54 100.066 213.946 104.988 213.946 110.668C213.946 115.022 212.836 119.187 210.614 123.162C208.578 126.949 205.154 131.114 200.341 135.657L150.361 186.772ZM79 142.756H121.205V262.876C119.539 263.444 116.855 264.012 113.153 264.58C109.451 265.148 105.656 265.432 101.769 265.432C93.4387 265.432 87.5151 263.918 83.998 260.889C80.666 257.67 79 252.369 79 244.986V142.756ZM121.205 197.279H79V90.5057C80.8511 90.127 83.6278 89.6538 87.33 89.0858C91.2174 88.5179 94.9196 88.2339 98.4367 88.2339C106.582 88.2339 112.413 89.6537 115.93 92.4935C119.447 95.3332 121.205 100.729 121.205 108.68V197.279Z" />
+              </svg>
+            </div>
+            <div class="nombre" id="cierre-corto-nombre">Kingdom</div>
+            <div class="boton" id="cierre-corto-boton">Prueba gratis 30 días</div>
+          </div>
+        </div>
+        <!-- El sonido de marca lo pone el proyecto (host) en el tiempo que declara identidad/kit.json. -->
+      </div>
+
+      <script>
+        (function () {
+          // Los mismos llamados aprobados del cierre del Comercial (lo publicado en el sitio público).
+          const LLAMADOS = {
+            es: { prueba: 'Prueba gratis 30 días', asesoria: 'Agenda una asesoría por WhatsApp' },
+            en: { prueba: 'Try it free for 30 days', asesoria: 'Book a consultation on WhatsApp' },
+            pt: { prueba: 'Teste grátis por 30 dias', asesoria: 'Agende uma consultoria pelo WhatsApp' },
+          };
+          const v = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+          const idioma = LLAMADOS[v.idioma] ? v.idioma : 'es';
+          const llamado = ['prueba', 'asesoria', 'ninguno'].includes(v.llamado) ? v.llamado : 'prueba';
+          const noche = v.fondo === 'noche';
+          if (noche) document.getElementById('cierre-corto-lienzo').classList.add('noche');
+          const boton = document.getElementById('cierre-corto-boton');
+          if (llamado === 'ninguno') boton.classList.add('oculto');
+          else boton.textContent = LLAMADOS[idioma][llamado];
+
+          const tl = gsap.timeline({ paused: true });
+          if (noche) {
+            tl.fromTo('#cierre-corto-halo', { autoAlpha: 0.35 }, { autoAlpha: 1, duration: 2.5, ease: 'sine.out' }, 0);
+            tl.fromTo('#cierre-corto-baldosa', { transformOrigin: '50% 50%', scale: 0.85, autoAlpha: 0 },
+              { transformOrigin: '50% 50%', scale: 1, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, 0);
+          } else {
+            // La baldosa del favicon crece desde el lugar de la marca hasta llenar la pantalla.
+            tl.set('#cierre-corto-baldosa', { autoAlpha: 0 }, 0);
+            tl.fromTo('#cierre-corto-expansion', { transformOrigin: '50% 50%', scale: 0.3 },
+              { transformOrigin: '50% 50%', scale: 6.2, duration: 0.45, ease: 'power2.inOut' }, 0);
+          }
+          // «La corona se levanta» con los tiempos de siempre: la K a 0,2 s y las barras desde 0,45 s (el sonido de marca va a 0,38 s).
+          tl.fromTo('#cierre-corto-k', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, 0.2);
+          tl.fromTo('#cierre-corto-corona rect', { transformOrigin: '50% 100%', scaleY: 0 },
+            { transformOrigin: '50% 100%', scaleY: 1, duration: 0.25, ease: 'back.out(2.2)', stagger: 0.05 }, 0.45);
+          tl.fromTo('#cierre-corto-nombre', { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, 0.75);
+          tl.fromTo('#cierre-corto-boton', { scale: 0.9, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(1.8)' }, 0.95);
+          tl.set({}, {}, 2.5);
+          window.__timelines['cierre-corto'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

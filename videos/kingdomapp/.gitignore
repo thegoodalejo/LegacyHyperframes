@@ -1,0 +1,16 @@
+# Videos de Kingdom: en git solo el código del video (KingdomApp docs/videos/README.md → «Reglas comunes»).
+# Grabaciones, capturas, voces, música, renders y hojas de contacto van al bucket de la ayuda, no a git.
+*/assets/captura/
+*/assets/voice/
+*/assets/musica/
+*/renders/
+*/snapshots/
+# El kit se monta en cada proyecto con _herramientas/montar-kit.mjs (copia de _identidad/, con el sonido de marca generado):
+*/identidad/
+# Caché local del CLI de HyperFrames (la regla de la raíz solo cubre videos/*/)
+*/.hyperframes/
+*/.thumbnails/
+*/.media/
+# Generados en cada preparación (por idioma) desde guion.mjs y el kit:
+wiki-*/index.html
+wiki-*/tiempos-*.json
