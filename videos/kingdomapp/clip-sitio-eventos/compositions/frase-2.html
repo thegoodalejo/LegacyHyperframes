@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P2 · Frase 2: «Los de siempre, / en un toque.» (host 119–182). Entra la línea entera (entrada-linea: blur 8 → 0, 6 cuadros, power4.out) con el toque en «Igual que la última vez» del 120; sale 177–181, antes del iris del 180. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: var(--f-ancho, 1080px);
+          height: var(--f-alto, 1350px);
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 96px);
+          top: var(--f-frase-y, 124px);
+          width: var(--f-frase-ancho, 888px);
+          font-size: var(--f-frase-px, 80px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f200" id="root" data-composition-id="frase-2" data-width="1080" data-height="1350" data-duration="2.1">
+        <div data-hf-id="hf-f201" class="k-feed-frase f-frase" id="f2">
+          <span data-hf-id="hf-f2l0" class="linea">Los de siempre,</span>
+          <span data-hf-id="hf-f2l1" class="linea">en un toque.</span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo('#f2', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out' }, 0);
+          tl.to('#f2', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(58)); // 177–181
+          tl.set({}, {}, F(63));
+          window.__timelines['frase-2'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
