@@ -1,26 +1,65 @@
 {
-  "version": "v1",
+  "version": "v1.1",
   "fecha": "2026-10-30",
-  "estado": "Aprobado por el dueño el 2026-10-30, con el sonido de marca «campanas» (opción C) elegido ese mismo día (KingdomApp docs/pendientes.md 40)",
+  "estado": "v1 aprobado por el dueño el 2026-10-30 con el sonido de marca «campanas» (opción C); v1.1 (cierre del clip en 4:5, la ventana, los textos para 4:5, los sonidos de acción y la biblioteca de música) aprobado el mismo día (KingdomApp docs/pendientes.md 40)",
   "fuente": "KingdomApp docs/videos/identidad.md",
   "favicon": {
     "archivo": "favicon.svg",
     "origen": "KingdomApp frontend-v2/public/favicon.svg (= logo.svg y sitio/public/favicon.svg)",
     "sha256": "2d3dcdff8f1544022a2fb1a7a774f12defba67078b4bb1492b4346ff89ab8658"
   },
-  "archivos": ["intro-wiki.html", "cierre-wiki.html", "cierre-comercial.html", "cierre-corto.html", "kit.css", "kit.json", "favicon.svg"],
+  "archivos": [
+    "intro-wiki.html",
+    "cierre-wiki.html",
+    "cierre-comercial.html",
+    "cierre-corto.html",
+    "cierre-clip.html",
+    "kit.css",
+    "kit.json",
+    "favicon.svg"
+  ],
   "piezas": {
-    "intro-wiki": { "archivo": "intro-wiki.html", "ancho": 1920, "alto": 1080, "duracion": 3, "sonido": 0.38 },
+    "intro-wiki": {
+      "archivo": "intro-wiki.html",
+      "ancho": 1920,
+      "alto": 1080,
+      "duracion": 3,
+      "sonido": 0.38
+    },
     "cierre-wiki": {
       "archivo": "cierre-wiki.html",
       "ancho": 1920,
       "alto": 1080,
       "duracion": 4,
       "sonido": 1.88,
-      "variantes": { "sinSiguiente": { "duracion": 2.5, "sonido": 0.38 } }
+      "variantes": {
+        "sinSiguiente": {
+          "duracion": 2.5,
+          "sonido": 0.38
+        }
+      }
     },
-    "cierre-comercial": { "archivo": "cierre-comercial.html", "ancho": 1920, "alto": 1080, "duracion": 5, "sonido": 0.38 },
-    "cierre-corto": { "archivo": "cierre-corto.html", "ancho": 1080, "alto": 1920, "duracion": 2.5, "sonido": 0.38 }
+    "cierre-comercial": {
+      "archivo": "cierre-comercial.html",
+      "ancho": 1920,
+      "alto": 1080,
+      "duracion": 5,
+      "sonido": 0.38
+    },
+    "cierre-corto": {
+      "archivo": "cierre-corto.html",
+      "ancho": 1080,
+      "alto": 1920,
+      "duracion": 2.5,
+      "sonido": 0.38
+    },
+    "cierre-clip": {
+      "archivo": "cierre-clip.html",
+      "ancho": 1080,
+      "alto": 1350,
+      "duracion": 2.5,
+      "sonido": 0.38
+    }
   },
   "sonido": {
     "archivo": "sonido-marca.mjs",
@@ -29,25 +68,207 @@
     "sha256": "e3b44d1e43fb9920a348a0f7453db4b94d239c11043278db60271e5811c51c77",
     "lufs": -20,
     "duracion": 2.1,
-    "acentos": [0, 0.2, 0.52]
+    "acentos": [
+      0,
+      0.2,
+      0.52
+    ]
+  },
+  "sonidosAccion": {
+    "archivo": "sonidos-accion.mjs",
+    "carpeta": "audio",
+    "descripcion": "Sonidos de acción propios, generados por código con el motor del sonido de marca (Mi mayor, ruido con semilla fija). El sha256 es del WAV crudo (pico a −3 dBFS); montar-kit.mjs los deja en identidad/audio/<nombre>.wav con el pico en «nivel» dBFS",
+    "mezcla": {
+      "musica": -18,
+      "regla": "Con la música a −18 LUFS (la de la biblioteca con su «volumen») los sonidos van con data-volume=\"1\": quedan entre 4 y 10 dB por debajo de la música en sonoridad momentánea (400 ms), medidos sobre «Product Launch» 30–46 s. Si la música va más baja o más alta, se mueven lo mismo. Bajo una voz (−16 LUFS), igual que con la música. Cada acento cae un cuadro después de su imagen: data-start = momento visible + 0,033 − acento",
+      "maximos": "Pocos y exactos: cada sonido con una causa en pantalla; toque y aparicion como mucho uno por pulso; desliz solo en cortes o transiciones (nunca en cada corte); subida una vez por video, hacia el cambio más grande; confirmacion cuando algo queda hecho",
+      "columnas": "nivel = pico del WAV montado (dBFS); bajoLaMusica = dB de sonoridad momentánea (400 ms) del sonido solo respecto de la música en ese instante, medido con Product Launch a −18 LUFS (2026-10-30)"
+    },
+    "sonidos": {
+      "toque": {
+        "descripcion": "Toque suave en pantalla: un «tic» corto de vidrio (Mi6 sobre Mi5) con un soplo brevísimo",
+        "duracion": 0.075,
+        "acento": 0,
+        "nivel": -7,
+        "bajoLaMusica": -10,
+        "uso": "Un toque real en la app (el dedo o el cursor que toca un botón, una tarjeta o una pestaña)",
+        "sha256": "1cc22c1fc6049ac8a9883b6edaf55cb3075169ad08b96cc534626524cd4f082d"
+      },
+      "aparicion": {
+        "descripcion": "Aparece un elemento: una gota redonda que sube de Mi5 a Si5, con un brillo en Mi6",
+        "duracion": 0.22,
+        "acento": 0,
+        "nivel": -13,
+        "bajoLaMusica": -8,
+        "uso": "Una tarjeta, una píldora, un contador o la ventana que aparecen",
+        "sha256": "d6c0bda25cd5ff5b22d0a03bc4e24bc2fc0320fa59315c7cf821366f08382313"
+      },
+      "desliz": {
+        "descripcion": "Barrido de aire: ruido filtrado que sube de 500 a 5000 Hz y cruza de izquierda a derecha",
+        "duracion": 0.36,
+        "acento": 0.2,
+        "nivel": -13,
+        "bajoLaMusica": -8,
+        "uso": "Un corte rápido, el látigo entre dos mundos o un movimiento grande de cámara",
+        "sha256": "aa64823829be5e51e8fb56fc2ab13b2a6d4f2014ebe81d37e550b54eee0ceab4"
+      },
+      "subida": {
+        "descripcion": "Subida de 1,5 s (aire y un tono que sube una octava, Mi3 → Mi4) que termina en un golpe con campanas Mi5 + Si5",
+        "duracion": 1.9,
+        "acento": 1.5,
+        "nivel": -11,
+        "bajoLaMusica": -4,
+        "uso": "Una vez por video, hacia el cambio más grande (la firma, la prueba más fuerte); el golpe cae en el acento",
+        "sha256": "f4afd0ccb459c1ff0a0994ab87f298a82292d3aa1500134ac03166efd25fa889"
+      },
+      "confirmacion": {
+        "descripcion": "«Listo»: dos notas suaves que resuelven en la tónica, Si5 → Mi6",
+        "duracion": 0.32,
+        "acento": 0.1,
+        "nivel": -14,
+        "bajoLaMusica": -7,
+        "uso": "Algo que queda hecho: «Guardado», «cumplido», un paso completo",
+        "sha256": "4e1a9e60996397cfe40759e1958ea531083a9714a2b6a210ee22b3a60109a338"
+      }
+    }
   },
   "voz": {
     "lufs": -16,
-    "es": { "voz": "ef_dora", "velocidad": 1.1 },
-    "en": { "voz": "af_heart", "velocidad": 1 },
-    "pt": { "voz": "pm_alex", "velocidad": 1 }
+    "es": {
+      "voz": "ef_dora",
+      "velocidad": 1.1
+    },
+    "en": {
+      "voz": "af_heart",
+      "velocidad": 1
+    },
+    "pt": {
+      "voz": "pm_alex",
+      "velocidad": 1
+    }
   },
   "musica": {
-    "biblioteca": null,
-    "nota": "Pendiente: 2–4 pistas fijas con licencia comercial, elegidas por el dueño. Bajo la voz: 18–24 dB por debajo; sin voz: −18 LUFS"
+    "carpeta": "musica",
+    "lufs": -18,
+    "nota": "Pistas fijas elegidas por el dueño (decisión 217). Los mp3 quedan fuera de git (al bucket); cada proyecto copia la suya a assets/musica/ y la usa con data-volume=«volumen» (queda a −18 LUFS sin voz; bajo la voz, 18–24 dB por debajo de ella). Licencias en licencias.md",
+    "biblioteca": {
+      "product-launch": {
+        "archivo": "musica/product-launch-the-mountain.mp3",
+        "titulo": "Product Launch",
+        "autor": "The_Mountain",
+        "origen": "https://pixabay.com/music/modern-classical-product-launch-153648/",
+        "licencia": "Pixabay Content License · Content ID Registered",
+        "uso": "Todos los clips del sitio (y el recorrido de cada módulo)",
+        "duracion": 86.05,
+        "bpm": 120,
+        "lufs": -14.9,
+        "volumen": 0.7,
+        "pulsos": "musica/product-launch-the-mountain.pulsos.json",
+        "mapa": {
+          "pulso": 0.5,
+          "compas": 2,
+          "primerCompas": 2.05,
+          "tramos": [
+            {
+              "desde": 2.05,
+              "hasta": 18.05,
+              "que": "Entrada sin bajo"
+            },
+            {
+              "desde": 18.05,
+              "hasta": 26,
+              "que": "Primera subida: el bajo entra en el 18,05 (primer cambio grande); pico en el 20"
+            },
+            {
+              "desde": 26,
+              "hasta": 34,
+              "que": "Respiro"
+            },
+            {
+              "desde": 34,
+              "hasta": 50,
+              "que": "Segunda subida: golpes en el 36, el 38 y el 42,05 (el más fuerte de la pista)"
+            },
+            {
+              "desde": 50,
+              "hasta": 66,
+              "que": "Clímax brillante"
+            },
+            {
+              "desde": 66,
+              "hasta": 82,
+              "que": "Salida"
+            },
+            {
+              "desde": 82,
+              "hasta": 84,
+              "que": "Final en el 84"
+            }
+          ],
+          "golpes": [
+            18.05,
+            20,
+            36,
+            38,
+            42.05
+          ],
+          "golpeMasFuerte": 42.05,
+          "tramoDeLosClips": {
+            "desde": 14.05,
+            "hasta": 42.05,
+            "nota": "Los clips de módulo usan los 28 s de 14,05 a 42,05 (14 compases) y la firma arranca en el golpe del 42,05; la música se desvanece en el primer segundo de la firma"
+          }
+        }
+      },
+      "education-piano": {
+        "archivo": "musica/education-piano-the-mountain.mp3",
+        "titulo": "Education Piano",
+        "autor": "The_Mountain",
+        "origen": "https://pixabay.com/music/small-emotions-education-piano-155572/",
+        "licencia": "Pixabay Content License · Content ID Registered",
+        "uso": null,
+        "nota": "En la biblioteca, sin uso por ahora (piano suave, lenta); sin mapa todavía",
+        "duracion": 69.04,
+        "bpm": null,
+        "lufs": -16.4,
+        "volumen": 0.83,
+        "pulsos": null,
+        "mapa": null
+      }
+    }
   },
   "colores": {
-    "marca": { "azul": "#3576DA", "dorado": "#D9A234", "verde": "#00897B" },
-    "noche": { "fondo": "#060D1F", "fondo2": "#0C1A3A", "tinta": "#EAF0FF", "tinta2": "#A9B6D6", "dorado": "#E8B95A" },
-    "claro": { "fondo": "#F7F8FC", "fondo2": "#EEF1F8", "tinta": "#0E1A33", "tinta2": "#46526D", "azulFuerte": "#1F56B8" },
-    "app": { "fondo": "#FAF9FD", "texto": "#1B1B1F", "texto2": "#44474F", "borde": "#C4C6D0", "primario": "#015BBE", "secundario": "#7D5800", "terciario": "#006B5F" }
+    "marca": {
+      "azul": "#3576DA",
+      "dorado": "#D9A234",
+      "verde": "#00897B"
+    },
+    "noche": {
+      "fondo": "#060D1F",
+      "fondo2": "#0C1A3A",
+      "tinta": "#EAF0FF",
+      "tinta2": "#A9B6D6",
+      "dorado": "#E8B95A"
+    },
+    "claro": {
+      "fondo": "#F7F8FC",
+      "fondo2": "#EEF1F8",
+      "tinta": "#0E1A33",
+      "tinta2": "#46526D",
+      "azulFuerte": "#1F56B8"
+    },
+    "app": {
+      "fondo": "#FAF9FD",
+      "texto": "#1B1B1F",
+      "texto2": "#44474F",
+      "borde": "#C4C6D0",
+      "primario": "#015BBE",
+      "secundario": "#7D5800",
+      "terciario": "#006B5F"
+    }
   },
   "cambios": {
+    "v1.1": "2026-10-30: cierre-clip.html (la firma en 4:5, 1080×1350, 2,5 s, con las variables y los tiempos del cierre del Corto), .k-ventana (la grabación real ampliada, en tamaños para 4:5, 9:16, 16:9 y escritorio) y .k-feed-* (textos para 4:5) en kit.css, los sonidos de acción propios (sonidos-accion.mjs: toque, aparicion, desliz, subida y confirmacion) y la biblioteca de música con el mapa de «Product Launch». Aprobado por el dueño el mismo día.",
     "v1-voz": "2026-10-30: la voz en español pasa de em_alex (1,0) a ef_dora (1,1), femenina y más fluida; la eligió el dueño entre Kokoro y Chatterbox (muestras en muestra-kit/renders/voces/).",
     "v1": "Primera versión (2026-10-30): firma «la corona se levanta», intro y cierre del Tipo Wiki, cierres de marca del Comercial (16:9) y del Corto (9:16, 2,5 s), sonido de marca propio «campanas», kit.css y frame-*.md. Aprobada por el dueño el mismo día."
   }

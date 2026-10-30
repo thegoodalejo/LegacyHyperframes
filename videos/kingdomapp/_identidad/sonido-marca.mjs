@@ -8,11 +8,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const SR = 48000;
-const hz = midi => 440 * Math.pow(2, (midi - 69) / 12);
+export const SR = 48000;
+export const hz = midi => 440 * Math.pow(2, (midi - 69) / 12);
 
 /** Suma una nota (parciales [razón, amplitud, tau]) a L y R desde `inicio`. `trem` = [Hz, profundidad] para el vibrato de un vibráfono. */
-function mezclar(L, R, N, inicio, frecuencia, parciales, ataque, ganancia, paneo, trem) {
+export function mezclar(L, R, N, inicio, frecuencia, parciales, ataque, ganancia, paneo, trem) {
   // Paneo de igual potencia: −1 izquierda, 0 centro, 1 derecha.
   const a = (paneo + 1) * Math.PI / 4;
   const gl = Math.cos(a) * ganancia, gr = Math.sin(a) * ganancia;
@@ -30,7 +30,7 @@ function mezclar(L, R, N, inicio, frecuencia, parciales, ataque, ganancia, paneo
 }
 
 // Reverberación de Schroeder (4 peines con amortiguación + 2 pasatodo), un poco distinta por canal para dar amplitud.
-function reverb(x, N, separacion) {
+export function reverb(x, N, separacion) {
   const k = SR / 44100;
   const peines = [1557, 1617, 1491, 1422].map(d => Math.round((d + separacion) * k));
   const pasatodo = [556, 225].map(d => Math.round((d + separacion) * k));

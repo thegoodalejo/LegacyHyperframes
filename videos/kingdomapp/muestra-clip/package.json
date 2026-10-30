@@ -1,0 +1,14 @@
+{
+  "name": "kingdomapp-muestra-clip",
+  "private": true,
+  "type": "module",
+  "description": "Muestra del kit de identidad de Kingdom v1.1 en 4:5: la app real en .k-ventana, una frase con .k-feed-*, sonidos de acción sobre «Product Launch» y la firma cierre-clip.",
+  "scripts": {
+    "captura": "curl -sSf --create-dirs -o assets/captura/mi-seguimiento-lista.webp https://ayuda.legacyfiles.download/v1/img/es/membresia/mi-seguimiento/01-lista-ac98b1e9.webp",
+    "musica": "node -e \"require('fs').mkdirSync('assets/musica',{recursive:true});require('fs').copyFileSync('../_identidad/musica/product-launch-the-mountain.mp3','assets/musica/product-launch-the-mountain.mp3')\"",
+    "kit": "node ../_herramientas/montar-kit.mjs",
+    "dev": "npx --yes hyperframes@0.8.221 preview",
+    "check": "npx --yes hyperframes@0.8.221 check",
+    "render": "npx --yes hyperframes@0.8.221 render --quality high --output renders/muestra-clip-4x5.mp4"
+  }
+}

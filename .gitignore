@@ -9,3 +9,21 @@ videos/*/.media/
 
 # Entorno de Python de la voz (Kokoro), se recrea desde requirements-tts.txt
 .venv-tts/
+
+# Música del kit de Kingdom: los originales van al bucket, no a git (docs/videos/README.md, regla 7)
+videos/kingdomapp/_identidad/musica/*.mp3
+videos/kingdomapp/_identidad/musica/*.wav
+
+# Clips del sitio: la música copiada en cada proyecto tampoco va a git
+videos/kingdomapp/*/assets/musica/
+
+# Clips del sitio: las grabaciones de la app (regenerables con tools/ayuda de KingdomApp) tampoco van a git
+videos/kingdomapp/*/assets/grabaciones/
+
+# Proyectos de video de Kingdom: a git va la fuente (HTML, composiciones, BRIEF/STORY/SPEC/REVIEW, frame.md, stills y sonidos
+# propios del proyecto). Lo que se regenera o va al bucket queda fuera: renders, revisiones, el kit montado (npm run kit).
+videos/kingdomapp/*/.hyperframes/
+videos/kingdomapp/*/.thumbnails/
+videos/kingdomapp/*/renders/
+videos/kingdomapp/*/snapshots/
+videos/kingdomapp/*/identidad/

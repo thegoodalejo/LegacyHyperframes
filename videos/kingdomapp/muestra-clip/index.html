@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <title>Muestra del kit de identidad de Kingdom v1.1 (4:5)</title>
+    <!-- Prueba del kit v1.1 en 4:5 (1080×1350): la app real dentro de .k-ventana, una frase con .k-feed-*, sonidos de acción sobre
+         «Product Launch» (38,05 → 42,05 s de la pista: la firma cae en el golpe más fuerte) y la firma cierre-clip. No es un video para
+         publicar. Antes: npm run captura && npm run musica && npm run kit. -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      html, body { margin: 0; width: 1080px; height: 1350px; overflow: hidden; background: #060d1f; }
+      #root { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: #060d1f; }
+      #root > div[data-composition-src] { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="root" data-start="0" data-width="1080" data-height="1350" data-duration="6.5">
+      <div id="cuerpo" data-composition-id="cuerpo" data-composition-src="compositions/cuerpo.html" data-track-kind="graphics"
+        data-start="0" data-duration="4" data-track-index="0" data-width="1080" data-height="1350"></div>
+
+      <div id="cierre-clip" data-composition-id="cierre-clip" data-composition-src="identidad/cierre-clip.html" data-track-kind="graphics"
+        data-variable-values='{"llamado":"prueba","fondo":"azul","idioma":"es"}'
+        data-start="4" data-duration="2.5" data-track-index="1" data-width="1080" data-height="1350"></div>
+
+      <!-- Música a −18 LUFS (kit.json → musica.biblioteca.product-launch.volumen). Entra en el 38,05 de la pista para que el golpe del
+           42,05 (el más fuerte) caiga en el 4,0, donde arranca la firma; se desvanece bajo las campanas. -->
+      <audio id="musica" src="assets/musica/product-launch-the-mountain.mp3" data-start="0" data-media-start="38.05" data-duration="5"
+        data-fade-out="1" data-track-index="10" data-volume="0.7"></audio>
+
+      <!-- Sonidos de acción (identidad/audio/, data-volume 1): data-start = momento visible + 0,033 − acento (kit.json → sonidosAccion). -->
+      <!-- 0,10: entra la ventana -->
+      <audio id="snd-aparicion" src="identidad/audio/aparicion.wav" data-start="0.133" data-duration="0.22" data-track-index="12" data-volume="1"></audio>
+      <!-- 1,50: el toque sobre la persona -->
+      <audio id="snd-toque" src="identidad/audio/toque.wav" data-start="1.533" data-duration="0.075" data-track-index="13" data-volume="1"></audio>
+      <!-- 2,00–2,45: la cámara se acerca a la tarjeta (el barrido llega a su máximo a mitad del movimiento, 2,2) -->
+      <audio id="snd-desliz" src="identidad/audio/desliz.wav" data-start="2.033" data-duration="0.36" data-track-index="14" data-volume="1"></audio>
+      <!-- 2,53–4,03: la subida hacia la firma; el golpe (acento 1,5) cae con el corte a la firma y el golpe de la música -->
+      <audio id="snd-subida" src="identidad/audio/subida.wav" data-start="2.533" data-duration="1.9" data-track-index="15" data-volume="1"></audio>
+
+      <!-- Sonido de marca: inicio de la firma + 0,38 s (identidad/kit.json → piezas.cierre-clip.sonido). -->
+      <audio id="marca-clip" src="identidad/audio/sonido-marca.wav" data-start="4.38" data-duration="2.1" data-track-index="11" data-volume="1"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 6.5);
+      window.__timelines['root'] = tl;
+    </script>
+  </body>
+</html>

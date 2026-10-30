@@ -110,7 +110,8 @@ del sitio da el aire de «presentación» y deja que la app, clara y luminosa, s
 | Formato | Uso | Ajuste |
 |---|---|---|
 | 1920×1080 | Pieza principal (sitio, YouTube, presentaciones) | Este frame |
-| 1080×1080 y 1080×1350 | Redes | Mismos átomos; titular 76–84 px; la app en `.k-telefono` o recortada. El cierre de estos formatos se hace con el primero que se pida (sube la versión del kit) |
+| 1080×1350 (4:5) | Clip del sitio y feed | Kit v1.1: textos `.k-feed-*` (frase en Fraunces 80 px) en `.k-feed-zona`, la app en `.k-ventana-4x5` con la cámara dentro y el cierre `cierre-clip.html` (2,5 s, sonido a +0,38 s) |
+| 1080×1080 | Redes | Mismos átomos; titular 76–84 px; la app en `.k-ventana` (recortada). El cierre en 1:1 se hace con el primero que se pida (sube la versión del kit) |
 
 ## Approved Entities
 
@@ -137,5 +138,5 @@ del sitio da el aire de «presentación» y deja que la app, clara y luminosa, s
 
 ## Known Gaps
 
-- La biblioteca de música está pendiente (`kit.json` → `musica`).
+- Música: la biblioteca de `kit.json` → `musica` («Product Launch» para los clips del sitio, a −18 LUFS con su `volumen`), con los sonidos de acción de v1.1 por debajo.
 - El sitio aún no tiene dominio propio: el contacto `sitio` dice `kingdom-sitio.web.app` hasta entonces.

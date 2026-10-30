@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Escena de muestra en 4:5 (kit v1.1): la noche del sitio, la ceja y la frase con .k-feed-*, y la app real (una captura publicada
+         de la ayuda, Mi seguimiento de Kingdom Demo) dentro de .k-ventana con la cámara moviéndose dentro. Las clases vienen de
+         identidad/kit.css, que el host enlaza en su <head>. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1350px;
+          overflow: hidden;
+        }
+        .titulo {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .palabra {
+          display: inline-block;
+        }
+        /* Marca del toque: un punto en el color primario de la app y su onda. Es una marca alrededor de la app, no parte de ella. */
+        .toque {
+          position: absolute;
+          width: 84px;
+          height: 84px;
+          margin: -42px 0 0 -42px;
+          border-radius: 50%;
+          background: rgba(1, 91, 190, 0.28);
+          box-shadow: 0 0 0 3px rgba(1, 91, 190, 0.55);
+          opacity: 0;
+        }
+        .onda {
+          position: absolute;
+          width: 84px;
+          height: 84px;
+          margin: -42px 0 0 -42px;
+          border-radius: 50%;
+          box-shadow: 0 0 0 4px rgba(1, 91, 190, 0.6);
+          opacity: 0;
+        }
+        .datos {
+          position: absolute;
+          right: 116px;
+          top: 416px;
+        }
+        .dip {
+          position: absolute;
+          inset: 0;
+          background: #000000;
+          opacity: 0;
+        }
+      </style>
+      <div id="root" data-composition-id="cuerpo" data-width="1080" data-height="1350" data-duration="4">
+        <div class="k-noche">
+          <div class="k-halo" id="cuerpo-halo" data-layout-allow-overflow></div>
+          <div class="k-puntos"></div>
+
+          <div class="k-feed-zona titulo">
+            <div class="k-feed-ceja" id="cuerpo-ceja">Membresía</div>
+            <div class="k-feed-frase" id="cuerpo-frase">
+              <span class="palabra">Nadie</span> <span class="palabra">nuevo</span> <span class="palabra">se</span>
+              <span class="palabra">queda</span> <em><span class="palabra">sin</span> <span class="palabra">llamada</span></em>
+            </div>
+          </div>
+
+          <div class="k-ventana k-ventana-4x5" id="cuerpo-ventana" style="left: 100px; top: 400px">
+            <div class="k-ventana-camara" id="cuerpo-camara" data-layout-allow-overflow>
+              <img class="k-ventana-grabacion" src="assets/captura/mi-seguimiento-lista.webp" alt="" />
+              <!-- Coordenadas en px de la grabación ajustada al ancho (1170 → 880: ×0,752). El nombre «Germán Correa Ortiz». -->
+              <div class="toque" id="cuerpo-toque" style="left: 341px; top: 1076px"></div>
+              <div class="onda" id="cuerpo-onda" style="left: 341px; top: 1076px"></div>
+            </div>
+          </div>
+          <div class="k-datos-ejemplo k-feed-datos datos" id="cuerpo-datos">Datos de ejemplo</div>
+          <div class="dip" id="cuerpo-dip"></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          // El halo respira despacio; los puntos no se mueven.
+          tl.fromTo('#cuerpo-halo', { scale: 1.08 }, { scale: 1, duration: 4, ease: 'sine.out' }, 0);
+          // La ceja está desde el cuadro 0; la ventana entra en 0,10 (sonido «aparicion») con la cámara en el plano de la tarjeta.
+          tl.fromTo('#cuerpo-camara', { x: 0, y: -933, scale: 1 }, { x: 0, y: -933, scale: 1, duration: 0.01 }, 0);
+          tl.fromTo('#cuerpo-ventana', { y: 36, scale: 0.94, opacity: 0, transformOrigin: '50% 50%' },
+            { y: 0, scale: 1, opacity: 1, duration: 0.3, ease: 'power3.out' }, 0.1);
+          tl.fromTo('#cuerpo-datos', { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.4);
+          // La frase cae palabra a palabra desde el pulso de 0,5 (blur 8 → 0, sin desplazarse).
+          tl.fromTo('#cuerpo-frase .palabra', { opacity: 0, filter: 'blur(8px)' },
+            { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power2.out', stagger: 0.067 }, 0.5);
+          // 1,50: el toque sobre la persona (sonido «toque»).
+          tl.fromTo('#cuerpo-toque', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.12, ease: 'power2.out' }, 1.38);
+          tl.to('#cuerpo-toque', { scale: 0.86, duration: 0.08, ease: 'power2.in' }, 1.5);
+          tl.to('#cuerpo-toque', { opacity: 0, scale: 1, duration: 0.25, ease: 'power2.out' }, 1.62);
+          tl.set('#cuerpo-onda', { opacity: 0 }, 0);
+          tl.fromTo('#cuerpo-onda', { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 2.2, duration: 0.4, ease: 'power2.out', immediateRender: false }, 1.5);
+          // 2,00–2,45: la cámara se acerca a 1,5 sobre la cabecera de la tarjeta (sonido «desliz»), y se queda quieta. Esquina de arriba a la
+          // izquierda del encuadre en (55, 908) de la grabación ajustada: x = −1,5·55 = −82, y = −1,5·908 = −1362.
+          tl.to('#cuerpo-camara', { x: -82, y: -1362, scale: 1.5, duration: 0.45, ease: 'power3.inOut' }, 2);
+          // 3,87: dip de tres cuadros antes del corte a la firma (el golpe de la subida y de la música caen en 4,0).
+          tl.fromTo('#cuerpo-dip', { opacity: 0 }, { opacity: 0.4, duration: 0.1, ease: 'none' }, 3.87);
+          tl.set({}, {}, 4);
+          window.__timelines['cuerpo'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

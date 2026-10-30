@@ -106,4 +106,4 @@ WhatsApp»); `fondo` = `azul` (por defecto: contraste máximo en el feed) o `noc
 
 ## Known Gaps
 
-- Música pendiente (`kit.json` → `musica`). Los cierres en 1:1 y 4:5 se hacen con la primera campaña que los pida.
+- Música: la biblioteca de `kit.json` → `musica` (v1.1), con los sonidos de acción por debajo. En 4:5 hay cierre (`cierre-clip.html`, v1.1), `.k-ventana-4x5` y `.k-feed-*`; el cierre en 1:1 se hace con la primera campaña que lo pida.

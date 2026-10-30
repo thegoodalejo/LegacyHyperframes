@@ -1,7 +1,8 @@
 // Monta el kit de identidad de Kingdom (../_identidad) en <proyecto>/identidad/, desde la carpeta del proyecto:
 //   node ../_herramientas/montar-kit.mjs
 // Copia exacta del kit (se rehace en cada corrida y nunca se edita en el proyecto), comprueba que el favicon siga siendo el de la app
-// (KingdomApp/frontend-v2/public/favicon.svg) y deja el sonido de marca en identidad/audio/sonido-marca.wav a la sonoridad del kit.
+// (KingdomApp/frontend-v2/public/favicon.svg), deja el sonido de marca en identidad/audio/sonido-marca.wav a la sonoridad del kit y, desde
+// la v1.1, los sonidos de acción en identidad/audio/<nombre>.wav con su nivel de mezcla (kit.json → sonidosAccion).
 // Lo usan los tres tipos (Wiki, Comercial y Corto); la herramienta de tutoriales de la wiki lo llamará al preparar cada idioma.
 import { spawnSync } from 'node:child_process';
 import crypto from 'node:crypto';
@@ -72,11 +73,38 @@ export async function montarKit(proyecto = PROYECTO) {
     fs.writeFileSync(marcaVersion, kit.sonido.sha256 + '\n');
   }
 
+  // Sonidos de acción (v1.1): se generan en cada montaje (milisegundos de cálculo, sin FFmpeg). La huella se comprueba sobre el crudo
+  // (pico a −3 dBFS) y el archivo montado lleva el pico en `nivel` dBFS, el que lo deja por debajo de la música a −18 LUFS.
+  const accion = kit.sonidosAccion;
+  if (accion) {
+    const { generarSonidoAccion } = await import(pathToFileURL(path.join(KIT, accion.archivo)).href);
+    for (const [nombre, d] of Object.entries(accion.sonidos)) {
+      const crudo = generarSonidoAccion(nombre);
+      if (sha(crudo) !== d.sha256) {
+        console.warn(`  ⚠ el sonido de acción «${nombre}» generado (${sha(crudo).slice(0, 8)}…) no coincide con kit.json (${d.sha256.slice(0, 8)}…). ` +
+          'Si cambió sonidos-accion.mjs, eso es cambiar el kit (sube la versión); si no, revisa la versión de Node.');
+      }
+      fs.writeFileSync(path.join(audio, `${nombre}.wav`), generarSonidoAccion(nombre, d.nivel));
+    }
+  }
+
   console.log(`Kit de identidad de Kingdom ${kit.version} montado en identidad/.`);
   console.log('Sonido de marca (identidad/audio/sonido-marca.wav) en el host, en estos segundos desde el inicio de cada pieza:');
   for (const [pieza, d] of Object.entries(kit.piezas)) {
     const variantes = d.variantes ? '  ' + Object.entries(d.variantes).map(([k, x]) => `${k}: ${x.duracion} s, sonido ${x.sonido} s`).join(' · ') : '';
     console.log(`  ${pieza.padEnd(17)} ${d.ancho}×${d.alto}  ${d.duracion} s  sonido ${d.sonido} s${variantes}`);
+  }
+  if (accion) {
+    console.log(`Sonidos de acción (identidad/audio/<nombre>.wav, data-volume="1" con la música a ${accion.mezcla.musica} LUFS; ` +
+      'data-start = momento visible + 0,033 − acento):');
+    for (const [nombre, d] of Object.entries(accion.sonidos)) {
+      console.log(`  ${nombre.padEnd(13)} ${String(d.duracion).padEnd(5)} s  acento ${String(d.acento).padEnd(4)} s  pico ${d.nivel} dBFS`);
+    }
+  }
+  const pistas = Object.entries(kit.musica?.biblioteca ?? {});
+  if (pistas.length) {
+    console.log(`Música (se copia de ../_identidad/musica/ a assets/musica/; data-volume para ${kit.musica.lufs} LUFS sin voz):`);
+    for (const [id, p] of pistas) console.log(`  ${id.padEnd(17)} volumen ${p.volumen}  ${p.uso ?? 'sin uso por ahora'}`);
   }
   return kit;
 }

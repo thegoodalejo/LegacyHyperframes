@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <title>Clip del sitio · Membresía · «Valeria llegó el domingo» (4:5)</title>
+    <!--
+      Clip del sitio de Kingdom, módulo Membresía, 1080×1350 (4:5), 30,5 s a 30 fps. Contrato: SPEC.md (Historia A); desvíos en REVIEW.md.
+      Estructura:
+        · compositions/fondo.html      la noche del sitio (halo que se asienta en cada mundo: 0, 180 y 720; los puntos no se mueven)
+        · compositions/frase-1..4.html las cuatro frases (una a la vez) y compositions/ceja.html («MEMBRESÍA», 195–723)
+        · #ventana (aquí, en la raíz)  la app REAL grabada en celular (assets/grabaciones/grabacion.mp4, 1170×2532) dentro de .k-ventana:
+                                        - #cam es la cámara (scale + x/y sobre un envoltorio; el <video> nunca se transforma ni se busca)
+                                        - #tira es el látigo vertical del 176–186: el mundo 1 (quien registra) sale y el mundo 2 (quien acompaña) llega
+                                        - cada tramo de video es un <video> con su data-media-start y su data-playback-rate (0,35×–3,5×);
+                                          los cortes caen en pausas de la grabación (huecos_de_pantalla de pasos.json) y cada toque real
+                                          cae en su pulso (tabla en REVIEW.md)
+                                        - el iris del 120 y del 375: un still del cuadro anterior debajo y el video recortado por un círculo encima
+                                        - las marcas de toque (.toque/.onda) van en las coordenadas reales del toque (pasos.json → toques[])
+        · identidad/cierre-clip.html   la firma (kit v1.1), 28,0–30,5; el sonido de marca en 28,38
+      Para llevarlo a 9:16: cambiar KD (abajo) y las variables --f-* de este <style>; los tramos de video, los sonidos y las escenas no cambian
+      (las escenas solo necesitan su data-width/data-height; el tamaño y la posición de los textos los toman de --f-*).
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      :root {
+        /* ── Formato 4:5 (SPEC §1.4). Para 9:16: 1080×1920, márgenes 60, ceja y 188 / 34 px, frase y 236 / 960 / 104 px, ventana 60·480·960×850. */
+        --f-ancho: 1080px;
+        --f-alto: 1350px;
+        --f-margen-x: 96px;
+        --f-ceja-y: 72px;
+        --f-ceja-px: 30px;
+        --f-frase-y: 124px;
+        --f-frase-ancho: 888px;
+        --f-frase-px: 80px;
+        --f-ventana-x: 100px;
+        --f-ventana-y: 360px;
+        --f-ventana-w: 880px;
+        --f-ventana-h: 1050px; /* sangra 60 px por abajo del cuadro: las esquinas de abajo nunca se ven */
+        --f-ventana-hvis: 990px; /* lo que se ve de la ventana dentro del cuadro */
+        /* Grabación 1170×2532 ajustada al ancho de la ventana: factor y alto resultante (880/1170 y 2532·880/1170). */
+        --f-k: 0.752137;
+        --f-grab-alto: 1904.41px;
+        --f-latigo: 1100px; /* el mundo 2 espera a esta distancia, debajo del mundo 1 */
+      }
+      html,
+      body {
+        margin: 0;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root {
+        position: relative;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root > [data-composition-src] {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      #fondo {
+        z-index: 0;
+      }
+      #cierre-clip {
+        z-index: 6;
+      }
+      /* La ventana a la app: .k-ventana del kit (radio 28, anillo, sombra); el tamaño viene del formato. */
+      #ventana {
+        left: var(--f-ventana-x);
+        top: var(--f-ventana-y);
+        width: var(--f-ventana-w);
+        height: var(--f-ventana-h);
+        z-index: 3;
+      }
+      #tira {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      .mundo {
+        position: absolute;
+        left: 0;
+        width: 100%;
+      }
+      #m1 {
+        top: 0;
+        height: var(--f-grab-alto);
+      }
+      /* El mundo 2 espera debajo, recortado a su propia ranura hasta que el látigo termina (186); después deja de recortar. */
+      #m2 {
+        top: var(--f-latigo);
+        height: var(--f-ventana-h);
+        overflow: hidden;
+        z-index: 2;
+      }
+      /* Encuadre base del mundo 2: el borde de abajo de la grabación en el borde visible de la ventana (más abajo no hay app). */
+      #m2in {
+        position: absolute;
+        left: 0;
+        top: calc(var(--f-ventana-hvis) - var(--f-grab-alto));
+        width: 100%;
+        height: var(--f-grab-alto);
+      }
+      .mundo video,
+      .mundo img,
+      .iris {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+      }
+      .iris {
+        height: var(--f-grab-alto);
+      }
+      .marcas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: var(--f-grab-alto);
+        pointer-events: none;
+      }
+      /* Marca del toque (la grabación no trae círculo): 20 px CSS del celular y su onda de 36 → 58 px, como define SPEC §3. */
+      .toque {
+        position: absolute;
+        width: 46px;
+        height: 46px;
+        margin: -23px 0 0 -23px;
+        border-radius: 50%;
+        background: rgba(27, 27, 31, 0.28);
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+        opacity: 0;
+      }
+      .onda {
+        position: absolute;
+        width: 81px;
+        height: 81px;
+        margin: -40.5px 0 0 -40.5px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(1, 91, 190, 0.9);
+        opacity: 0;
+      }
+      #datos {
+        position: absolute;
+        /* Abajo a la izquierda de la ventana (pedido del dueño, 2026-10-30): ahí solo queda la barra inferior de la app. La ventana sangra
+           60 px por abajo del cuadro, así que se sube esa diferencia para que la etiqueta se vea entera. */
+        left: 24px;
+        bottom: calc(var(--f-ventana-h) - var(--f-ventana-hvis) + 24px);
+        z-index: 4;
+        /* 31 px en vez de los 28 del kit: con la ventana a 0,92 (724–839) sigue en ≥ 28 px, el piso de lectura en un celular. */
+        height: 56px;
+        font-size: 31px;
+      }
+      #dip {
+        position: absolute;
+        inset: 0;
+        background: #060d1f;
+        opacity: 0;
+        z-index: 5;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-2w13"
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="30.5"
+      data-width="1080"
+      data-height="1350"
+      data-motion-blur="on"
+      data-motion-blur-shutter="180"
+    >
+      <!-- ── Escenas (gráficos): el fondo, las frases y la ceja. Los cuadros van en el comentario de cada una. ── -->
+      <div data-hf-id="hf-h1gj" id="fondo" data-composition-id="fondo" data-composition-src="compositions/fondo.html" data-track-kind="graphics"
+        data-start="0" data-duration="28" data-track-index="0" data-width="1080" data-height="1350"></div>
+      <!-- P1 · «Valeria llegó / el domingo.» una palabra por pulso (0 · 15 · 30 · 45); sale 117–121 -->
+      <div data-hf-id="hf-em9y" id="frase-1" data-composition-id="frase-1" data-composition-src="compositions/frase-1.html" data-track-kind="graphics"
+        data-start="0" data-duration="4.066667" data-track-index="1" data-width="1080" data-height="1350"></div>
+      <!-- P2 · «Registrada. / Aun sin señal.» línea entera 120–126 (el host arranca en 119: el primer cuadro visible es el pulso); sale 177–181 -->
+      <div data-hf-id="hf-q1m1" id="frase-2" data-composition-id="frase-2" data-composition-src="compositions/frase-2.html" data-track-kind="graphics"
+        data-start="3.966667" data-duration="2.1" data-track-index="2" data-width="1080" data-height="1350"></div>
+      <!-- P3–P5 · la ceja «MEMBRESÍA» 195–201; sale 720–723 -->
+      <div data-hf-id="hf-czh9" id="ceja" data-composition-id="ceja" data-composition-src="compositions/ceja.html" data-track-kind="graphics"
+        data-start="6.466667" data-duration="17.666667" data-track-index="3" data-width="1080" data-height="1350"></div>
+      <!-- P4 · «Y ya tiene quién / la llame» palabra a palabra 360–374; sale 597–601 -->
+      <div data-hf-id="hf-w9vh" id="frase-3" data-composition-id="frase-3" data-composition-src="compositions/frase-3.html" data-track-kind="graphics"
+        data-start="11.966667" data-duration="8.1" data-track-index="4" data-width="1080" data-height="1350"></div>
+      <!-- P6 · «Que ninguna persona / se pierda» 720–732, quieta hasta el corte -->
+      <div data-hf-id="hf-4g91" id="frase-4" data-composition-id="frase-4" data-composition-src="compositions/frase-4.html" data-track-kind="graphics"
+        data-beat="ninguna" data-hold
+        data-start="23.966667" data-duration="4.033333" data-track-index="5" data-width="1080" data-height="1350"></div>
+      <!-- P7 · la firma del kit (identidad/kit.json → piezas.cierre-clip): 840–914 -->
+      <div data-hf-id="hf-ocqh" id="cierre-clip" data-composition-id="cierre-clip" data-composition-src="identidad/cierre-clip.html" data-track-kind="graphics"
+        data-variable-values='{"llamado":"prueba","fondo":"azul","idioma":"es"}'
+        data-start="28" data-duration="2.5" data-track-index="6" data-width="1080" data-height="1350"></div>
+
+      <!-- ── La ventana a la app real ─────────────────────────────────────────────────────────────────────────────── -->
+      <div data-hf-id="hf-gc6v" id="ventana" class="k-ventana" data-layout-allow-overflow>
+        <div data-hf-id="hf-8kdi" id="cam" class="k-ventana-camara">
+          <div data-hf-id="hf-gtjj" id="tira">
+            <!-- Mundo 1: el celular de quien registra (cuenta 103, «Nueva persona»). Tramos de grabacion.mp4 en segundos de la pista:
+                 cuadro = segundo × 30; cada data-media-start lleva +0,01 s (un tercio de cuadro) para caer dentro del cuadro buscado. -->
+            <div data-hf-id="hf-lyov" id="m1" class="mundo">
+              <!-- 0–30 · la «V» ya puesta (grab. 162) y «aleria» letra a letra hasta el 176, a 0,467×. El extractor de cuadros muestra ~2 cuadros
+                   de atraso en los tramos a menos de 1× (medido en snapshot y en el borrador), por eso arranca en 164,0 y no en 162,3:
+                   con atraso 0, 1 o 2 el cuadro 0 muestra «V» (la «a» entra en el 165) y «Valeria» queda completo en el 30. -->
+              <video data-hf-id="hf-fjy5" id="v01" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                data-start="0" data-duration="1" data-media-start="5.466667" data-playback-rate="0.466667"></video>
+              <!-- 30–60 · quieto (grab. 178–211) hasta el toque en «Apellidos» (grab. 211), a 1,11× -->
+              <video data-hf-id="hf-t8di" id="v02" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                data-start="1" data-duration="1" data-media-start="5.933333" data-playback-rate="1.11"></video>
+              <!-- 60–85 · toque en «Apellidos» y «Cardona Ríos» (grab. 211–245), a 1,36× -->
+              <video data-hf-id="hf-0xp3" id="v03" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                data-start="2" data-duration="0.833333" data-media-start="7.043333" data-playback-rate="1.36"></video>
+              <!-- 85–90 · corte en la pausa (245→274) hasta el toque en «Cómo llegó» (grab. 279) -->
+              <video data-hf-id="hf-7j4u" id="v04" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                data-start="2.833333" data-duration="0.166667" data-media-start="9.143333" data-playback-rate="1"></video>
+              <!-- 90–105 · el selector se abre (grab. 288–291) y queda abierto hasta el toque en «Servicio General» (grab. 306), a 1,8× -->
+              <video data-hf-id="hf-pm0p" id="v05" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                data-start="3" data-duration="0.5" data-media-start="9.31" data-playback-rate="1.8"></video>
+              <!-- 105–108 · la app elige el único evento y el chip «Servicio General» aparece (grab. 306–315), a 3× -->
+              <video data-hf-id="hf-mqie" id="v06" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                data-start="3.5" data-duration="0.1" data-media-start="10.21" data-playback-rate="3"></video>
+              <!-- 108–111 · el selector se desvanece (grab. 315–318) -->
+              <video data-hf-id="hf-tl1x" id="v07" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                data-start="3.6" data-duration="0.1" data-media-start="10.51" data-playback-rate="1"></video>
+              <!-- 111–120 · corte en la pausa (318→458); la app salta hasta «Registrar» en el 114 (grab. 460→461) -->
+              <video data-hf-id="hf-vepi" id="v08" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                data-start="3.7" data-duration="0.3" data-media-start="15.276667" data-playback-rate="1"></video>
+              <!-- 120–125 · still del cuadro 119 (grab. 466) debajo del iris -->
+              <img data-hf-id="hf-ie8i" id="still1" class="clip" src="assets/stills/still-466.png" alt="" data-track-index="11"
+                data-start="4" data-duration="0.166667" />
+              <div data-hf-id="hf-fn8n" id="iris1" class="iris">
+                <!-- 120 · toque en «Registrar» (grab. 526) -->
+                <video data-hf-id="hf-zt1p" id="v09" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10" data-beat="registrar"
+                  data-start="4" data-duration="0.066667" data-media-start="17.543333" data-playback-rate="1"></video>
+                <!-- 122–150 · corte en la espera (528→533): «Guardada en este dispositivo» entra 122–129 y se queda -->
+                <video data-hf-id="hf-evvy" id="v10" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                  data-start="4.066667" data-duration="0.933333" data-media-start="17.776667" data-playback-rate="1"></video>
+                <!-- 150–162 · toque en «Entendido» (grab. 616); el diálogo se va y el formulario queda limpio -->
+                <video data-hf-id="hf-bp15" id="v11" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                  data-start="5" data-duration="0.4" data-media-start="20.543333" data-playback-rate="1"></video>
+                <!-- 162–178 · la app vuelve arriba en el 165 (grab. 677): «1 sin enviar» -->
+                <video data-hf-id="hf-3ylt" id="v12" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                  data-start="5.4" data-duration="0.533333" data-media-start="22.476667" data-playback-rate="1"></video>
+                <!-- 178–186 · vuelve la señal: «1 sin enviar» ya no está (grab. 791–799); el látigo se lo lleva -->
+                <video data-hf-id="hf-jv4q" id="v13" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                  data-start="5.933333" data-duration="0.266667" data-media-start="26.376667" data-playback-rate="1"></video>
+              </div>
+              <div data-hf-id="hf-q6ez" class="marcas">
+                <!-- toques[] de pasos.json en px del video × --f-k -->
+                <div data-hf-id="hf-ewbr" class="toque" id="tq-60" style="left: calc(585px * var(--f-k)); top: calc(783px * var(--f-k))"></div>
+                <div data-hf-id="hf-4qk9" class="onda" id="on-60" style="left: calc(585px * var(--f-k)); top: calc(783px * var(--f-k))"></div>
+                <div data-hf-id="hf-zd72" class="toque" id="tq-90" style="left: calc(585px * var(--f-k)); top: calc(1250px * var(--f-k))"></div>
+                <div data-hf-id="hf-1o0s" class="onda" id="on-90" style="left: calc(585px * var(--f-k)); top: calc(1250px * var(--f-k))"></div>
+                <div data-hf-id="hf-majm" class="toque" id="tq-105" style="left: calc(585px * var(--f-k)); top: calc(1574px * var(--f-k))"></div>
+                <div data-hf-id="hf-9szg" class="onda" id="on-105" style="left: calc(585px * var(--f-k)); top: calc(1574px * var(--f-k))"></div>
+                <div data-hf-id="hf-2kay" class="toque" id="tq-120" style="left: calc(931px * var(--f-k)); top: calc(2184px * var(--f-k))"></div>
+                <div data-hf-id="hf-9nz0" class="onda" id="on-120" style="left: calc(931px * var(--f-k)); top: calc(2184px * var(--f-k))"></div>
+                <div data-hf-id="hf-1w2d" class="toque" id="tq-150" style="left: calc(877px * var(--f-k)); top: calc(1506px * var(--f-k))"></div>
+                <div data-hf-id="hf-uma7" class="onda" id="on-150" style="left: calc(877px * var(--f-k)); top: calc(1506px * var(--f-k))"></div>
+              </div>
+            </div>
+
+            <!-- Mundo 2: el celular de quien acompaña (cuenta 103, «Mi seguimiento»). -->
+            <div data-hf-id="hf-dat0" id="m2" class="mundo">
+              <div data-hf-id="hf-fkch" id="m2in">
+                <!-- 180–375 · la tarjeta de Valeria quieta (grab. 2207–2402) -->
+                <video data-hf-id="hf-xjbq" id="v14" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10" data-beat="latigo"
+                  data-start="6" data-duration="6.5" data-media-start="73.576667" data-playback-rate="1"></video>
+                <!-- 375–380 · still del cuadro 374 (grab. 2401) debajo del iris -->
+                <img data-hf-id="hf-0fzg" id="still2" class="clip" src="assets/stills/still-2401.png" alt="" data-track-index="11"
+                  data-start="12.5" data-duration="0.166667" />
+                <div data-hf-id="hf-4rr0" id="iris2" class="iris">
+                  <!-- 375 · toque en «Marcar cumplido» (grab. 2402) -->
+                  <video data-hf-id="hf-7poi" id="v15" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="12.5" data-duration="0.033333" data-media-start="80.076667" data-playback-rate="1"></video>
+                  <!-- 376–400 · corte en la espera (2403→2411): «Reporte del paso» entra 377–381 -->
+                  <video data-hf-id="hf-vm6t" id="v16" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10" data-beat="reporte"
+                    data-start="12.533333" data-duration="0.8" data-media-start="80.376667" data-playback-rate="1"></video>
+                  <!-- 400–450 · corte en la pausa (2435→2463) hasta el toque en «Contestó» (grab. 2513) -->
+                  <video data-hf-id="hf-98m9" id="v17" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="13.333333" data-duration="1.666667" data-media-start="82.11" data-playback-rate="1"></video>
+                  <!-- 450–452 · el toque en «Contestó» -->
+                  <video data-hf-id="hf-j8s5" id="v18" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="15" data-duration="0.066667" data-media-start="83.776667" data-playback-rate="1"></video>
+                  <!-- 452–475 · corte (2515→2519): la onda del radio y el punto lleno en el 456 (grab. 2523) -->
+                  <video data-hf-id="hf-t2fo" id="v19" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="15.066667" data-duration="0.766667" data-media-start="83.976667" data-playback-rate="1"></video>
+                  <!-- 475–495 · corte en la pausa (2542→2561) hasta el toque en «Observaciones» (grab. 2581) -->
+                  <video data-hf-id="hf-m0yx" id="v20" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="15.833333" data-duration="0.666667" data-media-start="85.376667" data-playback-rate="1"></video>
+                  <!-- 495–567 · «Muy contenta, viene el domingo» con las teclas reales (grab. 2581–2663), a 1,139× -->
+                  <video data-hf-id="hf-4fl7" id="v21" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="16.5" data-duration="2.4" data-media-start="86.043333" data-playback-rate="1.138889"></video>
+                  <!-- 567–600 · corte en la pausa (2663→2734) hasta el toque en «Marcar cumplido» del diálogo (grab. 2767) -->
+                  <video data-hf-id="hf-jclw" id="v22" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="18.9" data-duration="1.1" data-media-start="91.143333" data-playback-rate="1"></video>
+                  <!-- 600–603 · el toque -->
+                  <video data-hf-id="hf-2ros" id="v23" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="20" data-duration="0.1" data-media-start="92.243333" data-playback-rate="1"></video>
+                  <!-- 603–700 · corte en la espera (2770→2797): el resultado «“Llamada de bienvenida” cumplido · Ahora va en: …» -->
+                  <video data-hf-id="hf-wj7r" id="v24" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10" data-beat="cumplido"
+                    data-start="20.1" data-duration="3.233333" data-media-start="93.243333" data-playback-rate="1"></video>
+                  <!-- 700–840 · corte en la pausa (2894→2912); toque en «Listo» en el 720 (grab. 2932); la tarjeta actualizada desde el 738 -->
+                  <video data-hf-id="hf-i58k" id="v25" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="23.333333" data-duration="4.666667" data-media-start="97.076667" data-playback-rate="1"></video>
+                </div>
+                <div data-hf-id="hf-os6z" class="marcas">
+                  <div data-hf-id="hf-y4ji" class="toque" id="tq-375" style="left: calc(671px * var(--f-k)); top: calc(2136px * var(--f-k))"></div>
+                  <div data-hf-id="hf-i1v4" class="onda" id="on-375" style="left: calc(671px * var(--f-k)); top: calc(2136px * var(--f-k))"></div>
+                  <div data-hf-id="hf-zv88" class="toque" id="tq-450" style="left: calc(277px * var(--f-k)); top: calc(837px * var(--f-k))"></div>
+                  <div data-hf-id="hf-ri3q" class="onda" id="on-450" style="left: calc(277px * var(--f-k)); top: calc(837px * var(--f-k))"></div>
+                  <div data-hf-id="hf-k6z8" class="toque" id="tq-495" style="left: calc(585px * var(--f-k)); top: calc(1677px * var(--f-k))"></div>
+                  <div data-hf-id="hf-0jcm" class="onda" id="on-495" style="left: calc(585px * var(--f-k)); top: calc(1677px * var(--f-k))"></div>
+                  <div data-hf-id="hf-fl4l" class="toque" id="tq-600" style="left: calc(808px * var(--f-k)); top: calc(2088px * var(--f-k))"></div>
+                  <div data-hf-id="hf-3to3" class="onda" id="on-600" style="left: calc(808px * var(--f-k)); top: calc(2088px * var(--f-k))"></div>
+                  <!-- El toque en «Listo» (720, grab. 930·1614) queda fuera del encuadre C del 660: se oye, no se dibuja. -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-hf-id="hf-azfp" id="datos" class="k-datos-ejemplo k-feed-datos">Datos de ejemplo</div>
+        <div data-hf-id="hf-c6yo" id="dip"></div>
+      </div>
+
+      <!-- ── Sonido ────────────────────────────────────────────────────────────────────────────────────────────────── -->
+      <!-- Música «Product Launch» (The_Mountain) 14,05 → 43,05 de la pista; a −18 LUFS con 0,7 (identidad/kit.json → musica.volumen).
+           El nivel va en el carril de volumen (valores absolutos; sin data-volume para que valga igual si el carril multiplica o reemplaza):
+           0,7 hasta el golpe del 840 (28,0), −10 dB en el 852 (28,4) y 0 en el 870 (29,0), debajo de las campanas. -->
+      <audio data-hf-id="hf-qdjt" id="musica" src="assets/musica/product-launch-the-mountain.mp3" data-start="0" data-media-start="14.05" data-duration="29"
+        data-track-index="20"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.7},{"t":28,"v":0.7},{"t":28.4,"v":0.224},{"t":29,"v":0}]}]}'></audio>
+
+      <!-- Sonidos de acción del kit (identidad/kit.json → sonidosAccion): data-start = cuadro del sonido / 30 − acento; el sonido cae un
+           cuadro después de su imagen. toque rota tres tomas: a = toque.wav, b = +3 % de tono, c = −3 % (assets/audio/). -->
+      <!-- 61 · toque en «Apellidos» -->
+      <audio data-hf-id="hf-0knx" id="snd-toque-60" src="identidad/audio/toque.wav" data-start="2.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 91 · toque en «Cómo llegó» -->
+      <audio data-hf-id="hf-79zn" id="snd-toque-90" src="assets/audio/toque-b.wav" data-start="3.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 109 · el chip «Servicio General» aparece (108) -->
+      <audio data-hf-id="hf-x1a8" id="snd-aparicion-108" src="identidad/audio/aparicion.wav" data-start="3.633333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 109–120 · la cámara baja y la app salta a «Registrar» (acento en el 115) -->
+      <audio data-hf-id="hf-es95" id="snd-desliz-109" src="identidad/audio/desliz.wav" data-start="3.633333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 121 · toque en «Registrar» (clave, +3 dB) -->
+      <audio data-hf-id="hf-5d3v" id="snd-toque-120" src="assets/audio/toque-c.wav" data-start="4.033333" data-duration="0.077" data-track-index="21" data-volume="1.4"></audio>
+      <!-- 123 · «Guardada en este dispositivo» (acento 0,1 → empieza en 4,0) -->
+      <audio data-hf-id="hf-psqc" id="snd-confirmacion-123" src="identidad/audio/confirmacion.wav" data-start="4" data-duration="0.32" data-track-index="24" data-volume="1.4"></audio>
+      <!-- 151 · toque en «Entendido» -->
+      <audio data-hf-id="hf-xzea" id="snd-toque-150" src="identidad/audio/toque.wav" data-start="5.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 166 · «1 sin enviar» aparece (165) -->
+      <audio data-hf-id="hf-3loe" id="snd-aparicion-165" src="identidad/audio/aparicion.wav" data-start="5.533333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 180 · el látigo (acento 0,2 → empieza en 5,8) -->
+      <audio data-hf-id="hf-ljix" id="snd-desliz-180" src="identidad/audio/desliz.wav" data-start="5.8" data-duration="0.36" data-track-index="23" data-volume="1.4"></audio>
+      <!-- 196 · la ceja «MEMBRESÍA» (195) -->
+      <audio data-hf-id="hf-365k" id="snd-aparicion-195" src="identidad/audio/aparicion.wav" data-start="6.533333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 376 · toque en «Marcar cumplido» -->
+      <audio data-hf-id="hf-5i2o" id="snd-toque-375" src="assets/audio/toque-b.wav" data-start="12.533333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 451 · toque en «Contestó» -->
+      <audio data-hf-id="hf-l70z" id="snd-toque-450" src="assets/audio/toque-c.wav" data-start="15.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 496 · toque en «Observaciones» -->
+      <audio data-hf-id="hf-qm73" id="snd-toque-495" src="identidad/audio/toque.wav" data-start="16.533333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 601 · toque en «Marcar cumplido» del diálogo (clave, +3 dB) -->
+      <audio data-hf-id="hf-7kjv" id="snd-toque-600" src="assets/audio/toque-b.wav" data-start="20.033333" data-duration="0.073" data-track-index="21" data-volume="1.4"></audio>
+      <!-- 603 · «cumplido» (acento 0,1 → empieza en 20,0) -->
+      <audio data-hf-id="hf-v7tj" id="snd-confirmacion-603" src="identidad/audio/confirmacion.wav" data-start="20" data-duration="0.32" data-track-index="24" data-volume="1.4"></audio>
+      <!-- 721 · toque en «Listo» -->
+      <audio data-hf-id="hf-ybo5" id="snd-toque-720" src="assets/audio/toque-c.wav" data-start="24.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 796–853 · la subida hacia la firma; su golpe (acento 1,5) cae en el 840 con el golpe de la música -->
+      <audio data-hf-id="hf-h1lh" id="snd-subida" src="identidad/audio/subida.wav" data-start="26.533333" data-duration="1.9" data-track-index="25" data-volume="1"></audio>
+      <!-- Sonido de marca: inicio de la firma + 0,38 s (identidad/kit.json → piezas.cierre-clip.sonido) -->
+      <audio data-hf-id="hf-pa3o" id="marca-clip" src="identidad/audio/sonido-marca.wav" data-start="28.38" data-duration="2.1" data-track-index="26" data-volume="1"></audio>
+    </div>
+
+    <script>
+      // ── Un solo lugar para el formato (la versión 9:16 cambia esto y las variables --f-* del <style>) ──────────────────────
+      window.KD = {
+        fps: 30,
+        ventana: { w: 880, h: 1050, hVis: 990 }, // lo mismo que --f-ventana-*
+        grabacion: { w: 1170, h: 2532, cssW: 390 }, // el celular grabado a 3×
+        latigo: 1100, // --f-latigo
+        cambio: { escala: 0.92, x: 48, origen: '50% 100%' }, // la ventana se hace a un lado (SPEC §1.4, 724–738)
+      };
+
+      (function () {
+        const KD = window.KD;
+        const F = (n) => n / KD.fps; // cuadro → segundos
+        const W = KD.ventana.w, HV = KD.ventana.hVis;
+        const K = W / KD.grabacion.w; // px del video → px de la ventana (= --f-k)
+        const PPC = W / KD.grabacion.cssW; // px de la ventana por px CSS del celular (G = 2,256 en 4:5)
+        const VH = KD.grabacion.h * K; // alto de la grabación ajustada (= --f-grab-alto)
+        const OFF2 = HV - VH; // desplazamiento del mundo 2 (#m2in top)
+
+        // Encuadre: la caja (centro en px CSS del celular) centrada en lo visible de la ventana con la escala s, sin salirse de la grabación.
+        function enc(s, cx, cy, off) {
+          const rx = cx * PPC, ry = cy * PPC + off;
+          let x = W / 2 - s * rx, y = HV / 2 - s * ry;
+          x = Math.min(0, Math.max(W - s * W, x));
+          y = Math.min(-s * off, Math.max(HV - s * (VH + off), y));
+          return { scale: s, x, y };
+        }
+        // Los objetivos: cajas de pasos.json (y medidas sobre los cuadros reales), en px CSS del celular. Niveles de SPEC §1.5.
+        const E1 = {
+          arriba: enc(1, 195, 219, 0), // G, el tope: título «Nueva persona», Nombres, Apellidos, Teléfono
+          apellidos: enc(1, 195, 419.4, 0), // G, CSS 200–639: Apellidos, Cómo llegó y el selector que se abre debajo
+          registrar: enc(1, 195, 530.6, 0), // G, CSS 311–750: el diálogo «Guardada» (310–537) y «Registrar» (708–748)
+        };
+        const E2 = {
+          tarjeta: enc(1, 195, 844, OFF2), // G, el tope de abajo: la tarjeta de Valeria (466–748) y la barra inferior
+          tarjetaM: enc(1.4, 195, 530, OFF2), // M, la mitad alta de la tarjeta: nombre, «A tiempo», «Llamada de bienvenida», «Desde hoy…»
+          despues: enc(1.8, 126, 592, OFF2), // C, la línea «Después: Mensaje de bienvenida» (texto CSS 33–219 × 586–598)
+          pregunta: enc(1.4, 175, 320, OFF2), // M, «¿Cómo fue?» y sus tres opciones
+          observaciones: enc(1.4, 185, 558, OFF2), // M, el campo «Observaciones» (la frase escrita cabe entera)
+          botones: enc(1.3, 205, 673, OFF2), // M (1,3: a 1,4 «Cancelar» o «Marcar cumplido» quedan cortados), los botones del diálogo
+          resultado: enc(1.35, 211, 480, OFF2), // M, el bloque del resultado: ícono, «cumplido», «Ahora va en», «Listo»
+          ahora: enc(1.5, 195, 372, OFF2), // C, la línea «Ahora va en: Mensaje de bienvenida» (247 px CSS: a 1,5 cabe; «Listo» queda fuera)
+          final: enc(1.05, 195, 607, OFF2), // G⁺, la tarjeta actualizada con la ventana a 0,92
+        };
+        const CAM = { ease: 'power2.inOut', d: F(14) };
+        const toqueXY = (vx, vy) => ({ x: vx * K, y: vy * K }); // toques[] de pasos.json → px de la ventana
+
+        const tl = gsap.timeline({ paused: true });
+
+        // Cámara: quieta hasta el 45; un movimiento por compás después (SPEC §2.1), ninguno mientras se escribe.
+        tl.set('#cam', E1.arriba, 0);
+        tl.to('#cam', { ...E1.apellidos, duration: CAM.d, ease: CAM.ease }, F(46)); // 46–59: el dedo va a «Apellidos»
+        tl.to('#cam', { ...E1.registrar, duration: F(12), ease: CAM.ease }, F(108)); // 108–119: baja a «Registrar»; la app salta en el 114
+        tl.to('#cam', { ...E1.arriba, duration: CAM.d, ease: CAM.ease }, F(150)); // 150–163: a la cabecera; «1 sin enviar» aparece en el 165
+        tl.to('#cam', { ...E2.tarjetaM, duration: CAM.d, ease: CAM.ease }, F(240)); // compás 5
+        tl.to('#cam', { ...E2.despues, duration: CAM.d, ease: CAM.ease }, F(300)); // compás 6
+        tl.to('#cam', { ...E2.tarjeta, duration: CAM.d, ease: CAM.ease }, F(345)); // vuelta a G: «Marcar cumplido» a la vista
+        tl.to('#cam', { ...E2.pregunta, duration: CAM.d, ease: CAM.ease }, F(390)); // compás 7
+        tl.to('#cam', { ...E2.observaciones, duration: CAM.d, ease: CAM.ease }, F(480)); // compás 9
+        tl.to('#cam', { ...E2.botones, duration: CAM.d, ease: CAM.ease }, F(570)); // compás 10
+        tl.to('#cam', { ...E2.resultado, duration: CAM.d, ease: CAM.ease }, F(600)); // compás 11
+        tl.to('#cam', { ...E2.ahora, duration: F(9), ease: CAM.ease }, F(660)); // el punch del golpe
+        tl.to('#cam', { ...E2.final, duration: CAM.d, ease: CAM.ease }, F(720)); // compás 13
+
+        // Iris desde el toque (SPEC §1.6): el círculo nace en el centro del botón tocado, en px de la grabación ajustada.
+        const irisDesde = (sel, vx, vy, cuadro) => {
+          const p = toqueXY(vx, vy);
+          const c = (r) => `circle(${r}px at ${p.x.toFixed(1)}px ${p.y.toFixed(1)}px)`;
+          tl.fromTo(sel, { clipPath: c(0) }, { clipPath: c(1900), duration: F(5), ease: 'power2.out' }, F(cuadro));
+          tl.set(sel, { clipPath: 'none' }, F(cuadro + 6));
+        };
+        irisDesde('#iris1', 931, 2184, 120); // «Registrar»
+        irisDesde('#iris2', 671, 2136, 375); // «Marcar cumplido»
+
+        // Látigo vertical 176–186: la tira sube 1100 px (el mundo 1 sale, el mundo 2 llega); el mundo 2 aterriza 1,04 → 1,00 (180–190).
+        tl.fromTo('#tira', { y: 0 }, { y: -KD.latigo, duration: F(10), ease: 'power3.inOut' }, F(176));
+        tl.fromTo('#m2in', { scale: 1.04, transformOrigin: `${W / 2}px ${HV / 2 - OFF2}px` },
+          { scale: 1, duration: F(10), ease: 'power3.out' }, F(180));
+        tl.set('#m2', { overflow: 'visible' }, F(186)); // ya no hay mundo 1 que tapar: la cámara puede ir hacia arriba
+
+        // Marcas de toque: 4 cuadros antes aparece, en el cuadro se hunde, 6 después se va; la onda nace en el cuadro (450 ms).
+        [60, 90, 105, 120, 150, 375, 450, 495, 600].forEach((n) => {
+          const t = F(n);
+          tl.fromTo(`#tq-${n}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: F(4), ease: 'power2.out' }, t - F(4));
+          tl.to(`#tq-${n}`, { scale: 0.86, duration: F(2), ease: 'power2.in' }, t);
+          tl.to(`#tq-${n}`, { opacity: 0, scale: 1, duration: F(6), ease: 'power2.out' }, t + F(2));
+          tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.62, duration: 0.45, ease: 'power2.out', immediateRender: false }, t);
+        });
+
+        // La ventana se hace a un lado (724–738), 4 cuadros después de la frase 4.
+        tl.to('#ventana', { scale: KD.cambio.escala, x: KD.cambio.x, transformOrigin: KD.cambio.origen, duration: F(15), ease: 'power2.inOut' }, F(724));
+        // Dip de tres cuadros (837–839) y corte a la firma en el 840.
+        tl.set('#dip', { opacity: 0.4 }, F(837));
+        tl.set('#ventana', { autoAlpha: 0 }, F(840));
+        tl.set({}, {}, 30.5);
+        window.__timelines['main'] = tl;
+      })();
+    </script>
+  </body>
+</html>
