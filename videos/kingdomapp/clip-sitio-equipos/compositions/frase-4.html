@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P7 · Frase 4: «Que cada puesto de / servicio esté cubierto» (host 719–840), el título de Equipos en modulos.ts. Palabra a palabra cada 2 cuadros desde el golpe del 720 (Que 720 · cada 722 · puesto 724 · de 726 · servicio 728 · esté 730 · cubierto 732); «cubierto» en itálica dorada (el único dorado del cuerpo junto a la ceja). Quieta hasta el corte a la firma (840). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: var(--f-ancho, 1080px);
+          height: var(--f-alto, 1350px);
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 96px);
+          top: var(--f-frase-y, 124px);
+          width: var(--f-frase-ancho, 888px);
+          font-size: var(--f-frase-px, 80px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-snxv" id="root" data-composition-id="frase-4" data-width="1080" data-height="1350" data-duration="4.033333">
+        <div data-hf-id="hf-si6i" class="k-feed-frase f-frase" id="f4">
+          <span data-hf-id="hf-wqic" class="linea"><span data-hf-id="hf-lf1c" class="palabra" id="f4-w1">Que</span> <span data-hf-id="hf-mgar" class="palabra" id="f4-w2">cada</span> <span data-hf-id="hf-ybbf" class="palabra" id="f4-w3">puesto</span> <span data-hf-id="hf-bck5" class="palabra" id="f4-w4">de</span></span>
+          <span data-hf-id="hf-w2fg" class="linea"><span data-hf-id="hf-scq7" class="palabra" id="f4-w5">servicio</span> <span data-hf-id="hf-qlbn" class="palabra" id="f4-w6">esté</span> <em data-hf-id="hf-2lav"><span data-hf-id="hf-zloq" class="palabra" id="f4-w7">cubierto</span></em></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 7; i++) {
+            // El host arranca un cuadro antes del golpe (719): el primer cuadro visible cae en 720 · 722 · … · 732.
+            tl.fromTo(`#f4-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.set({}, {}, F(121));
+          window.__timelines['frase-4'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

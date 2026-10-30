@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- La ceja «EQUIPOS» (host 194–724): entra la línea entera 195–201 (blur 8 → 0, power4.out) sobre el turno con la barra «Avisar a 1 persona» y sale
+         720–723 con la frase 4. Inter 700, mayúsculas, dorado (.k-feed-ceja del kit); tamaño y posición en --f-* del host. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: var(--f-ancho, 1080px);
+          height: var(--f-alto, 1350px);
+          overflow: hidden;
+        }
+        .f-ceja {
+          position: absolute;
+          left: var(--f-margen-x, 96px);
+          top: var(--f-ceja-y, 72px);
+          font-size: var(--f-ceja-px, 30px);
+          line-height: 1.2;
+          white-space: nowrap;
+        }
+      </style>
+      <div data-hf-id="hf-v6oi" id="root" data-composition-id="ceja" data-width="1080" data-height="1350" data-duration="17.666667">
+        <div data-hf-id="hf-4jda" class="k-feed-ceja f-ceja" id="ceja-texto">Equipos</div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          // El host arranca en el 194: en el 195 (el pulso) la línea ya se lee.
+          tl.fromTo('#ceja-texto', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out' }, 0);
+          tl.to('#ceja-texto', { opacity: 0, filter: 'blur(8px)', duration: F(3), ease: 'power3.in' }, F(526)); // 720–723
+          tl.set({}, {}, F(530));
+          window.__timelines['ceja'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
