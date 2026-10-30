@@ -7,6 +7,10 @@ dueño elija una (o una mezcla, que cuenta como una). La elegida pasa a `SPEC.md
 Kingdom lo resuelve → resultado) · «Product Launch» 14,05 → 42,05 s · mucho movimiento y siempre sobre la música · la app real de Kingdom
 Demo, nunca redibujada ni dentro de un teléfono dibujado · nada inventado · la marca del sitio.
 
+> **Ampliado el 2026-10-30** (pedido del dueño, después de publicar el clip): la Historia A gana un tramo de 8 s con la ruta de crecimiento y
+> los objetivos de conexión de Valeria. El tramo de la pista pasa a 14,05 → 50,05 y las frases a cinco. Todo en [§Ampliación](#ampliación-2026-10-30-la-ruta-de-crecimiento-y-los-objetivos-de-conexión);
+> lo de arriba queda como se eligió.
+
 ## El reloj (igual para las tres)
 
 120 BPM: un pulso cada 0,5 s (15 cuadros exactos a 30 fps, sin deriva), un compás cada 2 s. Tiempos en segundos del clip (t = 0 ↔ 14,05 de la pista).
@@ -107,6 +111,97 @@ Misma línea de tiempo, mismas grabaciones, mismos objetivos de cámara (las caj
 | La ventana | 880 px de ancho desde y = 360, **sangra por abajo** (se ve ≈ 990 px de alto de la app) | 960 px de ancho, entre 480 y 1330 px, completa; debajo de 1330 solo halo y puntos |
 | Cámara | 1,6× para leer | 1,8× (la ventana es más alta, la app más grande) |
 | Firma | pieza nueva 1080×1350 (§4) | `cierre-corto` del kit |
+
+---
+
+## Ampliación (2026-10-30): la ruta de crecimiento y los objetivos de conexión
+
+El clip de 30,5 s ya está publicado. El dueño pidió **unos 10 s más** para mostrar que la persona nueva **tiene una ruta de crecimiento y
+objetivos de conexión**, porque es la función más importante del módulo: «asegurarse de que el nuevo estará cuidado». Ya no revisa
+guiones: esta ampliación la decide la dirección creativa y pasa directo al [SPEC v2](SPEC.md).
+
+### Qué cambia en la historia
+
+Hasta el 24,0 nada cambia: Valeria se registra sin señal, alguien la llama y Kingdom propone el siguiente paso. Lo nuevo empieza cuando
+Jorge toca «Listo»:
+
+> La tarjeta de Valeria ya va en «Mensaje de bienvenida». Jorge toca su **nombre** y se abre **su ficha**: foto, «Llegó el 30 de oct. · Culto
+> o evento», y la primera tarjeta, plegada: **«Avance · Mensaje de bienvenida · ● A tiempo»**. La toca, y en el golpe más fuerte de la pista
+> la tarjeta se abre de golpe con **toda su ruta**: «Flujo: Llegó a un culto», el paso en que va con su semáforo, «Después: Se conecta con
+> una casa de paz», y debajo **«Objetivos de conexión»: Casa de paz · Servir · Clases de la visión**, con el historial de lo que ya hizo
+> («Cumplió “Llamada de bienvenida”»). Llegó el domingo y ya tiene un camino. Cae la frase final y la corona.
+
+La idea en una línea: **antes, el clip probaba que a Valeria la llaman; ahora prueba además que Kingdom sabe hacia dónde va.** Es la
+diferencia entre «no se nos pierde» y «la cuidamos». Y todo sale de una pantalla real que ya existe: la tarjeta «Avance» de la ficha
+([la-ficha](../../../../KingdomApp/frontend-v2/src/ayuda/es/membresia/la-ficha.md), `ficha-avance.component.ts`), que trae en una sola
+vista el flujo, el paso, lo que sigue, los objetivos y el historial.
+
+Qué **no** se muestra, y por qué: la configuración de la ruta (Ajustes → Ruta de crecimiento, con sus pasos y plazos) es la pantalla del
+administrador en el escritorio; el clip es de la persona que acompaña, en el celular, y la promesa es «el nuevo estará cuidado», no «el
+administrador configura». Los objetivos aparecen **sin cumplir** (Valeria llegó ayer): eso es lo honesto y lo que cuenta la historia.
+
+### Las frases (cinco; cortas, el mismo tono)
+
+| Segundo | Cuadro | Frase | Cómo entra | Se va |
+|---|---|---|---|---|
+| 0,0 | 0 | **Valeria llegó el domingo.** | una palabra por pulso | 4,0 |
+| 4,0 | 120 | **Registrada. Aun sin señal.** | la línea entera | 6,0 |
+| 12,0 | 360 | **Y ya tiene quién la llame** | palabra a palabra | 20,0 |
+| **28,0** | **840** | **Y una ruta para crecer** (nueva) | palabra a palabra, con la tarjeta «Avance» que se abre en el golpe más fuerte | 32,0 |
+| **32,0** | **960** | **Que *ninguna* persona se pierda** (la del sitio; antes caía en el 24,0) | palabra a palabra; el único dorado | hasta la firma |
+
+«Y una ruta para crecer» hace pareja con «Y ya tiene quién la llame» (las dos empiezan con «Y»: la cadena de lo que Valeria ya tiene) y usa
+el nombre real de la función (ruta de crecimiento) sin nombrarla entera. Descartadas: «Con una ruta y sus objetivos» (lista funciones),
+«Una ruta. Tres objetivos.» (depende de un número de la demo), «Y un camino hasta conectarse» (una persona que no conoce Kingdom no sabe
+qué es «conectarse»). La palabra «objetivos» no hace falta en la frase: la app la dice en pantalla, a 34 px, en su propio título
+«Objetivos de conexión».
+
+### El reloj nuevo (compases 15–18 y la firma)
+
+La revelación de la ruta cae en el **42,05 de la pista**, el golpe más fuerte (antes era la firma). La firma pasa al **50,05** (0,93), el
+primer golpe del «Clímax brillante» de la pista, y la música se desvanece debajo de las campanas mientras sube. El 52,05 se descartó:
+es más débil (0,81) y justo después la grilla se desordena (52,54 · 52,98 · 53,42: un redoble que caería bajo las campanas). Así el clip
+queda en **38,5 s** (36 de cuerpo, 18 compases + la firma de 2,5): 8 s más, dentro de los «~40» del pedido.
+
+| Compás | Clip | La pista | Qué le toca al video |
+|---|---|---|---|
+| 13 | **24,0**–26 | golpe en 38,05 (0,96) | «Listo»: la tarjeta de Valeria ya va en «Mensaje de bienvenida». Se lee 1,5 s |
+| 14 | **26,0**–28 | golpe en 40,05 (0,88) | Toque en el nombre → iris → **la ficha** de Valeria, con «Avance» plegada |
+| 15 | **28,0**–30 | **42,05 (1,00), el más fuerte** | Toque en «Avance»: la tarjeta se abre de golpe con la ruta; cae «Y una ruta para crecer» |
+| 16 | 30–32 | 44,05 (0,84) | Acercamiento a «Objetivos de conexión» y sus tres chips |
+| 17 | **32,0**–34 | 46,05 (0,98) | Cae «Que ninguna persona se pierda»; la ventana se hace a un lado; la ceja se va |
+| 18 | 34–36 | 48,05 (0,79) | Quieto; la subida; el dip |
+| — | **36,0**–38,5 | **50,05 (0,93): empieza el clímax** | La firma: la corona se levanta, campanas en 36,38 |
+
+### El recorrido del tramo nuevo
+
+| Compás | Clip | Pantalla real (el celular de Jorge, cuenta 103) y acción | Movimiento |
+|---|---|---|---|
+| 13 | **24,0**–26 | Toque «Listo» (se oye; queda fuera del encuadre, como en el clip publicado) → el diálogo se cierra → la tarjeta dice «Mensaje de bienvenida · A tiempo · Desde hoy · vence mañana · Después: Se conecta con una casa de paz» | La cámara vuelve a la tarjeta entera (G). **Sin frase**: la ceja sigue. La ventana ya **no** se encoge aquí |
+| 14 | **26,0**–28 | **Toque en el nombre «Valeria Cardona Ríos»** de la tarjeta → **iris desde el dedo** → su ficha: foto, nombre, el chip del semáforo de actividad, «Llegó el 30 de oct. · Culto o evento · Servicio General», «Registrada por Jorge Gallego Gil…», Llamar · WhatsApp · Editar, y debajo **«Avance · Mensaje de bienvenida · ● A tiempo»** plegada | La cámara no se mueve en el iris (la ficha llega debajo del lente). En 27,0 un acercamiento (M) a la fila «Avance» |
+| 15 | **28,0**–30 | **Toque en «Avance»**: la tarjeta se abre en un cuadro (la app no la anima): «Flujo: Llegó a un culto» · «Mensaje de bienvenida» con «● A tiempo · Desde hoy · vence mañana» · «Después: Se conecta con una casa de paz» · «Marcar cumplido» · **«Objetivos de conexión»** · **«Historial de pasos»** | **El golpe más fuerte:** el contenido llena el encuadre de golpe; la cámara se asienta sobre el paso. Cae «Y una ruta / para crecer» |
+| 16 | 30–32 | Quieta | Acercamiento a **«Objetivos de conexión»** con sus chips: «Casa de paz · ¿cuál?» (botón: la demo lo liga a Eventos), «Servir», «Clases de la visión» |
+| 17 | **32,0**–34 | Quieta | La cámara abre a la tarjeta «Avance» entera; **la ventana se hace a un lado** (0,92); cae la frase final; la ceja se va |
+| 18 | 34–36 | Quieta (la ficha real) | Nada se mueve salvo el halo; la subida; dip en 35,9 |
+| — | **36,0**–38,5 | — | La firma, sobre el primer golpe del clímax |
+
+Transiciones: ninguna nueva. El iris desde el toque, que ya abría los diálogos, abre ahora también una pantalla (la ficha); no hay látigo
+porque es el mismo celular. Lo que se mueve del montaje publicado: la frase final pasa del 24,0 al 32,0, la ceja se queda hasta el 32,0, la
+ventana se encoge en el 32,1 (antes 24,1), el dip y la firma corren 8 s. Lo de 0 a 24,0 no se toca.
+
+### Grabación
+
+Un tramo nuevo, **T5**, al final de la misma escena `tools/ayuda/escenas/clips/membresia-valeria.mjs` (reemplaza al tramo `ficha` opcional
+del 2026-10-30, que llegaba por el menú ⋮): toque en el nombre de la tarjeta → la ficha → toque en «Avance» → las cajas del paso y de los
+objetivos → quieto. Los pasos exactos están en [SPEC.md](SPEC.md) → §3. La grabación del 2026-10-30 se conserva para 0–26,0 y la nueva se
+usa desde el iris del 26,0, que esconde la costura.
+
+### Lo que cambia en el sistema de la serie (§3)
+
+El reloj de los seis clips pasa a **18 compases**: gancho 0–4 · 4,0 el primer toque · 6,0 la pantalla clave y la ceja · 12–20 la tarea ·
+22,0 la prueba más fuerte · **28,0 la revelación de la función que define el módulo** (en Membresía, la ruta; en Eventos sería el tablero
+de asistencia; en Academia, el certificado) · **32,0 la frase del sitio** · **36,0 la corona**. Cinco frases en vez de cuatro: la cuarta
+nombra lo que la persona ya tiene gracias al módulo.
 
 ---
 

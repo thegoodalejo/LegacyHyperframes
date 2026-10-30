@@ -2,8 +2,8 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <!-- La ceja «MEMBRESÍA» (host 195–724): entra la línea entera 195–201 (blur 8 → 0, power4.out) sobre la tarjeta de Valeria y sale
-         720–723 cuando llega la frase 4. Inter 700, mayúsculas, dorado (.k-feed-ceja del kit); tamaño y posición en --f-* del host. -->
+    <!-- La ceja «MEMBRESÍA» (host 194–963): entra la línea entera 195–201 (blur 8 → 0, power4.out) sobre la tarjeta de Valeria y sale
+         960–963 cuando llega la frase 5. Inter 700, mayúsculas, dorado (.k-feed-ceja del kit); tamaño y posición en --f-* del host. -->
   </head>
   <body>
     <template>
@@ -24,7 +24,7 @@
           white-space: nowrap;
         }
       </style>
-      <div data-hf-id="hf-v6oi" id="root" data-composition-id="ceja" data-width="1080" data-height="1350" data-duration="17.666667">
+      <div data-hf-id="hf-v6oi" id="root" data-composition-id="ceja" data-width="1080" data-height="1350" data-duration="25.633333">
         <div data-hf-id="hf-1v2j" class="k-feed-ceja f-ceja" id="ceja-texto">Membresía</div>
       </div>
       <script>
@@ -32,8 +32,8 @@
           const F = (n) => n / 30;
           const tl = gsap.timeline({ paused: true });
           tl.fromTo('#ceja-texto', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out' }, 0);
-          tl.to('#ceja-texto', { opacity: 0, filter: 'blur(8px)', duration: F(3), ease: 'power3.in' }, F(526));
-          tl.set({}, {}, F(530));
+          tl.to('#ceja-texto', { opacity: 0, filter: 'blur(8px)', duration: F(3), ease: 'power3.in' }, F(766)); // 960–963
+          tl.set({}, {}, F(769));
           window.__timelines['ceja'] = tl;
         })();
       </script>

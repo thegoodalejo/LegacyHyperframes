@@ -2,9 +2,9 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <!-- P6 · Frase 4: «Que ninguna persona / se pierda» (host 720–840). Palabra a palabra cada 2 cuadros desde el golpe del 720 (Que 720 ·
-         ninguna 722 · persona 724 · se 726 · pierda 728; completa en el 732); «ninguna» en itálica dorada (el único dorado del cuerpo junto
-         a la ceja). Se queda quieta ≥ 3,6 s hasta el corte a la firma. -->
+    <!-- P7 · Frase 4: «Y una ruta / para crecer» (host 839–961). Palabra a palabra cada 2 cuadros desde el golpe más fuerte de la pista, el 840
+         (Y 840 · una 842 · ruta 844 · para 846 · crecer 848; completa en el 852), entrada-palabra (blur 6 → 0, 4 cuadros, power4.out), sobre la
+         tarjeta «Avance» que se abre en el 842. Quieta 3,5 s; sale 957–961 (blur swap con la frase 5 del 960). -->
   </head>
   <body>
     <template>
@@ -33,10 +33,10 @@
           display: inline-block;
         }
       </style>
-      <div data-hf-id="hf-snxv" id="root" data-composition-id="frase-4" data-width="1080" data-height="1350" data-duration="4.033333">
-        <div data-hf-id="hf-si6i" class="k-feed-frase f-frase" id="f4">
-          <span data-hf-id="hf-wqic" class="linea"><span data-hf-id="hf-lf1c" class="palabra" id="f4-w1">Que</span> <em data-hf-id="hf-2lav"><span data-hf-id="hf-qu94" class="palabra" id="f4-w2">ninguna</span></em> <span data-hf-id="hf-a55v" class="palabra" id="f4-w3">persona</span></span>
-          <span data-hf-id="hf-w2fg" class="linea"><span data-hf-id="hf-t0fm" class="palabra" id="f4-w4">se</span> <span data-hf-id="hf-mbqg" class="palabra" id="f4-w5">pierda</span></span>
+      <div data-hf-id="hf-r4ta" id="root" data-composition-id="frase-4" data-width="1080" data-height="1350" data-duration="4.066667">
+        <div data-hf-id="hf-r4f0" class="k-feed-frase f-frase" id="f4">
+          <span data-hf-id="hf-r4l1" class="linea"><span data-hf-id="hf-r4w1" class="palabra" id="f4-w1">Y</span> <span data-hf-id="hf-r4w2" class="palabra" id="f4-w2">una</span> <span data-hf-id="hf-r4w3" class="palabra" id="f4-w3">ruta</span></span>
+          <span data-hf-id="hf-r4l2" class="linea"><span data-hf-id="hf-r4w4" class="palabra" id="f4-w4">para</span> <span data-hf-id="hf-r4w5" class="palabra" id="f4-w5">crecer</span></span>
         </div>
       </div>
       <script>
@@ -44,9 +44,10 @@
           const F = (n) => n / 30;
           const tl = gsap.timeline({ paused: true });
           for (let i = 1; i <= 5; i++) {
-            tl.fromTo(`#f4-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1))); // el host arranca un cuadro antes del golpe (719): el primer cuadro visible cae en el 720
+            tl.fromTo(`#f4-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1))); // el host arranca un cuadro antes del golpe (839): el primer cuadro visible cae en el 840
           }
-          tl.set({}, {}, F(121));
+          tl.to('#f4', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(118)); // 957–961
+          tl.set({}, {}, F(122));
           window.__timelines['frase-4'] = tl;
         })();
       </script>

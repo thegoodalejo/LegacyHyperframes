@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P8 · Frase 5: «Que ninguna persona / se pierda» (host 959–1080). Palabra a palabra cada 2 cuadros desde el golpe del 960 (Que 960 ·
+         ninguna 962 · persona 964 · se 966 · pierda 968; completa en el 972); «ninguna» en itálica dorada (el único dorado del cuerpo junto
+         a la ceja). Se queda quieta 3,5 s hasta el corte a la firma (1080). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: var(--f-ancho, 1080px);
+          height: var(--f-alto, 1350px);
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 96px);
+          top: var(--f-frase-y, 124px);
+          width: var(--f-frase-ancho, 888px);
+          font-size: var(--f-frase-px, 80px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-r5ta" id="root" data-composition-id="frase-5" data-width="1080" data-height="1350" data-duration="4.033333">
+        <div data-hf-id="hf-r5f0" class="k-feed-frase f-frase" id="f5">
+          <span data-hf-id="hf-r5l1" class="linea"><span data-hf-id="hf-r5w1" class="palabra" id="f5-w1">Que</span> <em data-hf-id="hf-r5em"><span data-hf-id="hf-r5w2" class="palabra" id="f5-w2">ninguna</span></em> <span data-hf-id="hf-r5w3" class="palabra" id="f5-w3">persona</span></span>
+          <span data-hf-id="hf-r5l2" class="linea"><span data-hf-id="hf-r5w4" class="palabra" id="f5-w4">se</span> <span data-hf-id="hf-r5w5" class="palabra" id="f5-w5">pierda</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 5; i++) {
+            tl.fromTo(`#f5-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1))); // el host arranca un cuadro antes del golpe (959): el primer cuadro visible cae en el 960
+          }
+          tl.set({}, {}, F(121));
+          window.__timelines['frase-5'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
