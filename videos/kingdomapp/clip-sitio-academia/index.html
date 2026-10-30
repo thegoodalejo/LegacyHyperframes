@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <title>Clip del sitio · Academia · «La clase ya empezó» (4:5)</title>
+    <!--
+      Clip del sitio de Kingdom, módulo Academia, 1080×1350 (4:5): 30,5 s a 30 fps (cuerpo 0–839 + firma 840–914). Contrato: SPEC.md;
+      desvíos y sincronía en REVIEW.md. Plantilla: ../clip-sitio-membresia (mismo sistema).
+      Estructura:
+        · compositions/fondo.html      la noche del sitio (el halo se asienta en 0, 120, 240, 360 y 720; los puntos no se mueven)
+        · compositions/frase-1..4.html las cuatro frases (una a la vez) y compositions/ceja.html («ACADEMIA», 195–723)
+        · #ventana (aquí, en la raíz)  la app REAL grabada en celular (grabacion.mp4, 1170×2532, tres cuentas de Kingdom Demo) dentro de .k-ventana:
+                                        - #tira es el látigo vertical: dos ranuras apiladas a --f-latigo. Ranura 1 (#m1): el profesor (T1 y,
+                                          desde el 200, T3). Ranura 2 (#m2): la alumna (T2) y, desde el 340, quien coordina (T5–T7, #m3land).
+                                          110–120 sube (a la alumna), 230–240 baja (de vuelta al profesor), 350–360 sube (a quien coordina)
+                                        - cada mundo tiene su cámara (#cam1, #cam2, #cam3: scale + x/y; el <video> nunca se transforma ni se busca)
+                                          y su aterrizaje 1,04 → 1,00 (#m1land, #m2land, #m3land)
+                                        - cada tramo de video es un <video> a 1× con su data-media-start (+0,01 s: dentro del cuadro buscado);
+                                          los cortes caen en pausas o esperas de la grabación (huecos_de_pantalla de pasos.json) y cada
+                                          acción real cae en su pulso (tabla en REVIEW.md)
+                                        - los iris del 375 y del 660: lo de antes debajo y el video recortado por un círculo encima
+                                        - las marcas de toque (.toque/.onda) van en las coordenadas reales del toque (pasos.json → toques[])
+        · identidad/cierre-clip.html   la firma (kit v1.1), 28,0–30,5; el sonido de marca en 28,38
+      Para llevarlo a 9:16: cambiar KD (abajo) y las variables --f-* de este <style> (SPEC §1.4 y REVIEW de Membresía §8); los tramos de
+      video, los sonidos y las escenas no cambian (las escenas solo necesitan su data-width/data-height).
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      :root {
+        /* ── Formato 4:5 (SPEC §1.4). Para 9:16: 1080×1920, márgenes 60, ceja y 188 / 34 px, frase y 236 / 960 / 104 px, ventana 60·480·960×850. */
+        --f-ancho: 1080px;
+        --f-alto: 1350px;
+        --f-margen-x: 96px;
+        --f-ceja-y: 72px;
+        --f-ceja-px: 30px;
+        --f-frase-y: 124px;
+        --f-frase-ancho: 888px;
+        --f-frase-px: 80px;
+        --f-ventana-x: 100px;
+        --f-ventana-y: 360px;
+        --f-ventana-w: 880px;
+        --f-ventana-h: 1050px; /* sangra 60 px por abajo del cuadro: las esquinas de abajo nunca se ven */
+        --f-ventana-hvis: 990px; /* lo que se ve de la ventana dentro del cuadro */
+        /* Grabación 1170×2532 ajustada al ancho de la ventana: factor y alto resultante (880/1170 y 2532·880/1170). */
+        --f-k: 0.752137;
+        --f-grab-alto: 1904.41px;
+        --f-latigo: 1100px; /* distancia entre las dos ranuras de la tira */
+      }
+      html,
+      body {
+        margin: 0;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root {
+        position: relative;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root > [data-composition-src] {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      #fondo {
+        z-index: 0;
+      }
+      #cierre-clip {
+        z-index: 6;
+      }
+      /* La ventana a la app: .k-ventana del kit (radio 28, anillo, sombra); el tamaño viene del formato. */
+      #ventana {
+        left: var(--f-ventana-x);
+        top: var(--f-ventana-y);
+        width: var(--f-ventana-w);
+        height: var(--f-ventana-h);
+        z-index: 3;
+      }
+      #tira {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      /* Cada ranura de la tira recorta a su mundo (la cámara de un mundo nunca se asoma al otro) y mide lo mismo que la distancia entre
+         ranuras: en el látigo no queda ningún hueco. Debajo de la grabación, el fondo de la app. */
+      .mundo {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: var(--f-latigo);
+        overflow: hidden;
+        background: var(--k-app-fondo);
+      }
+      #m1 {
+        top: 0;
+      }
+      #m2 {
+        top: var(--f-latigo);
+      }
+      .aterriza {
+        position: absolute;
+        inset: 0;
+      }
+      .cam {
+        height: var(--f-grab-alto);
+      }
+      .cam video,
+      .iris {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+      }
+      .iris {
+        height: var(--f-grab-alto);
+      }
+      .marcas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: var(--f-grab-alto);
+        pointer-events: none;
+      }
+      /* Marca del toque (la grabación no trae círculo): 20 px CSS del celular y su onda de 36 → 58 px, como en Membresía. */
+      .toque {
+        position: absolute;
+        width: 46px;
+        height: 46px;
+        margin: -23px 0 0 -23px;
+        border-radius: 50%;
+        background: rgba(27, 27, 31, 0.28);
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+        opacity: 0;
+      }
+      .onda {
+        position: absolute;
+        width: 81px;
+        height: 81px;
+        margin: -40.5px 0 0 -40.5px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(1, 91, 190, 0.9);
+        opacity: 0;
+      }
+      #datos {
+        position: absolute;
+        /* Abajo a la izquierda de la ventana, a 24 px (pedido del dueño); la ventana sangra 60 px por abajo, así que se sube esa diferencia. */
+        left: 24px;
+        bottom: calc(var(--f-ventana-h) - var(--f-ventana-hvis) + 24px);
+        z-index: 4;
+        /* 31 px en vez de los 28 del kit: con la ventana a 0,92 sigue en ≥ 28 px, el piso de lectura en un celular. */
+        height: 56px;
+        font-size: 31px;
+      }
+      #dip {
+        position: absolute;
+        inset: 0;
+        background: #060d1f;
+        opacity: 0;
+        z-index: 5;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="30.5"
+      data-width="1080"
+      data-height="1350"
+      data-motion-blur="on"
+      data-motion-blur-shutter="180"
+    >
+      <!-- ── Escenas (gráficos): el fondo, las frases y la ceja. Los cuadros van en el comentario de cada una. ── -->
+      <div id="fondo" data-composition-id="fondo" data-composition-src="compositions/fondo.html" data-track-kind="graphics"
+        data-start="0" data-duration="28" data-track-index="0" data-width="1080" data-height="1350"></div>
+      <!-- P1 · «La clase / ya empezó.» una palabra por pulso (0 · 15 · 30 · 45); sale 117–121 -->
+      <div id="frase-1" data-composition-id="frase-1" data-composition-src="compositions/frase-1.html" data-track-kind="graphics"
+        data-start="0" data-duration="4.066667" data-track-index="1" data-width="1080" data-height="1350"></div>
+      <!-- P2–P4 · «Sin listas / de papel.» línea entera 120–126 (el host arranca en 119); sale 357–361 -->
+      <div id="frase-2" data-composition-id="frase-2" data-composition-src="compositions/frase-2.html" data-track-kind="graphics"
+        data-start="3.966667" data-duration="8.1" data-track-index="2" data-width="1080" data-height="1350"></div>
+      <!-- P3–P8 · la ceja «ACADEMIA» 195–201; sale 720–723 -->
+      <div id="ceja" data-composition-id="ceja" data-composition-src="compositions/ceja.html" data-track-kind="graphics"
+        data-start="6.466667" data-duration="17.666667" data-track-index="3" data-width="1080" data-height="1350"></div>
+      <!-- P5–P6 · «Quien cumple, / se gradúa.» palabra a palabra 360–366; sale 597–601 -->
+      <div id="frase-3" data-composition-id="frase-3" data-composition-src="compositions/frase-3.html" data-track-kind="graphics"
+        data-start="11.966667" data-duration="8.1" data-track-index="4" data-width="1080" data-height="1350"></div>
+      <!-- P8 · «Forma a los líderes / que tu visión necesita» palabra a palabra 720–734, quieta hasta el corte (840) -->
+      <div id="frase-4" data-composition-id="frase-4" data-composition-src="compositions/frase-4.html" data-track-kind="graphics"
+        data-hold data-start="23.966667" data-duration="4.033333" data-track-index="5" data-width="1080" data-height="1350"></div>
+      <!-- La firma del kit (identidad/kit.json → piezas.cierre-clip): 840–914 -->
+      <div id="cierre-clip" data-composition-id="cierre-clip" data-composition-src="identidad/cierre-clip.html" data-track-kind="graphics"
+        data-variable-values='{"llamado":"prueba","fondo":"azul","idioma":"es"}'
+        data-start="28" data-duration="2.5" data-track-index="6" data-width="1080" data-height="1350"></div>
+
+      <!-- ── La ventana a la app real ─────────────────────────────────────────────────────────────────────────────── -->
+      <div id="ventana" class="k-ventana" data-layout-allow-overflow>
+        <div id="tira">
+          <!-- Ranura 1: el celular del profesor (cuenta 103, Jorge Gallego Gil). Cuadros de grabacion.mp4 en segundos (cuadro / 30 + 0,01). -->
+          <div id="m1" class="mundo">
+            <div id="m1land" class="aterriza">
+              <div id="cam1" class="k-ventana-camara cam">
+                <!-- 0–120 · T1: la toma del profesor (grab. 0–119) a 1×: los cuatro números 3 5 9 8, la barra, el QR, «13 de 18 marcaron» y el
+                     temporizador real (14:26 → 14:22: cambia en el 26, 57, 88 y 117) -->
+                <video id="v01" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10" data-beat="codigo"
+                  data-start="0" data-duration="4" data-media-start="0.01" data-playback-rate="1"></video>
+                <!-- 200–270 · T3, fuera de cuadro hasta el látigo del 230–240: la toma desplazada, «14 de 18 marcaron» y «Faltan (4)» (grab. 861–930) -->
+                <video id="v02" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10" data-beat="catorce"
+                  data-start="6.666667" data-duration="2.333333" data-media-start="28.71" data-playback-rate="1"></video>
+                <!-- 270–273 · toque en «Presente» de Andrea (grab. 931–933) -->
+                <video id="v03" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                  data-start="9" data-duration="0.1" data-media-start="31.043333" data-playback-rate="1"></video>
+                <!-- 273–300 · corte en la espera (934→952): la fila se va y el contador ya dice «15 de 18» (grab. 952–978) -->
+                <video id="v04" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                  data-start="9.1" data-duration="0.9" data-media-start="31.743333" data-playback-rate="1"></video>
+                <!-- 300–303 · toque en «Presente» de Camilo (grab. 1026–1028) -->
+                <video id="v05" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10"
+                  data-start="10" data-duration="0.1" data-media-start="34.21" data-playback-rate="1"></video>
+                <!-- 303–365 · corte en la espera (1029→1036): «16 de 18 marcaron» (grab. 1036–1097); el látigo del 350–360 se lo lleva -->
+                <video id="v06" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="10" data-beat="dieciseis"
+                  data-start="10.1" data-duration="2.066667" data-media-start="34.543333" data-playback-rate="1"></video>
+                <div class="marcas">
+                  <!-- toques[] de pasos.json en px del video × --f-k -->
+                  <div class="toque" id="tq-270" style="left: calc(906px * var(--f-k)); top: calc(1368px * var(--f-k))"></div>
+                  <div class="onda" id="on-270" style="left: calc(906px * var(--f-k)); top: calc(1368px * var(--f-k))"></div>
+                  <div class="toque" id="tq-300" style="left: calc(906px * var(--f-k)); top: calc(1578px * var(--f-k))"></div>
+                  <div class="onda" id="on-300" style="left: calc(906px * var(--f-k)); top: calc(1578px * var(--f-k))"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ranura 2: la alumna (cuenta 104) hasta el 245 y, desde el 340, quien coordina (cuenta 101). -->
+          <div id="m2" class="mundo">
+            <div id="m2land" class="aterriza">
+              <div id="cam2" class="k-ventana-camara cam">
+                <!-- 100–120 · T2: las cuatro casillas vacías, la primera con el foco (grab. 444–463); llega con el látigo del 110–120 -->
+                <video id="v07" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="11"
+                  data-start="3.333333" data-duration="0.666667" data-media-start="14.81" data-playback-rate="1"></video>
+                <!-- 120–135 · el «3» en su casilla (tecla en el grab. 461, visible en el 464) -->
+                <video id="v08" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="11" data-beat="tres"
+                  data-start="4" data-duration="0.5" data-media-start="15.476667" data-playback-rate="1"></video>
+                <!-- 135–150 · corte en la pausa: el «5» (tecla 507, visible en el grab. 508) -->
+                <video id="v09" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="11"
+                  data-start="4.5" data-duration="0.5" data-media-start="16.943333" data-playback-rate="1"></video>
+                <!-- 150–165 · corte en la pausa: el «9» (tecla 551, visible en el grab. 552) -->
+                <video id="v10" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="11"
+                  data-start="5" data-duration="0.5" data-media-start="18.41" data-playback-rate="1"></video>
+                <!-- 165–180 · corte en la pausa: el «8» (tecla 595, visible en el grab. 600) y la app lo envía sola, «Enviando…» (grab. 600–614) -->
+                <video id="v11" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="11" data-beat="ocho"
+                  data-start="5.5" data-duration="0.5" data-media-start="20.01" data-playback-rate="1"></video>
+                <!-- 180–245 · corte en la espera (615→626): «¡Listo! Quedó tu asistencia»; el chequeo se dibuja 180–192 (grab. 626–690) -->
+                <video id="v12" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="11" data-beat="listo"
+                  data-start="6" data-duration="2.166667" data-media-start="20.876667" data-playback-rate="1"></video>
+              </div>
+            </div>
+            <div id="m3land" class="aterriza">
+              <div id="cam3" class="k-ventana-camara cam">
+                <!-- 340–381 · T5: Cursos con la tarjeta «Por aprobar 9 · 9 graduaciones en 1 lista» sin desplazar (grab. 1703–1743); queda debajo
+                     del iris del 375 -->
+                <video id="v13" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="12" data-beat="por-aprobar"
+                  data-start="11.333333" data-duration="1.366667" data-media-start="56.776667" data-playback-rate="1"></video>
+                <div id="iris3a" class="iris">
+                  <!-- 375–390 · corte en la carga (1822→1836): el grupo «Fundamentos bíblicos», pestaña Graduar, «Lista por aprobar» (grab. 1836–1850) -->
+                  <video id="v14" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="13"
+                    data-start="12.5" data-duration="0.5" data-media-start="61.21" data-playback-rate="1"></video>
+                  <!-- 390–420 · la app salta a la lista: «Se gradúan 9 · 9 no se gradúan», Andrea «Cumple los criterios» (grab. 1905–1934) -->
+                  <video id="v15" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="13" data-beat="lista"
+                    data-start="13" data-duration="1" data-media-start="63.51" data-playback-rate="1"></video>
+                  <!-- 420–480 · la app salta otra vez: Carolina «No cumple», Dayana, Débora, Esteban y la barra (grab. 1969–2028) -->
+                  <video id="v16" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="13" data-beat="no-cumple"
+                    data-start="14" data-duration="2" data-media-start="65.643333" data-playback-rate="1"></video>
+                  <!-- 480–484 · toque en «Aprobar (9)» (grab. 2036–2039) -->
+                  <video id="v17" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="13"
+                    data-start="16" data-duration="0.133333" data-media-start="67.876667" data-playback-rate="1"></video>
+                  <!-- 484–600 · corte (2040→2044): «¿Aprobar la graduación?» entra 484–488 y se queda (grab. 2044–2159) -->
+                  <video id="v18" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="13" data-beat="dialogo"
+                    data-start="16.133333" data-duration="3.866667" data-media-start="68.143333" data-playback-rate="1"></video>
+                  <!-- 600–603 · toque en «Aprobar (9)» del diálogo (grab. 2185–2187) -->
+                  <video id="v19" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="13"
+                    data-start="20" data-duration="0.1" data-media-start="72.843333" data-playback-rate="1"></video>
+                  <!-- 603–615 · corte en la espera (2188→2206: el diálogo se va y la K del cargador): «Graduado» y el aviso «¡Listo! 9 graduados,
+                       con su certificado.» (grab. 2206–2217) -->
+                  <video id="v20" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="13" data-beat="graduados"
+                    data-start="20.1" data-duration="0.4" data-media-start="73.543333" data-playback-rate="1"></video>
+                  <!-- 615–666 · la app salta a los certificados: Andrea Perea López · 7YU79-NNB7A · Ver · Descargar · Anular, con el aviso aún abajo
+                       (grab. 2305–2355); queda debajo del iris del 660 -->
+                  <video id="v21" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="13" data-beat="certificados"
+                    data-start="20.5" data-duration="1.7" data-media-start="76.843333" data-playback-rate="1"></video>
+                </div>
+                <div id="iris3b" class="iris">
+                  <!-- 660–840 · corte en la carga (2504→2516): «Tu certificado» de Andrea Perea López, «Descargar certificado» y el código de
+                       verificación 7YU79-NNB7A, quieto (grab. 2516–2695) -->
+                  <video id="v22" class="clip" src="assets/grabaciones/grabacion.mp4" muted playsinline data-track-index="14" data-beat="certificado"
+                    data-start="22" data-duration="6" data-media-start="83.876667" data-playback-rate="1"></video>
+                </div>
+                <div class="marcas">
+                  <!-- 375 · la lista de «Por aprobar» sin desplazar (CSS 195·300: el toque real, 1822, fue con la página desplazada) -->
+                  <div class="toque" id="tq-375" style="left: calc(585px * var(--f-k)); top: calc(900px * var(--f-k))"></div>
+                  <div class="onda" id="on-375" style="left: calc(585px * var(--f-k)); top: calc(900px * var(--f-k))"></div>
+                  <!-- 480 · «Aprobar (9)» de la barra (toque 2036: 848·2175) -->
+                  <div class="toque" id="tq-480" style="left: calc(848px * var(--f-k)); top: calc(2175px * var(--f-k))"></div>
+                  <div class="onda" id="on-480" style="left: calc(848px * var(--f-k)); top: calc(2175px * var(--f-k))"></div>
+                  <!-- 600 · «Aprobar (9)» del diálogo (toque 2185: 862·1566) -->
+                  <div class="toque" id="tq-600" style="left: calc(862px * var(--f-k)); top: calc(1566px * var(--f-k))"></div>
+                  <div class="onda" id="on-600" style="left: calc(862px * var(--f-k)); top: calc(1566px * var(--f-k))"></div>
+                  <!-- 660 · «Ver» del certificado de Andrea (toque 2504: 401·484) -->
+                  <div class="toque" id="tq-660" style="left: calc(401px * var(--f-k)); top: calc(484px * var(--f-k))"></div>
+                  <div class="onda" id="on-660" style="left: calc(401px * var(--f-k)); top: calc(484px * var(--f-k))"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="datos" class="k-datos-ejemplo k-feed-datos">Datos de ejemplo</div>
+        <div id="dip"></div>
+      </div>
+
+      <!-- ── Sonido ────────────────────────────────────────────────────────────────────────────────────────────────── -->
+      <!-- Música «Product Launch» (The_Mountain) 14,05 → 43,05 de la pista; a −18 LUFS con 0,7 (identidad/kit.json → musica.volumen).
+           El nivel va en el carril de volumen (valores absolutos, sin data-volume): 0,7 hasta el golpe del 840 (28,0), −10 dB en el 852 (28,4)
+           y 0 en el 870 (29,0), debajo de las campanas. -->
+      <audio id="musica" src="assets/musica/product-launch-the-mountain.mp3" data-start="0" data-media-start="14.05" data-duration="29"
+        data-track-index="20"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.7},{"t":28,"v":0.7},{"t":28.4,"v":0.224},{"t":29,"v":0}]}]}'></audio>
+
+      <!-- Sonidos de acción del kit (identidad/kit.json → sonidosAccion): data-start = (cuadro visible + 1) / 30 − acento (toque 0 · aparicion 0 ·
+           desliz 0,2 · subida 1,5 · confirmacion 0,1): el sonido cae un cuadro después de su imagen. toque rota tres tomas: a = toque.wav,
+           b = +3 % de tono, c = −3 % (assets/audio/). 1,4 en los cinco clave (desliz 120, confirmacion 180 y 603, toque 600 y 660). -->
+      <!-- 120 · el látigo a la alumna (acento 0,2 en el 121) -->
+      <audio id="snd-desliz-120" src="identidad/audio/desliz.wav" data-start="3.833333" data-duration="0.36" data-track-index="23" data-volume="1.4"></audio>
+      <!-- 121 · el «3» -->
+      <audio id="snd-aparicion-120" src="identidad/audio/aparicion.wav" data-start="4.033333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 136 · el «5» -->
+      <audio id="snd-aparicion-135" src="identidad/audio/aparicion.wav" data-start="4.533333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 151 · el «9» -->
+      <audio id="snd-aparicion-150" src="identidad/audio/aparicion.wav" data-start="5.033333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 166 · el «8» -->
+      <audio id="snd-aparicion-165" src="identidad/audio/aparicion.wav" data-start="5.533333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 181 · «¡Listo! Quedó tu asistencia» (acento 0,1 → empieza en 5,933) -->
+      <audio id="snd-confirmacion-180" src="identidad/audio/confirmacion.wav" data-start="5.933333" data-duration="0.32" data-track-index="24" data-volume="1.4"></audio>
+      <!-- 196 · la ceja «ACADEMIA» -->
+      <audio id="snd-aparicion-195" src="identidad/audio/aparicion.wav" data-start="6.533333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 240 · el látigo de vuelta al profesor -->
+      <audio id="snd-desliz-240" src="identidad/audio/desliz.wav" data-start="7.833333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 271 · toque en «Presente» (a) -->
+      <audio id="snd-toque-270" src="identidad/audio/toque.wav" data-start="9.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 274 · «15 de 18» -->
+      <audio id="snd-aparicion-273" src="identidad/audio/aparicion.wav" data-start="9.133333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 301 · toque en «Presente» (b) -->
+      <audio id="snd-toque-300" src="assets/audio/toque-b.wav" data-start="10.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 304 · «16 de 18» -->
+      <audio id="snd-aparicion-303" src="identidad/audio/aparicion.wav" data-start="10.133333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 360 · el látigo a quien coordina -->
+      <audio id="snd-desliz-360" src="identidad/audio/desliz.wav" data-start="11.833333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 376 · toque en la lista de «Por aprobar» (c) -->
+      <audio id="snd-toque-375" src="assets/audio/toque-c.wav" data-start="12.533333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 421 · la lista salta a «No cumple» -->
+      <audio id="snd-desliz-420" src="identidad/audio/desliz.wav" data-start="13.833333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 481 · toque en «Aprobar (9)» (a) -->
+      <audio id="snd-toque-480" src="identidad/audio/toque.wav" data-start="16.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 601 · toque en «Aprobar (9)» del diálogo (b, clave) -->
+      <audio id="snd-toque-600" src="assets/audio/toque-b.wav" data-start="20.033333" data-duration="0.073" data-track-index="21" data-volume="1.4"></audio>
+      <!-- 604 · «¡Listo! 9 graduados, con su certificado.» (acento 0,1 → empieza en 20,033) -->
+      <audio id="snd-confirmacion-603" src="identidad/audio/confirmacion.wav" data-start="20.033333" data-duration="0.32" data-track-index="24" data-volume="1.4"></audio>
+      <!-- 616 · la app salta a los certificados -->
+      <audio id="snd-desliz-615" src="identidad/audio/desliz.wav" data-start="20.333333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 661 · toque en «Ver» (c, clave) -->
+      <audio id="snd-toque-660" src="assets/audio/toque-c.wav" data-start="22.033333" data-duration="0.077" data-track-index="21" data-volume="1.4"></audio>
+      <!-- 796–853 · la subida hacia la firma; su golpe (acento 1,5) cae en el 841, un cuadro después del golpe de la música -->
+      <audio id="snd-subida" src="identidad/audio/subida.wav" data-start="26.533333" data-duration="1.9" data-track-index="25" data-volume="1"></audio>
+      <!-- Sonido de marca: inicio de la firma + 0,38 s (identidad/kit.json → piezas.cierre-clip.sonido) -->
+      <audio id="marca-clip" src="identidad/audio/sonido-marca.wav" data-start="28.38" data-duration="2.1" data-track-index="26" data-volume="1"></audio>
+    </div>
+
+    <script>
+      // ── Un solo lugar para el formato (la versión 9:16 cambia esto y las variables --f-* del <style>) ──────────────────────
+      window.KD = {
+        fps: 30,
+        ventana: { w: 880, h: 1050, hVis: 990 }, // lo mismo que --f-ventana-*
+        grabacion: { w: 1170, h: 2532, cssW: 390 }, // el celular grabado a 3×
+        latigo: 1100, // --f-latigo
+        cambio: { escala: 0.92, x: 48, origen: '50% 100%' }, // la ventana se hace a un lado (SPEC §1.4, 724–738)
+      };
+
+      (function () {
+        const KD = window.KD;
+        const F = (n) => n / KD.fps; // cuadro → segundos
+        const W = KD.ventana.w, HV = KD.ventana.hVis;
+        const K = W / KD.grabacion.w; // px del video → px de la ventana (= --f-k)
+        const PPC = W / KD.grabacion.cssW; // px de la ventana por px CSS del celular (G = 2,256 en 4:5)
+        const VH = KD.grabacion.h * K; // alto de la grabación ajustada (= --f-grab-alto)
+
+        // Encuadre: el punto (cx, cy) en px CSS del celular, centrado en lo visible de la ventana con la escala s, sin salirse de la grabación.
+        function enc(s, cx, cy) {
+          let x = W / 2 - s * cx * PPC, y = HV / 2 - s * cy * PPC;
+          x = Math.min(0, Math.max(W - s * W, x));
+          y = Math.min(0, Math.max(HV - s * VH, y));
+          return { scale: s, x, y };
+        }
+        // Los objetivos: cajas de pasos.json y líneas medidas en los cuadros reales (px CSS del celular). Niveles de SPEC §1.5:
+        // G = 1 (texto de 14 px → 31,6 px), G⁺ = 1,08 (34 px), M = 1,4 (44 px).
+        const E1 = {
+          codigo: enc(1, 195, 279.5), // G, CSS 60–499: el título, los cuatro números, la barra y la mitad alta del QR
+          contador: enc(1, 195, 624.5), // G, CSS 405–844: la mitad baja del QR, «13 de 18 marcaron», el temporizador, los botones, «Faltan (5)»
+          catorce: enc(1.08, 195, 383), // G⁺, CSS 180–586 de la toma desplazada: «14 de 18», los botones, «Faltan (4)», Andrea y Camilo
+          dieciseis: enc(1.4, 147, 428), // M alineado a la izquierda, CSS 8–286 × 271–585: «16 de 18 marcaron» (384–422) y «Se cierra sola en 13:xx» (446); centrado cortaba el «1»
+        };
+        const E2 = {
+          casillas: enc(1.2, 195, 355), // ×1,2 (38 px), CSS 32–357 × 172–538: la pregunta, las cuatro casillas (325–395), la ayuda (a 1,4 se cortaban los lados)
+          listo: enc(1.2, 195, 330), // ×1,2, CSS 147–513: el chequeo (291), «¡Listo! Quedó tu asistencia» (351, x 46–344), «Ir a Mis cursos» (429)
+        };
+        const E3 = {
+          tarjeta: enc(1.08, 195, 265), // G⁺, CSS 62–468: «Cursos», la tarjeta «Por aprobar 9» (185–360) y el buscador
+          lista: enc(1.1, 190, 205), // ×1,1 (35 px), CSS 13–367 × 5–404: «Se gradúan 9 · 9 no se gradúan» (86), Andrea entera (115–298) y Antonella (a 1,4 se cortaban «Se gradúa» y «Excluir»)
+          barra: enc(1, 195, 624.5), // G, CSS 405–844: Débora, Esteban y la barra «Devolver al profesor | Aprobar (9)» (697–755)
+          dialogo: enc(1.15, 190, 421), // ×1,15 (36 px), CSS 230–612 × 21–360: el diálogo entero (a 1,4 se cortan el cuerpo y «Aprobar (9)»)
+          // G⁺ con el borde de abajo de la grabación 34 px CSS por encima del borde visible (un margen del fondo de la app): el aviso
+          // «¡Listo! 9 graduados…» (790–835) es lo último de la pantalla y, pegado abajo, quedaba debajo de «Datos de ejemplo».
+          aviso: { ...enc(1.08, 195, 641), y: HV - 1.08 * (VH + 34 * PPC) },
+          certs: enc(1.12, 190, 190), // ×1,12 (35 px), CSS 0–392 × 16–364: Andrea «7YU79-NNB7A · Ver · Descargar · Anular» y dos más
+          cert: enc(1, 195, 372), // G, CSS 153–591: la tarjeta del certificado (231–513) y «Descargar certificado»
+          nombre: enc(1.35, 195, 405), // ×1,35 (43 px), CSS 242–567 × 50–340: «otorga… · Andrea Perea López · por haber terminado…»
+          codigo: enc(1.04, 195, 633), // ×1,04 (×0,92 de la ventana = 30 px), CSS 422–844: «por haber terminado…» hasta «Copiar el enlace»
+        };
+        const CAM = { ease: 'power2.inOut', d: F(14) };
+        const tl = gsap.timeline({ paused: true });
+        const mover = (sel, e, cuadro, d) => tl.to(sel, { ...e, duration: d || CAM.d, ease: CAM.ease }, F(cuadro));
+
+        // Cámara del profesor: un movimiento por compás.
+        tl.set('#cam1', E1.codigo, 0);
+        mover('#cam1', E1.contador, 60); // compás 2: «13 de 18 marcaron»
+        tl.set('#cam1', E1.catorce, F(200)); // fuera de cuadro: T3 entra ya encuadrado
+        mover('#cam1', E1.dieciseis, 330); // compás 6: la prueba, el contador de cerca
+        // Cámara de la alumna.
+        tl.set('#cam2', E2.casillas, 0);
+        mover('#cam2', E2.listo, 180); // compás 4, con el pico
+        // Cámara de quien coordina. Nunca se mueve mientras la app salta sola (420 y 615): esos saltos van con la cámara quieta.
+        tl.set('#cam3', E3.tarjeta, 0);
+        mover('#cam3', E3.lista, 390); // compás 7: la app salta a la lista en el 390 y la cámara la recibe
+        mover('#cam3', E3.barra, 465); // compás 8: la barra «Aprobar (9)»
+        mover('#cam3', E3.dialogo, 495); // compás 9: el diálogo
+        mover('#cam3', E3.aviso, 600); // compás 11: el aviso
+        mover('#cam3', E3.certs, 645); // la primera fila con «Ver»
+        mover('#cam3', E3.cert, 660, F(10)); // el golpe: con el iris, a la tarjeta del certificado (10 cuadros: el punch llega en el 675)
+        mover('#cam3', E3.nombre, 675, F(9)); // el punch, 9 cuadros
+        mover('#cam3', E3.codigo, 720); // compás 13: el código de verificación; después, muerta de quieta
+
+        // Iris desde el toque (SPEC §1.6): el círculo nace en el centro del botón tocado, en px de la grabación ajustada.
+        const irisDesde = (sel, vx, vy, cuadro) => {
+          const p = { x: vx * K, y: vy * K };
+          const c = (r) => `circle(${r}px at ${p.x.toFixed(1)}px ${p.y.toFixed(1)}px)`;
+          tl.fromTo(sel, { clipPath: c(0) }, { clipPath: c(1900), duration: F(5), ease: 'power2.out' }, F(cuadro));
+          tl.set(sel, { clipPath: 'none' }, F(cuadro + 6));
+        };
+        irisDesde('#iris3a', 585, 900, 375); // la lista de «Por aprobar»
+        irisDesde('#iris3b', 401, 484, 660); // «Ver»
+
+        // Látigos: una sola tira (REVIEW de Membresía §4.10), power3.inOut, 10 cuadros. Arriba = al otro celular; abajo = de vuelta.
+        const L = KD.latigo;
+        const latigo = { duration: F(10), ease: 'power3.inOut' };
+        tl.fromTo('#tira', { y: 0 }, { y: -L, ...latigo }, F(110)); // 110–120: sube a la alumna
+        tl.to('#tira', { y: 0, ...latigo }, F(230)); // 230–240: baja, de vuelta al profesor
+        tl.to('#tira', { y: -L, ...latigo }, F(350)); // 350–360: sube a quien coordina (la ranura 2 ya tiene su mundo)
+        // El mundo que llega aterriza 1,04 → 1,00 (power3.out, 10 cuadros), desde el centro de lo visible.
+        const origen = `${W / 2}px ${HV / 2}px`;
+        tl.fromTo('#m2land', { scale: 1.04, transformOrigin: origen }, { scale: 1, duration: F(10), ease: 'power3.out' }, F(120));
+        tl.set('#m1land', { scale: 1.04, transformOrigin: origen }, F(220));
+        tl.to('#m1land', { scale: 1, duration: F(10), ease: 'power3.out' }, F(240));
+        tl.set('#m3land', { scale: 1.04, transformOrigin: origen }, F(340));
+        tl.to('#m3land', { scale: 1, duration: F(10), ease: 'power3.out' }, F(360));
+
+        // Marcas de toque: 4 cuadros antes aparece, en el cuadro se hunde, 6 después se va; la onda nace en el cuadro (450 ms).
+        // Donde la app cambia debajo del dedo 3 cuadros después (la fila se va, el diálogo se cierra), la marca se apaga en esos 3 cuadros:
+        // si no, la onda queda sobre otro botón.
+        const corte = { 270: 3, 300: 3, 600: 3 };
+        [270, 300, 375, 480, 600, 660].forEach((n) => {
+          const t = F(n), c = corte[n];
+          tl.fromTo(`#tq-${n}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: F(4), ease: 'power2.out' }, t - F(4));
+          tl.to(`#tq-${n}`, { scale: 0.86, duration: F(2), ease: 'power2.in' }, t);
+          tl.to(`#tq-${n}`, { opacity: 0, scale: 1, duration: c ? F(c - 2) : F(6), ease: 'power2.out' }, t + F(2));
+          tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: c ? 1.3 : 1.62, duration: c ? F(c) : 0.45, ease: 'power2.out', immediateRender: false }, t);
+        });
+
+        // La ventana se hace a un lado (724–738), cuatro cuadros después del golpe y de la frase 4.
+        tl.to('#ventana', { scale: KD.cambio.escala, x: KD.cambio.x, transformOrigin: KD.cambio.origen, duration: F(15), ease: 'power2.inOut' }, F(724));
+        // Dip de tres cuadros (837–839) y corte a la firma en el 840.
+        tl.set('#dip', { opacity: 0.4 }, F(837));
+        tl.set('#ventana', { autoAlpha: 0 }, F(840));
+        tl.set({}, {}, 30.5);
+        window.__timelines['main'] = tl;
+      })();
+    </script>
+  </body>
+</html>

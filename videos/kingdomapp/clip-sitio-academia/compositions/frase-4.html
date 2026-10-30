@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P8 · Frase 4: «Forma a los líderes / que tu visión necesita» (host 719–840), el titulo del módulo en el sitio. Palabra a palabra cada
+         2 cuadros desde el golpe del 720 (Forma 720 · a 722 · los 724 · líderes 726 · que 728 · tu 730 · visión 732 · necesita 734; completa en
+         el 738), entrada-palabra (blur 6 → 0, 4 cuadros, power4.out). «líderes» en itálica dorada (el único dorado del cuerpo junto a la ceja).
+         Quieta ≥ 3,4 s hasta el corte a la firma (840). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: var(--f-ancho, 1080px);
+          height: var(--f-alto, 1350px);
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 96px);
+          top: var(--f-frase-y, 124px);
+          width: var(--f-frase-ancho, 888px);
+          font-size: var(--f-frase-px, 80px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div id="root" data-composition-id="frase-4" data-width="1080" data-height="1350" data-duration="4.033333">
+        <div class="k-feed-frase f-frase" id="f4">
+          <span class="linea"><span class="palabra" id="f4-w1">Forma</span> <span class="palabra" id="f4-w2">a</span> <span class="palabra" id="f4-w3">los</span> <em class="palabra" id="f4-w4">líderes</em></span>
+          <span class="linea"><span class="palabra" id="f4-w5">que</span> <span class="palabra" id="f4-w6">tu</span> <span class="palabra" id="f4-w7">visión</span> <span class="palabra" id="f4-w8">necesita</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 8; i++) {
+            tl.fromTo('#f4-w' + i, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.set({}, {}, F(121));
+          window.__timelines['frase-4'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
