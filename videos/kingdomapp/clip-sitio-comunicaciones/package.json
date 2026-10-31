@@ -1,0 +1,13 @@
+{
+  "name": "clip-sitio-comunicaciones",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "kit": "node ../_herramientas/montar-kit.mjs",
+    "dev": "npx --yes hyperframes@0.8.221 preview",
+    "check": "npx --yes hyperframes@0.8.221 check",
+    "render": "npx --yes hyperframes@0.8.221 render",
+    "publish": "npx --yes hyperframes@0.8.221 publish"
+  },
+  "description": "Clip del sitio (decisión 216 de KingdomApp): Comunicaciones, 4:5 y 9:16, sin voz, con Product Launch (The_Mountain)."
+}

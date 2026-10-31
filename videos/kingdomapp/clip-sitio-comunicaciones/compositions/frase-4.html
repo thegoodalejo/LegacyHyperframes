@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P6 · Frase 4: «Habla con tu iglesia, / sin perder a nadie» (host 719–840). Palabra a palabra cada 2 cuadros desde el golpe del 720 (Habla 720 · con 722 · tu 724 · iglesia, 726 · sin 728 · perder 730 · a 732 · nadie 734); «nadie» en itálica dorada (el único dorado del cuerpo junto a la ceja). Quieta hasta el corte a la firma (840). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: var(--f-ancho, 1080px);
+          height: var(--f-alto, 1350px);
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 96px);
+          top: var(--f-frase-y, 124px);
+          width: var(--f-frase-ancho, 888px);
+          font-size: var(--f-frase-px, 80px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f400" id="root" data-composition-id="frase-4" data-width="1080" data-height="1350" data-duration="4.033333">
+        <div data-hf-id="hf-f401" class="k-feed-frase f-frase" id="f4">
+          <span data-hf-id="hf-f4l0" class="linea"><span data-hf-id="hf-f410" class="palabra" id="f4-w1">Habla</span> <span data-hf-id="hf-f411" class="palabra" id="f4-w2">con</span> <span data-hf-id="hf-f412" class="palabra" id="f4-w3">tu</span> <span data-hf-id="hf-f413" class="palabra" id="f4-w4">iglesia,</span></span>
+          <span data-hf-id="hf-f4l1" class="linea"><span data-hf-id="hf-f414" class="palabra" id="f4-w5">sin</span> <span data-hf-id="hf-f415" class="palabra" id="f4-w6">perder</span> <span data-hf-id="hf-f416" class="palabra" id="f4-w7">a</span> <em data-hf-id="hf-f418"><span data-hf-id="hf-f417" class="palabra" id="f4-w8">nadie</span></em></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 8; i++) {
+            // El host arranca un cuadro antes del golpe (719): el primer cuadro visible cae en 720 · 722 · … · 734.
+            tl.fromTo(`#f4-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.set({}, {}, F(121));
+          window.__timelines['frase-4'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

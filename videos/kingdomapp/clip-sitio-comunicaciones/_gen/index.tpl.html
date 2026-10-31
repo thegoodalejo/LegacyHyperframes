@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <title>Clip del sitio · Comunicaciones · «Alguien nuevo escribe» (4:5)</title>
+    <!--
+      Clip del sitio de Kingdom, módulo Comunicaciones, 1080×1350 (4:5), 30,5 s a 30 fps. Contrato: SPEC.md; desvíos y sincronía en REVIEW.md.
+      Estructura:
+        · compositions/fondo.html      la noche del sitio (el halo se asienta en 0, 180 y 720; los puntos no se mueven)
+        · compositions/frase-1..4.html las cuatro frases (una a la vez) y compositions/ceja.html («COMUNICACIONES», 195–723)
+        · #ventana (aquí, en la raíz)  la app REAL grabada en celular (assets/grabaciones/grabacion.mp4, 1170×2532) dentro de .k-ventana:
+                                        - #cam es la cámara (scale + x/y; el <video> nunca se transforma ni se busca)
+                                        - un solo mundo (#m1, el celular de Andrés Felipe, cuenta 101); #m1in es el envoltorio del aterrizaje del 78
+                                        - cada tramo de video es un <video> con su data-media-start, todos a 1×; los cortes caen en pausas,
+                                          ondas o esperas de la grabación («Cargando…» y los esqueletos quedan fuera) y cada toque real cae en su
+                                          pulso (tabla en REVIEW.md)
+                                        - la app no se desplaza suave: salta en un cuadro (grab. 1041 y 1396). El del 480 (la lista baja hasta la
+                                          invitación) va con un cambio de encuadre en el mismo cuadro, para que el aviso «Fuera del horario de
+                                          envío…» nunca quede en cuadro; el del 675 (los nombres) se ve tal cual
+                                        - las marcas de toque (.toque/.onda) van en las coordenadas reales del toque (pasos.json → toques[]);
+                                          el toque de volver (375) queda fuera del encuadre: se oye y no se dibuja
+        · identidad/cierre-clip.html   la firma (kit v1.1), 28,0–30,5; el sonido de marca en 28,38
+      Para llevarlo a 9:16: cambiar KD (abajo), las variables --f-* de este <style>, la firma por cierre-corto y data-width/height de los
+      hosts; los tramos de video, los sonidos y los tiempos no cambian (la cámara se recalcula sola con enc()).
+      Los tramos, las marcas y los sonidos de este archivo salen de una tabla (_gen/gen.py + _gen/index.tpl.html; ver _gen/README.md); se pueden editar a mano.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      :root {
+        /* ── Formato 4:5 (SPEC §1.4). Para 9:16: 1080×1920, márgenes 60, ceja y 188 / 34 px, frase y 236 / 960 / 104 px, ventana 60·480·960×850,
+              --f-k 0.820513, --f-grab-alto 2077.54px, --f-ventana-hvis 850px. */
+        --f-ancho: 1080px;
+        --f-alto: 1350px;
+        --f-margen-x: 96px;
+        --f-ceja-y: 72px;
+        --f-ceja-px: 30px;
+        --f-frase-y: 124px;
+        --f-frase-ancho: 888px;
+        --f-frase-px: 80px;
+        --f-ventana-x: 100px;
+        --f-ventana-y: 360px;
+        --f-ventana-w: 880px;
+        --f-ventana-h: 1050px; /* sangra 60 px por abajo del cuadro: las esquinas de abajo nunca se ven */
+        --f-ventana-hvis: 990px; /* lo que se ve de la ventana dentro del cuadro */
+        /* Grabación 1170×2532 ajustada al ancho de la ventana: factor y alto resultante (880/1170 y 2532·880/1170). */
+        --f-k: 0.752137;
+        --f-grab-alto: 1904.41px;
+      }
+      html,
+      body {
+        margin: 0;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root {
+        position: relative;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root > [data-composition-src] {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      #fondo {
+        z-index: 0;
+      }
+      #cierre-clip {
+        z-index: 6;
+      }
+      /* La ventana a la app: .k-ventana del kit (radio 28, anillo, sombra); el tamaño viene del formato. */
+      #ventana {
+        left: var(--f-ventana-x);
+        top: var(--f-ventana-y);
+        width: var(--f-ventana-w);
+        height: var(--f-ventana-h);
+        z-index: 3;
+      }
+      #m1,
+      #m1in {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: var(--f-grab-alto);
+      }
+      #m1in video {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+      }
+      .marcas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: var(--f-grab-alto);
+        pointer-events: none;
+      }
+      /* Marca del toque (la grabación no trae círculo): 20 px CSS del celular y su onda de 36 → 58 px (SPEC §1.6). */
+      .toque {
+        position: absolute;
+        width: 46px;
+        height: 46px;
+        margin: -23px 0 0 -23px;
+        border-radius: 50%;
+        background: rgba(27, 27, 31, 0.28);
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+        opacity: 0;
+      }
+      .onda {
+        position: absolute;
+        width: 81px;
+        height: 81px;
+        margin: -40.5px 0 0 -40.5px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(1, 91, 190, 0.9);
+        opacity: 0;
+      }
+      #datos {
+        position: absolute;
+        /* Abajo a la izquierda de la ventana (pedido del dueño, 2026-10-30). La ventana sangra 60 px por abajo del cuadro, así que se sube esa
+           diferencia para que la etiqueta se vea entera. 31 px: con la ventana a 0,92 (724–839) sigue en ≥ 28 px. */
+        left: 24px;
+        bottom: calc(var(--f-ventana-h) - var(--f-ventana-hvis) + 24px);
+        z-index: 4;
+        height: 56px;
+        font-size: 31px;
+      }
+      #dip {
+        position: absolute;
+        inset: 0;
+        background: #060d1f;
+        opacity: 0;
+        z-index: 5;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-c000"
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="30.5"
+      data-width="1080"
+      data-height="1350"
+      data-motion-blur="on"
+      data-motion-blur-shutter="180"
+    >
+      <!-- ── Escenas (gráficos): el fondo, las frases y la ceja. Los cuadros van en el comentario de cada una. ── -->
+      <div data-hf-id="hf-c001" id="fondo" data-composition-id="fondo" data-composition-src="compositions/fondo.html" data-track-kind="graphics"
+        data-start="0" data-duration="28" data-track-index="0" data-width="1080" data-height="1350"></div>
+      <!-- P1 · «Alguien nuevo escribe. / ¿Quién contesta?» una landing por pulso (0 · 15 · 30 · 45); sale 117–121 -->
+      <div data-hf-id="hf-c002" id="frase-1" data-composition-id="frase-1" data-composition-src="compositions/frase-1.html" data-track-kind="graphics"
+        data-start="0" data-duration="4.066667" data-track-index="1" data-width="1080" data-height="1350"></div>
+      <!-- P2 · «Todo tu equipo, / un solo número.» línea entera 120–126 (el host arranca en 119: el primer cuadro visible es el pulso); sale 177–181 -->
+      <div data-hf-id="hf-c003" id="frase-2" data-composition-id="frase-2" data-composition-src="compositions/frase-2.html" data-track-kind="graphics"
+        data-start="3.966667" data-duration="2.1" data-track-index="2" data-width="1080" data-height="1350"></div>
+      <!-- P3–P5 · la ceja «COMUNICACIONES» 195–201; sale 720–723 -->
+      <div data-hf-id="hf-c004" id="ceja" data-composition-id="ceja" data-composition-src="compositions/ceja.html" data-track-kind="graphics"
+        data-start="6.466667" data-duration="17.666667" data-track-index="3" data-width="1080" data-height="1350"></div>
+      <!-- P4 · «Y sabes quién / leyó el aviso» palabra a palabra 360–370; sale 597–601 -->
+      <div data-hf-id="hf-c005" id="frase-3" data-composition-id="frase-3" data-composition-src="compositions/frase-3.html" data-track-kind="graphics"
+        data-start="11.966667" data-duration="8.1" data-track-index="4" data-width="1080" data-height="1350"></div>
+      <!-- P6 · «Habla con tu iglesia, / sin perder a nadie» 720–734, quieta hasta el corte -->
+      <div data-hf-id="hf-c006" id="frase-4" data-composition-id="frase-4" data-composition-src="compositions/frase-4.html" data-track-kind="graphics"
+        data-beat="nadie" data-hold
+        data-start="23.966667" data-duration="4.033333" data-track-index="5" data-width="1080" data-height="1350"></div>
+      <!-- P7 · la firma del kit (identidad/kit.json → piezas.cierre-clip): 840–914 -->
+      <div data-hf-id="hf-c007" id="cierre-clip" data-composition-id="cierre-clip" data-composition-src="identidad/cierre-clip.html" data-track-kind="graphics"
+        data-variable-values='{"llamado":"prueba","fondo":"azul","idioma":"es"}'
+        data-start="28" data-duration="2.5" data-track-index="6" data-width="1080" data-height="1350"></div>
+
+      <!-- ── La ventana a la app real: el celular de Andrés Felipe Restrepo Gómez (cuenta 101), un solo mundo ──────────────────────── -->
+      <div data-hf-id="hf-c010" id="ventana" class="k-ventana" data-layout-allow-overflow>
+        <div data-hf-id="hf-c011" id="cam" class="k-ventana-camara">
+          <div data-hf-id="hf-c012" id="m1">
+            <!-- Tramos de grabacion.mp4 (todos a 1×): cuadro de la grabación = segundo × 30; cada data-media-start lleva +0,01 s (un tercio de
+                 cuadro) para caer dentro del cuadro buscado. -->
+            <div data-hf-id="hf-c013" id="m1in">
+@@TRAMOS@@
+            </div>
+            <div data-hf-id="hf-c016" class="marcas">
+              <!-- toques[] de pasos.json en px del video × --f-k (el 375, volver, no se dibuja) -->
+@@MARCAS@@
+            </div>
+          </div>
+        </div>
+        <div data-hf-id="hf-c017" id="datos" class="k-datos-ejemplo k-feed-datos">Datos de ejemplo</div>
+        <div data-hf-id="hf-c018" id="dip"></div>
+      </div>
+
+      <!-- ── Sonido ────────────────────────────────────────────────────────────────────────────────────────────────── -->
+      <!-- Música «Product Launch» (The_Mountain) 14,05 → 43,05 de la pista, a 0,75 en el carril de volumen (como Eventos: la mezcla entera en
+           ≈ −17 LUFS con el pico real por debajo de −1 dBTP sin que el render la baje): 0,75 hasta el golpe del 840 (28,0), −10 dB en el 852
+           (28,4) y 0 en el 870 (29,0), debajo de las campanas. -->
+      <audio data-hf-id="hf-c020" id="musica" src="assets/musica/product-launch-the-mountain.mp3" data-start="0" data-media-start="14.05" data-duration="29"
+        data-track-index="20"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.75},{"t":28,"v":0.75},{"t":28.4,"v":0.24},{"t":29,"v":0}]}]}'></audio>
+
+      <!-- Sonidos de acción del kit (identidad/kit.json → sonidosAccion): data-start = cuadro del sonido / 30 − acento; el sonido cae un
+           cuadro después de su imagen. toque rota tres tomas, nunca la misma dos veces seguidas: a = toque.wav, b = +3 % de tono, c = −3 %.
+           Los toques clave van a 1,0 y las confirmaciones de las pruebas a 1,4 (los niveles que funcionaron en Eventos, REVIEW §5). -->
+@@SONIDOS@@
+      <!-- 796–853 · la subida hacia la firma; su golpe (acento 1,5) cae en el 840 con el golpe de la música -->
+      <audio data-hf-id="hf-c030" id="snd-subida" src="identidad/audio/subida.wav" data-start="26.533333" data-duration="1.9" data-track-index="25" data-volume="1"></audio>
+      <!-- Sonido de marca: inicio de la firma + 0,38 s (identidad/kit.json → piezas.cierre-clip.sonido) -->
+      <audio data-hf-id="hf-c031" id="marca-clip" src="identidad/audio/sonido-marca.wav" data-start="28.38" data-duration="2.1" data-track-index="26" data-volume="1"></audio>
+    </div>
+
+    <script>
+      // ── Un solo lugar para el formato (la versión 9:16 cambia esto y las variables --f-* del <style>) ──────────────────────
+      window.KD = {
+        fps: 30,
+        ventana: { w: 880, h: 1050, hVis: 990 }, // lo mismo que --f-ventana-*
+        grabacion: { w: 1170, h: 2532, cssW: 390, cssH: 844 }, // el celular grabado a 3×
+        cambio: { escala: 0.92, x: 48, origen: '50% 100%' }, // la ventana se hace a un lado (SPEC §1.4, 724–738)
+      };
+
+      (function () {
+        const KD = window.KD;
+        const F = (n) => n / KD.fps; // cuadro → segundos
+        const W = KD.ventana.w, HV = KD.ventana.hVis;
+        const K = W / KD.grabacion.w; // px del video → px de la ventana (= --f-k)
+        const PPC = W / KD.grabacion.cssW; // px de la ventana por px CSS del celular (G = 2,256 en 4:5)
+        const VH = KD.grabacion.h * K; // alto de la grabación ajustada (= --f-grab-alto)
+
+        // Encuadre: la caja (centro en px CSS del celular) centrada en lo visible de la ventana con la escala s, sin salirse de la grabación.
+        function enc(s, cx, cy) {
+          const rx = cx * PPC, ry = cy * PPC;
+          let x = W / 2 - s * rx, y = HV / 2 - s * ry;
+          x = Math.min(0, Math.max(W - s * W, x));
+          y = Math.min(0, Math.max(HV - s * VH, y));
+          return { scale: s, x, y };
+        }
+
+        // Los objetivos, medidos sobre los cuadros reales de la grabación (px CSS del celular, 390×844). Esta app usa todo el ancho (las
+        // burbujas, las tarjetas, las filas con su ficha a la derecha), así que los encuadres van de ×1,00 a ×1,08: el texto de 14 px queda
+        // entre 31,6 y 34 px. Ver REVIEW §4.
+        const E = {
+          // G, CSS 173–612: «Cola 4 · Mis chats 2 · Todas 8», la búsqueda, Juan, Carolina y Mariana entera, por encima de la píldora. Es también
+          // el encuadre del match cut (la válvula de P1): después del corte, «Hoy» (201) y la burbuja de Mariana (231–320) caen dentro.
+          cola: enc(1, 195, 392.4), // arriba de 173: el borde de «Tomar» (171) no asoma después del corte
+          hilo: enc(1.03, 197, 262), // ×1,03, CSS 49–475 × 8–386: «Mariana Ospina», «En la cola» (hasta x 382), «Tomar» y la burbuja (desde x 12)
+          compositor: enc(1.05, 196.5, 600), // ×1,05, CSS 391–809: el hueco de las respuestas (468–674), el compositor y enviar
+          respuesta: enc(1.04, 196, 380), // ×1,04, CSS 169–591: la pregunta, la nota y la respuesta; al volver, «Cola 3» y las tres filas
+          arriba: enc(1, 195, 219.5), // G, CSS 0–439: «Bandeja», las pestañas con el ícono de Campañas; después, «Campañas» y los filtros
+          campanas: enc(1.08, 195, 321), // ×1,08, CSS 118–524: los filtros, «Bienvenida…» y «Noche de oración…» (su aviso, 526–554, queda fuera)
+          invitacion: enc(1, 195, 560), // G, CSS 341–780, después del salto: «Boletas del Congreso…» y la invitación entera (585–741)
+          tarjeta: enc(1.08, 195, 580), // ×1,08, CSS 377–783: la invitación con «Completada», la barra y sus números, sobre la píldora
+          kpis: enc(1, 195, 520), // G, CSS 300–739: «Completada», la línea, la barra y los números 139 · 137 · 137 · 115 · 23 · 39
+          nombres: enc(1.06, 195, 393), // ×1,06, CSS 186–600: «Destinatarios (23)» y cinco filas con «Leído» y «Allí estaré»
+          // ×1,08, CSS 262–668: seis filas, de Emmanuel a Diego, con 4 px CSS de margen a cada lado; con la ventana a 0,92 la línea de 12,4 px
+          // (medida en la grabación) queda en 27,8 px y los nombres (16 px) en 36 px
+          cierre: enc(1.08, 195, 465),
+        };
+        const CAM = { ease: 'power2.inOut', d: F(14) };
+        const mover = (e, n, d) => tl.to('#cam', { ...e, duration: d || CAM.d, ease: CAM.ease }, F(n));
+
+        const tl = gsap.timeline({ paused: true });
+
+        // Cámara: un movimiento por compás (SPEC §2.1), ninguno mientras la app cambia, escribe o se desplaza.
+        tl.set('#cam', E.cola, 0);
+        // compás 1: sin movimiento (válvula de P1): la fila de Mariana y, después del corte, su burbuja ya caben en `cola`
+        mover(E.hilo, 90); // compás 2: a la cabecera, «En la cola», «Tomar» y la burbuja
+        mover(E.compositor, 150); // compás 3: al compositor
+        mover(E.respuesta, 315); // compás 6: la pregunta y la respuesta
+        mover(E.arriba, 390); // compás 7: arriba, a las pestañas
+        mover(E.campanas, 450); // compás 8: a las tarjetas
+        tl.set('#cam', E.invitacion, F(480)); // la lista salta hasta la invitación (grab. 1041) y el encuadre cambia en el mismo cuadro
+        mover(E.tarjeta, 540); // compás 10: a la tarjeta de la invitación
+        tl.set('#cam', E.kpis, F(602)); // compás 11: el reporte entra en el corte, ya encuadrado (la pantalla cambia entera)
+        mover(E.nombres, 690); // compás 12: a «Destinatarios (23)» y los nombres
+        mover(E.cierre, 720); // compás 13
+
+        // El match cut del 78: la pantalla nueva (la conversación) entra 1,03 → 1,00 desde el centro de lo visible de la ventana.
+        const o = { x: (W / 2 - E.cola.x) / E.cola.scale, y: (HV / 2 - E.cola.y) / E.cola.scale };
+        tl.fromTo('#m1in', { scale: 1.03, transformOrigin: `${o.x.toFixed(1)}px ${o.y.toFixed(1)}px` },
+          { scale: 1, duration: F(10), ease: 'power3.out', immediateRender: false }, F(78));
+
+        // Marcas de toque: aparecen 4 cuadros antes (la del 120 en el 105 y espera quieta), se hunden en el cuadro y se van 6 después;
+        // la onda nace en el cuadro (450 ms). Cuando la pantalla cambia antes de que la marca se vaya, la marca se va con el corte.
+        const CORTE = { 75: 78, 120: 122, 240: 242, 420: 422, 600: 602 };
+        [75, 120, 180, 240, 300, 420, 600, 660].forEach((n) => {
+          const t = F(n);
+          const antes = n === 120 ? 15 : 4;
+          const c = CORTE[n];
+          tl.fromTo(`#tq-${n}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: F(4), ease: 'power2.out', immediateRender: false }, t - F(antes));
+          if (c) {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(Math.min(2, c - n)), ease: 'power2.in' }, t);
+            const p = (c - n) / 13.5; // la parte de la onda (0,45 s) que alcanza a verse antes del corte
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0.9 * (1 - p), scale: 1 + 0.62 * p, duration: F(c - n), ease: 'none', immediateRender: false }, t);
+            tl.set([`#tq-${n}`, `#on-${n}`], { opacity: 0 }, F(c));
+          } else {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(2), ease: 'power2.in' }, t);
+            tl.to(`#tq-${n}`, { opacity: 0, scale: 1, duration: F(6), ease: 'power2.out' }, t + F(2));
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.62, duration: 0.45, ease: 'power2.out', immediateRender: false }, t);
+          }
+        });
+
+        // La ventana se hace a un lado (724–738), 4 cuadros después de la frase 4.
+        tl.to('#ventana', { scale: KD.cambio.escala, x: KD.cambio.x, transformOrigin: KD.cambio.origen, duration: F(15), ease: 'power2.inOut' }, F(724));
+        // Dip de tres cuadros (837–839) y corte a la firma en el 840.
+        tl.set('#dip', { opacity: 0.4 }, F(837));
+        tl.set('#ventana', { autoAlpha: 0 }, F(840));
+        tl.set({}, {}, 30.5);
+        window.__timelines['main'] = tl;
+      })();
+    </script>
+  </body>
+</html>
