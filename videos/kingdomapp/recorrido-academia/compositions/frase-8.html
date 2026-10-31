@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P13 · Frase 8: «Y cualquiera / lo verifica.»; sale 2514–2518, antes de la frase del sitio. Posición y tamaño: --cel-* del host (SPEC §1.4). Generado por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--cel-frase-x);
+          top: var(--cel-frase-y);
+          width: var(--cel-frase-ancho);
+          font-size: var(--frase-px);
+          color: var(--k-noche-tinta);
+          --k-enfasis: var(--k-noche-dorado);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f800" id="root" data-composition-id="frase-8" data-width="1920" data-height="1080" data-duration="7.933333">
+        <div data-hf-id="hf-f801" class="k-titular f-frase" id="f8">
+          <span data-hf-id="hf-f8l0" class="linea"><span data-hf-id="hf-f8w1" class="palabra" id="f8-w1">Y</span> <span data-hf-id="hf-f8w2" class="palabra" id="f8-w2">cualquiera</span></span>
+          <span data-hf-id="hf-f8l1" class="linea"><span data-hf-id="hf-f8w3" class="palabra" id="f8-w3">lo</span> <span data-hf-id="hf-f8w4" class="palabra" id="f8-w4">verifica.</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          // Cada palabra arranca un cuadro antes de su cuadro (entrada-palabra: blur 6 → 0, 4 cuadros, power4.out, sin desplazarse).
+          [['#f8-w1', 0], ['#f8-w2', 2], ['#f8-w3', 4], ['#f8-w4', 6]].forEach(([sel, n]) => {
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(n));
+          });
+          tl.to('#f8', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(233)); // 2514–2518
+          tl.set({}, {}, F(238));
+          window.__timelines['frase-8'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

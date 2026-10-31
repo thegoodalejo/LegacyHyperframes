@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P1 · Frase 1: «La clase / ya empezó.» (host 0–122). «La» ya está en el cuadro 0 (la miniatura); «clase» cae en el 15, «ya» en el 30 y «empezó.» en el 45 (entrada-palabra: blur 6 → 0, 4 cuadros, power4.out, sin desplazarse; arranca un cuadro antes). Sale entera 117–121, antes del látigo. Posición y tamaño: --cel-frase-* del host (SPEC §1.4; la frase del clip, pasada a 16:9). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--cel-frase-x);
+          top: var(--cel-frase-y);
+          width: var(--cel-frase-ancho);
+          font-size: var(--frase-px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f100" id="root" data-composition-id="frase-1" data-width="1920" data-height="1080" data-duration="4.066667">
+        <div data-hf-id="hf-f101" class="k-titular f-frase" id="f1">
+          <span data-hf-id="hf-f1l0" class="linea"><span data-hf-id="hf-f1w1" class="palabra" id="f1-w1">La</span> <span data-hf-id="hf-f1w2" class="palabra" id="f1-w2">clase</span></span>
+          <span data-hf-id="hf-f1l1" class="linea"><span data-hf-id="hf-f1w3" class="palabra" id="f1-w3">ya</span> <span data-hf-id="hf-f1w4" class="palabra" id="f1-w4">empezó.</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          [['#f1-w2', 15], ['#f1-w3', 30], ['#f1-w4', 45]].forEach(([sel, n]) => {
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(n - 1));
+          });
+          tl.to('#f1', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(117));
+          tl.set({}, {}, F(122));
+          window.__timelines['frase-1'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

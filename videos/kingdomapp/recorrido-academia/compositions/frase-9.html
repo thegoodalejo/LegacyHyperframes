@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P14 · Frase 9: «Forma a los líderes / que tu visión necesita» (el título de Academia en modulos.ts); «líderes» en itálica dorada. Quieta hasta el corte al cierre (2760). Posición y tamaño: --cel-* del host (SPEC §1.4). Generado por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--cel-frase-x);
+          top: var(--cel-frase-y);
+          width: var(--cel-frase-ancho);
+          font-size: var(--frase-px);
+          color: var(--k-noche-tinta);
+          --k-enfasis: var(--k-noche-dorado);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f900" id="root" data-composition-id="frase-9" data-width="1920" data-height="1080" data-duration="8.066667">
+        <div data-hf-id="hf-f901" class="k-titular f-frase" id="f9">
+          <span data-hf-id="hf-f9l0" class="linea"><span data-hf-id="hf-f9w1" class="palabra" id="f9-w1">Forma</span> <span data-hf-id="hf-f9w2" class="palabra" id="f9-w2">a</span> <span data-hf-id="hf-f9w3" class="palabra" id="f9-w3">los</span> <em data-hf-id="hf-f9e4" class="palabra" id="f9-w4">líderes</em></span>
+          <span data-hf-id="hf-f9l1" class="linea"><span data-hf-id="hf-f9w5" class="palabra" id="f9-w5">que</span> <span data-hf-id="hf-f9w6" class="palabra" id="f9-w6">tu</span> <span data-hf-id="hf-f9w7" class="palabra" id="f9-w7">visión</span> <span data-hf-id="hf-f9w8" class="palabra" id="f9-w8">necesita</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          // Cada palabra arranca un cuadro antes de su cuadro (entrada-palabra: blur 6 → 0, 4 cuadros, power4.out, sin desplazarse).
+          [['#f9-w1', 0], ['#f9-w2', 2], ['#f9-w3', 4], ['#f9-w4', 6], ['#f9-w5', 8], ['#f9-w6', 10], ['#f9-w7', 12], ['#f9-w8', 14]].forEach(([sel, n]) => {
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(n));
+          });
+          tl.set({}, {}, F(242));
+          window.__timelines['frase-9'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

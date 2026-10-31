@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Recorrido de Academia</title>
+    <!--
+      Recorrido del módulo Academia de Kingdom, 1920×1080 (16:9), 97,0 s a 30 fps, sin voz. Contrato: SPEC.md; desvíos y sincronía en REVIEW.md.
+      GENERADO por _gen/gen.py desde _gen/index.tpl.html (los tramos, las marcas y los sonidos salen de sus tablas). Se puede editar a mano
+      o en el editor de HyperFrames, pero lo siguiente que corra gen.py lo pisa.
+      Estructura:
+        · compositions/fondo.html          la noche del sitio (el halo se asienta en 0, 120, 240, 360, 840, 1320, 1680, 2040 y 2280)
+        · compositions/frase-1..9.html     las nueve frases; compositions/ceja.html («ACADEMIA», cambia de lugar en cada látigo horizontal)
+        · #escena (aquí, en la raíz)       los dos escenarios lado a lado (3840×1080). El látigo horizontal la mueve ±1920 px en 10 cuadros
+                                            (830–840 y 2030–2040 al escritorio; 1310–1320 y 2270–2280 de vuelta al celular):
+            - #ventana-cel  .k-ventana-16x9 (720×900 en 1104·90). #tira es el látigo vertical (ranuras de 1000 px):
+                · ranura 1 (#m1): el profesor del clip (#cam1, 0–365), el profesor en la sábana (#cam5, 1640–2050) y /verificar (#cam6, 2260–2760)
+                · ranura 2 (#m2): la alumna del clip (#cam2), quien coordina (#cam3, con los iris del 375 y del 660) y la alumna en el examen (#cam4)
+                · cada mundo tiene su cámara (scale + x/y; el <video> nunca se transforma ni se busca)
+            - #ventana-esc  .k-ventana-escritorio (1440×760 en 2160·260): quien coordina (cuenta 101) en escritorio.mp4
+                · #camE1: el asistente (820–1330), con el iris del 900 («En blanco» → el paso 1); #camE2: el tablero y la ficha (2020–2290)
+        · identidad/cierre-comercial.html  el cierre del Comercial (2760–2909); el sonido de marca en 92,38
+      Las marcas de toque (.toque/.onda) van en las coordenadas reales del toque (toques[] de cada pasos.json); ninguna grabación trae círculo.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      :root {
+        /* ── Los dos escenarios (SPEC §1.4) ── */
+        --cel-ceja-x: 120px;
+        --cel-ceja-y: 412px;
+        --cel-frase-x: 120px;
+        --cel-frase-y: 460px;
+        --cel-frase-ancho: 936px;
+        --esc-ceja-x: 240px;
+        --esc-ceja-y: 92px;
+        --esc-frase-x: 240px;
+        --esc-frase-y: 132px;
+        --esc-frase-ancho: 1440px;
+        --frase-px: 84px;
+        /* Grabación del celular 1170×2532 ajustada a los 720 px de la ventana; la del escritorio 1920×1080 a los 1440 px. */
+        --c-k: 0.615385;
+        --c-grab-alto: 1558.15px;
+        --c-latigo: 1000px;
+        --d-k: 0.75;
+        --d-grab-alto: 810px;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root > [data-composition-src] {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+      }
+      #fondo {
+        z-index: 0;
+      }
+      /* Las frases y la ceja, siempre por encima de la escena (también si el runtime cambia los atributos del host): el látigo pasa
+         por detrás del texto. */
+      #frase-1, #frase-2, #frase-3, #frase-4, #frase-5, #frase-6, #frase-7, #frase-8, #frase-9, #ceja {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+      }
+      #cierre-comercial {
+        z-index: 6;
+      }
+      #escena {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3840px;
+        height: 1080px;
+        z-index: 2;
+      }
+      #ventana-cel {
+        left: 1104px;
+        top: 90px;
+      }
+      #ventana-esc {
+        left: 2160px;
+        top: 260px;
+      }
+      .aterriza {
+        position: absolute;
+        inset: 0;
+      }
+      #tira {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      /* Cada ranura recorta a su mundo y mide lo mismo que la distancia entre ranuras: en el látigo no queda hueco. */
+      .mundo {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: var(--c-latigo);
+        overflow: hidden;
+        background: var(--k-app-fondo);
+      }
+      #m1 {
+        top: 0;
+      }
+      #m2 {
+        top: var(--c-latigo);
+      }
+      .cam-cel {
+        height: var(--c-grab-alto);
+      }
+      .cam-esc {
+        height: var(--d-grab-alto);
+      }
+      .cam-cel video,
+      .cam-esc video,
+      .iris {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+      }
+      .cam-cel .iris {
+        height: var(--c-grab-alto);
+      }
+      .cam-esc .iris {
+        height: var(--d-grab-alto);
+      }
+      .marcas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      /* Marca del toque (las grabaciones no traen círculo): 20 px CSS de la app y su onda de 36 → 58 px CSS.
+         En px de la grabación ajustada: celular × 1,846 (720/390), escritorio × 1,125 (1440/1280). */
+      .toque {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(27, 27, 31, 0.28);
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+        opacity: 0;
+      }
+      .onda {
+        position: absolute;
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px rgba(1, 91, 190, 0.9);
+        opacity: 0;
+      }
+      .toque.cel {
+        width: 36.9px;
+        height: 36.9px;
+        margin: -18.45px 0 0 -18.45px;
+      }
+      .onda.cel {
+        width: 66.5px;
+        height: 66.5px;
+        margin: -33.25px 0 0 -33.25px;
+      }
+      .toque.esc {
+        width: 22.5px;
+        height: 22.5px;
+        margin: -11.25px 0 0 -11.25px;
+      }
+      .onda.esc {
+        width: 40.5px;
+        height: 40.5px;
+        margin: -20.25px 0 0 -20.25px;
+        box-shadow: 0 0 0 2px rgba(1, 91, 190, 0.9);
+      }
+      /* «Datos de ejemplo» abajo a la izquierda DENTRO de cada ventana, a 24 px de sus bordes (pedido del dueño para la serie). */
+      .datos {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        z-index: 4;
+      }
+      /* La del celular a 30,5 px: con la ventana a 0,92 (2524–2759) sigue en 28 px, el piso de lectura. */
+      #datos-cel {
+        height: 57px;
+        font-size: 30.5px;
+      }
+      #dip {
+        position: absolute;
+        inset: 0;
+        background: #060d1f;
+        opacity: 0;
+        z-index: 5;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-a000"
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="97"
+      data-width="1920"
+      data-height="1080"
+      data-motion-blur="on"
+      data-motion-blur-shutter="180"
+    >
+      <!-- ── Escenas (gráficos): el fondo, las frases y la ceja. Los cuadros van en el comentario de cada una. ── -->
+      <div data-hf-id="hf-a001" id="fondo" data-composition-id="fondo" data-composition-src="compositions/fondo.html" data-track-kind="graphics"
+        data-start="0" data-duration="92" data-track-index="0" data-width="1920" data-height="1080"></div>
+      <!-- P1 · «La clase / ya empezó.» una palabra por pulso (0 · 15 · 30 · 45); sale 117–121 -->
+      <div data-hf-id="hf-a002" id="frase-1" data-composition-id="frase-1" data-composition-src="compositions/frase-1.html" data-track-kind="graphics"
+        data-start="0" data-duration="4.066667" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <!-- P2–P4 · «Sin listas / de papel.» línea entera 120–126; sale 357–361 -->
+      <div data-hf-id="hf-a003" id="frase-2" data-composition-id="frase-2" data-composition-src="compositions/frase-2.html" data-track-kind="graphics"
+        data-start="3.966667" data-duration="8.1" data-track-index="2" data-width="1920" data-height="1080"></div>
+      <!-- La ceja «ACADEMIA» (host 194–2524): 195 en el celular; sale al arrancar cada látigo horizontal y entra con blur en el otro escenario; sale 2520–2523 -->
+      <div data-hf-id="hf-a004" id="ceja" data-composition-id="ceja" data-composition-src="compositions/ceja.html" data-track-kind="graphics"
+        data-start="6.466667" data-duration="77.666667" data-track-index="3" data-width="1920" data-height="1080"></div>
+      <!-- P5–P8 · «Quien cumple, / se gradúa.» palabra a palabra 360–366; se queda hasta el látigo al escritorio: sale 826–830 -->
+      <div data-hf-id="hf-a005" id="frase-3" data-composition-id="frase-3" data-composition-src="compositions/frase-3.html" data-track-kind="graphics"
+        data-start="11.966667" data-duration="15.733333" data-track-index="4" data-width="1920" data-height="1080"></div>
+@@FRASES@@
+      <!-- P15 · el cierre del Comercial (identidad/kit.json → piezas.cierre-comercial): 2760–2909 -->
+      <div data-hf-id="hf-a006" id="cierre-comercial" data-composition-id="cierre-comercial" data-composition-src="identidad/cierre-comercial.html"
+        data-track-kind="graphics"
+        data-variable-values='{"publico":"iglesia","llamado":"prueba","contacto":"sitio","fondo":"noche","idioma":"es"}'
+        data-start="92" data-duration="5" data-track-index="6" data-width="1920" data-height="1080"></div>
+
+      <!-- ── La escena: los dos escenarios lado a lado; el látigo horizontal la mueve ±1920 px ─────────────────────────── -->
+      <div data-hf-id="hf-a010" id="escena" data-layout-allow-overflow>
+        <!-- El celular -->
+        <div data-hf-id="hf-a011" id="ventana-cel" class="k-ventana k-ventana-16x9" data-layout-allow-overflow>
+          <div data-hf-id="hf-a012" id="cel-land" class="aterriza">
+            <div data-hf-id="hf-a013" id="tira">
+              <!-- Ranura 1: el profesor (cuenta 103) en el clip y en la sábana; la página pública /verificar al final -->
+              <div data-hf-id="hf-a014" id="m1" class="mundo">
+                <div data-hf-id="hf-a015" id="m1land" class="aterriza">
+                  <div data-hf-id="hf-a016" id="cam1" class="k-ventana-camara cam-cel">
+@@V-cam1@@
+                    <div data-hf-id="hf-a017" class="marcas">
+@@M-cam1@@
+                    </div>
+                  </div>
+                  <div data-hf-id="hf-a018" id="cam5" class="k-ventana-camara cam-cel">
+@@V-cam5@@
+                    <div data-hf-id="hf-a019" class="marcas">
+@@M-cam5@@
+                    </div>
+                  </div>
+                  <div data-hf-id="hf-a01a" id="cam6" class="k-ventana-camara cam-cel">
+@@V-cam6@@
+                    <div data-hf-id="hf-a01b" class="marcas">
+@@M-cam6@@
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Ranura 2: la alumna (cuenta 104) en el clip, quien coordina (cuenta 101) y la alumna en el examen -->
+              <div data-hf-id="hf-a020" id="m2" class="mundo">
+                <div data-hf-id="hf-a021" id="m2land" class="aterriza">
+                  <div data-hf-id="hf-a022" id="cam2" class="k-ventana-camara cam-cel">
+@@V-cam2@@
+                  </div>
+                </div>
+                <div data-hf-id="hf-a023" id="m3land" class="aterriza">
+                  <div data-hf-id="hf-a024" id="cam3" class="k-ventana-camara cam-cel">
+@@V-cam3@@
+                    <div data-hf-id="hf-a025" id="iris3a" class="iris">
+@@V-iris3a@@
+                    </div>
+                    <div data-hf-id="hf-a026" id="iris3b" class="iris">
+@@V-iris3b@@
+                    </div>
+                    <div data-hf-id="hf-a027" class="marcas">
+@@M-cam3@@
+                    </div>
+                  </div>
+                </div>
+                <div data-hf-id="hf-a028" id="m4land" class="aterriza">
+                  <div data-hf-id="hf-a029" id="cam4" class="k-ventana-camara cam-cel">
+@@V-cam4@@
+                    <div data-hf-id="hf-a02a" class="marcas">
+@@M-cam4@@
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div data-hf-id="hf-a02b" id="datos-cel" class="datos k-datos-ejemplo k-feed-datos">Datos de ejemplo</div>
+          <div data-hf-id="hf-a02c" id="dip"></div>
+        </div>
+
+        <!-- El escritorio de quien coordina (cuenta 101) -->
+        <div data-hf-id="hf-a030" id="ventana-esc" class="k-ventana k-ventana-escritorio" data-layout-allow-overflow>
+          <div data-hf-id="hf-a031" id="esc-land" class="aterriza">
+            <div data-hf-id="hf-a032" id="camE1" class="k-ventana-camara cam-esc">
+@@V-e1@@
+              <!-- 900–905 · el iris desde «En blanco»: el asistente, paso a paso -->
+              <div data-hf-id="hf-a033" id="irisE1" class="iris">
+@@V-i1@@
+              </div>
+              <div data-hf-id="hf-a034" class="marcas">
+@@M-e1@@
+              </div>
+            </div>
+            <div data-hf-id="hf-a035" id="camE2" class="k-ventana-camara cam-esc">
+@@V-e2@@
+              <div data-hf-id="hf-a036" class="marcas">
+@@M-e2@@
+              </div>
+            </div>
+          </div>
+          <div data-hf-id="hf-a037" id="datos-esc" class="datos k-datos-ejemplo k-feed-datos">Datos de ejemplo</div>
+        </div>
+      </div>
+
+      <!-- ── Sonido ────────────────────────────────────────────────────────────────────────────────────────────────── -->
+      <!-- Música «Product Launch» (The_Mountain) alargada a 96 s con una sola costura (SPEC §0.1): se toca 14,05 → 46,04 y se salta al 22,01.
+           Música A: pista 14,05 → 46,04 (video 0 → 31,99); el cruce 0,75 → 0 entre el 31,96 y el 31,99. -->
+      <audio data-hf-id="hf-a040" id="musica-a" src="assets/musica/product-launch-the-mountain.mp3" data-start="0" data-media-start="14.05" data-duration="31.99"
+        data-track-index="19"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.75},{"t":31.96,"v":0.75},{"t":31.99,"v":0}]}]}'></audio>
+      <!-- Música B: pista 22,01 → 86,05 (video 31,96 → 96,0). Entra 0 → 0,75 en 30 ms; el golpe del 22,05 cae en el 32,0 (cuadro 960).
+           El acorde final (82,05) cae en el 92,0: 0,75 → 0,24 (−10 dB) en el 92,4, debajo de las campanas, y 0 en el 94,0. -->
+      <audio data-hf-id="hf-a041" id="musica-b" src="assets/musica/product-launch-the-mountain.mp3" data-start="31.96" data-media-start="22.01" data-duration="64.04"
+        data-track-index="20"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.03,"v":0.75},{"t":60.04,"v":0.75},{"t":60.44,"v":0.24},{"t":62.04,"v":0}]}]}'></audio>
+
+      <!-- Sonidos de acción del kit (identidad/kit.json → sonidosAccion): data-start = (cuadro de la imagen + 1) / 30 − acento; el sonido cae un
+           cuadro después de su imagen. toque rota tres tomas, nunca la misma dos veces seguidas: a = toque.wav, b = +3 % de tono, c = −3 %. -->
+@@SONIDOS@@
+      <!-- 2716–2773 · la subida hacia el cierre; su golpe (acento 1,5) cae en el 2761, con el acorde final de la música -->
+      <audio data-hf-id="hf-a042" id="snd-subida" src="identidad/audio/subida.wav" data-start="90.533333" data-duration="1.9" data-track-index="25" data-volume="1"></audio>
+      <!-- Sonido de marca: inicio del cierre + 0,38 s (identidad/kit.json → piezas.cierre-comercial.sonido) -->
+      <audio data-hf-id="hf-a043" id="marca-cierre" src="identidad/audio/sonido-marca.wav" data-start="92.38" data-duration="2.1" data-track-index="26" data-volume="1"></audio>
+    </div>
+
+    <script>
+      // ── El formato en un solo lugar ─────────────────────────────────────────────────────────────────────────────────────
+      window.KD = {
+        fps: 30,
+        cel: { ventana: { w: 720, h: 900 }, grab: { w: 1170, h: 2532, cssW: 390 } }, // el celular grabado a 3×
+        esc: { ventana: { w: 1440, h: 760 }, grab: { w: 1920, h: 1080, cssW: 1280 } }, // el escritorio grabado a 1,5×
+        latigoV: 1000, // ranuras de la tira vertical del celular (--c-latigo)
+        latigoH: 1920, // la escena horizontal entre escenarios
+        cambio: { escala: 0.92, x: 24, origen: '100% 50%' }, // la ventana del celular se hace a un lado (2524–2538)
+      };
+
+      (function () {
+        const KD = window.KD;
+        const F = (n) => n / KD.fps; // cuadro → segundos
+
+        // Encuadre: el punto (cx, cy) en px CSS de la app centrado en la ventana con la escala s sobre el plano (la grabación ajustada al
+        // ancho de la ventana), sin salirse de la grabación. comp(): la app saltó d px CSS (positivo = el contenido baja) y la cámara lo
+        // deshace en el mismo cuadro: en pantalla nada se mueve.
+        function camara(m) {
+          const W = m.ventana.w, HV = m.ventana.h;
+          const K = W / m.grab.w, PPC = W / m.grab.cssW, VH = m.grab.h * K;
+          const enc = (s, cx, cy) => {
+            let x = W / 2 - s * cx * PPC, y = HV / 2 - s * cy * PPC;
+            x = Math.min(0, Math.max(W - s * W, x));
+            y = Math.min(0, Math.max(HV - s * VH, y));
+            return { scale: s, x, y };
+          };
+          const comp = (e, d) => ({ scale: e.scale, x: e.x, y: e.y - e.scale * PPC * d });
+          return { W, HV, K, PPC, VH, enc, comp };
+        }
+        const C1 = camara(KD.cel), C2 = camara(KD.esc);
+        const enc = C1.enc, encD = C2.enc;
+
+        // ── Celular (px CSS, 390×844). Niveles (SPEC §1.5): G = 1,085 (14 px → 28), G⁺ = 1,15, M = 1,4, C = 1,8.
+        // Parte 1: los encuadres del clip con s' = max(s, 1,085) (SPEC §2.1).
+        const E1 = {
+          codigo: enc(1.085, 195, 279.5),
+          contador: enc(1.085, 195, 624.5),
+          catorce: enc(1.085, 195, 383),
+          dieciseis: enc(1.4, 147, 428),
+        };
+        const E2 = { casillas: enc(1.2, 195, 355), listo: enc(1.2, 195, 330) };
+        const E3 = {
+          tarjeta: enc(1.085, 195, 265),
+          lista: enc(1.1, 190, 205),
+          barra: enc(1.085, 195, 624.5),
+          dialogo: enc(1.15, 190, 421),
+          aviso: { ...enc(1.085, 195, 641), y: C1.HV - 1.085 * (C1.VH + 34 * C1.PPC) },
+          certs: enc(1.12, 190, 190),
+          cert: enc(1.085, 195, 372),
+          nombre: enc(1.35, 195, 405),
+          codigo: enc(1.085, 195, 633),
+        };
+        // Parte 2 (medidos sobre celular.mp4, REVIEW.md §4)
+        const X = {
+          examen: enc(1.085, 195, 385), // G, CSS 161–610: «Pregunta N de 3» con el reloj, la pregunta y las opciones A–D por encima de la píldora
+          todas: enc(1.085, 195, 300), // G, CSS 76–525: el reloj en «0:01», «Respondiste 3 de 3» y «No hay que entregar…»
+          nota: enc(1.5, 148, 232), // ×1,5 (2,77 px por px CSS), CSS 18–278 × 70–395: «Tu nota · 5 / 5 · Alcanzó la nota mínima (3)»
+          lista: enc(1.085, 195, 440), // G, CSS 216–665: «2 · Correcta» y «3 · Correcta» por encima de la píldora (la app ya bajó; el «1» quedó arriba)
+        };
+        const S = {
+          sabana: enc(1.085, 195, 340), // G, CSS 116–565: el encabezado de la tabla («Quiz de los evangelios») y la fila de Lucía con su 5
+          filtros: enc(1.085, 195, 560), // G, CSS 336–785: las cifras, las pestañas, los filtros y, tras el salto del 1860, la fila de Ester
+        };
+        const V = {
+          inicio: enc(1.085, 195, 230), // G, CSS 6–455: «Verificar un certificado», el campo, la ayuda y el lugar del resultado
+          valido: enc(1.15, 195, 330), // G⁺, CSS 118–542: «Certificado válido» y sus cinco datos
+          tarjeta: enc(1.085, 195, 330), // G, CSS 106–555: el campo con el código y la tarjeta entera
+        };
+        // ── Escritorio (px CSS, 1280×720). D = ×1,8 (2,025 px por px CSS, 711 × 375 a la vista).
+        const D = {
+          catalogo: encD(1.8, 860, 240), // CSS 505–1216 × 52–428: «Nuevo curso» y las tarjetas de la derecha
+          opciones: encD(1.8, 650, 330), // CSS 295–1006 × 143–518: «Curso nuevo», «¿Cómo quieres empezar?», «En blanco» y los sugeridos
+          // CSS 295–1006 × 281–656: la barra de cinco segmentos arriba y lo que se llena debajo, por encima de «Datos de ejemplo» (quieta 913–1230,
+          // salvo el paso 4)
+          pasos: encD(1.8, 650, 468),
+          criterios: encD(1.8, 650, 505), // CSS 318–693: «¿Qué se necesita para aprobar?» y «Asistencia mínima ✓ 80 %» por encima de la píldora
+          pie: encD(1.8, 790, 545), // CSS 435–1146 × 358–720: «Guardar borrador · Publicar» (la app ya bajó 100 px)
+          dialogo: encD(1.8, 640, 360), // CSS 285–996 × 173–548: «¡Publicado!» entero
+          cifras: encD(1.8, 540, 300), // CSS 185–896 × 113–488: las cifras del día, las dos filas por encima de la píldora
+          riesgo: encD(1.8, 540, 250), // CSS 185–896 × 63–438: tras el salto del 2100, Jhon Fredy arriba y las filas de «Alumnos en riesgo»
+          ficha: encD(1.8, 1100, 190), // CSS 569–1280 × 3–378: la ficha de Jhon Fredy (67 %, «No cumple», 3,96 / 5)
+        };
+
+        const CAM = { ease: 'power2.inOut', d: F(14) };
+        const tl = gsap.timeline({ paused: true });
+        const mover = (sel, e, n, d) => tl.to(sel, { ...e, duration: d || CAM.d, ease: CAM.ease }, F(n));
+
+        // ── Cámaras del clip (parte 1): un movimiento por compás ──
+        tl.set('#cam1', E1.codigo, 0);
+        mover('#cam1', E1.contador, 60);
+        tl.set('#cam1', E1.catorce, F(200));
+        mover('#cam1', E1.dieciseis, 330);
+        tl.set('#cam2', E2.casillas, 0);
+        mover('#cam2', E2.listo, 180);
+        tl.set('#cam3', E3.tarjeta, 0);
+        mover('#cam3', E3.lista, 390);
+        mover('#cam3', E3.barra, 465);
+        mover('#cam3', E3.dialogo, 495);
+        mover('#cam3', E3.aviso, 600);
+        mover('#cam3', E3.certs, 645);
+        mover('#cam3', E3.cert, 660, F(10));
+        mover('#cam3', E3.nombre, 675, F(9)); // el punch del nombre
+        mover('#cam3', E3.codigo, 720); // el código de verificación; quieta hasta el látigo
+        // ── Celular, parte 2 ──
+        tl.set('#cam4', X.examen, 0);
+        mover('#cam4', X.todas, 1530);
+        mover('#cam4', X.nota, 1560, F(9)); // el punch de la nota
+        mover('#cam4', X.lista, 1620);
+        tl.set('#cam5', S.sabana, 0);
+        mover('#cam5', S.filtros, 1740);
+        tl.set('#cam6', V.inicio, 0);
+        mover('#cam6', V.valido, 2400);
+        mover('#cam6', V.tarjeta, 2460);
+        // ── Escritorio ──
+        tl.set('#camE1', D.catalogo, 0);
+        tl.set('#camE1', D.opciones, F(877)); // la app cambia de pantalla entera en el 877 (las opciones): se reencuadra con ella
+        mover('#camE1', D.pasos, 900); // con el iris, a la barra de pasos; quieta hasta el 1230
+        mover('#camE1', D.criterios, 1155); // compás 20: baja a «Asistencia mínima», marcada
+        tl.set('#camE1', D.pasos, F(1200)); // corte al paso 5: el mismo encuadre de los otros pasos
+        // 1230: la grabación pasa a la que ya bajó 100 px (grab. 2390); la cámara arranca compensada y baja al pie
+        tl.fromTo('#camE1', C2.comp(D.pasos, -100), { ...D.pie, duration: CAM.d, ease: CAM.ease, immediateRender: false }, F(1230));
+        mover('#camE1', D.dialogo, 1268);
+        tl.set('#camE2', D.cifras, 0);
+        tl.set('#camE2', D.riesgo, F(2100)); // la app saltó a la lista entera: se reencuadra con ella
+        mover('#camE2', D.ficha, 2175);
+
+        // ── Iris desde el toque: el círculo nace en el centro del botón tocado, en px de la grabación ajustada ──
+        const irisDesde = (sel, Cm, vx, vy, n) => {
+          const c = (r) => `circle(${r}px at ${(vx * Cm.K).toFixed(1)}px ${(vy * Cm.K).toFixed(1)}px)`;
+          tl.fromTo(sel, { clipPath: c(0) }, { clipPath: c(1900), duration: F(5), ease: 'power2.out' }, F(n));
+          tl.set(sel, { clipPath: 'none' }, F(n + 6));
+        };
+        irisDesde('#iris3a', C1, 585, 900, 375); // la lista de «Por aprobar»
+        irisDesde('#iris3b', C1, 401, 484, 660); // «Ver»
+        irisDesde('#irisE1', C2, 1044, 471, 900); // «En blanco»
+
+        // ── Látigo vertical (el celular): una sola tira, power3.inOut, 10 cuadros. Arriba = al otro celular; abajo = de vuelta.
+        const L = KD.latigoV;
+        const latigo = { duration: F(10), ease: 'power3.inOut' };
+        tl.fromTo('#tira', { y: 0 }, { y: -L, ...latigo }, F(110)); // 110–120: sube a la alumna
+        tl.to('#tira', { y: 0, ...latigo }, F(230)); // 230–240: baja, de vuelta al profesor
+        tl.to('#tira', { y: -L, ...latigo }, F(350)); // 350–360: sube a quien coordina
+        tl.to('#tira', { y: 0, ...latigo }, F(1670)); // 1670–1680: baja, de vuelta al profesor (la sábana)
+        // El mundo que llega aterriza 1,04 → 1,00 (power3.out, 10 cuadros), desde el centro de la ventana.
+        const oCel = `${C1.W / 2}px ${C1.HV / 2}px`, oEsc = `${C2.W / 2}px ${C2.HV / 2}px`;
+        const aterriza = (sel, o, desde, golpe) => {
+          tl.set(sel, { scale: 1.04, transformOrigin: o }, F(desde));
+          tl.to(sel, { scale: 1, duration: F(10), ease: 'power3.out' }, F(golpe));
+        };
+        aterriza('#m2land', oCel, 110, 120);
+        aterriza('#m1land', oCel, 220, 240);
+        aterriza('#m3land', oCel, 340, 360);
+        aterriza('#m1land', oCel, 1670, 1680);
+
+        // ── Látigo horizontal (la escena): a la izquierda = al escritorio, a la derecha = de vuelta. Termina en el golpe.
+        const H = KD.latigoH;
+        tl.set('#escena', { x: 0 }, 0);
+        tl.fromTo('#escena', { x: 0 }, { x: -H, ...latigo, immediateRender: false }, F(830));
+        tl.to('#escena', { x: 0, ...latigo }, F(1310));
+        tl.to('#escena', { x: -H, ...latigo }, F(2030));
+        tl.to('#escena', { x: 0, ...latigo }, F(2270));
+        aterriza('#esc-land', oEsc, 830, 840);
+        aterriza('#cel-land', oCel, 1310, 1320);
+        aterriza('#esc-land', oEsc, 2030, 2040);
+        aterriza('#cel-land', oCel, 2270, 2280);
+
+        // ── Marcas de toque: aparecen 4 cuadros antes (la de «Nuevo curso» y la de Jhon Fredy esperan 10), se hunden en el cuadro y se van
+        //    6 después; la onda nace en el cuadro (0,45 s). Si la pantalla cambia debajo del dedo, la marca se va con el corte.
+        const ESPERA = { 870: 10, 2160: 10 };
+        const CORTE = { 270: 273, 300: 303, 600: 603, 870: 877, 900: 901, 1260: 1264 };
+        [@@TOQUES@@].forEach((n) => {
+          const t = F(n);
+          const antes = ESPERA[n] || 4;
+          const c = CORTE[n];
+          tl.fromTo(`#tq-${n}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: F(4), ease: 'power2.out', immediateRender: false }, t - F(antes));
+          if (c) {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(Math.min(2, c - n)), ease: 'power2.in' }, t);
+            const p = (c - n) / 13.5; // la parte de la onda (0,45 s) que alcanza a verse antes del corte
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0.9 * (1 - p), scale: 1 + 0.62 * p, duration: F(c - n), ease: 'none', immediateRender: false }, t);
+            tl.set([`#tq-${n}`, `#on-${n}`], { opacity: 0 }, F(c));
+          } else {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(2), ease: 'power2.in' }, t);
+            tl.to(`#tq-${n}`, { opacity: 0, scale: 1, duration: F(6), ease: 'power2.out' }, t + F(2));
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.62, duration: 0.45, ease: 'power2.out', immediateRender: false }, t);
+          }
+        });
+        // La marca de «Publicar» aparece en 1256–1259 sobre la grabación que ya bajó (desde el 1230): nada que corregir.
+
+        // ── El final: la ventana del celular a un lado (2524–2538), dip de tres cuadros (2757–2759) y corte al cierre.
+        tl.to('#ventana-cel', { scale: KD.cambio.escala, x: KD.cambio.x, transformOrigin: KD.cambio.origen, duration: F(15), ease: 'power2.inOut' }, F(2524));
+        tl.set('#dip', { opacity: 0.4 }, F(2757));
+        tl.set('#escena', { opacity: 0 }, F(2760));
+        tl.set({}, {}, 97);
+        window.__timelines['main'] = tl;
+      })();
+    </script>
+  </body>
+</html>

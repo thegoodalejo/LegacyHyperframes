@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P11 · Frase 6: «Sabes quién / va en riesgo.»; sale 2026–2030, al arrancar el látigo al escritorio. Posición y tamaño: --cel-* del host (SPEC §1.4). Generado por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--cel-frase-x);
+          top: var(--cel-frase-y);
+          width: var(--cel-frase-ancho);
+          font-size: var(--frase-px);
+          color: var(--k-noche-tinta);
+          --k-enfasis: var(--k-noche-dorado);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f600" id="root" data-composition-id="frase-6" data-width="1920" data-height="1080" data-duration="11.666667">
+        <div data-hf-id="hf-f601" class="k-titular f-frase" id="f6">
+          <span data-hf-id="hf-f6l0" class="linea"><span data-hf-id="hf-f6w1" class="palabra" id="f6-w1">Sabes</span> <span data-hf-id="hf-f6w2" class="palabra" id="f6-w2">quién</span></span>
+          <span data-hf-id="hf-f6l1" class="linea"><span data-hf-id="hf-f6w3" class="palabra" id="f6-w3">va</span> <span data-hf-id="hf-f6w4" class="palabra" id="f6-w4">en</span> <span data-hf-id="hf-f6w5" class="palabra" id="f6-w5">riesgo.</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          // Cada palabra arranca un cuadro antes de su cuadro (entrada-palabra: blur 6 → 0, 4 cuadros, power4.out, sin desplazarse).
+          [['#f6-w1', 0], ['#f6-w2', 2], ['#f6-w3', 4], ['#f6-w4', 6], ['#f6-w5', 8]].forEach(([sel, n]) => {
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(n));
+          });
+          tl.to('#f6', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(345)); // 2026–2030
+          tl.set({}, {}, F(350));
+          window.__timelines['frase-6'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

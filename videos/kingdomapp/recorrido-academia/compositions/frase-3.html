@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P5–P8 · Frase 3: «Quien cumple, / se gradúa.» (host 359–831). Palabra a palabra cada 2 cuadros desde el 360 (Quien 360 · cumple, 362 · se 364 · gradúa. 366). En el clip se iba en el 597; aquí acompaña la aprobación y el certificado y sale 826–830, cuando arranca el látigo al escritorio (el borrón del látigo se pinta encima de todo). Posición y tamaño: --cel-frase-* del host (SPEC §1.4; la frase del clip, pasada a 16:9). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--cel-frase-x);
+          top: var(--cel-frase-y);
+          width: var(--cel-frase-ancho);
+          font-size: var(--frase-px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f300" id="root" data-composition-id="frase-3" data-width="1920" data-height="1080" data-duration="15.733333">
+        <div data-hf-id="hf-f301" class="k-titular f-frase" id="f3">
+          <span data-hf-id="hf-f3l0" class="linea"><span data-hf-id="hf-f3w1" class="palabra" id="f3-w1">Quien</span> <span data-hf-id="hf-f3w2" class="palabra" id="f3-w2">cumple,</span></span>
+          <span data-hf-id="hf-f3l1" class="linea"><span data-hf-id="hf-f3w3" class="palabra" id="f3-w3">se</span> <span data-hf-id="hf-f3w4" class="palabra" id="f3-w4">gradúa.</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 4; i++) {
+            tl.fromTo('#f3-w' + i, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.to('#f3', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(467)); // 826–830, antes del látigo
+          tl.set({}, {}, F(472));
+          window.__timelines['frase-3'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

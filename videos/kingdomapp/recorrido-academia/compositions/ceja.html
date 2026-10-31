@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- La ceja «ACADEMIA» (host 194–2524). Celular (x 120 · y 412): entra 195–201 (blur 8 → 0, power4.out) y sale 826–829, al arrancar el látigo al
+         escritorio. Escritorio (x 240 · y 92): 842–848 → 1306–1309. Celular: 1322–1328 → 2026–2029 (se queda en el látigo vertical del 1680).
+         Escritorio: 2042–2048 → 2266–2269. Celular: 2282–2288 → 2520–2523, cuando llega la frase del sitio. Nunca se desliza: cambia de lugar
+         con blur. Inter 700, mayúsculas, dorado (.k-ceja del kit, 28 px). Posiciones: --cel-ceja-* y --esc-ceja-* del host (SPEC §1.4). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-ceja {
+          position: absolute;
+          line-height: 1.2;
+          white-space: nowrap;
+          --k-ceja: var(--k-noche-dorado);
+        }
+        #ceja-cel {
+          left: var(--cel-ceja-x);
+          top: var(--cel-ceja-y);
+        }
+        #ceja-esc {
+          left: var(--esc-ceja-x);
+          top: var(--esc-ceja-y);
+          opacity: 0;
+        }
+      </style>
+      <div data-hf-id="hf-ac01" id="root" data-composition-id="ceja" data-width="1920" data-height="1080" data-duration="77.666667">
+        <div data-hf-id="hf-ac02" class="k-ceja f-ceja" id="ceja-cel">Academia</div>
+        <div data-hf-id="hf-ac03" class="k-ceja f-ceja" id="ceja-esc">Academia</div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30; // cuadros locales: el host arranca en el 194
+          const L = (n) => F(n - 194);
+          const tl = gsap.timeline({ paused: true });
+          const entra = (sel, n, prim) =>
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out', immediateRender: !!prim }, L(n));
+          const sale = (sel, n) => tl.to(sel, { opacity: 0, filter: 'blur(8px)', duration: F(3), ease: 'power3.in' }, L(n));
+          entra('#ceja-cel', 194, true);
+          sale('#ceja-cel', 826);
+          entra('#ceja-esc', 842);
+          sale('#ceja-esc', 1306);
+          entra('#ceja-cel', 1322);
+          sale('#ceja-cel', 2026);
+          entra('#ceja-esc', 2042);
+          sale('#ceja-esc', 2266);
+          entra('#ceja-cel', 2282);
+          sale('#ceja-cel', 2520);
+          tl.set({}, {}, L(2524));
+          window.__timelines['ceja'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
