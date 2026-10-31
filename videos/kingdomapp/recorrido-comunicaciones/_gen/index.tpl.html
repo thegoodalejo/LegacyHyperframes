@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Recorrido de Comunicaciones · «Alguien nuevo escribe… y nadie se queda sin respuesta» (16:9)</title>
+    <!--
+      Recorrido del módulo Comunicaciones de Kingdom, 1920×1080 (16:9), 97,0 s a 30 fps (2910 cuadros). Contrato: SPEC.md; desvíos y sincronía en REVIEW.md.
+      ESTE ARCHIVO LO GENERA _gen/gen.py desde _gen/index.tpl.html (tramos, stills, marcas y sonidos en tablas); se puede editar a mano, pero el
+      próximo `python _gen/gen.py` lo reescribe.
+      Estructura:
+        · compositions/fondo.html          la noche del sitio (el halo se asienta en 0 · 180 · 840 · 1320 · 1680 · 2040 · 2520)
+        · compositions/frase-1..8.html     las ocho frases (una a la vez) y compositions/ceja.html («COMUNICACIONES», con sus dos lugares)
+        · #escena (aquí, en la raíz)       una tira horizontal con las dos ventanas a la app REAL: el celular (#ventana-cel, .k-ventana-16x9,
+                                            x 1104) y el escritorio (#ventana-esc, .k-ventana-escritorio, x 2160 = 240 + 1920). #escena en x 0 muestra
+                                            el celular; en x −1920, el escritorio. Cuatro látigos horizontales: 830–840 y 1670–1680 a la izquierda (al
+                                            escritorio), 1310–1320 y 2030–2040 a la derecha (de vuelta). Sin látigo vertical: todo lo hace Andrés
+                                            (cuenta 101) en sus dos aparatos
+            - el celular tiene tres mundos, que se reemplazan mientras la ventana está fuera de cuadro: #celK > #camK (el clip,
+              assets/grabaciones/clip/grabacion.mp4, 0–841), #celM > #camM (la ficha de Mariana, assets/grabaciones/celular.mp4, 1310–1680) y
+              #celC > #camC (la campaña nueva, celular.mp4, 2030–2760)
+            - el escritorio tiene dos: #e1in > #camE1 (el chatbot con «Probar», assets/grabaciones/escritorio.mp4, 830–1320) y #e2in > #camE2 (la
+              automatización de bienvenida, escritorio.mp4, 1670–2040)
+            - cada tramo de video es un <video> con su data-media-start, todos a 1×; los cortes caen en esperas, ondas, fundidos y saltos de la
+              grabación, y cada toque real cae en su pulso (tabla en REVIEW.md). Tres stills (assets/stills/) sostienen la app donde espera menos de
+              lo que pide el pulso. Las marcas de toque (.toque/.onda) van en las coordenadas reales del toque (pasos.json → toques[], px del video
+              × el factor de la ventana)
+        · identidad/cierre-comercial.html  el cierre del Comercial (kit v1.1), 92,0–97,0; el sonido de marca en 92,38
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      :root {
+        /* ── 16:9 con dos escenarios (SPEC §1.4) ── */
+        --f-ancho: 1920px;
+        --f-alto: 1080px;
+        /* Escenario del celular: ceja y frase en la columna izquierda */
+        --f-margen-x: 120px;
+        --f-ceja-y: 412px;
+        --f-ceja-px: 28px;
+        --f-frase-y: 460px;
+        --f-frase-ancho: 936px;
+        --f-frase-px: 84px;
+        /* Escenario del escritorio: ceja y frase arriba de la ventana */
+        --f-esc-x: 240px;
+        --f-esc-ceja-y: 92px;
+        --f-esc-frase-y: 132px;
+        --f-esc-frase-ancho: 1440px;
+        /* El celular: grabación 1170×2532 ajustada al ancho de la ventana (720/1170 y 2532·720/1170) */
+        --f-ventana-w: 720px;
+        --f-ventana-h: 900px;
+        --f-k: 0.615385;
+        --f-grab-alto: 1558.15px;
+        /* El escritorio: grabación 1920×1080 ajustada al ancho de la ventana (1440/1920 y 1080·0,75) */
+        --e-k: 0.75;
+        --e-grab-alto: 810px;
+      }
+      html,
+      body {
+        margin: 0;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root {
+        position: relative;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root > [data-composition-src] {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      #fondo {
+        z-index: 0;
+      }
+      #cierre-comercial {
+        z-index: 6;
+      }
+      /* La tira horizontal de los dos escenarios */
+      #escena {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3840px;
+        height: 1080px;
+        z-index: 3;
+      }
+      #ventana-cel {
+        left: 1104px;
+        top: 90px;
+        z-index: 3;
+      }
+      #ventana-esc {
+        left: 2160px;
+        top: 260px;
+        z-index: 3;
+      }
+      /* Cada mundo ocupa la ventana entera y recorta su propia cámara; su envoltorio (.mundo-in) es el del aterrizaje. */
+      .mundo-in {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      #ventana-cel .k-ventana-camara {
+        height: var(--f-grab-alto);
+      }
+      #ventana-esc .k-ventana-camara {
+        height: var(--e-grab-alto);
+      }
+      .k-ventana-camara video,
+      .k-ventana-camara img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+      }
+      .marcas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      /* Marca del toque (las grabaciones no traen círculo), en px de la cámara: en el celular 46 px (20 px CSS del celular) y su onda de 81 px;
+         en el escritorio 34 y 60 (la cámara del escritorio va a ×1,8–2,0: 61–68 px en pantalla). */
+      .toque {
+        position: absolute;
+        width: 46px;
+        height: 46px;
+        margin: -23px 0 0 -23px;
+        border-radius: 50%;
+        background: rgba(27, 27, 31, 0.28);
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+        opacity: 0;
+      }
+      .onda {
+        position: absolute;
+        width: 81px;
+        height: 81px;
+        margin: -40.5px 0 0 -40.5px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(1, 91, 190, 0.9);
+        opacity: 0;
+      }
+      #ventana-esc .toque {
+        width: 34px;
+        height: 34px;
+        margin: -17px 0 0 -17px;
+      }
+      #ventana-esc .onda {
+        width: 60px;
+        height: 60px;
+        margin: -30px 0 0 -30px;
+        box-shadow: 0 0 0 3px rgba(1, 91, 190, 0.9);
+      }
+      /* «Datos de ejemplo»: en cada ventana, abajo a la izquierda, a 24 px. 31 px (no los 22 del kit para 16:9), como el clip y los otros
+         recorridos: con la ventana a 0,92 (2524–2759) sigue en ≥ 28 px, el piso de lectura que mide check. */
+      .datos {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        z-index: 4;
+        height: 56px;
+        padding: 0 22px;
+        font-size: 31px;
+      }
+      #dip {
+        position: absolute;
+        inset: 0;
+        background: #060d1f;
+        opacity: 0;
+        z-index: 5;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="97"
+      data-width="1920"
+      data-height="1080"
+      data-motion-blur="on"
+      data-motion-blur-shutter="180"
+    >
+      <!-- ── Escenas (gráficos): el fondo, las frases y la ceja. Los cuadros van en el comentario de cada una. ── -->
+      <div id="fondo" data-composition-id="fondo" data-composition-src="compositions/fondo.html" data-track-kind="graphics"
+        data-start="0" data-duration="92" data-track-index="0" data-width="1920" data-height="1080"></div>
+@@FRASES@@
+      <!-- P14 · el cierre del Comercial (identidad/kit.json → piezas.cierre-comercial): 2760–2909 -->
+      <div id="cierre-comercial" data-composition-id="cierre-comercial" data-composition-src="identidad/cierre-comercial.html" data-track-kind="graphics"
+        data-variable-values='{"publico":"iglesia","llamado":"prueba","contacto":"sitio","fondo":"noche","idioma":"es"}'
+        data-start="92" data-duration="5" data-track-index="6" data-width="1920" data-height="1080"></div>
+
+      <!-- ── Las dos ventanas a la app real, en la tira horizontal #escena ─────────────────────────────────────────────── -->
+      <!-- Tramos en cuadros de cada grabación: cuadro = segundo × 30; cada data-media-start lleva +0,01 s (un tercio de cuadro) para caer dentro
+           del cuadro buscado. Todos a 1×. -->
+      <div id="escena">
+        <!-- El celular de Andrés Felipe Restrepo Gómez (cuenta 101), con tres mundos uno tras otro -->
+        <div id="ventana-cel" class="k-ventana k-ventana-16x9" data-layout-allow-overflow>
+          <!-- Mundo K: el clip (0–841) -->
+          <div id="celK" class="mundo-in">
+            <div id="camK" class="k-ventana-camara">
+@@TK@@
+@@TK_MARCAS@@
+            </div>
+          </div>
+          <!-- Mundo M: la conversación de Mariana y su ficha (1310–1680) -->
+          <div id="celM" class="mundo-in">
+            <div id="camM" class="k-ventana-camara">
+@@TM@@
+@@TM_MARCAS@@
+            </div>
+          </div>
+          <!-- Mundo C: la campaña nueva para la red Timoteo (2030–2760) -->
+          <div id="celC" class="mundo-in">
+            <div id="camC" class="k-ventana-camara">
+@@TC@@
+@@ST_C@@
+@@TC_MARCAS@@
+            </div>
+          </div>
+          <div id="datos-cel" class="k-datos-ejemplo datos">Datos de ejemplo</div>
+          <div id="dip"></div>
+        </div>
+
+        <!-- El escritorio de Andrés (cuenta 101), con dos mundos -->
+        <div id="ventana-esc" class="k-ventana k-ventana-escritorio" data-layout-allow-overflow>
+          <!-- Mundo E1: el flujo del chatbot y «Probar» (830–1320) -->
+          <div id="e1in" class="mundo-in">
+            <div id="camE1" class="k-ventana-camara">
+@@TE1@@
+@@ST_E1@@
+@@TE1_MARCAS@@
+            </div>
+          </div>
+          <!-- Mundo E2: la automatización «Bienvenida a quien llega» (1670–2040) -->
+          <div id="e2in" class="mundo-in">
+            <div id="camE2" class="k-ventana-camara">
+@@TE2@@
+@@TE2_MARCAS@@
+            </div>
+          </div>
+          <div id="datos-esc" class="k-datos-ejemplo datos">Datos de ejemplo</div>
+        </div>
+      </div>
+
+      <!-- ── Sonido ────────────────────────────────────────────────────────────────────────────────────────────────── -->
+      <!-- Música «Product Launch» (The_Mountain) editada como en Academia (SPEC §0.1; _gen/musica.sh): pista 14,05–46,04 + 22,01–fin, cruce de
+           30 ms en el 31,99 del video (la costura cae en el simulador del chatbot, cuadro 960, donde se escribe «hola»). 0,75 en el carril de
+           volumen de principio a fin, sin fundido: el último acorde se apaga solo debajo del cierre (SPEC §0.4). -->
+      <audio id="musica" src="assets/musica/product-launch-recorrido.wav" data-start="0" data-duration="95.99" data-track-index="20"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.75},{"t":95.99,"v":0.75}]}]}'></audio>
+
+      <!-- Sonidos de acción del kit (identidad/kit.json → sonidosAccion): data-start = cuadro del sonido / 30 − acento; el sonido cae un
+           cuadro después de su imagen. toque rota tres tomas, nunca la misma dos veces seguidas: a = toque.wav, b = +3 % de tono, c = −3 %.
+           Los toques van a 1,0; 1,4 solo en el primer látigo y en las confirmaciones de las pruebas. -->
+@@SONIDOS@@
+      <!-- 2716–2773 · la subida hacia el cierre; su golpe (acento 1,5) cae en el 2761, un cuadro después del corte del 2760 -->
+      <audio id="snd-subida" src="identidad/audio/subida.wav" data-start="90.533333" data-duration="1.9" data-track-index="25" data-volume="1"></audio>
+      <!-- Sonido de marca: inicio del cierre + 0,38 s (identidad/kit.json → piezas.cierre-comercial.sonido) -->
+      <audio id="marca-cierre" src="identidad/audio/sonido-marca.wav" data-start="92.38" data-duration="2.1" data-track-index="26" data-volume="1"></audio>
+    </div>
+
+    <script>
+      // ── Un solo lugar para el formato (SPEC §1.4) ──────────────────────────────────────────────────────────────────────
+      window.KD = {
+        fps: 30,
+        cel: { w: 720, h: 900, hVis: 900 }, // --f-k = 720/1170; --f-grab-alto = 1558.15px
+        esc: { w: 1440, h: 760, hVis: 760 }, // K = 1440/1920 = 0,75; alto de la grabación ajustada = 810
+        grabCel: { w: 1170, h: 2532, cssW: 390, cssH: 844 }, // celular 390×844 a 3×
+        grabEsc: { w: 1920, h: 1080, cssW: 1280 }, // escritorio 1280×720 a 1,5×
+        latigoH: 1920, // la tira horizontal entre escenarios
+        cambio: { escala: 0.92, x: 24, origen: '100% 50%' }, // la ventana del celular se hace a un lado (2524–2538)
+      };
+
+      (function () {
+        const KD = window.KD;
+        const F = (n) => n / KD.fps; // cuadro → segundos
+
+        // Una ventana: W (ancho), HV (alto visible), K (px del video → px de la ventana), PPC (px de la ventana por px CSS de la app) y VH (alto
+        // de la grabación ajustada). enc(s, cx, cy): la caja con centro (cx, cy) en px CSS de la app, centrada en lo visible con la escala s, sin
+        // salirse de la grabación.
+        function ventana(v, g) {
+          const W = v.w, HV = v.hVis, K = W / g.w, PPC = W / g.cssW, VH = g.h * K;
+          const enc = (s, cx, cy) => {
+            let x = W / 2 - s * cx * PPC, y = HV / 2 - s * cy * PPC;
+            x = Math.min(0, Math.max(W - s * W, x));
+            y = Math.min(0, Math.max(HV - s * VH, y));
+            return { scale: s, x, y };
+          };
+          return { W, HV, K, PPC, VH, enc };
+        }
+        const CEL = ventana(KD.cel, KD.grabCel);
+        const ESC = ventana(KD.esc, KD.grabEsc);
+        const enc = CEL.enc, encE = ESC.enc;
+
+        // Los encuadres, medidos sobre los cuadros reales (px CSS: 390×844 el celular, 1280×720 el escritorio). Niveles de SPEC §1.5; REVIEW §4.
+        // «Datos de ejemplo» tapa, abajo a la izquierda, 147 × 28 px CSS a G (×1,085) y 145 × 28 a D (×1,8): cada encuadre la deja sobre algo
+        // que no se lee.
+        const E = {
+          // ── Parte 1: los del clip con s' = max(s, 1,085) (SPEC §2.1) ──
+          cola: enc(1.085, 195, 397.7),
+          hilo: enc(1.085, 197, 262),
+          compositor: enc(1.085, 194, 600), // cx 196,5 → 194: «/bienvenida» empieza en el CSS 16,3 y su «/» quedaba cortado
+          respuesta: enc(1.085, 196, 393.7),
+          arriba: enc(1.085, 195, 224.7),
+          campanas: enc(1.085, 195, 300.3),
+          invitacion: enc(1.085, 195, 560),
+          tarjeta: enc(1.085, 195, 580),
+          kpis: enc(1.085, 195, 520),
+          nombres: enc(1.085, 195, 410.7),
+          cierre: enc(1.085, 195, 465),
+          // ── Parte 2, la ficha de Mariana (#camM) ──
+          hiloM: enc(1.085, 197, 272), // G, CSS 18–377 × 48–497: «Mariana Ospina · Sin ficha · +575550123987 · Línea principal», «Atendiendo», el ícono de la persona (362, 152), la pregunta, la nota y la respuesta de Andrés
+          panelM: enc(1.085, 209, 266), // G, CSS 30–389 × 42–491 (la barra de arriba de la app termina en el 40): el panel «La persona» (x 37–381): «Mariana Ospina», «Este número no está en Membresía…», «Vincular a una persona», «Crear ficha», Boletas
+          dialogo: enc(1.085, 195, 425), // G, CSS 16–375 × 201–650: el diálogo «Crear ficha» entero (título 218, botones 627); la píldora queda sobre «Cancelar»
+          fichaM: enc(1.4, 180, 215), // M, CSS 41–319 × 41–389: «MO · Mariana Ospina · +575550123987», «Ver ficha», Boletas (el punch del 1560)
+          // ── Parte 2, la campaña nueva (#camC). El texto de ayuda de «A quién va» («Calcular» dice cuántos…, decisión 215) nunca entra: en la rec
+          //    1360–1422 empieza en el CSS 479,7 y en la 1723–1849 en el 547,7 ──
+          publico: enc(1.085, 179.5, 224.5), // G, CSS 0–359 × 0–449: «Plantilla aprobada», «2 A quién va», «Membresía · Un evento», «Toda la iglesia · Un público» y su tarjeta, sin la cifra ni la ayuda
+          hoja: enc(1.085, 195, 619.5), // G, CSS 16–375 × 395–844 (abajo del todo): las hojas «Agregar filtro» (Red en el 753) y «Red» (Red Timoteo en el 750, «Aplicar» en el 807)
+          cifra: enc(1.15, 205.55, 333.8), // G⁺, CSS 36–375 × 122–546: el chip «Red: Red Timoteo», «Personas de la red Red Timoteo» y «139 con WhatsApp» (521–535); la ayuda empieza en el 547,7 y queda fuera. La píldora (509–535, x 47–191) cae sobre «≈ 143 personas ·» (119,7–191,3) y deja libre «139» (desde el 197,7) (REVIEW §4)
+          lista: enc(1.085, 195, 540.5), // G, CSS 16–375 × 316–765 (después del salto del 2280): «Plantilla aprobada» (423) y la lista entera hasta «invitacion_culto» (700); la píldora queda sobre el chip; la barra de abajo (773) fuera
+          vistaPrevia: enc(1.085, 195, 319.5), // G, CSS 16–375 × 95–544 (las pestañas, hasta el 90, fuera): «Vista previa», la burbuja, «Allí estaré», «Cómo llegar» y «1 El mensaje»
+          final: enc(1.18, 193, 330), // F, CSS 28–358 × 124–537 («Vista previa», en x 18, queda fuera arriba para no cortarla): la burbuja (texto x 36–350) con «Allí estaré» y «Cómo llegar»; a 0,92 el texto de 14 px queda en 28,1 px
+        };
+        const EE = {
+          // ── Parte 2, el chatbot (#camE1) ──
+          lienzo: encE(1.8, 510, 455), // D, CSS 155–866 × 268–643: el lienzo del flujo (Inicio → Mensaje → Botones con Horarios · Oración · Hablar con alguien · Otro → Fin / Pasar a una persona)
+          probar: encE(1.8, 900, 455), // D, CSS 545–1256 × 268–643: «Probar» (879, 286) y «Palabras de activación» con buenas · hola · menu; después del 902, el simulador
+          simulador: encE(2.0, 960, 499), // D⁺, CSS 640–1280 × 330–668: «Probar el flujo», «Es una prueba: no se envía nada por WhatsApp ni queda nada guardado.», «Probando como Carolina Mejía Arango»
+          campo: encE(2.0, 960, 540), // D⁺, CSS 640–1280 × 371–709 («Probar como alguien sin ficha» empieza en el 372,7 y el texto del campo termina en el 705,3) (el panel se desplazó 85 px CSS): «Toca «Empezar este flujo»…», el campo con «hola» y enviar; después del 1020, «Empezó el flujo…», el saludo y el menú
+          menu: encE(2.0, 960, 475), // D⁺, CSS 640–1280 × 306–644: «Probando como Carolina…», el saludo, «¿En qué te podemos ayudar?» y Horarios · Oración · Hablar con alguien
+          horario: encE(2.0, 960, 497), // D⁺, CSS 640–1280 × 328–666 («queda nada guardado», 312–325, fuera entero): «Horarios» de Carolina, el horario entero (497–539) y «El flujo terminó»
+          // ── Parte 2, la automatización (#camE2) ──
+          autos: encE(1.8, 475.5, 362), // D, CSS 120–831 × 175–550: «Mensajes de WhatsApp que salen solos…», «Bienvenida a quien llega · Encendida…», «Feliz cumpleaños», la segunda fila
+          tarjeta: encE(2.0, 420, 330), // D⁺, CSS 100–740 × 161–499: «Bienvenida a quien llega · Encendida · Cuando llega una persona nueva (1 h después) · Personas de Membresía · Hoy: 4 enviados · 0 omitidos»
+          vista: encE(2.0, 960, 420), // D⁺, CSS 640–1280 × 251–589: «Vista previa» y el mensaje entero (texto 397–457)
+          pestanas: encE(1.8, 455.5, 377.5), // D, CSS 100–811 × 190–565: «Encendida · Hoy: 4 enviados · 0 omitidos», «Configuración · Envíos · Historial» (Envíos en 312, 297)
+          envios: encE(1.8, 455.5, 507.5), // D, CSS 100–811 × 320–695: Todos · Enviados…, Isabela, Tomás, Sara y Mateo con «Persona nueva · 30-10-2026 13:54» (la píldora debajo de Mateo)
+          leidos: encE(1.8, 924.5, 507.5), // D, CSS 569–1280 × 320–695: el final de las cuatro filas, cada una con «Leído»
+        };
+
+        const CAM = { ease: 'power2.inOut', d: F(14) };
+        const tl = gsap.timeline({ paused: true });
+        const mover = (sel, e, n, d) => tl.to(sel, { ...e, duration: d || CAM.d, ease: CAM.ease }, F(n));
+
+        // ── Cámara de la parte 1 (la del clip): a lo sumo un movimiento por compás, ninguno mientras la app cambia ──
+        tl.set('#camK', E.cola, 0);
+        mover('#camK', E.hilo, 90);
+        mover('#camK', E.compositor, 150);
+        mover('#camK', E.respuesta, 315);
+        mover('#camK', E.arriba, 390);
+        mover('#camK', E.campanas, 450);
+        tl.set('#camK', E.invitacion, F(480)); // la lista salta hasta la invitación y el encuadre cambia en el mismo cuadro
+        mover('#camK', E.tarjeta, 540);
+        tl.set('#camK', E.kpis, F(602)); // el reporte entra en el corte, ya encuadrado
+        mover('#camK', E.nombres, 690);
+        mover('#camK', E.cierre, 720); // y se queda: los nombres con «Leído» y «Allí estaré» hasta el látigo
+
+        // ── Parte 2 ──
+        // El chatbot (e1)
+        tl.set('#camE1', EE.lienzo, 0);
+        mover('#camE1', EE.probar, 870);
+        mover('#camE1', EE.simulador, 915); // el simulador ya está desde el corte del 902, legible en «probar»; aquí se acerca
+        tl.set('#camE1', EE.campo, F(960)); // corte en el foco: el panel se desplazó solo y el encuadre baja con él
+        mover('#camE1', EE.menu, 1080);
+        mover('#camE1', EE.horario, 1200);
+        // La ficha de Mariana (M)
+        tl.set('#camM', E.hiloM, 0);
+        mover('#camM', E.panelM, 1395);
+        mover('#camM', E.dialogo, 1455);
+        mover('#camM', E.fichaM, 1560, F(9)); // el punch de la parte 2
+        mover('#camM', E.panelM, 1620); // la cámara abre al panel con la ficha
+        // La automatización (e2)
+        tl.set('#camE2', EE.autos, 0);
+        mover('#camE2', EE.tarjeta, 1740);
+        tl.set('#camE2', EE.vista, F(1803)); // la pantalla cambia entera: el encuadre cambia en el mismo cuadro
+        mover('#camE2', EE.pestanas, 1890); // la válvula de SPEC §5: el toque de «Envíos» se dibuja
+        tl.set('#camE2', EE.envios, F(1923)); // la lista entra en el corte, ya encuadrada
+        mover('#camE2', EE.leidos, 1980); // a lo largo de las filas, hasta «Leído»
+        // La campaña nueva (C)
+        tl.set('#camC', E.publico, 0);
+        mover('#camC', E.hoja, 2145); // baja a la hoja «Agregar filtro», que ya subió (2138–2142); quieta en «Red», «Red Timoteo» y «Aplicar»
+        tl.set('#camC', E.cifra, F(2227)); // la hoja se va en el corte y el encuadre sube en el mismo cuadro: la ayuda de «A quién va» nunca entra
+        tl.set('#camC', E.lista, F(2280)); // la app salta a «1 El mensaje» (rec 1852) y el encuadre cambia con ella, en el mismo cuadro: la plantilla y, debajo, su lista
+        tl.set('#camC', E.vistaPrevia, F(2343)); // la lista se va y la vista previa se llena arriba: el encuadre cambia en el mismo cuadro
+        mover('#camC', E.final, 2460);
+
+        // ── Aterrizajes ──
+        const centroCel = `${CEL.W / 2}px ${CEL.HV / 2}px`;
+        const centroEsc = `${ESC.W / 2}px ${ESC.HV / 2}px`;
+        const aterriza = (sel, desde, origen, n) =>
+          tl.fromTo(sel, { scale: desde, transformOrigin: origen }, { scale: 1, duration: F(10), ease: 'power3.out', immediateRender: false }, F(n));
+        // El match cut del clip, desde el centro de lo visible
+        aterriza('#celK', 1.03, centroCel, 78);
+        aterriza('#e1in', 1.04, centroEsc, 840); // el látigo al escritorio
+        aterriza('#celM', 1.04, centroCel, 1320); // el látigo de vuelta
+        aterriza('#e2in', 1.04, centroEsc, 1680); // el látigo al escritorio
+        aterriza('#celC', 1.04, centroCel, 2040); // el látigo de vuelta
+
+        // ── Látigos horizontales (#escena, 1920 px, 10 cuadros): a la izquierda = al escritorio, a la derecha = de vuelta ──
+        tl.fromTo('#escena', { x: 0 }, { x: -KD.latigoH, duration: F(10), ease: 'power3.inOut', immediateRender: false }, F(830));
+        tl.to('#escena', { x: 0, duration: F(10), ease: 'power3.inOut' }, F(1310));
+        tl.to('#escena', { x: -KD.latigoH, duration: F(10), ease: 'power3.inOut' }, F(1670));
+        tl.to('#escena', { x: 0, duration: F(10), ease: 'power3.inOut' }, F(2030));
+
+        // ── Marcas de toque: aparecen 4 cuadros antes (la del 120 en el 105 y espera quieta), se hunden en el cuadro y se van 6 después; la onda
+        // nace en el cuadro (450 ms). Cuando la pantalla cambia antes de que la marca se vaya, la marca se va con el corte (toque → cuadro del corte).
+        const CORTE = { 75: 78, 120: 122, 240: 242, 420: 422, 600: 602, 900: 902, 1800: 1803, 1920: 1923, 2160: 2163, 2220: 2227, 2340: 2343 };
+        @@TOQUES@@.forEach((n) => {
+          const t = F(n);
+          const antes = n === 120 ? 15 : 4;
+          const c = CORTE[n];
+          tl.fromTo(`#tq-${n}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: F(4), ease: 'power2.out', immediateRender: false }, t - F(antes));
+          if (c) {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(Math.min(2, c - n)), ease: 'power2.in' }, t);
+            const p = (c - n) / 13.5; // la parte de la onda (0,45 s) que alcanza a verse antes del corte
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0.9 * (1 - p), scale: 1 + 0.62 * p, duration: F(c - n), ease: 'none', immediateRender: false }, t);
+            tl.set([`#tq-${n}`, `#on-${n}`], { opacity: 0 }, F(c));
+          } else {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(2), ease: 'power2.in' }, t);
+            tl.to(`#tq-${n}`, { opacity: 0, scale: 1, duration: F(6), ease: 'power2.out' }, t + F(2));
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.62, duration: 0.45, ease: 'power2.out', immediateRender: false }, t);
+          }
+        });
+
+        // ── El final: la ventana del celular se hace a un lado (2524–2538), el dip (2757–2759) y el corte al cierre (2760) ──
+        tl.to('#ventana-cel', { scale: KD.cambio.escala, x: KD.cambio.x, transformOrigin: KD.cambio.origen, duration: F(15), ease: 'power2.inOut' }, F(2524));
+        tl.set('#dip', { opacity: 0.4 }, F(2757));
+        tl.set('#escena', { autoAlpha: 0 }, F(2760));
+        tl.set({}, {}, 97);
+        window.__timelines['main'] = tl;
+      })();
+    </script>
+  </body>
+</html>

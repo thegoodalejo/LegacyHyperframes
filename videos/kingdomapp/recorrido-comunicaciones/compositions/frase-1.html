@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P1 · «Alguien nuevo escribe. / ¿Quién contesta?»: una landing por pulso («Alguien» 0 · «nuevo escribe.» 15 · «¿Quién» 30 · «contesta?» 45), como el clip; sale 117–121. Fraunces 560, 84 px, interlínea 1,04, −0,02 em (.k-feed-frase del kit con el tamaño de 16:9); entrada-palabra: blur 6 → 0 +
+         opacidad, 4 cuadros, power4.out, sin desplazarse; salida-texto: blur 0 → 8 + opacidad, 4 cuadros, power3.in. Generada por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 120px);
+          top: var(--f-frase-y, 460px);
+          width: var(--f-frase-ancho, 936px);
+          font-size: var(--f-frase-px, 84px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div id="root" data-composition-id="frase-1" data-width="1920" data-height="1080" data-duration="4.066667">
+        <div class="k-feed-frase f-frase" id="f1">
+          <span class="linea"><span class="palabra" id="f1-w1">Alguien</span> <span class="palabra" id="f1-w2">nuevo escribe.</span></span>
+          <span class="linea"><span class="palabra" id="f1-w3">¿Quién</span> <span class="palabra" id="f1-w4">contesta?</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          // «Alguien» ya está en el cuadro 0 (la miniatura). Cada landing arranca un cuadro antes de su pulso (15 · 30 · 45).
+          [['#f1-w2', 15], ['#f1-w3', 30], ['#f1-w4', 45]].forEach(([sel, n]) => {
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(n - 1));
+          });
+          tl.to('#f1', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(117)); // 117–121
+          tl.set({}, {}, F(122));
+          window.__timelines['frase-1'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

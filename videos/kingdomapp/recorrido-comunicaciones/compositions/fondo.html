@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- El fondo del cuerpo (0–2760): la noche del sitio con el halo y la retícula de puntos del kit (identidad/kit.css, enlazado por el host).
+         El halo se asienta 1,08 → 1,00 en 90 cuadros (sine.out) en los cuadros 0 · 180 · 840 · 1320 · 1680 · 2040 · 2520 (SPEC §1.1): el
+         arranque, la ceja y cada látigo; los puntos no se mueven. Se edita a mano (no lo genera _gen/gen.py). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+      </style>
+      <div id="root" data-composition-id="fondo" data-width="1920" data-height="1080" data-duration="92">
+        <div class="k-noche">
+          <div class="k-halo" id="fondo-halo" data-layout-allow-overflow></div>
+          <div class="k-puntos"></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          [0, 180, 840, 1320, 1680, 2040, 2520].forEach((n) => {
+            tl.fromTo('#fondo-halo', { scale: 1.08 }, { scale: 1, duration: 3, ease: 'sine.out', immediateRender: n === 0 }, n / 30);
+          });
+          tl.set({}, {}, 92);
+          window.__timelines['fondo'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

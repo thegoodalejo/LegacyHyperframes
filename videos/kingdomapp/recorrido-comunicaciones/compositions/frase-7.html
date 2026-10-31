@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P11–P12 · «Cada aviso, / a quien lo necesita.»: 2042 · 2044 · … · 2052; sale 2515–2519. Fraunces 560, 84 px, interlínea 1,04, −0,02 em (.k-feed-frase del kit con el tamaño de 16:9); entrada-palabra: blur 6 → 0 +
+         opacidad, 4 cuadros, power4.out, sin desplazarse; salida-texto: blur 0 → 8 + opacidad, 4 cuadros, power3.in. Generada por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 120px);
+          top: var(--f-frase-y, 460px);
+          width: var(--f-frase-ancho, 936px);
+          font-size: var(--f-frase-px, 84px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div id="root" data-composition-id="frase-7" data-width="1920" data-height="1080" data-duration="15.966667">
+        <div class="k-feed-frase f-frase" id="f7">
+          <span class="linea"><span class="palabra" id="f7-w1">Cada</span> <span class="palabra" id="f7-w2">aviso,</span></span>
+          <span class="linea"><span class="palabra" id="f7-w3">a</span> <span class="palabra" id="f7-w4">quien</span> <span class="palabra" id="f7-w5">lo</span> <span class="palabra" id="f7-w6">necesita.</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 6; i++) {
+            // El host arranca un cuadro antes del pulso (2042): la primera palabra se ve en el 2042, las demás cada 2 cuadros.
+            tl.fromTo(`#f7-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.to('#f7', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(474)); // 2515–2519
+          tl.set({}, {}, F(479));
+          window.__timelines['frase-7'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Recorrido de Comunicaciones · «Alguien nuevo escribe… y nadie se queda sin respuesta» (16:9)</title>
+    <!--
+      Recorrido del módulo Comunicaciones de Kingdom, 1920×1080 (16:9), 97,0 s a 30 fps (2910 cuadros). Contrato: SPEC.md; desvíos y sincronía en REVIEW.md.
+      ESTE ARCHIVO LO GENERA _gen/gen.py desde _gen/index.tpl.html (tramos, stills, marcas y sonidos en tablas); se puede editar a mano, pero el
+      próximo `python _gen/gen.py` lo reescribe.
+      Estructura:
+        · compositions/fondo.html          la noche del sitio (el halo se asienta en 0 · 180 · 840 · 1320 · 1680 · 2040 · 2520)
+        · compositions/frase-1..8.html     las ocho frases (una a la vez) y compositions/ceja.html («COMUNICACIONES», con sus dos lugares)
+        · #escena (aquí, en la raíz)       una tira horizontal con las dos ventanas a la app REAL: el celular (#ventana-cel, .k-ventana-16x9,
+                                            x 1104) y el escritorio (#ventana-esc, .k-ventana-escritorio, x 2160 = 240 + 1920). #escena en x 0 muestra
+                                            el celular; en x −1920, el escritorio. Cuatro látigos horizontales: 830–840 y 1670–1680 a la izquierda (al
+                                            escritorio), 1310–1320 y 2030–2040 a la derecha (de vuelta). Sin látigo vertical: todo lo hace Andrés
+                                            (cuenta 101) en sus dos aparatos
+            - el celular tiene tres mundos, que se reemplazan mientras la ventana está fuera de cuadro: #celK > #camK (el clip,
+              assets/grabaciones/clip/grabacion.mp4, 0–841), #celM > #camM (la ficha de Mariana, assets/grabaciones/celular.mp4, 1310–1680) y
+              #celC > #camC (la campaña nueva, celular.mp4, 2030–2760)
+            - el escritorio tiene dos: #e1in > #camE1 (el chatbot con «Probar», assets/grabaciones/escritorio.mp4, 830–1320) y #e2in > #camE2 (la
+              automatización de bienvenida, escritorio.mp4, 1670–2040)
+            - cada tramo de video es un <video> con su data-media-start, todos a 1×; los cortes caen en esperas, ondas, fundidos y saltos de la
+              grabación, y cada toque real cae en su pulso (tabla en REVIEW.md). Tres stills (assets/stills/) sostienen la app donde espera menos de
+              lo que pide el pulso. Las marcas de toque (.toque/.onda) van en las coordenadas reales del toque (pasos.json → toques[], px del video
+              × el factor de la ventana)
+        · identidad/cierre-comercial.html  el cierre del Comercial (kit v1.1), 92,0–97,0; el sonido de marca en 92,38
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      :root {
+        /* ── 16:9 con dos escenarios (SPEC §1.4) ── */
+        --f-ancho: 1920px;
+        --f-alto: 1080px;
+        /* Escenario del celular: ceja y frase en la columna izquierda */
+        --f-margen-x: 120px;
+        --f-ceja-y: 412px;
+        --f-ceja-px: 28px;
+        --f-frase-y: 460px;
+        --f-frase-ancho: 936px;
+        --f-frase-px: 84px;
+        /* Escenario del escritorio: ceja y frase arriba de la ventana */
+        --f-esc-x: 240px;
+        --f-esc-ceja-y: 92px;
+        --f-esc-frase-y: 132px;
+        --f-esc-frase-ancho: 1440px;
+        /* El celular: grabación 1170×2532 ajustada al ancho de la ventana (720/1170 y 2532·720/1170) */
+        --f-ventana-w: 720px;
+        --f-ventana-h: 900px;
+        --f-k: 0.615385;
+        --f-grab-alto: 1558.15px;
+        /* El escritorio: grabación 1920×1080 ajustada al ancho de la ventana (1440/1920 y 1080·0,75) */
+        --e-k: 0.75;
+        --e-grab-alto: 810px;
+      }
+      html,
+      body {
+        margin: 0;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root {
+        position: relative;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root > [data-composition-src] {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      #fondo {
+        z-index: 0;
+      }
+      #cierre-comercial {
+        z-index: 6;
+      }
+      /* La tira horizontal de los dos escenarios */
+      #escena {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3840px;
+        height: 1080px;
+        z-index: 3;
+      }
+      #ventana-cel {
+        left: 1104px;
+        top: 90px;
+        z-index: 3;
+      }
+      #ventana-esc {
+        left: 2160px;
+        top: 260px;
+        z-index: 3;
+      }
+      /* Cada mundo ocupa la ventana entera y recorta su propia cámara; su envoltorio (.mundo-in) es el del aterrizaje. */
+      .mundo-in {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      #ventana-cel .k-ventana-camara {
+        height: var(--f-grab-alto);
+      }
+      #ventana-esc .k-ventana-camara {
+        height: var(--e-grab-alto);
+      }
+      .k-ventana-camara video,
+      .k-ventana-camara img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+      }
+      .marcas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      /* Marca del toque (las grabaciones no traen círculo), en px de la cámara: en el celular 46 px (20 px CSS del celular) y su onda de 81 px;
+         en el escritorio 34 y 60 (la cámara del escritorio va a ×1,8–2,0: 61–68 px en pantalla). */
+      .toque {
+        position: absolute;
+        width: 46px;
+        height: 46px;
+        margin: -23px 0 0 -23px;
+        border-radius: 50%;
+        background: rgba(27, 27, 31, 0.28);
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+        opacity: 0;
+      }
+      .onda {
+        position: absolute;
+        width: 81px;
+        height: 81px;
+        margin: -40.5px 0 0 -40.5px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(1, 91, 190, 0.9);
+        opacity: 0;
+      }
+      #ventana-esc .toque {
+        width: 34px;
+        height: 34px;
+        margin: -17px 0 0 -17px;
+      }
+      #ventana-esc .onda {
+        width: 60px;
+        height: 60px;
+        margin: -30px 0 0 -30px;
+        box-shadow: 0 0 0 3px rgba(1, 91, 190, 0.9);
+      }
+      /* «Datos de ejemplo»: en cada ventana, abajo a la izquierda, a 24 px. 31 px (no los 22 del kit para 16:9), como el clip y los otros
+         recorridos: con la ventana a 0,92 (2524–2759) sigue en ≥ 28 px, el piso de lectura que mide check. */
+      .datos {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        z-index: 4;
+        height: 56px;
+        padding: 0 22px;
+        font-size: 31px;
+      }
+      #dip {
+        position: absolute;
+        inset: 0;
+        background: #060d1f;
+        opacity: 0;
+        z-index: 5;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="97"
+      data-width="1920"
+      data-height="1080"
+      data-motion-blur="on"
+      data-motion-blur-shutter="180"
+    >
+      <!-- ── Escenas (gráficos): el fondo, las frases y la ceja. Los cuadros van en el comentario de cada una. ── -->
+      <div id="fondo" data-composition-id="fondo" data-composition-src="compositions/fondo.html" data-track-kind="graphics"
+        data-start="0" data-duration="92" data-track-index="0" data-width="1920" data-height="1080"></div>
+      <!-- P1 · «Alguien nuevo escribe. / ¿Quién contesta?»: una landing por pulso («Alguien» 0 · «nuevo escribe.» 15 · «¿Quién» 30 · «contesta?» 45), como el clip; sale 117–121 -->
+      <div id="frase-1" data-composition-id="frase-1" data-composition-src="compositions/frase-1.html" data-track-kind="graphics"
+        data-start="0" data-duration="4.066667" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <!-- La ceja «COMUNICACIONES» (host 194–2524): entra en el 195 en la columna izquierda; cambia de lugar con cada látigo (sale con blur y entra en el otro: arriba del escritorio 842 y 1682, a la izquierda 1322 y 2042) y se va en 2520–2523 con la frase del sitio -->
+      <div id="ceja" data-composition-id="ceja" data-composition-src="compositions/ceja.html" data-track-kind="graphics"
+        data-start="6.466667" data-duration="77.666667" data-track-index="3" data-width="1920" data-height="1080"></div>
+      <!-- P2 · «Todo tu equipo, / un solo número.»: la línea entera 120–126 (blur 8 → 0) con el toque en «Tomar»; sale 177–181 -->
+      <div id="frase-2" data-composition-id="frase-2" data-composition-src="compositions/frase-2.html" data-track-kind="graphics"
+        data-start="3.966667" data-duration="2.1" data-track-index="2" data-width="1920" data-height="1080"></div>
+      <!-- P4–P6 · «Y sabes quién / leyó el aviso»: palabra a palabra 360–370; acompaña el reporte y los nombres y sale 837–841 con el látigo horizontal -->
+      <div id="frase-3" data-composition-id="frase-3" data-composition-src="compositions/frase-3.html" data-track-kind="graphics"
+        data-start="11.966667" data-duration="16.1" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <!-- P8 · «Responde a cualquier hora.» (una línea, arriba del escritorio): 843 · 845 · 847 · 849; sale 1317–1321 con el látigo de vuelta -->
+      <div id="frase-4" data-composition-id="frase-4" data-composition-src="compositions/frase-4.html" data-track-kind="graphics"
+        data-start="28.066667" data-duration="15.966667" data-track-index="2" data-width="1920" data-height="1080"></div>
+      <!-- P9 · «De un chat / a su ficha.»: 1322 · 1324 · … · 1332; sale 1677–1681 con el látigo al escritorio -->
+      <div id="frase-5" data-composition-id="frase-5" data-composition-src="compositions/frase-5.html" data-track-kind="graphics"
+        data-start="44.033333" data-duration="12" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <!-- P10 · «La bienvenida sale sola.» (una línea, arriba del escritorio): 1683 · 1685 · 1687 · 1689; sale 2037–2041 con el látigo de vuelta -->
+      <div id="frase-6" data-composition-id="frase-6" data-composition-src="compositions/frase-6.html" data-track-kind="graphics"
+        data-start="56.066667" data-duration="11.966667" data-track-index="2" data-width="1920" data-height="1080"></div>
+      <!-- P11–P12 · «Cada aviso, / a quien lo necesita.»: 2042 · 2044 · … · 2052; sale 2515–2519 -->
+      <div id="frase-7" data-composition-id="frase-7" data-composition-src="compositions/frase-7.html" data-track-kind="graphics"
+        data-start="68.033333" data-duration="15.966667" data-track-index="1" data-width="1920" data-height="1080"></div>
+      <!-- P13 · «Habla con tu iglesia, / sin perder a nadie» (el título de Comunicaciones en modulos.ts, sin «por WhatsApp», como en el clip): 2520 · 2522 · … · 2534; «nadie» en itálica dorada; quieta hasta el corte al cierre (2760) -->
+      <div id="frase-8" data-composition-id="frase-8" data-composition-src="compositions/frase-8.html" data-track-kind="graphics"
+        data-beat="nadie" data-hold
+        data-start="83.966667" data-duration="8.033333" data-track-index="2" data-width="1920" data-height="1080"></div>
+      <!-- P14 · el cierre del Comercial (identidad/kit.json → piezas.cierre-comercial): 2760–2909 -->
+      <div id="cierre-comercial" data-composition-id="cierre-comercial" data-composition-src="identidad/cierre-comercial.html" data-track-kind="graphics"
+        data-variable-values='{"publico":"iglesia","llamado":"prueba","contacto":"sitio","fondo":"noche","idioma":"es"}'
+        data-start="92" data-duration="5" data-track-index="6" data-width="1920" data-height="1080"></div>
+
+      <!-- ── Las dos ventanas a la app real, en la tira horizontal #escena ─────────────────────────────────────────────── -->
+      <!-- Tramos en cuadros de cada grabación: cuadro = segundo × 30; cada data-media-start lleva +0,01 s (un tercio de cuadro) para caer dentro
+           del cuadro buscado. Todos a 1×. -->
+      <div id="escena">
+        <!-- El celular de Andrés Felipe Restrepo Gómez (cuenta 101), con tres mundos uno tras otro -->
+        <div id="ventana-cel" class="k-ventana k-ventana-16x9" data-layout-allow-overflow>
+          <!-- Mundo K: el clip (0–841) -->
+          <div id="celK" class="mundo-in">
+            <div id="camK" class="k-ventana-camara">
+                  <!-- Bandeja quieta, «Cola 4» (grab. 40–117); toque en la fila de Mariana en el 75 (grab. 115) -->
+                  <video id="v01" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="0" data-duration="2.6" data-media-start="1.343333" data-playback-rate="1"></video>
+                  <!-- match cut sobre el toque: la conversación ya cargada (grab. 193–236); entra 1,03 → 1,00; toque en «Tomar» en el 120 (grab. 235) -->
+                  <video id="v02" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="2.6" data-duration="1.466667" data-media-start="6.443333" data-playback-rate="1"></video>
+                  <!-- corte en la onda del botón (237→246): «Atendiendo» y «… tomó la conversación» en el 122 (grab. 246) -->
+                  <video id="v03" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="4.066667" data-duration="0.6" data-media-start="8.21" data-playback-rate="1"></video>
+                  <!-- quieta (corte invisible 264→348); toque en el compositor en el 180 (grab. 388) -->
+                  <video id="v04" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="4.666667" data-duration="1.4" data-media-start="11.61" data-playback-rate="1"></video>
+                  <!-- corte en el foco (390→394): la tecla «/» y las respuestas rápidas en el 182 (grab. 394) -->
+                  <video id="v05" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="6.066667" data-duration="0.933333" data-media-start="13.143333" data-playback-rate="1"></video>
+                  <!-- quieta (corte invisible 422→476); toque en «/horarios» en el 240 (grab. 506) -->
+                  <video id="v06" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="7" data-duration="1.066667" data-media-start="15.876667" data-playback-rate="1"></video>
+                  <!-- corte en la onda (508→512): el compositor lleno con el horario en el 242 (grab. 512) -->
+                  <video id="v07" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="8.066667" data-duration="0.933333" data-media-start="17.076667" data-playback-rate="1"></video>
+                  <!-- quieta (corte invisible 540→590); toque en enviar en el 300 (grab. 620) -->
+                  <video id="v08" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="9" data-duration="1.066667" data-media-start="19.676667" data-playback-rate="1"></video>
+                  <!-- corte en la espera (622→630): la respuesta en el hilo en el 302 (grab. 630), con una palomita -->
+                  <video id="v09" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="10.066667" data-duration="1.266667" data-media-start="21.01" data-playback-rate="1"></video>
+                  <!-- quieta (corte invisible 668→765); toque en volver en el 375 (grab. 800, fuera del encuadre: no se dibuja) -->
+                  <video id="v10" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="11.333333" data-duration="1.233333" data-media-start="25.51" data-playback-rate="1"></video>
+                  <!-- corte en la espera (802→808): la lista con «Cola 3 · Mis chats 3» en el 377 (grab. 808) -->
+                  <video id="v11" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="12.566667" data-duration="0.766667" data-media-start="26.943333" data-playback-rate="1"></video>
+                  <!-- quieta (corte invisible 831→894); toque en «Campañas» en el 420 (grab. 914) -->
+                  <video id="v12" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="13.333333" data-duration="0.733333" data-media-start="29.81" data-playback-rate="1"></video>
+                  <!-- corte en la espera y el esqueleto (916→928): las tarjetas suben escalonadas 422–432 (la animación de la app) -->
+                  <video id="v13" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="14.066667" data-duration="0.933333" data-media-start="30.943333" data-playback-rate="1"></video>
+                  <!-- quieta (corte invisible 956→1011); la lista baja hasta la invitación en un cuadro en el 480 (grab. 1041, salto real) -->
+                  <video id="v14" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="15" data-duration="2" data-media-start="33.71" data-playback-rate="1"></video>
+                  <!-- quieta (corte invisible 1071→1098); toque en la invitación en el 600 (grab. 1188) -->
+                  <video id="v15" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="17" data-duration="3.066667" data-media-start="36.61" data-playback-rate="1"></video>
+                  <!-- corte en la espera y el esqueleto (1190→1202): el reporte con sus números en el 602 (grab. 1202) -->
+                  <video id="v16" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="20.066667" data-duration="0.933333" data-media-start="40.076667" data-playback-rate="1"></video>
+                  <!-- quieta (corte invisible 1230→1299); toque en «respondieron» en el 660 (grab. 1329) -->
+                  <video id="v17" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="21" data-duration="1.033333" data-media-start="43.31" data-playback-rate="1"></video>
+                  <!-- corte en la onda (1330→1335): el contorno de «respondieron» en el 661 (grab. 1335) -->
+                  <video id="v18" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="22.033333" data-duration="0.466667" data-media-start="44.51" data-playback-rate="1"></video>
+                  <!-- la app baja a los nombres en un cuadro en el 675 (grab. 1396, salto real): «Destinatarios (23)», «Leído» y «Allí estaré»; el látigo horizontal se lo lleva en 830–840 -->
+                  <video id="v19" class="clip" src="assets/grabaciones/clip/grabacion.mp4" muted playsinline data-track-index="10"
+                    data-start="22.5" data-duration="5.533333" data-media-start="46.543333" data-playback-rate="1"></video>
+                  <div class="marcas">
+                    <!-- 75 · la fila de Mariana (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-75" style="left: calc(584px * var(--f-k)); top: calc(1496px * var(--f-k))"></div>
+                    <div class="onda" id="on-75" style="left: calc(584px * var(--f-k)); top: calc(1496px * var(--f-k))"></div>
+                    <!-- 120 · «Tomar» (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-120" style="left: calc(605px * var(--f-k)); top: calc(456px * var(--f-k))"></div>
+                    <div class="onda" id="on-120" style="left: calc(605px * var(--f-k)); top: calc(456px * var(--f-k))"></div>
+                    <!-- 180 · el compositor (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-180" style="left: calc(585px * var(--f-k)); top: calc(2127px * var(--f-k))"></div>
+                    <div class="onda" id="on-180" style="left: calc(585px * var(--f-k)); top: calc(2127px * var(--f-k))"></div>
+                    <!-- 240 · «/horarios» (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-240" style="left: calc(585px * var(--f-k)); top: calc(1797px * var(--f-k))"></div>
+                    <div class="onda" id="on-240" style="left: calc(585px * var(--f-k)); top: calc(1797px * var(--f-k))"></div>
+                    <!-- 300 · enviar (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-300" style="left: calc(1086px * var(--f-k)); top: calc(2136px * var(--f-k))"></div>
+                    <div class="onda" id="on-300" style="left: calc(1086px * var(--f-k)); top: calc(2136px * var(--f-k))"></div>
+                    <!-- 420 · «Campañas» (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-420" style="left: calc(432px * var(--f-k)); top: calc(399px * var(--f-k))"></div>
+                    <div class="onda" id="on-420" style="left: calc(432px * var(--f-k)); top: calc(399px * var(--f-k))"></div>
+                    <!-- 600 · la invitación (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-600" style="left: calc(585px * var(--f-k)); top: calc(1857px * var(--f-k))"></div>
+                    <div class="onda" id="on-600" style="left: calc(585px * var(--f-k)); top: calc(1857px * var(--f-k))"></div>
+                    <!-- 660 · «respondieron» (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-660" style="left: calc(311px * var(--f-k)); top: calc(1944px * var(--f-k))"></div>
+                    <div class="onda" id="on-660" style="left: calc(311px * var(--f-k)); top: calc(1944px * var(--f-k))"></div>
+                  </div>
+            </div>
+          </div>
+          <!-- Mundo M: la conversación de Mariana y su ficha (1310–1680) -->
+          <div id="celM" class="mundo-in">
+            <div id="camM" class="k-ventana-camara">
+                  <!-- 1310–1387 · la conversación de Mariana, «Atendiendo», con su pregunta, la nota y la respuesta de Andrés (rec 414–491); toque en el ícono de la persona en el 1380 (rec 484) -->
+                  <video id="m01" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="12"
+                    data-start="43.666667" data-duration="2.6" data-media-start="13.81" data-playback-rate="1"></video>
+                  <!-- 1388–1469 · el panel «La persona» ya sin la etiqueta del ícono (rec 492–495, fuera): «Este número no está en Membresía…», «Vincular a una persona», «Crear ficha» (rec 542–623); toque en «Crear ficha» en el 1440 (rec 594); el diálogo entra a 1× (rec 601–608) -->
+                  <video id="m02" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="12"
+                    data-start="46.266667" data-duration="2.733333" data-media-start="18.076667" data-playback-rate="1"></video>
+                  <!-- 1470–1519 · quieta (corte invisible 623→680): «Crear ficha» con «Mariana» y «Ospina» ya puestos; toque en «¿Cómo llegó?» en el 1500 (rec 710); la lista abre (rec 717–721) -->
+                  <video id="m03" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="12"
+                    data-start="49" data-duration="1.666667" data-media-start="22.676667" data-playback-rate="1"></video>
+                  <!-- 1520–1540 · quieta (corte invisible 729→771); toque en «Redes sociales» en el 1530 (rec 781); la lista se cierra (rec 782–791) -->
+                  <video id="m04" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="12"
+                    data-start="50.666667" data-duration="0.7" data-media-start="25.71" data-playback-rate="1"></video>
+                  <!-- 1541–1559 · quieta (corte invisible 791→854): «Crear ficha» encendido; toque en «Crear ficha» en el 1545 (rec 858); el diálogo empieza a irse (rec 870–872) -->
+                  <video id="m05" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="12"
+                    data-start="51.366667" data-duration="0.633333" data-media-start="28.476667" data-playback-rate="1"></video>
+                  <!-- 1560–1679 · corte en el fundido (873–877): el panel con la ficha: «MO · Mariana Ospina · +575550123987 · Ver ficha», «Campañas por WhatsApp · Autorizó los mensajes: escribió primero (30/10/2026)» (rec 878–997) -->
+                  <video id="m06" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="12"
+                    data-start="52" data-duration="4" data-media-start="29.276667" data-playback-rate="1"></video>
+                  <div class="marcas">
+                    <!-- 1380 · el ícono de la persona (rec 484) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-1380" style="left: calc(1086px * var(--f-k)); top: calc(456px * var(--f-k))"></div>
+                    <div class="onda" id="on-1380" style="left: calc(1086px * var(--f-k)); top: calc(456px * var(--f-k))"></div>
+                    <!-- 1440 · «Crear ficha» del panel (rec 594) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-1440" style="left: calc(377px * var(--f-k)); top: calc(937px * var(--f-k))"></div>
+                    <div class="onda" id="on-1440" style="left: calc(377px * var(--f-k)); top: calc(937px * var(--f-k))"></div>
+                    <!-- 1500 · «¿Cómo llegó?» (rec 710) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-1500" style="left: calc(585px * var(--f-k)); top: calc(1628px * var(--f-k))"></div>
+                    <div class="onda" id="on-1500" style="left: calc(585px * var(--f-k)); top: calc(1628px * var(--f-k))"></div>
+                    <!-- 1530 · «Redes sociales» (rec 781) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-1530" style="left: calc(585px * var(--f-k)); top: calc(1391px * var(--f-k))"></div>
+                    <div class="onda" id="on-1530" style="left: calc(585px * var(--f-k)); top: calc(1391px * var(--f-k))"></div>
+                    <!-- 1545 · «Crear ficha» del diálogo (rec 858) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-1545" style="left: calc(866px * var(--f-k)); top: calc(1883px * var(--f-k))"></div>
+                    <div class="onda" id="on-1545" style="left: calc(866px * var(--f-k)); top: calc(1883px * var(--f-k))"></div>
+                  </div>
+            </div>
+          </div>
+          <!-- Mundo C: la campaña nueva para la red Timoteo (2030–2760) -->
+          <div id="celC" class="mundo-in">
+            <div id="camC" class="k-ventana-camara">
+                  <!-- 2030–2069 · una campaña nueva en «2 A quién va»: «Membresía · Un evento», «Toda la iglesia · Un público» (rec 1360–1399) -->
+                  <video id="d01" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="67.666667" data-duration="1.333333" data-media-start="45.343333" data-playback-rate="1"></video>
+                  <!-- 2070–2114 · quieta (corte invisible 1399→1392); toque en «Un público» en el 2100 (rec 1422): «Agregar filtro» (rec 1429) -->
+                  <video id="d02" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="69" data-duration="1.5" data-media-start="46.41" data-playback-rate="1"></video>
+                  <!-- 2115–2154 · quieta (corte invisible 1436→1498); toque en «Agregar filtro» en el 2130 (rec 1513); la hoja sube a 1× (rec 1521–1525) -->
+                  <video id="d03" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="70.5" data-duration="1.333333" data-media-start="49.943333" data-playback-rate="1"></video>
+                  <!-- 2155–2162 · corte en la espera (la hoja se acomoda 6 px en la rec 1574); toque en «Red» en el 2160 (rec 1583) -->
+                  <video id="d04" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="71.833333" data-duration="0.266667" data-media-start="52.61" data-playback-rate="1"></video>
+                  <!-- 2163–2204 · corte en la espera: el editor «Red» ya puesto (rec 1616). El cambio de hoja de la rec 1590–1597 queda FUERA: en esos cuadros la hoja se va y deja ver la página con la cifra de toda la iglesia y el texto de ayuda de «Calcular» (decisión 215). Toque en «Red Timoteo» en el 2190 (rec 1643); la casilla se marca (rec 1649) -->
+                  <video id="d05" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="72.1" data-duration="1.4" data-media-start="53.876667" data-playback-rate="1"></video>
+                  <!-- 2205–2226 · quieta (corte invisible 1658→1685); toque en «Aplicar» en el 2220 (rec 1700) -->
+                  <video id="d06" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="73.5" data-duration="0.733333" data-media-start="56.176667" data-playback-rate="1"></video>
+                  <!-- 2227–2261 · corte en la espera (la hoja se va en la rec 1707–1709 y queda fuera): el chip «Red: Red Timoteo» (rec 1715); en el 2235 (rec 1723) «Personas de la red Red Timoteo» y la cifra corre hasta «≈ 143 personas · 139 con WhatsApp» (rec 1741) -->
+                  <video id="d07" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="74.233333" data-duration="1.166667" data-media-start="57.176667" data-playback-rate="1"></video>
+                  <!-- 2262–2294 · quieta (corte invisible 1749→1834); la app sube a «1 El mensaje» en un cuadro en el 2280 (rec 1852, salto real) -->
+                  <video id="d08" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="75.4" data-duration="1.1" data-media-start="61.143333" data-playback-rate="1"></video>
+                  <!-- 2295–2330 · quieta (corte invisible 1866→1910); toque en «Plantilla aprobada» en el 2310 (rec 1925); la lista abre (rec 1926–1936) -->
+                  <video id="d09" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="76.5" data-duration="1.2" data-media-start="63.676667" data-playback-rate="1"></video>
+                  <!-- 2331–2342 · corte en la espera (la lista se acomoda 13 px en la rec 1985); toque en «invitacion_culto · marketing» en el 2340 (rec 1995) -->
+                  <video id="d10" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="77.7" data-duration="0.4" data-media-start="66.21" data-playback-rate="1"></video>
+                  <!-- 2343–2409 · corte en la onda (1996–2004): la lista se va y la vista previa de WhatsApp se llena: «Hola [Primer nombre], este domingo celebramos [Qué celebramos]. Te esperamos a las 10:30 a. m. con toda tu familia.» · «Allí estaré» · «Cómo llegar» (rec 2005–2071) -->
+                  <video id="d11" class="clip" src="assets/grabaciones/celular.mp4" muted playsinline data-track-index="14"
+                    data-start="78.1" data-duration="2.233333" data-media-start="66.843333" data-playback-rate="1"></video>
+                  <!-- 2410–2759 · still de la rec 2060: la vista previa quieta (la grabación sube a «Nueva campaña» en la rec 2073; aquí no hace falta: la vista previa ya está a la vista) -->
+                  <img id="sc2060" class="clip" src="assets/stills/still-c2060.png" alt="" data-track-index="17" data-start="80.333333" data-duration="11.666667" />
+                  <div class="marcas">
+                    <!-- 2100 · «Un público» (rec 1422) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-2100" style="left: calc(827px * var(--f-k)); top: calc(1032px * var(--f-k))"></div>
+                    <div class="onda" id="on-2100" style="left: calc(827px * var(--f-k)); top: calc(1032px * var(--f-k))"></div>
+                    <!-- 2130 · «Agregar filtro» (rec 1513) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-2130" style="left: calc(336px * var(--f-k)); top: calc(1191px * var(--f-k))"></div>
+                    <div class="onda" id="on-2130" style="left: calc(336px * var(--f-k)); top: calc(1191px * var(--f-k))"></div>
+                    <!-- 2160 · «Red» (rec 1583) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-2160" style="left: calc(585px * var(--f-k)); top: calc(2241px * var(--f-k))"></div>
+                    <div class="onda" id="on-2160" style="left: calc(585px * var(--f-k)); top: calc(2241px * var(--f-k))"></div>
+                    <!-- 2190 · «Red Timoteo» (rec 1643) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-2190" style="left: calc(268px * var(--f-k)); top: calc(2253px * var(--f-k))"></div>
+                    <div class="onda" id="on-2190" style="left: calc(268px * var(--f-k)); top: calc(2253px * var(--f-k))"></div>
+                    <!-- 2220 · «Aplicar» (rec 1700) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-2220" style="left: calc(954px * var(--f-k)); top: calc(2424px * var(--f-k))"></div>
+                    <div class="onda" id="on-2220" style="left: calc(954px * var(--f-k)); top: calc(2424px * var(--f-k))"></div>
+                    <!-- 2310 · «Plantilla aprobada» (rec 1925) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-2310" style="left: calc(585px * var(--f-k)); top: calc(1266px * var(--f-k))"></div>
+                    <div class="onda" id="on-2310" style="left: calc(585px * var(--f-k)); top: calc(1266px * var(--f-k))"></div>
+                    <!-- 2340 · «invitacion_culto · marketing» (rec 1995) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-2340" style="left: calc(585px * var(--f-k)); top: calc(2103px * var(--f-k))"></div>
+                    <div class="onda" id="on-2340" style="left: calc(585px * var(--f-k)); top: calc(2103px * var(--f-k))"></div>
+                  </div>
+            </div>
+          </div>
+          <div id="datos-cel" class="k-datos-ejemplo datos">Datos de ejemplo</div>
+          <div id="dip"></div>
+        </div>
+
+        <!-- El escritorio de Andrés (cuenta 101), con dos mundos -->
+        <div id="ventana-esc" class="k-ventana k-ventana-escritorio" data-layout-allow-overflow>
+          <!-- Mundo E1: el flujo del chatbot y «Probar» (830–1320) -->
+          <div id="e1in" class="mundo-in">
+            <div id="camE1" class="k-ventana-camara">
+                  <!-- 830–901 · el lienzo de «Bienvenida con menú» con el panel «Palabras de activación» (hola · menu · buenas) (rec 37–108); toque en «Probar» en el 900 (rec 107) -->
+                  <video id="e01" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="16"
+                    data-start="27.666667" data-duration="2.4" data-media-start="1.243333" data-playback-rate="1"></video>
+                  <!-- 902–959 · corte sobre el toque (BANNED 41: la búsqueda de la persona de prueba, rec 162–246, queda fuera): el simulador listo, «Probar el flujo · Es una prueba: no se envía nada por WhatsApp ni queda nada guardado. · Probando como Carolina Mejía Arango» (rec 255–312) -->
+                  <video id="e02" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="16"
+                    data-start="30.066667" data-duration="1.933333" data-media-start="8.51" data-playback-rate="1"></video>
+                  <!-- 960–989 · corte en el foco (el panel se desplazó solo en la rec 332): toque en «Escribe como la persona…» y «hola» se escribe a 1× (rec 344–352), quieto hasta la rec 373 -->
+                  <video id="e03" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="16"
+                    data-start="32" data-duration="1" data-media-start="11.476667" data-playback-rate="1"></video>
+                  <!-- 990–993 · toque en enviar (rec 399): «hola» pasa a la derecha (rec 401) -->
+                  <video id="e04" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="16"
+                    data-start="33" data-duration="0.133333" data-media-start="13.31" data-playback-rate="1"></video>
+                  <!-- 1020–1079 · el chatbot contesta (rec 404): «Empezó el flujo «Bienvenida con menú»» · «¡Hola Carolina! Bienvenido a Iglesia Kingdom Demo 1.» · «¿En qué te podemos ayudar?» con Horarios · Oración · Hablar con alguien -->
+                  <video id="e05" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="16"
+                    data-start="34" data-duration="2" data-media-start="13.476667" data-playback-rate="1"></video>
+                  <!-- 1080–1141 · quieta (corte invisible 463→496); toque en «Horarios» en el 1140 (rec 556); los botones se apagan (rec 557) -->
+                  <video id="e06" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="16"
+                    data-start="36" data-duration="2.066667" data-media-start="16.543333" data-playback-rate="1"></video>
+                  <!-- 1155–1319 · el horario (rec 560): «Nos reunimos los domingos a las 8:00 a. m. y a las 10:30 a. m., y los miércoles a las 7:00 p. m. ¡Te esperamos!» · «El flujo terminó» (rec 560–724); el látigo se lo lleva en 1310–1320 -->
+                  <video id="e07" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="16"
+                    data-start="38.5" data-duration="5.5" data-media-start="18.676667" data-playback-rate="1"></video>
+                  <!-- 994–1019 · still de la rec 403: «hola» enviado, el chatbot todavía no contesta (la app contesta en 5 cuadros; el pulso pide 30) -->
+                  <img id="se403" class="clip" src="assets/stills/still-e403.png" alt="" data-track-index="19" data-start="33.133333" data-duration="0.866667" />
+                  <!-- 1142–1154 · still de la rec 559: «Horarios» tocado, los botones apagados, antes de la respuesta -->
+                  <img id="se559" class="clip" src="assets/stills/still-e559.png" alt="" data-track-index="19" data-start="38.066667" data-duration="0.433333" />
+                  <div class="marcas">
+                    <!-- 900 · «Probar» (rec 107) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-900" style="left: calc(1319px * var(--e-k)); top: calc(429px * var(--e-k))"></div>
+                    <div class="onda" id="on-900" style="left: calc(1319px * var(--e-k)); top: calc(429px * var(--e-k))"></div>
+                    <!-- 960 · «Escribe como la persona…» (rec 344) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-960" style="left: calc(1587px * var(--e-k)); top: calc(1049px * var(--e-k))"></div>
+                    <div class="onda" id="on-960" style="left: calc(1587px * var(--e-k)); top: calc(1049px * var(--e-k))"></div>
+                    <!-- 990 · enviar (rec 399) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-990" style="left: calc(1842px * var(--e-k)); top: calc(1048px * var(--e-k))"></div>
+                    <div class="onda" id="on-990" style="left: calc(1842px * var(--e-k)); top: calc(1048px * var(--e-k))"></div>
+                    <!-- 1140 · «Horarios» (rec 556) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-1140" style="left: calc(1451px * var(--e-k)); top: calc(811px * var(--e-k))"></div>
+                    <div class="onda" id="on-1140" style="left: calc(1451px * var(--e-k)); top: calc(811px * var(--e-k))"></div>
+                  </div>
+            </div>
+          </div>
+          <!-- Mundo E2: la automatización «Bienvenida a quien llega» (1670–2040) -->
+          <div id="e2in" class="mundo-in">
+            <div id="camE2" class="k-ventana-camara">
+                  <!-- 1670–1802 · Automatizaciones: «Bienvenida a quien llega · Encendida · Cuando llega una persona nueva (1 h después) · Hoy: 4 enviados · 0 omitidos», «Feliz cumpleaños» (rec 828–960); toque en la tarjeta en el 1800 (rec 958) -->
+                  <video id="f01" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="18"
+                    data-start="55.666667" data-duration="4.433333" data-media-start="27.61" data-playback-rate="1"></video>
+                  <!-- 1803–1922 · corte en la espera (961–968 la página carga): la automatización con «Encendida · Hoy: 4 enviados · 0 omitidos», «Configuración · Envíos · Historial» y la vista previa (rec 1050–1169); toque en «Envíos» en el 1920 (rec 1167, quieto: el clic es la rec 1170) -->
+                  <video id="f02" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="18"
+                    data-start="60.1" data-duration="4" data-media-start="35.01" data-playback-rate="1"></video>
+                  <!-- 1923–2039 · corte en la espera (1171–1179, la lista carga): los envíos: Isabela Muñoz Salazar, Tomás Cano Ochoa, Sara Lucía Bermúdez Ríos y Mateo Arango Vélez, «Persona nueva · 30-10-2026 13:54», todos «Leído» (rec 1180–1296) -->
+                  <video id="f03" class="clip" src="assets/grabaciones/escritorio.mp4" muted playsinline data-track-index="18"
+                    data-start="64.1" data-duration="3.9" data-media-start="39.343333" data-playback-rate="1"></video>
+                  <div class="marcas">
+                    <!-- 1800 · la tarjeta «Bienvenida a quien llega» (rec 958) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-1800" style="left: calc(479px * var(--e-k)); top: calc(411px * var(--e-k))"></div>
+                    <div class="onda" id="on-1800" style="left: calc(479px * var(--e-k)); top: calc(411px * var(--e-k))"></div>
+                    <!-- 1920 · «Envíos» (rec 1170) (toques[] de pasos.json, px del video × el factor de la ventana) -->
+                    <div class="toque" id="tq-1920" style="left: calc(468px * var(--e-k)); top: calc(446px * var(--e-k))"></div>
+                    <div class="onda" id="on-1920" style="left: calc(468px * var(--e-k)); top: calc(446px * var(--e-k))"></div>
+                  </div>
+            </div>
+          </div>
+          <div id="datos-esc" class="k-datos-ejemplo datos">Datos de ejemplo</div>
+        </div>
+      </div>
+
+      <!-- ── Sonido ────────────────────────────────────────────────────────────────────────────────────────────────── -->
+      <!-- Música «Product Launch» (The_Mountain) editada como en Academia (SPEC §0.1; _gen/musica.sh): pista 14,05–46,04 + 22,01–fin, cruce de
+           30 ms en el 31,99 del video (la costura cae en el simulador del chatbot, cuadro 960, donde se escribe «hola»). 0,75 en el carril de
+           volumen de principio a fin, sin fundido: el último acorde se apaga solo debajo del cierre (SPEC §0.4). -->
+      <audio id="musica" src="assets/musica/product-launch-recorrido.wav" data-start="0" data-duration="95.99" data-track-index="20"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.75},{"t":95.99,"v":0.75}]}]}'></audio>
+
+      <!-- Sonidos de acción del kit (identidad/kit.json → sonidosAccion): data-start = cuadro del sonido / 30 − acento; el sonido cae un
+           cuadro después de su imagen. toque rota tres tomas, nunca la misma dos veces seguidas: a = toque.wav, b = +3 % de tono, c = −3 %.
+           Los toques van a 1,0; 1,4 solo en el primer látigo y en las confirmaciones de las pruebas. -->
+      <!-- 76 · toque a en la fila de Mariana (75) -->
+      <audio id="snd-toque-76" src="identidad/audio/toque.wav" data-start="2.533333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 121 · toque c en «Tomar», con el bajo (120) -->
+      <audio id="snd-toque-121" src="assets/audio/toque-c.wav" data-start="4.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 123 · «Atendiendo» y la nota «… tomó la conversación» (122) -->
+      <audio id="snd-aparicion-123" src="identidad/audio/aparicion.wav" data-start="4.1" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 181 · toque b en el compositor, con el pico (180) -->
+      <audio id="snd-toque-181" src="assets/audio/toque-b.wav" data-start="6.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 196 · la ceja «COMUNICACIONES» (195) -->
+      <audio id="snd-aparicion-196" src="identidad/audio/aparicion.wav" data-start="6.533333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 241 · toque a en «/horarios» (240) -->
+      <audio id="snd-toque-241" src="identidad/audio/toque.wav" data-start="8.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 243 · el compositor se llena con el horario (242) -->
+      <audio id="snd-aparicion-243" src="identidad/audio/aparicion.wav" data-start="8.1" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 301 · toque c en enviar (300) -->
+      <audio id="snd-toque-301" src="assets/audio/toque-c.wav" data-start="10.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 303 · la respuesta queda en el hilo (302) -->
+      <audio id="snd-confirmacion-303" src="identidad/audio/confirmacion.wav" data-start="10" data-duration="0.32" data-track-index="24" data-volume="1.4"></audio>
+      <!-- 376 · toque b en volver (375; fuera del encuadre: se oye y no se dibuja) -->
+      <audio id="snd-toque-376" src="assets/audio/toque-b.wav" data-start="12.533333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 421 · toque a en «Campañas» (420) -->
+      <audio id="snd-toque-421" src="identidad/audio/toque.wav" data-start="14.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 481 · la lista baja hasta la invitación (480) -->
+      <audio id="snd-desliz-481" src="identidad/audio/desliz.wav" data-start="15.833333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 601 · toque b en la invitación, con la segunda subida (600) -->
+      <audio id="snd-toque-601" src="assets/audio/toque-b.wav" data-start="20.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 603 · el reporte con sus números (602) -->
+      <audio id="snd-confirmacion-603" src="identidad/audio/confirmacion.wav" data-start="20" data-duration="0.32" data-track-index="24" data-volume="1"></audio>
+      <!-- 661 · toque c en «respondieron», con el golpe (660) -->
+      <audio id="snd-toque-661" src="assets/audio/toque-c.wav" data-start="22.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 676 · los nombres con «Leído» y «Allí estaré» (675), la prueba más fuerte de la parte 1 -->
+      <audio id="snd-confirmacion-676" src="identidad/audio/confirmacion.wav" data-start="22.433333" data-duration="0.32" data-track-index="24" data-volume="1.4"></audio>
+      <!-- 841 · el látigo horizontal al escritorio (830–840) -->
+      <audio id="snd-desliz-841" src="identidad/audio/desliz.wav" data-start="27.833333" data-duration="0.36" data-track-index="23" data-volume="1.4"></audio>
+      <!-- 901 · toque a en «Probar» (900) -->
+      <audio id="snd-toque-901" src="identidad/audio/toque.wav" data-start="30.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 961 · toque b en «Escribe como la persona…» (960; las teclas de «hola» no suenan) -->
+      <audio id="snd-toque-961" src="assets/audio/toque-b.wav" data-start="32.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 991 · toque c en enviar (990) -->
+      <audio id="snd-toque-991" src="assets/audio/toque-c.wav" data-start="33.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 1021 · el chatbot contesta: el saludo y el menú (1020) -->
+      <audio id="snd-aparicion-1021" src="identidad/audio/aparicion.wav" data-start="34.033333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 1141 · toque a en «Horarios» (1140) -->
+      <audio id="snd-toque-1141" src="identidad/audio/toque.wav" data-start="38.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 1156 · el horario (1155), la primera prueba de la parte 2 -->
+      <audio id="snd-confirmacion-1156" src="identidad/audio/confirmacion.wav" data-start="38.433333" data-duration="0.32" data-track-index="24" data-volume="1.4"></audio>
+      <!-- 1321 · el látigo horizontal de vuelta al celular (1310–1320) -->
+      <audio id="snd-desliz-1321" src="identidad/audio/desliz.wav" data-start="43.833333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 1381 · toque b en el ícono de la persona (1380) -->
+      <audio id="snd-toque-1381" src="assets/audio/toque-b.wav" data-start="46.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 1441 · toque c en «Crear ficha» del panel (1440) -->
+      <audio id="snd-toque-1441" src="assets/audio/toque-c.wav" data-start="48.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 1501 · toque a en «¿Cómo llegó?» (1500) -->
+      <audio id="snd-toque-1501" src="identidad/audio/toque.wav" data-start="50.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 1531 · toque b en «Redes sociales» (1530) -->
+      <audio id="snd-toque-1531" src="assets/audio/toque-b.wav" data-start="51.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 1546 · toque c en «Crear ficha» del diálogo (1545) -->
+      <audio id="snd-toque-1546" src="assets/audio/toque-c.wav" data-start="51.533333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 1561 · la ficha de Mariana Ospina en el panel (1560) -->
+      <audio id="snd-confirmacion-1561" src="identidad/audio/confirmacion.wav" data-start="51.933333" data-duration="0.32" data-track-index="24" data-volume="1.4"></audio>
+      <!-- 1681 · el látigo horizontal al escritorio (1670–1680) -->
+      <audio id="snd-desliz-1681" src="identidad/audio/desliz.wav" data-start="55.833333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 1801 · toque a en la tarjeta «Bienvenida a quien llega» (1800) -->
+      <audio id="snd-toque-1801" src="identidad/audio/toque.wav" data-start="60.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 1804 · la automatización con la vista previa del mensaje (1803) -->
+      <audio id="snd-aparicion-1804" src="identidad/audio/aparicion.wav" data-start="60.133333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 1921 · toque b en «Envíos» (1920) -->
+      <audio id="snd-toque-1921" src="assets/audio/toque-b.wav" data-start="64.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 1924 · los cuatro envíos (1923) -->
+      <audio id="snd-aparicion-1924" src="identidad/audio/aparicion.wav" data-start="64.133333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 2041 · el látigo horizontal de vuelta al celular (2030–2040) -->
+      <audio id="snd-desliz-2041" src="identidad/audio/desliz.wav" data-start="67.833333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 2101 · toque c en «Un público» (2100) -->
+      <audio id="snd-toque-2101" src="assets/audio/toque-c.wav" data-start="70.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 2131 · toque a en «Agregar filtro» (2130) -->
+      <audio id="snd-toque-2131" src="identidad/audio/toque.wav" data-start="71.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 2161 · toque b en «Red» (2160) -->
+      <audio id="snd-toque-2161" src="assets/audio/toque-b.wav" data-start="72.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 2191 · toque c en «Red Timoteo» (2190) -->
+      <audio id="snd-toque-2191" src="assets/audio/toque-c.wav" data-start="73.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 2221 · toque a en «Aplicar» (2220) -->
+      <audio id="snd-toque-2221" src="identidad/audio/toque.wav" data-start="74.033333" data-duration="0.075" data-track-index="21" data-volume="1"></audio>
+      <!-- 2236 · «Personas de la red Red Timoteo» y la cifra (2235), la tercera prueba -->
+      <audio id="snd-confirmacion-2236" src="identidad/audio/confirmacion.wav" data-start="74.433333" data-duration="0.32" data-track-index="24" data-volume="1.4"></audio>
+      <!-- 2281 · la app sube al mensaje (2280; la cámara quieta) -->
+      <audio id="snd-desliz-2281" src="identidad/audio/desliz.wav" data-start="75.833333" data-duration="0.36" data-track-index="23" data-volume="1"></audio>
+      <!-- 2311 · toque b en «Plantilla aprobada» (2310) -->
+      <audio id="snd-toque-2311" src="assets/audio/toque-b.wav" data-start="77.033333" data-duration="0.073" data-track-index="21" data-volume="1"></audio>
+      <!-- 2341 · toque c en «invitacion_culto · marketing» (2340) -->
+      <audio id="snd-toque-2341" src="assets/audio/toque-c.wav" data-start="78.033333" data-duration="0.077" data-track-index="21" data-volume="1"></audio>
+      <!-- 2344 · la vista previa de WhatsApp se llena (2343) -->
+      <audio id="snd-aparicion-2344" src="identidad/audio/aparicion.wav" data-start="78.133333" data-duration="0.22" data-track-index="22" data-volume="1"></audio>
+      <!-- 2716–2773 · la subida hacia el cierre; su golpe (acento 1,5) cae en el 2761, un cuadro después del corte del 2760 -->
+      <audio id="snd-subida" src="identidad/audio/subida.wav" data-start="90.533333" data-duration="1.9" data-track-index="25" data-volume="1"></audio>
+      <!-- Sonido de marca: inicio del cierre + 0,38 s (identidad/kit.json → piezas.cierre-comercial.sonido) -->
+      <audio id="marca-cierre" src="identidad/audio/sonido-marca.wav" data-start="92.38" data-duration="2.1" data-track-index="26" data-volume="1"></audio>
+    </div>
+
+    <script>
+      // ── Un solo lugar para el formato (SPEC §1.4) ──────────────────────────────────────────────────────────────────────
+      window.KD = {
+        fps: 30,
+        cel: { w: 720, h: 900, hVis: 900 }, // --f-k = 720/1170; --f-grab-alto = 1558.15px
+        esc: { w: 1440, h: 760, hVis: 760 }, // K = 1440/1920 = 0,75; alto de la grabación ajustada = 810
+        grabCel: { w: 1170, h: 2532, cssW: 390, cssH: 844 }, // celular 390×844 a 3×
+        grabEsc: { w: 1920, h: 1080, cssW: 1280 }, // escritorio 1280×720 a 1,5×
+        latigoH: 1920, // la tira horizontal entre escenarios
+        cambio: { escala: 0.92, x: 24, origen: '100% 50%' }, // la ventana del celular se hace a un lado (2524–2538)
+      };
+
+      (function () {
+        const KD = window.KD;
+        const F = (n) => n / KD.fps; // cuadro → segundos
+
+        // Una ventana: W (ancho), HV (alto visible), K (px del video → px de la ventana), PPC (px de la ventana por px CSS de la app) y VH (alto
+        // de la grabación ajustada). enc(s, cx, cy): la caja con centro (cx, cy) en px CSS de la app, centrada en lo visible con la escala s, sin
+        // salirse de la grabación.
+        function ventana(v, g) {
+          const W = v.w, HV = v.hVis, K = W / g.w, PPC = W / g.cssW, VH = g.h * K;
+          const enc = (s, cx, cy) => {
+            let x = W / 2 - s * cx * PPC, y = HV / 2 - s * cy * PPC;
+            x = Math.min(0, Math.max(W - s * W, x));
+            y = Math.min(0, Math.max(HV - s * VH, y));
+            return { scale: s, x, y };
+          };
+          return { W, HV, K, PPC, VH, enc };
+        }
+        const CEL = ventana(KD.cel, KD.grabCel);
+        const ESC = ventana(KD.esc, KD.grabEsc);
+        const enc = CEL.enc, encE = ESC.enc;
+
+        // Los encuadres, medidos sobre los cuadros reales (px CSS: 390×844 el celular, 1280×720 el escritorio). Niveles de SPEC §1.5; REVIEW §4.
+        // «Datos de ejemplo» tapa, abajo a la izquierda, 147 × 28 px CSS a G (×1,085) y 145 × 28 a D (×1,8): cada encuadre la deja sobre algo
+        // que no se lee.
+        const E = {
+          // ── Parte 1: los del clip con s' = max(s, 1,085) (SPEC §2.1) ──
+          cola: enc(1.085, 195, 397.7),
+          hilo: enc(1.085, 197, 262),
+          compositor: enc(1.085, 194, 600), // cx 196,5 → 194: «/bienvenida» empieza en el CSS 16,3 y su «/» quedaba cortado
+          respuesta: enc(1.085, 196, 393.7),
+          arriba: enc(1.085, 195, 224.7),
+          campanas: enc(1.085, 195, 300.3),
+          invitacion: enc(1.085, 195, 560),
+          tarjeta: enc(1.085, 195, 580),
+          kpis: enc(1.085, 195, 520),
+          nombres: enc(1.085, 195, 410.7),
+          cierre: enc(1.085, 195, 465),
+          // ── Parte 2, la ficha de Mariana (#camM) ──
+          hiloM: enc(1.085, 197, 272), // G, CSS 18–377 × 48–497: «Mariana Ospina · Sin ficha · +575550123987 · Línea principal», «Atendiendo», el ícono de la persona (362, 152), la pregunta, la nota y la respuesta de Andrés
+          panelM: enc(1.085, 209, 266), // G, CSS 30–389 × 42–491 (la barra de arriba de la app termina en el 40): el panel «La persona» (x 37–381): «Mariana Ospina», «Este número no está en Membresía…», «Vincular a una persona», «Crear ficha», Boletas
+          dialogo: enc(1.085, 195, 425), // G, CSS 16–375 × 201–650: el diálogo «Crear ficha» entero (título 218, botones 627); la píldora queda sobre «Cancelar»
+          fichaM: enc(1.4, 180, 215), // M, CSS 41–319 × 41–389: «MO · Mariana Ospina · +575550123987», «Ver ficha», Boletas (el punch del 1560)
+          // ── Parte 2, la campaña nueva (#camC). El texto de ayuda de «A quién va» («Calcular» dice cuántos…, decisión 215) nunca entra: en la rec
+          //    1360–1422 empieza en el CSS 479,7 y en la 1723–1849 en el 547,7 ──
+          publico: enc(1.085, 179.5, 224.5), // G, CSS 0–359 × 0–449: «Plantilla aprobada», «2 A quién va», «Membresía · Un evento», «Toda la iglesia · Un público» y su tarjeta, sin la cifra ni la ayuda
+          hoja: enc(1.085, 195, 619.5), // G, CSS 16–375 × 395–844 (abajo del todo): las hojas «Agregar filtro» (Red en el 753) y «Red» (Red Timoteo en el 750, «Aplicar» en el 807)
+          cifra: enc(1.15, 205.55, 333.8), // G⁺, CSS 36–375 × 122–546: el chip «Red: Red Timoteo», «Personas de la red Red Timoteo» y «139 con WhatsApp» (521–535); la ayuda empieza en el 547,7 y queda fuera. La píldora (509–535, x 47–191) cae sobre «≈ 143 personas ·» (119,7–191,3) y deja libre «139» (desde el 197,7) (REVIEW §4)
+          lista: enc(1.085, 195, 540.5), // G, CSS 16–375 × 316–765 (después del salto del 2280): «Plantilla aprobada» (423) y la lista entera hasta «invitacion_culto» (700); la píldora queda sobre el chip; la barra de abajo (773) fuera
+          vistaPrevia: enc(1.085, 195, 319.5), // G, CSS 16–375 × 95–544 (las pestañas, hasta el 90, fuera): «Vista previa», la burbuja, «Allí estaré», «Cómo llegar» y «1 El mensaje»
+          final: enc(1.18, 193, 330), // F, CSS 28–358 × 124–537 («Vista previa», en x 18, queda fuera arriba para no cortarla): la burbuja (texto x 36–350) con «Allí estaré» y «Cómo llegar»; a 0,92 el texto de 14 px queda en 28,1 px
+        };
+        const EE = {
+          // ── Parte 2, el chatbot (#camE1) ──
+          lienzo: encE(1.8, 510, 455), // D, CSS 155–866 × 268–643: el lienzo del flujo (Inicio → Mensaje → Botones con Horarios · Oración · Hablar con alguien · Otro → Fin / Pasar a una persona)
+          probar: encE(1.8, 900, 455), // D, CSS 545–1256 × 268–643: «Probar» (879, 286) y «Palabras de activación» con buenas · hola · menu; después del 902, el simulador
+          simulador: encE(2.0, 960, 499), // D⁺, CSS 640–1280 × 330–668: «Probar el flujo», «Es una prueba: no se envía nada por WhatsApp ni queda nada guardado.», «Probando como Carolina Mejía Arango»
+          campo: encE(2.0, 960, 540), // D⁺, CSS 640–1280 × 371–709 («Probar como alguien sin ficha» empieza en el 372,7 y el texto del campo termina en el 705,3) (el panel se desplazó 85 px CSS): «Toca «Empezar este flujo»…», el campo con «hola» y enviar; después del 1020, «Empezó el flujo…», el saludo y el menú
+          menu: encE(2.0, 960, 475), // D⁺, CSS 640–1280 × 306–644: «Probando como Carolina…», el saludo, «¿En qué te podemos ayudar?» y Horarios · Oración · Hablar con alguien
+          horario: encE(2.0, 960, 497), // D⁺, CSS 640–1280 × 328–666 («queda nada guardado», 312–325, fuera entero): «Horarios» de Carolina, el horario entero (497–539) y «El flujo terminó»
+          // ── Parte 2, la automatización (#camE2) ──
+          autos: encE(1.8, 475.5, 362), // D, CSS 120–831 × 175–550: «Mensajes de WhatsApp que salen solos…», «Bienvenida a quien llega · Encendida…», «Feliz cumpleaños», la segunda fila
+          tarjeta: encE(2.0, 420, 330), // D⁺, CSS 100–740 × 161–499: «Bienvenida a quien llega · Encendida · Cuando llega una persona nueva (1 h después) · Personas de Membresía · Hoy: 4 enviados · 0 omitidos»
+          vista: encE(2.0, 960, 420), // D⁺, CSS 640–1280 × 251–589: «Vista previa» y el mensaje entero (texto 397–457)
+          pestanas: encE(1.8, 455.5, 377.5), // D, CSS 100–811 × 190–565: «Encendida · Hoy: 4 enviados · 0 omitidos», «Configuración · Envíos · Historial» (Envíos en 312, 297)
+          envios: encE(1.8, 455.5, 507.5), // D, CSS 100–811 × 320–695: Todos · Enviados…, Isabela, Tomás, Sara y Mateo con «Persona nueva · 30-10-2026 13:54» (la píldora debajo de Mateo)
+          leidos: encE(1.8, 924.5, 507.5), // D, CSS 569–1280 × 320–695: el final de las cuatro filas, cada una con «Leído»
+        };
+
+        const CAM = { ease: 'power2.inOut', d: F(14) };
+        const tl = gsap.timeline({ paused: true });
+        const mover = (sel, e, n, d) => tl.to(sel, { ...e, duration: d || CAM.d, ease: CAM.ease }, F(n));
+
+        // ── Cámara de la parte 1 (la del clip): a lo sumo un movimiento por compás, ninguno mientras la app cambia ──
+        tl.set('#camK', E.cola, 0);
+        mover('#camK', E.hilo, 90);
+        mover('#camK', E.compositor, 150);
+        mover('#camK', E.respuesta, 315);
+        mover('#camK', E.arriba, 390);
+        mover('#camK', E.campanas, 450);
+        tl.set('#camK', E.invitacion, F(480)); // la lista salta hasta la invitación y el encuadre cambia en el mismo cuadro
+        mover('#camK', E.tarjeta, 540);
+        tl.set('#camK', E.kpis, F(602)); // el reporte entra en el corte, ya encuadrado
+        mover('#camK', E.nombres, 690);
+        mover('#camK', E.cierre, 720); // y se queda: los nombres con «Leído» y «Allí estaré» hasta el látigo
+
+        // ── Parte 2 ──
+        // El chatbot (e1)
+        tl.set('#camE1', EE.lienzo, 0);
+        mover('#camE1', EE.probar, 870);
+        mover('#camE1', EE.simulador, 915); // el simulador ya está desde el corte del 902, legible en «probar»; aquí se acerca
+        tl.set('#camE1', EE.campo, F(960)); // corte en el foco: el panel se desplazó solo y el encuadre baja con él
+        mover('#camE1', EE.menu, 1080);
+        mover('#camE1', EE.horario, 1200);
+        // La ficha de Mariana (M)
+        tl.set('#camM', E.hiloM, 0);
+        mover('#camM', E.panelM, 1395);
+        mover('#camM', E.dialogo, 1455);
+        mover('#camM', E.fichaM, 1560, F(9)); // el punch de la parte 2
+        mover('#camM', E.panelM, 1620); // la cámara abre al panel con la ficha
+        // La automatización (e2)
+        tl.set('#camE2', EE.autos, 0);
+        mover('#camE2', EE.tarjeta, 1740);
+        tl.set('#camE2', EE.vista, F(1803)); // la pantalla cambia entera: el encuadre cambia en el mismo cuadro
+        mover('#camE2', EE.pestanas, 1890); // la válvula de SPEC §5: el toque de «Envíos» se dibuja
+        tl.set('#camE2', EE.envios, F(1923)); // la lista entra en el corte, ya encuadrada
+        mover('#camE2', EE.leidos, 1980); // a lo largo de las filas, hasta «Leído»
+        // La campaña nueva (C)
+        tl.set('#camC', E.publico, 0);
+        mover('#camC', E.hoja, 2145); // baja a la hoja «Agregar filtro», que ya subió (2138–2142); quieta en «Red», «Red Timoteo» y «Aplicar»
+        tl.set('#camC', E.cifra, F(2227)); // la hoja se va en el corte y el encuadre sube en el mismo cuadro: la ayuda de «A quién va» nunca entra
+        tl.set('#camC', E.lista, F(2280)); // la app salta a «1 El mensaje» (rec 1852) y el encuadre cambia con ella, en el mismo cuadro: la plantilla y, debajo, su lista
+        tl.set('#camC', E.vistaPrevia, F(2343)); // la lista se va y la vista previa se llena arriba: el encuadre cambia en el mismo cuadro
+        mover('#camC', E.final, 2460);
+
+        // ── Aterrizajes ──
+        const centroCel = `${CEL.W / 2}px ${CEL.HV / 2}px`;
+        const centroEsc = `${ESC.W / 2}px ${ESC.HV / 2}px`;
+        const aterriza = (sel, desde, origen, n) =>
+          tl.fromTo(sel, { scale: desde, transformOrigin: origen }, { scale: 1, duration: F(10), ease: 'power3.out', immediateRender: false }, F(n));
+        // El match cut del clip, desde el centro de lo visible
+        aterriza('#celK', 1.03, centroCel, 78);
+        aterriza('#e1in', 1.04, centroEsc, 840); // el látigo al escritorio
+        aterriza('#celM', 1.04, centroCel, 1320); // el látigo de vuelta
+        aterriza('#e2in', 1.04, centroEsc, 1680); // el látigo al escritorio
+        aterriza('#celC', 1.04, centroCel, 2040); // el látigo de vuelta
+
+        // ── Látigos horizontales (#escena, 1920 px, 10 cuadros): a la izquierda = al escritorio, a la derecha = de vuelta ──
+        tl.fromTo('#escena', { x: 0 }, { x: -KD.latigoH, duration: F(10), ease: 'power3.inOut', immediateRender: false }, F(830));
+        tl.to('#escena', { x: 0, duration: F(10), ease: 'power3.inOut' }, F(1310));
+        tl.to('#escena', { x: -KD.latigoH, duration: F(10), ease: 'power3.inOut' }, F(1670));
+        tl.to('#escena', { x: 0, duration: F(10), ease: 'power3.inOut' }, F(2030));
+
+        // ── Marcas de toque: aparecen 4 cuadros antes (la del 120 en el 105 y espera quieta), se hunden en el cuadro y se van 6 después; la onda
+        // nace en el cuadro (450 ms). Cuando la pantalla cambia antes de que la marca se vaya, la marca se va con el corte (toque → cuadro del corte).
+        const CORTE = { 75: 78, 120: 122, 240: 242, 420: 422, 600: 602, 900: 902, 1800: 1803, 1920: 1923, 2160: 2163, 2220: 2227, 2340: 2343 };
+        [75, 120, 180, 240, 300, 420, 600, 660, 900, 960, 990, 1140, 1380, 1440, 1500, 1530, 1545, 1800, 1920, 2100, 2130, 2160, 2190, 2220, 2310, 2340].forEach((n) => {
+          const t = F(n);
+          const antes = n === 120 ? 15 : 4;
+          const c = CORTE[n];
+          tl.fromTo(`#tq-${n}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: F(4), ease: 'power2.out', immediateRender: false }, t - F(antes));
+          if (c) {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(Math.min(2, c - n)), ease: 'power2.in' }, t);
+            const p = (c - n) / 13.5; // la parte de la onda (0,45 s) que alcanza a verse antes del corte
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0.9 * (1 - p), scale: 1 + 0.62 * p, duration: F(c - n), ease: 'none', immediateRender: false }, t);
+            tl.set([`#tq-${n}`, `#on-${n}`], { opacity: 0 }, F(c));
+          } else {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(2), ease: 'power2.in' }, t);
+            tl.to(`#tq-${n}`, { opacity: 0, scale: 1, duration: F(6), ease: 'power2.out' }, t + F(2));
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.62, duration: 0.45, ease: 'power2.out', immediateRender: false }, t);
+          }
+        });
+
+        // ── El final: la ventana del celular se hace a un lado (2524–2538), el dip (2757–2759) y el corte al cierre (2760) ──
+        tl.to('#ventana-cel', { scale: KD.cambio.escala, x: KD.cambio.x, transformOrigin: KD.cambio.origen, duration: F(15), ease: 'power2.inOut' }, F(2524));
+        tl.set('#dip', { opacity: 0.4 }, F(2757));
+        tl.set('#escena', { autoAlpha: 0 }, F(2760));
+        tl.set({}, {}, 97);
+        window.__timelines['main'] = tl;
+      })();
+    </script>
+  </body>
+</html>
