@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P13 · «Que cada puesto / de servicio / esté cubierto» (el título de Equipos en modulos.ts): 2520 · 2522 · … · 2532; «cubierto» en itálica dorada; quieta hasta el corte al cierre (2760). Fraunces 560, 84 px, interlínea 1,04, −0,02 em (.k-feed-frase del kit con el tamaño de 16:9); entrada-palabra: blur 6 → 0 +
+         opacidad, 4 cuadros, power4.out, sin desplazarse; salida-texto: blur 0 → 8 + opacidad, 4 cuadros, power3.in. Generada por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 120px);
+          top: var(--f-frase-y, 460px);
+          width: var(--f-frase-ancho, 936px);
+          font-size: var(--f-frase-px, 84px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div id="root" data-composition-id="frase-9" data-width="1920" data-height="1080" data-duration="8.033333">
+        <div class="k-feed-frase f-frase" id="f9">
+          <span class="linea"><span class="palabra" id="f9-w1">Que</span> <span class="palabra" id="f9-w2">cada</span> <span class="palabra" id="f9-w3">puesto</span></span>
+          <span class="linea"><span class="palabra" id="f9-w4">de</span> <span class="palabra" id="f9-w5">servicio</span></span>
+          <span class="linea"><span class="palabra" id="f9-w6">esté</span> <em><span class="palabra" id="f9-w7">cubierto</span></em></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 7; i++) {
+            // El host arranca un cuadro antes del pulso (2519): la primera palabra se ve en el 2520, las demás cada 2 cuadros.
+            tl.fromTo(`#f9-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.set({}, {}, F(241));
+          window.__timelines['frase-9'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

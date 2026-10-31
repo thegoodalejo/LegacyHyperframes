@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P2 · «Kingdom sugiere / a quién poner»: la línea entera 120–126 (blur 8 → 0); sale 177–181. Fraunces 560, 84 px, interlínea 1,04, −0,02 em (.k-feed-frase del kit con el tamaño de 16:9); entrada-palabra: blur 6 → 0 +
+         opacidad, 4 cuadros, power4.out, sin desplazarse; salida-texto: blur 0 → 8 + opacidad, 4 cuadros, power3.in. Generada por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 120px);
+          top: var(--f-frase-y, 460px);
+          width: var(--f-frase-ancho, 936px);
+          font-size: var(--f-frase-px, 84px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div id="root" data-composition-id="frase-2" data-width="1920" data-height="1080" data-duration="2.1">
+        <div class="k-feed-frase f-frase" id="f2">
+          <span class="linea"><span class="palabra" id="f2-w1">Kingdom</span> <span class="palabra" id="f2-w2">sugiere</span></span>
+          <span class="linea"><span class="palabra" id="f2-w3">a</span> <span class="palabra" id="f2-w4">quién</span> <span class="palabra" id="f2-w5">poner</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo('#f2', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out' }, 0);
+          tl.to('#f2', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(58)); // 177–181
+          tl.set({}, {}, F(63));
+          window.__timelines['frase-2'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

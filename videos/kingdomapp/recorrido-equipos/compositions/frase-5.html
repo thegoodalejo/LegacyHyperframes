@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P9 · «Lo que falta, antes del domingo.» (una línea, arriba del escritorio): 843 · 845 · … · 853; sale 1317–1321 con el látigo de vuelta. Fraunces 560, 84 px, interlínea 1,04, −0,02 em (.k-feed-frase del kit con el tamaño de 16:9); entrada-palabra: blur 6 → 0 +
+         opacidad, 4 cuadros, power4.out, sin desplazarse; salida-texto: blur 0 → 8 + opacidad, 4 cuadros, power3.in. Generada por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-esc-x, 240px);
+          top: var(--f-esc-frase-y, 132px);
+          width: var(--f-esc-frase-ancho, 1440px);
+          font-size: var(--f-frase-px, 84px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div id="root" data-composition-id="frase-5" data-width="1920" data-height="1080" data-duration="15.966667">
+        <div class="k-feed-frase f-frase" id="f5">
+          <span class="linea"><span class="palabra" id="f5-w1">Lo</span> <span class="palabra" id="f5-w2">que</span> <span class="palabra" id="f5-w3">falta,</span> <span class="palabra" id="f5-w4">antes</span> <span class="palabra" id="f5-w5">del</span> <span class="palabra" id="f5-w6">domingo.</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 6; i++) {
+            // El host arranca un cuadro antes del pulso (842): la primera palabra se ve en el 843, las demás cada 2 cuadros.
+            tl.fromTo(`#f5-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.to('#f5', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(475)); // 1317–1321
+          tl.set({}, {}, F(479));
+          window.__timelines['frase-5'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
