@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P1 · Frase 1: «¿Se enteró / toda la iglesia?» (host 0–122). Una landing por pulso: «¿Se» 0 · «enteró» 15 · «toda la» 30 · «iglesia?» 45 (entrada-palabra: blur 6 → 0 + opacidad, 4 cuadros, power4.out, sin desplazarse). Sale entera 117–121. Posición y tamaño: --f-* del host (SPEC §1.4). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: var(--f-ancho, 1080px);
+          height: var(--f-alto, 1350px);
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 96px);
+          top: var(--f-frase-y, 124px);
+          width: var(--f-frase-ancho, 888px);
+          font-size: var(--f-frase-px, 80px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f100" id="root" data-composition-id="frase-1" data-width="1080" data-height="1350" data-duration="4.066667">
+        <div data-hf-id="hf-f101" class="k-feed-frase f-frase" id="f1">
+          <span data-hf-id="hf-f1l0" class="linea"><span data-hf-id="hf-f110" class="palabra" id="f1-w1">¿Se</span> <span data-hf-id="hf-f111" class="palabra" id="f1-w2">enteró</span></span>
+          <span data-hf-id="hf-f1l1" class="linea"><span data-hf-id="hf-f112" class="palabra" id="f1-w3">toda la</span> <span data-hf-id="hf-f113" class="palabra" id="f1-w4">iglesia?</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          // «¿Se» ya está en el cuadro 0 (la miniatura). Cada landing arranca un cuadro antes de su pulso (15 · 30 · 45): en el pulso la
+          // palabra ya está al 68 % (power4.out), así el primer cuadro visible es el pulso.
+          [['#f1-w2', 15], ['#f1-w3', 30], ['#f1-w4', 45]].forEach(([sel, n]) => {
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(n - 1));
+          });
+          tl.to('#f1', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(117)); // 117–121, con «Amén» en el 120
+          tl.set({}, {}, F(122));
+          window.__timelines['frase-1'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

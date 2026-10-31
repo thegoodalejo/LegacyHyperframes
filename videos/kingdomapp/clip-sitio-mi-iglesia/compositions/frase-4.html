@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P6 · Frase 4: «Tu iglesia, en el bolsillo / de cada miembro» (host 719–840). Palabra a palabra cada 2 cuadros desde el golpe del 720 (Tu 720 · iglesia, 722 · en 724 · el 726 · bolsillo 728 · de 730 · cada 732 · miembro 734); «bolsillo» en itálica dorada (el único dorado del cuerpo junto a la ceja). La primera línea se mide en la revisión (SPEC §1.2: ≤ 888 px). Quieta hasta el corte a la firma (840). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: var(--f-ancho, 1080px);
+          height: var(--f-alto, 1350px);
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--f-margen-x, 96px);
+          top: var(--f-frase-y, 124px);
+          width: var(--f-frase-ancho, 888px);
+          font-size: var(--f-frase-px, 80px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f400" id="root" data-composition-id="frase-4" data-width="1080" data-height="1350" data-duration="4.033333">
+        <div data-hf-id="hf-f401" class="k-feed-frase f-frase" id="f4">
+          <span data-hf-id="hf-f4l0" class="linea" id="f4-l1"><span data-hf-id="hf-f410" class="palabra" id="f4-w1">Tu</span> <span data-hf-id="hf-f411" class="palabra" id="f4-w2">iglesia,</span> <span data-hf-id="hf-f412" class="palabra" id="f4-w3">en</span> <span data-hf-id="hf-f413" class="palabra" id="f4-w4">el</span> <em data-hf-id="hf-f4e4"><span data-hf-id="hf-f414" class="palabra" id="f4-w5">bolsillo</span></em></span>
+          <span data-hf-id="hf-f4l1" class="linea" id="f4-l2"><span data-hf-id="hf-f415" class="palabra" id="f4-w6">de</span> <span data-hf-id="hf-f416" class="palabra" id="f4-w7">cada</span> <span data-hf-id="hf-f417" class="palabra" id="f4-w8">miembro</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 8; i++) {
+            // El host arranca un cuadro antes del golpe (719): el primer cuadro visible cae en 720 · 722 · … · 734.
+            tl.fromTo(`#f4-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.set({}, {}, F(121));
+          window.__timelines['frase-4'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
