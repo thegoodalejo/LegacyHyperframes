@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P4 · Frase 3: «Y queda registrada / en la iglesia» (host 359–602). Palabra a palabra cada 2 cuadros desde el 360 (Y 360 · queda 362 · registrada 364 · en 366 · la 368 · iglesia 370), entrada-palabra. Sale 597–601, antes de «Guardar asistencia». -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--cel-frase-x);
+          top: var(--cel-frase-y);
+          width: var(--cel-frase-ancho);
+          font-size: var(--cel-frase-px);
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f300" id="root" data-composition-id="frase-3" data-width="1920" data-height="1080" data-duration="8.1">
+        <div data-hf-id="hf-f301" class="k-titular f-frase" id="f3">
+          <span data-hf-id="hf-f3l0" class="linea"><span data-hf-id="hf-f310" class="palabra" id="f3-w1">Y</span> <span data-hf-id="hf-f311" class="palabra" id="f3-w2">queda</span> <span data-hf-id="hf-f312" class="palabra" id="f3-w3">registrada</span></span>
+          <span data-hf-id="hf-f3l1" class="linea"><span data-hf-id="hf-f313" class="palabra" id="f3-w4">en</span> <span data-hf-id="hf-f314" class="palabra" id="f3-w5">la</span> <span data-hf-id="hf-f315" class="palabra" id="f3-w6">iglesia</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 6; i++) {
+            // El host arranca un cuadro antes del pulso (359): el primer cuadro visible de cada palabra cae en 360 · 362 · … · 370.
+            tl.fromTo(`#f3-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.to('#f3', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(238)); // 597–601
+          tl.set({}, {}, F(243));
+          window.__timelines['frase-3'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

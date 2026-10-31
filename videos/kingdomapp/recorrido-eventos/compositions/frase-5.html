@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P6 · Frase 5: «Y se envía sola / al volver la señal» (textual de la nota de la app). Desde el 960, cuando los chips se van; sale 1072–1076, antes del látigo. Posición y tamaño: --cel-* del host (SPEC §1.4). Generado por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: var(--cel-frase-x);
+          top: var(--cel-frase-y);
+          width: var(--cel-frase-ancho);
+          font-size: var(--cel-frase-px);
+          color: var(--k-noche-tinta);
+          --k-enfasis: var(--k-noche-dorado);
+          text-wrap: initial;
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f500" id="root" data-composition-id="frase-5" data-width="1920" data-height="1080" data-duration="3.966667">
+        <div data-hf-id="hf-f501" class="k-titular f-frase" id="f5">
+          <span data-hf-id="hf-f5l0" class="linea"><span data-hf-id="hf-f5w1" class="palabra" id="f5-w1">Y</span> <span data-hf-id="hf-f5w2" class="palabra" id="f5-w2">se</span> <span data-hf-id="hf-f5w3" class="palabra" id="f5-w3">envía</span> <span data-hf-id="hf-f5w4" class="palabra" id="f5-w4">sola</span></span>
+          <span data-hf-id="hf-f5l1" class="linea"><span data-hf-id="hf-f5w5" class="palabra" id="f5-w5">al</span> <span data-hf-id="hf-f5w6" class="palabra" id="f5-w6">volver</span> <span data-hf-id="hf-f5w7" class="palabra" id="f5-w7">la</span> <span data-hf-id="hf-f5w8" class="palabra" id="f5-w8">señal</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          // Cada palabra arranca un cuadro antes de su pulso (entrada-palabra: blur 6 → 0, 4 cuadros, power4.out, sin desplazarse).
+          [['#f5-w1', 0], ['#f5-w2', 2], ['#f5-w3', 4], ['#f5-w4', 6], ['#f5-w5', 8], ['#f5-w6', 10], ['#f5-w7', 12], ['#f5-w8', 14]].forEach(([sel, n]) => {
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(n));
+          });
+          tl.to('#f5', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(113)); // 1072–1076
+          tl.set({}, {}, F(119));
+          window.__timelines['frase-5'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

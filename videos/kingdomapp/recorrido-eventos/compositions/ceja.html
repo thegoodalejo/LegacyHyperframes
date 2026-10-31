@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- La ceja «EVENTOS» (host 194–2584). En el celular (x 96 · y 372): entra 195–201 (blur 8 → 0, power4.out) y sale 1074–1077, antes del
+         látigo. En el computador (x 240 · y 84): entra 1095–1098 y sale 2580–2583, con la frase final. Inter 700, mayúsculas, dorado
+         (.k-ceja del kit, 28 px). Las posiciones son --cel-ceja-* y --esc-ceja-* del host (SPEC §1.4). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-ceja {
+          position: absolute;
+          line-height: 1.2;
+          white-space: nowrap;
+          --k-ceja: var(--k-noche-dorado);
+        }
+        #ceja-cel {
+          left: var(--cel-ceja-x);
+          top: var(--cel-ceja-y);
+        }
+        #ceja-esc {
+          left: var(--esc-ceja-x);
+          top: var(--esc-ceja-y);
+          opacity: 0;
+        }
+      </style>
+      <div data-hf-id="hf-ec01" id="root" data-composition-id="ceja" data-width="1920" data-height="1080" data-duration="79.666667">
+        <div data-hf-id="hf-ec02" class="k-ceja f-ceja" id="ceja-cel">Eventos</div>
+        <div data-hf-id="hf-ec03" class="k-ceja f-ceja" id="ceja-esc">Eventos</div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30; // cuadros locales: el host arranca en el 194
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo('#ceja-cel', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out' }, 0);
+          tl.to('#ceja-cel', { opacity: 0, filter: 'blur(8px)', duration: F(3), ease: 'power3.in' }, F(880)); // 1074–1077
+          tl.fromTo('#ceja-esc', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(3), ease: 'power4.out', immediateRender: false }, F(901)); // 1095–1098
+          tl.to('#ceja-esc', { opacity: 0, filter: 'blur(8px)', duration: F(3), ease: 'power3.in' }, F(2386)); // 2580–2583
+          tl.set({}, {}, F(2390));
+          window.__timelines['ceja'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
