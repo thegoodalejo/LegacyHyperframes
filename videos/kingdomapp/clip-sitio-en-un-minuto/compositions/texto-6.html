@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- P7 · Equipos: la ceja y «Cada puesto, cubierto.» desde el 1201; salen 1428–1432, antes de que arranque el cambio del 1440. Ceja: Inter 700, 28 px, mayúsculas, dorada (.k-feed-ceja con el tamaño de 16:9). Frase: Fraunces 560, 84 px,
+         interlínea 1,04, −0,02 em; entrada-palabra: blur 6 → 0 + opacidad, 4 cuadros, power4.out, sin desplazarse; salida-texto: blur 0 → 8 +
+         opacidad, 4 cuadros, power3.in. Generada por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .t-ceja {
+          position: absolute;
+          left: 120px;
+          top: 412px;
+          font-size: 28px;
+          line-height: 1.2;
+          white-space: nowrap;
+        }
+        .t-frase {
+          position: absolute;
+          left: 120px;
+          top: 460px;
+          width: 936px;
+          font-size: 84px;
+          color: var(--k-noche-tinta);
+          text-align: left;
+          text-wrap: initial;
+        }
+        .t-frase em {
+          color: var(--k-noche-dorado);
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div id="root" data-composition-id="texto-6" data-width="1920" data-height="1080" data-duration="8.033333">
+        <div class="k-feed-ceja t-ceja" id="tx6-ceja">Equipos</div>
+        <div class="k-feed-frase t-frase" id="tx6">
+          <span class="linea"><span class="palabra" id="tx6-w1">Cada</span> <span class="palabra" id="tx6-w2">puesto,</span></span>
+          <span class="linea"><span class="palabra" id="tx6-w3">cubierto.</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo('#tx6-ceja', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out' }, F(0)); // entrada-línea
+          for (let i = 1; i <= 3; i++) {
+            tl.fromTo(`#tx6-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(1 + 2 * (i - 1)));
+          }
+          tl.to(['#tx6', '#tx6-ceja'], { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(229)); // 1428–1432
+          tl.set({}, {}, F(241));
+          window.__timelines['texto-6'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Kingdom en un minuto (16:9)</title>
+    <!--
+      «Kingdom en un minuto», 1920×1080 (16:9), 59,0 s a 30 fps (1770 cuadros). Contrato: SPEC.md; desvíos y sincronía: REVIEW.md.
+      ESTE ARCHIVO LO GENERA _gen/gen.py desde _gen/index.tpl.html (tramos, marcas, cámaras y sonidos en tablas); se puede editar a mano,
+      pero el próximo `python _gen/gen.py` lo reescribe.
+      Estructura:
+        · compositions/fondo.html           la noche del sitio (el halo se asienta en cada cambio de mundo)
+        · compositions/texto-0..7.html      la apertura, la ceja y la frase de cada módulo, y la síntesis (una a la vez)
+        · #escena (aquí, en la raíz)        seis ventanas a la app REAL, una por módulo, todas en el lugar de .k-ventana-16x9 (1104·90):
+            #w1 Membresía  (120–300)  entra desde abajo con el bajo (110–120)
+            #w2 Eventos    (300–480)  látigo horizontal a la izquierda (290–300)
+            #w3 Academia   (480–720)  iris desde el centro sobre la costura de la música (479–485); dentro, la tira vertical del clip
+                                      (el profesor arriba, la alumna 1000 px abajo; látigo 590–600)
+            #w4 Mi iglesia (720–960)  látigo vertical hacia arriba en el golpe más fuerte (710–720)
+            #w5 Comunic.   (960–1200) empuje: la ventana de Mi iglesia crece 950–960 y Comunicaciones asienta 1,08 → 1 (960–970)
+            #w6 Equipos    (1200–1440) látigo horizontal a la derecha (1190–1200); dentro, la tira vertical del clip (el líder arriba,
+                                      Gabriela abajo; látigo 1316–1326). En el 1440 la caja de #w6 se transforma en la del escritorio
+                                      (morph 1434–1446) y adentro aparece el tablero del pastor (#w6esc, tableros.mp4) hasta el 1620
+          Cada tramo es un <video> con su data-media-start (ver _gen/gen.py: el tramo del clip recortado a la ventana y corrido un número
+          entero de compases). Las marcas de toque (.toque/.onda) van en las coordenadas reales del toque (pasos.json → toques[]).
+        · identidad/cierre-comercial.html   el cierre del Comercial (kit v1.1), 54,0–59,0; el sonido de marca en 54,38
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      :root {
+        --f-ancho: 1920px;
+        --f-alto: 1080px;
+        /* El celular: grabación 1170×2532 ajustada al ancho de la ventana (720/1170 y 2532·720/1170) */
+        --f-k: 0.615385;
+        --f-grab-alto: 1558.15px;
+        --f-latigo: 1000px;
+      }
+      html,
+      body {
+        margin: 0;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root {
+        position: relative;
+        width: var(--f-ancho);
+        height: var(--f-alto);
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root > [data-composition-src] {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+      }
+      #fondo {
+        z-index: 0 !important;
+      }
+      #cierre-comercial {
+        z-index: 7 !important;
+      }
+      #escena {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        z-index: 3;
+      }
+      /* Las seis ventanas en el lugar del celular (.k-ventana-16x9); #w6 empieza así y el morph la lleva a la del escritorio. */
+      .ventana {
+        left: 1104px;
+        top: 90px;
+      }
+      #w1 { z-index: 1; }
+      #w2 { z-index: 2; }
+      #w3 { z-index: 3; }
+      #w4 { z-index: 4; }
+      #w5 { z-index: 5; }
+      #w6 {
+        z-index: 6;
+        width: 720px;
+        height: 900px;
+      }
+      .mundo-in {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      /* La tira vertical de Academia y de Equipos: dos ranuras a 1000 px, cada una del alto de la distancia (en el látigo no queda hueco). */
+      .tira {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .ranura {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: var(--f-latigo);
+        overflow: hidden;
+      }
+      .ranura.abajo {
+        top: var(--f-latigo);
+      }
+      .cam-cel {
+        height: var(--f-grab-alto);
+      }
+      /* Membresía: la grabación va pegada abajo (el clip la puso así: la tarjeta de Valeria vive al pie del video) */
+      #c1in {
+        position: absolute;
+        left: 0;
+        top: calc(900px - var(--f-grab-alto));
+        width: 100%;
+        height: var(--f-grab-alto);
+      }
+      .cam-in {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .k-ventana-camara video,
+      .k-ventana-camara img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+      }
+      /* #w6: los dos mundos, cada uno de su tamaño nativo y centrado en la caja (xPercent/yPercent −50 por GSAP); en el morph se escalan
+         lo justo para cubrir la caja en cada cuadro. */
+      .mundo-v {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 720px;
+        height: 900px;
+        overflow: hidden;
+      }
+      .mundo-v.esc {
+        width: 1440px;
+        height: 760px;
+      }
+      /* El escritorio: tableros.mp4 (1920×1080, la página de 1280×720 a 1,5×) a 2560×1440 = 2 px de la cámara por px CSS (nivel D) */
+      .cam-esc {
+        width: 2560px;
+        height: 1440px;
+      }
+      .cam-esc video {
+        width: 2560px !important;
+        height: 1440px;
+      }
+      .marcas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      /* Marca del toque (las grabaciones no traen círculo), en px de la cámara: 46 px (20 px CSS del celular) y su onda de 81 px. */
+      .toque {
+        position: absolute;
+        width: 46px;
+        height: 46px;
+        margin: -23px 0 0 -23px;
+        border-radius: 50%;
+        background: rgba(27, 27, 31, 0.28);
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+        opacity: 0;
+      }
+      .onda {
+        position: absolute;
+        width: 81px;
+        height: 81px;
+        margin: -40.5px 0 0 -40.5px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(1, 91, 190, 0.9);
+        opacity: 0;
+      }
+      /* «Datos de ejemplo»: en cada ventana, abajo a la izquierda, a 24 px; 31 px como los clips y los recorridos. */
+      .datos {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        z-index: 4;
+        height: 56px;
+        padding: 0 22px;
+        font-size: 31px;
+      }
+      #dip {
+        position: absolute;
+        inset: 0;
+        background: #060d1f;
+        opacity: 0;
+        z-index: 8;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="59"
+      data-width="1920"
+      data-height="1080"
+      data-motion-blur="on"
+      data-motion-blur-shutter="180"
+      data-fx-chain='{"version":1,"nodes":[{"type":"truepeak","id":"techo","label":"Techo de entrega","params":{"ceiling":-2.5,"lookahead":3,"release":80}}]}'
+    >
+      <!-- ── Escenas (gráficos): el fondo, los textos y el cierre ── -->
+      <div id="fondo" data-composition-id="fondo" data-composition-src="compositions/fondo.html" data-track-kind="graphics"
+        data-start="0" data-duration="54" data-track-index="0" data-width="1920" data-height="1080"></div>
+@@TEXTOS@@
+      <!-- P9 · el cierre del Comercial (identidad/kit.json → piezas.cierre-comercial): 1620–1769, con el llamado a la prueba gratis -->
+      <div id="cierre-comercial" data-composition-id="cierre-comercial" data-composition-src="identidad/cierre-comercial.html" data-track-kind="graphics"
+        data-variable-values='{"publico":"iglesia","llamado":"prueba","contacto":"sitio","fondo":"noche","idioma":"es"}'
+        data-start="54" data-duration="5" data-track-index="6" data-width="1920" data-height="1080"></div>
+
+      <!-- ── Las seis ventanas a la app real ─────────────────────────────────────────────────────────────────────── -->
+      <!-- Tramos en cuadros de cada grabación: cuadro = segundo × 30; cada data-media-start lleva +0,01 s para caer dentro del cuadro. -->
+      <div id="escena">
+        <!-- #w1 · Membresía: el celular de Jorge Gallego Gil (cuenta 103), «Mi seguimiento» -->
+        <div id="w1" class="k-ventana k-ventana-16x9 ventana" data-layout-allow-overflow>
+          <div id="w1in" class="mundo-in">
+            <div id="c1" class="k-ventana-camara cam-cel" data-layout-allow-overflow>
+              <div id="c1in">
+@@C1@@
+              </div>
+            </div>
+          </div>
+          <div class="k-datos-ejemplo datos">Datos de ejemplo</div>
+        </div>
+
+        <!-- #w2 · Eventos: el celular de Jorge, el reporte de la Casa de Paz Laureles 1 -->
+        <div id="w2" class="k-ventana k-ventana-16x9 ventana" data-layout-allow-overflow>
+          <div id="w2in" class="mundo-in">
+            <div id="c2" class="k-ventana-camara cam-cel" data-layout-allow-overflow>
+@@C2@@
+            </div>
+          </div>
+          <div class="k-datos-ejemplo datos">Datos de ejemplo</div>
+        </div>
+
+        <!-- #w3 · Academia: arriba el celular del profesor, abajo el de la alumna (la tira del clip) -->
+        <div id="w3" class="k-ventana k-ventana-16x9 ventana" data-layout-allow-overflow>
+          <div id="w3in" class="mundo-in">
+            <div id="t3" class="tira">
+              <div class="ranura">
+                <div id="c3a" class="k-ventana-camara cam-cel" data-layout-allow-overflow>
+@@C3A@@
+                </div>
+              </div>
+              <div class="ranura abajo">
+                <div id="w3b-in" class="mundo-in">
+                  <div id="c3b" class="k-ventana-camara cam-cel" data-layout-allow-overflow>
+@@C3B@@
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="k-datos-ejemplo datos">Datos de ejemplo</div>
+        </div>
+
+        <!-- #w4 · Mi iglesia: el celular de Gabriela Hinestroza Perea (cuenta 105) -->
+        <div id="w4" class="k-ventana k-ventana-16x9 ventana" data-layout-allow-overflow>
+          <div id="w4in" class="mundo-in">
+            <div id="c4" class="k-ventana-camara cam-cel" data-layout-allow-overflow>
+              <div id="c4in" class="cam-in">
+@@C4@@
+              </div>
+            </div>
+          </div>
+          <div class="k-datos-ejemplo datos">Datos de ejemplo</div>
+        </div>
+
+        <!-- #w5 · Comunicaciones: el celular de Andrés Felipe Restrepo Gómez (cuenta 101), la campaña de invitación -->
+        <div id="w5" class="k-ventana k-ventana-16x9 ventana" data-layout-allow-overflow>
+          <div id="w5in" class="mundo-in">
+            <div id="c5" class="k-ventana-camara cam-cel" data-layout-allow-overflow>
+@@C5@@
+            </div>
+          </div>
+          <div class="k-datos-ejemplo datos">Datos de ejemplo</div>
+        </div>
+
+        <!-- #w6 · Equipos (celular: arriba el líder Jorge, abajo Gabriela) y, tras el morph, el tablero del pastor en el escritorio -->
+        <div id="w6" class="k-ventana ventana" data-layout-allow-overflow>
+          <div id="w6cel" class="mundo-v">
+            <div id="t6" class="tira">
+              <div class="ranura">
+                <div id="w6a-in" class="mundo-in">
+                  <div id="c6a" class="k-ventana-camara cam-cel" data-layout-allow-overflow>
+@@C6A@@
+                  </div>
+                </div>
+              </div>
+              <div class="ranura abajo">
+                <div id="c6b" class="k-ventana-camara cam-cel" data-layout-allow-overflow>
+@@C6B@@
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="w6esc" class="mundo-v esc">
+            <div id="c7" class="k-ventana-camara cam-esc" data-layout-allow-overflow>
+@@C7@@
+            </div>
+          </div>
+          <div class="k-datos-ejemplo datos">Datos de ejemplo</div>
+        </div>
+        <div id="dip"></div>
+      </div>
+
+      <!-- ── Sonido ── (el bus maestro, en data-fx-chain de #root: un limitador de pico real con el techo en −2,5 dBTP. Los toques clave caen
+           en los golpes más fuertes de la pista y la suma pasaba de 0 dBFS en 4 instantes: 180, 780, 1020 y 1260; SPEC §1.7) -->
+      <!-- ────────────────────────────────────────────────────────────────────────────────────────────────── -->
+      <!-- Música «Product Launch» (The_Mountain) editada (SPEC §0.1; _gen/musica.sh): pista 14,05–30,04 + 34,01–72,04 + 82,01–fin, cruces de
+           30 ms que terminan 10 ms antes de la cabeza de compás (costuras en el 16,0 y el 54,0 del video). 0,75 en el carril de volumen de
+           principio a fin, sin fundido: el último acorde se apaga solo debajo del cierre. -->
+      <audio id="musica" src="assets/musica/product-launch-minuto.wav" data-start="0" data-duration="57.99" data-track-index="20"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.75},{"t":57.99,"v":0.75}]}]}'></audio>
+
+      <!-- Sonidos de acción del kit (identidad/kit.json → sonidosAccion): data-start = cuadro del sonido / 30 − acento; el sonido cae un
+           cuadro después de su imagen. toque, aparicion y desliz rotan tres tomas (a = la del kit, b = +3 % de tono, c = −3 %), nunca la
+           misma dos veces seguidas. Toques a 1,0; 1,4 en los cambios grandes y en las confirmaciones clave. -->
+@@SONIDOS@@
+      <!-- 1576–1633 · la subida hacia el cierre; su golpe (acento 1,5) cae en el 1621, un cuadro después del corte del 1620 -->
+      <audio id="snd-subida" src="identidad/audio/subida.wav" data-start="52.533333" data-duration="1.9" data-track-index="25" data-volume="1"></audio>
+      <!-- Sonido de marca: inicio del cierre + 0,38 s (identidad/kit.json → piezas.cierre-comercial.sonido) -->
+      <audio id="marca-cierre" src="identidad/audio/sonido-marca.wav" data-start="54.38" data-duration="2.1" data-track-index="26" data-volume="1"></audio>
+    </div>
+
+    <script>
+      // ── Un solo lugar para el formato ────────────────────────────────────────────────────────────────────────────────
+      window.KD = {
+        fps: 30,
+        cel: { l: 1104, t: 90, w: 720, h: 900, r: 28 }, // .k-ventana-16x9
+        esc: { l: 240, t: 260, w: 1440, h: 760, r: 20 }, // .k-ventana-escritorio
+        grab: { w: 1170, h: 2532, cssW: 390 }, // el celular grabado a 3× (390×844 CSS)
+        latigoV: 1000, // la tira vertical de Academia y de Equipos (--f-latigo)
+      };
+
+      (function () {
+        const KD = window.KD;
+        const F = (n) => n / KD.fps; // cuadro → segundos
+        const clamp01 = (v) => Math.min(1, Math.max(0, v));
+
+        // ── Encuadres ─────────────────────────────────────────────────────────────────────────────────────────────────────
+        // enc(s, cx, cy, off): la caja con centro (cx, cy) en px CSS del celular, centrada en la ventana con la escala s sobre el plano (la
+        // grabación ajustada al ancho), sin salirse de la grabación; off = el corrimiento vertical de su contenedor (Membresía). comp(): la
+        // app saltó d px CSS y la cámara lo deshace en el mismo cuadro.
+        const W = KD.cel.w, HV = KD.cel.h, K = W / KD.grab.w, PPC = W / KD.grab.cssW, VH = KD.grab.h * K;
+        const OFF2 = HV - VH;
+        function enc(s, cx, cy, off) {
+          off = off || 0;
+          const rx = cx * PPC, ry = cy * PPC + off;
+          let x = W / 2 - s * rx, y = HV / 2 - s * ry;
+          x = Math.min(0, Math.max(W - s * W, x));
+          y = Math.min(-s * off, Math.max(HV - s * (VH + off), y));
+          return { scale: s, x, y };
+        }
+        const comp = (e, d) => ({ scale: e.scale, x: e.x, y: e.y - e.scale * PPC * d });
+        // Escritorio: p = px de la ventana por px CSS de la página (D = 2: escala 1 del video a 2560).
+        const WE = KD.esc.w, HE = KD.esc.h;
+        function encE(p, cx, cy) {
+          let x = WE / 2 - p * cx, y = HE / 2 - p * cy;
+          x = Math.min(0, Math.max(WE - p * 1280, x));
+          y = Math.min(0, Math.max(HE - p * 720, y));
+          return { scale: p / 2, x, y };
+        }
+
+        // Los encuadres de cada recorrido (recorrido-<modulo>/_gen/index.tpl.html), los mismos números
+        const E1 = { // Membresía (E2 de su recorrido; la grabación pegada abajo: off = OFF2)
+          observaciones: enc(1.4, 185, 558, OFF2),
+          botones: enc(1.3, 205, 673, OFF2),
+          resultado: enc(1.35, 211, 480, OFF2),
+          ahora: enc(1.5, 195, 372, OFF2),
+        };
+        const E2 = { // Eventos
+          botones: enc(1.3, 160, 607),
+          formulario: enc(1, 195, 374.5),
+          enviar: enc(1, 195, 530.5),
+          listo: enc(1, 195, 438),
+          tarjeta: enc(1.13, 195, 568),
+        };
+        const E3 = { // Academia (E1 el profesor, E2 la alumna)
+          codigo: enc(1.085, 195, 279.5),
+          contador: enc(1.085, 195, 624.5),
+          casillas: enc(1.2, 195, 355),
+          listo: enc(1.2, 195, 330),
+        };
+        const E4 = { // Mi iglesia
+          form: enc(1.085, 195, 540),
+          botonesForm: enc(1.18, 193, 561),
+          resultado: enc(1.085, 195, 543),
+          verBoleta: enc(1.085, 195, 543),
+          boleta: enc(1.085, 195, 354.6),
+          qr: enc(1.3, 195, 456),
+          grande: enc(1.085, 195, 400),
+        };
+        const E5 = { // Comunicaciones
+          tarjeta: enc(1.085, 195, 580),
+          kpis: enc(1.085, 195, 520),
+          nombres: enc(1.085, 195, 410.7),
+          cierre: enc(1.085, 195, 465),
+        };
+        const E6 = { // Equipos
+          botones: enc(1.085, 195, 372),
+          parqueadero2: enc(1.4, 155.5, 440),
+          cierre: enc(1.2, 176, 350),
+        };
+        const E7 = { // Tableros (recorrido-membresia ER4)
+          cifras: encE(2, 470, 265), // «Tableros», las vistas, «Toda la iglesia» y las cifras: Membresía 1.324 (+49,8 %) … En rojo en la ruta
+          semaforo: encE(2, 470, 530), // «Semáforo de actividad»: la explicación, la barra y «Verde · Amarillo · Rojo · Sin actividad»
+        };
+
+        const CAM = { ease: 'power2.inOut' };
+        const tl = gsap.timeline({ paused: true });
+        const mover = (sel, e, n, d) => tl.to(sel, { ...e, duration: F(d), ease: CAM.ease }, F(n));
+
+        // ── Cámaras: las del clip en cada ventana, corridas a su lugar (un movimiento por compás, quietas mientras la app cambia) ──
+@@CAMARAS@@
+        // La síntesis: el tablero
+        gsap.set('#c7', E7.cifras); tl.set('#c7', E7.cifras, 0);
+        mover('#c7', E7.semaforo, 1530, 14);
+
+        // ── Estado inicial de las ventanas: gsap.set inmediato (el cuadro 0 lo muestra) y el mismo set en el 0 de la línea de tiempo (para
+        //    volver atrás al buscar). Cada ventana está oculta hasta que entra y se oculta en cuanto sale. ──
+        const ini = (sel, v) => { gsap.set(sel, v); tl.set(sel, v, 0); };
+        ini('#w1', { y: 1080 });
+        ini('#w2', { x: 1920, autoAlpha: 0 });
+        ini('#w3', { clipPath: 'circle(0px at 360px 450px)', autoAlpha: 0 });
+        ini('#w4', { y: 1080, autoAlpha: 0 });
+        ini('#w5', { autoAlpha: 0 });
+        ini('#w6', { x: -1920, autoAlpha: 0 });
+        ini(['#w6cel', '#w6esc'], { xPercent: -50, yPercent: -50, x: 0, scale: 1 });
+        ini('#w6esc', { opacity: 0 });
+        ini('#t3', { y: 0 });
+        ini('#t6', { y: -KD.latigoV });
+        tl.set('#w2', { autoAlpha: 1 }, F(290));
+        tl.set('#w4', { autoAlpha: 1 }, F(710));
+        tl.set('#w6', { autoAlpha: 1 }, F(1190));
+
+        const io = { ease: 'power3.inOut' };
+        const aterriza = (sel, desde, n, origen) =>
+          tl.fromTo(sel, { scale: desde, transformOrigin: origen || '50% 50%' }, { scale: 1, duration: F(10), ease: 'power3.out', immediateRender: false }, F(n));
+
+        // 110–120 · la primera ventana sube desde abajo y asienta con el bajo (el primer cambio grande de la pista)
+        tl.fromTo('#w1', { y: 1080 }, { y: 0, duration: F(10), ease: 'power3.out', immediateRender: false }, F(110));
+        // 290–300 · látigo horizontal a la izquierda: Membresía sale, Eventos entra (una sola tira)
+        tl.fromTo('#w1', { x: 0 }, { x: -1920, duration: F(10), ...io, immediateRender: false }, F(290));
+        tl.fromTo('#w2', { x: 1920 }, { x: 0, duration: F(10), ...io, immediateRender: false }, F(290));
+        aterriza('#w2in', 1.04, 300);
+        tl.set('#w1', { autoAlpha: 0 }, F(300));
+        // 479–485 · iris desde el centro de la ventana: Academia (la costura de la música cae en el 480)
+        tl.set('#w3', { autoAlpha: 1 }, F(479));
+        tl.fromTo('#w3', { clipPath: 'circle(0px at 360px 450px)' }, { clipPath: 'circle(600px at 360px 450px)', duration: F(6), ease: 'power2.out', immediateRender: false }, F(479));
+        tl.set('#w3', { clipPath: 'none' }, F(486));
+        tl.set('#w2', { autoAlpha: 0 }, F(486));
+        // 590–600 · dentro de Academia, el látigo vertical del clip: del profesor a la alumna (clip 110–120)
+        tl.to('#t3', { y: -KD.latigoV, duration: F(10), ...io }, F(590));
+        aterriza('#w3b-in', 1.04, 600, `${W / 2}px ${HV / 2}px`);
+        // 710–720 · látigo vertical hacia arriba en el golpe más fuerte: Academia sale por arriba, Mi iglesia entra desde abajo
+        tl.fromTo('#w3', { y: 0 }, { y: -1080, duration: F(10), ...io, immediateRender: false }, F(710));
+        tl.fromTo('#w4', { y: 1080 }, { y: 0, duration: F(10), ...io, immediateRender: false }, F(710));
+        aterriza('#w4in', 1.04, 720);
+        tl.set('#w3', { autoAlpha: 0 }, F(720));
+        // 842 · el corte del clip sobre «Ver boleta»: «Mis boletas» entra 1,03 → 1,00 desde el centro de lo visible
+        const o4 = { x: (W / 2 - E4.boleta.x) / E4.boleta.scale, y: (HV / 2 - E4.boleta.y) / E4.boleta.scale };
+        aterriza('#c4in', 1.03, 842, `${o4.x.toFixed(1)}px ${o4.y.toFixed(1)}px`);
+        // 950–970 · el empuje del clímax: Mi iglesia crece hacia la cámara y se va en el 960; Comunicaciones ya está y asienta
+        tl.fromTo('#w4', { scale: 1, transformOrigin: '50% 50%' }, { scale: 1.22, duration: F(10), ease: 'power2.in', immediateRender: false }, F(950));
+        tl.set('#w4', { autoAlpha: 0 }, F(960));
+        tl.set('#w5', { autoAlpha: 1 }, F(960));
+        aterriza('#w5', 1.08, 960);
+        // 1190–1200 · látigo horizontal a la derecha: Comunicaciones sale, Equipos entra
+        tl.fromTo('#w5', { x: 0 }, { x: 1920, duration: F(10), ...io, immediateRender: false }, F(1190));
+        tl.fromTo('#w6', { x: -1920 }, { x: 0, duration: F(10), ...io, immediateRender: false }, F(1190));
+        aterriza('#w6cel', 1.04, 1200);
+        tl.set('#w5', { autoAlpha: 0 }, F(1200));
+        // 1316–1326 · dentro de Equipos, el látigo vertical del clip: de Gabriela al líder (clip 656–666)
+        tl.to('#t6', { y: 0, duration: F(10), ...io }, F(1316));
+        aterriza('#w6a-in', 1.04, 1320, `${W / 2}px ${HV / 2}px`);
+
+        // ── 1434–1446 · el morph: la caja del celular se vuelve la del escritorio (recorrido-membresia, SPEC §1.5). Valores calculados por
+        //    cuadro y unidos en línea recta (seek-safe y con desenfoque de movimiento). El mundo que se va y el que llega se escalan lo justo
+        //    para cubrir la caja en cada cuadro (más su corrimiento de ±160 px): nunca se ve el fondo de la ventana. ─────────────────────
+        const io3 = gsap.parseEase('power3.inOut'), in3 = gsap.parseEase('power3.in'), out3 = gsap.parseEase('power3.out');
+        const caja = (A, B, p) => ({ left: A.l + (B.l - A.l) * p, top: A.t + (B.t - A.t) * p, width: A.w + (B.w - A.w) * p,
+          height: A.h + (B.h - A.h) * p, borderRadius: A.r + (B.r - A.r) * p });
+        function morph(golpe, A, B, sale, entra) {
+          const est = (f) => caja(A, B, io3(clamp01((f - (golpe - 6)) / 12)));
+          tl.set('#w6', est(golpe - 6), F(golpe - 6));
+          for (let f = golpe - 6; f < golpe + 6; f++) {
+            tl.fromTo('#w6', est(f), { ...est(f + 1), duration: F(1), ease: 'none', immediateRender: false }, F(f));
+          }
+          const sal = (f) => {
+            const v = est(f), dx = -160 * in3(clamp01((f - (golpe - 6)) / 6));
+            return { x: dx, scale: Math.max(1, (v.width / 2 + Math.abs(dx)) / (A.w / 2), v.height / A.h) };
+          };
+          for (let f = golpe - 6; f < golpe; f++) {
+            tl.fromTo(sale, sal(f), { ...sal(f + 1), duration: F(1), ease: 'none', immediateRender: false }, F(f));
+          }
+          tl.set(sale, { opacity: 0 }, F(golpe)); // corte duro de contenido en el cuadro más rápido del morph
+          tl.set(entra, { opacity: 1 }, F(golpe));
+          const ent = (f) => {
+            const v = est(f), q = out3(clamp01((f - golpe) / 10)), dx = 160 * (1 - q), e = 1.04 - 0.04 * q;
+            return { x: dx, scale: e * Math.max((v.width / 2 + dx) / (B.w / 2), v.height / B.h) };
+          };
+          for (let f = golpe; f < golpe + 10; f++) {
+            tl.fromTo(entra, ent(f), { ...ent(f + 1), duration: F(1), ease: 'none', immediateRender: false }, F(f));
+          }
+        }
+        morph(1440, KD.cel, KD.esc, '#w6cel', '#w6esc');
+
+        // ── Marcas de toque: aparecen 4 cuadros antes, se hunden en el cuadro y se van 6 después; la onda nace en el cuadro (450 ms).
+        //    Cuando la pantalla cambia antes de que la marca se vaya, la marca se va con el corte. ──
+        @@TOQUES@@.forEach(([n, c]) => {
+          const t = F(n);
+          tl.fromTo(`#tq-${n}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: F(4), ease: 'power2.out', immediateRender: false }, t - F(4));
+          if (c) {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(Math.min(2, c - n)), ease: 'power2.in' }, t);
+            const p = (c - n) / 13.5; // la parte de la onda (0,45 s) que alcanza a verse antes del corte
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0.9 * (1 - p), scale: 1 + 0.62 * p, duration: F(c - n), ease: 'none', immediateRender: false }, t);
+            tl.set([`#tq-${n}`, `#on-${n}`], { opacity: 0 }, F(c));
+          } else {
+            tl.to(`#tq-${n}`, { scale: 0.86, duration: F(2), ease: 'power2.in' }, t);
+            tl.to(`#tq-${n}`, { opacity: 0, scale: 1, duration: F(6), ease: 'power2.out' }, t + F(2));
+            tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.62, duration: 0.45, ease: 'power2.out', immediateRender: false }, t);
+          }
+        });
+
+        // ── El final: el dip (1617–1619) y el corte al cierre (1620) ──
+        tl.set('#dip', { opacity: 0.4 }, F(1617));
+        tl.set('#escena', { autoAlpha: 0 }, F(1620));
+        tl.set({}, {}, 59);
+        window.__timelines['main'] = tl;
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "clip-sitio-en-un-minuto",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "kit": "node ../_herramientas/montar-kit.mjs",
+    "musica": "sh _gen/musica.sh",
+    "gen": "python _gen/gen.py",
+    "dev": "npx --yes hyperframes@0.8.221 preview",
+    "check": "npx --yes hyperframes@0.8.221 check",
+    "render": "npx --yes hyperframes@0.8.221 render --quality high --output renders/clip-sitio-en-un-minuto-16x9.mp4"
+  }
+}
