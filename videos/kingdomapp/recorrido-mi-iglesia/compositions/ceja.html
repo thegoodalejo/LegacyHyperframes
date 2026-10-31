@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- La ceja «MI IGLESIA» (host 194–2524), con sus dos lugares (SPEC §1.4): en la columna izquierda del celular (x 120 · y 412) y arriba del
+         escritorio (x 240 · y 92). Nunca se desliza con los látigos: sale con blur y entra en el otro lugar (entrada-linea: blur 8 → 0, 6 cuadros,
+         power4.out; salida-texto, 3 cuadros, power3.in). Inter 700, 28 px, mayúsculas, dorada (.k-feed-ceja con el tamaño de 16:9).
+         Generada por _gen/gen.py. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-ceja {
+          position: absolute;
+          font-size: var(--f-ceja-px, 28px);
+          line-height: 1.2;
+          white-space: nowrap;
+        }
+        #ceja-cel {
+          left: var(--f-margen-x, 120px);
+          top: var(--f-ceja-y, 412px);
+        }
+        #ceja-esc {
+          left: var(--f-esc-x, 240px);
+          top: var(--f-esc-ceja-y, 92px);
+          opacity: 0;
+        }
+      </style>
+      <div id="root" data-composition-id="ceja" data-width="1920" data-height="1080" data-duration="77.666667">
+        <div class="k-feed-ceja f-ceja" id="ceja-cel">Mi iglesia</div>
+        <div class="k-feed-ceja f-ceja" id="ceja-esc">Mi iglesia</div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const H = 194; // el cuadro del video en que arranca el host
+          const tl = gsap.timeline({ paused: true });
+          const entra = (sel, n, primera) =>
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out', immediateRender: !!primera }, F(n - H));
+          const sale = (sel, n) => tl.to(sel, { opacity: 0, filter: 'blur(8px)', duration: F(3), ease: 'power3.in' }, F(n - H));
+          entra('#ceja-cel', 194, true); // en el 195 (el pulso) ya se lee
+          sale('#ceja-cel', 1317); // 1317–1320, con el látigo al escritorio
+          entra('#ceja-esc', 1322); // 1322–1328, arriba del escritorio
+          sale('#ceja-esc', 1557); // 1557–1560, con el látigo de vuelta
+          entra('#ceja-cel', 1562); // 1562–1568, otra vez a la izquierda
+          sale('#ceja-cel', 2037); // 2037–2040, con el segundo látigo al escritorio
+          entra('#ceja-esc', 2042); // 2042–2048
+          sale('#ceja-esc', 2277); // 2277–2280, con el último látigo
+          entra('#ceja-cel', 2282); // 2282–2288
+          sale('#ceja-cel', 2520); // 2520–2523, con la frase del sitio
+          tl.set({}, {}, F(2524 - H));
+          window.__timelines['ceja'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
