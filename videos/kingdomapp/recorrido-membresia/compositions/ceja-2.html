@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Ceja 2 (esc, host 1085–1556): «COORDINAR» entra 1086–1092; sale 1551–1555. Inter 700, 28 px, mayúsculas, dorado -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-ceja {
+          position: absolute;
+          left: 240px;
+          top: 76px;
+          color: var(--k-noche-dorado);
+          line-height: 1;
+          white-space: nowrap;
+        }
+      </style>
+      <div data-hf-id="hf-c2r" id="root" data-composition-id="ceja-2" data-width="1920" data-height="1080" data-duration="15.7">
+        <div data-hf-id="hf-c2t" class="k-ceja f-ceja" id="c2">Coordinar</div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo('#c2', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out' }, 0); // entrada-linea
+          tl.to('#c2', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(466)); // salida-texto: 1551–1555
+          tl.set({}, {}, F(471));
+          window.__timelines['ceja-2'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

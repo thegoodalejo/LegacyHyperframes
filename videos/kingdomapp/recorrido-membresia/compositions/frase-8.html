@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frase 8 (esc, host 2294–2641): P12 · los tableros: Tu 2295 … vistazo 2303; sale 2636–2640 (blur swap con la frase 9) -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: 240px;
+          top: 118px;
+          width: 1440px;
+          font-size: 84px;
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .f-frase em {
+          color: var(--k-noche-dorado);
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f8r" id="root" data-composition-id="frase-8" data-width="1920" data-height="1080" data-duration="11.566667">
+        <div data-hf-id="hf-f8t" class="k-titular f-frase" id="f8">
+          <span data-hf-id="hf-f8l0" class="linea"><span data-hf-id="hf-f8w1" class="palabra" id="f8-w1">Tu</span> <span data-hf-id="hf-f8w2" class="palabra" id="f8-w2">iglesia,</span> <span data-hf-id="hf-f8w3" class="palabra" id="f8-w3">de</span> <span data-hf-id="hf-f8w4" class="palabra" id="f8-w4">un</span> <span data-hf-id="hf-f8w5" class="palabra" id="f8-w5">vistazo</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 5; i++) {
+            // entrada-palabra: el host arranca un cuadro antes del pulso; el primer cuadro visible es el pulso
+            tl.fromTo(`#f8-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.to('#f8', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(342)); // salida-texto: 2636–2640
+          tl.set({}, {}, F(347));
+          window.__timelines['frase-8'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

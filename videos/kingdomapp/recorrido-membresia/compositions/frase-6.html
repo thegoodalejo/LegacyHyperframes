@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frase 6 (cel, host 1574–1916): P10 · el semáforo: Ves 1575 … aleja 1585; sale 1911–1915 -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: 120px;
+          top: 476px;
+          width: 888px;
+          font-size: 88px;
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .f-frase em {
+          color: var(--k-noche-dorado);
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f6r" id="root" data-composition-id="frase-6" data-width="1920" data-height="1080" data-duration="11.4">
+        <div data-hf-id="hf-f6t" class="k-titular f-frase" id="f6">
+          <span data-hf-id="hf-f6l0" class="linea"><span data-hf-id="hf-f6w1" class="palabra" id="f6-w1">Ves</span> <span data-hf-id="hf-f6w2" class="palabra" id="f6-w2">a</span> <span data-hf-id="hf-f6w3" class="palabra" id="f6-w3">tiempo</span></span>
+          <span data-hf-id="hf-f6l1" class="linea"><span data-hf-id="hf-f6w4" class="palabra" id="f6-w4">quién</span> <span data-hf-id="hf-f6w5" class="palabra" id="f6-w5">se</span> <span data-hf-id="hf-f6w6" class="palabra" id="f6-w6">aleja</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 6; i++) {
+            // entrada-palabra: el host arranca un cuadro antes del pulso; el primer cuadro visible es el pulso
+            tl.fromTo(`#f6-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.to('#f6', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(337)); // salida-texto: 1911–1915
+          tl.set({}, {}, F(342));
+          window.__timelines['frase-6'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frase 3 (cel, host 359–602): P4 · palabra a palabra cada 2 cuadros desde el 360; sale 597–601 -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: 120px;
+          top: 476px;
+          width: 888px;
+          font-size: 88px;
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .f-frase em {
+          color: var(--k-noche-dorado);
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f3r" id="root" data-composition-id="frase-3" data-width="1920" data-height="1080" data-duration="8.1">
+        <div data-hf-id="hf-f3t" class="k-titular f-frase" id="f3">
+          <span data-hf-id="hf-f3l0" class="linea"><span data-hf-id="hf-f3w1" class="palabra" id="f3-w1">Y</span> <span data-hf-id="hf-f3w2" class="palabra" id="f3-w2">ya</span> <span data-hf-id="hf-f3w3" class="palabra" id="f3-w3">tiene</span> <span data-hf-id="hf-f3w4" class="palabra" id="f3-w4">quién</span></span>
+          <span data-hf-id="hf-f3l1" class="linea"><span data-hf-id="hf-f3w5" class="palabra" id="f3-w5">la</span> <span data-hf-id="hf-f3w6" class="palabra" id="f3-w6">llame</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 6; i++) {
+            // entrada-palabra: el host arranca un cuadro antes del pulso; el primer cuadro visible es el pulso
+            tl.fromTo(`#f3-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.to('#f3', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(238)); // salida-texto: 597–601
+          tl.set({}, {}, F(243));
+          window.__timelines['frase-3'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

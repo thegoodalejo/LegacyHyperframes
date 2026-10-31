@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frase 5 (esc, host 1094–1556): P9 · Coordinar: Nadie 1095 … llamada 1105; sale 1551–1555 -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: 240px;
+          top: 118px;
+          width: 1440px;
+          font-size: 84px;
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .f-frase em {
+          color: var(--k-noche-dorado);
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f5r" id="root" data-composition-id="frase-5" data-width="1920" data-height="1080" data-duration="15.4">
+        <div data-hf-id="hf-f5t" class="k-titular f-frase" id="f5">
+          <span data-hf-id="hf-f5l0" class="linea"><span data-hf-id="hf-f5w1" class="palabra" id="f5-w1">Nadie</span> <span data-hf-id="hf-f5w2" class="palabra" id="f5-w2">nuevo</span> <span data-hf-id="hf-f5w3" class="palabra" id="f5-w3">se</span> <span data-hf-id="hf-f5w4" class="palabra" id="f5-w4">queda</span> <span data-hf-id="hf-f5w5" class="palabra" id="f5-w5">sin</span> <span data-hf-id="hf-f5w6" class="palabra" id="f5-w6">llamada</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 6; i++) {
+            // entrada-palabra: el host arranca un cuadro antes del pulso; el primer cuadro visible es el pulso
+            tl.fromTo(`#f5-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.to('#f5', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(457)); // salida-texto: 1551–1555
+          tl.set({}, {}, F(462));
+          window.__timelines['frase-5'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frase 4 (cel, host 839–1076): P7–P8 · desde el golpe más fuerte (840); se queda sobre la ficha y el historial; sale 1071–1075 antes del morph -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: 120px;
+          top: 476px;
+          width: 888px;
+          font-size: 88px;
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .f-frase em {
+          color: var(--k-noche-dorado);
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f4r" id="root" data-composition-id="frase-4" data-width="1920" data-height="1080" data-duration="7.9">
+        <div data-hf-id="hf-f4t" class="k-titular f-frase" id="f4">
+          <span data-hf-id="hf-f4l0" class="linea"><span data-hf-id="hf-f4w1" class="palabra" id="f4-w1">Y</span> <span data-hf-id="hf-f4w2" class="palabra" id="f4-w2">una</span> <span data-hf-id="hf-f4w3" class="palabra" id="f4-w3">ruta</span></span>
+          <span data-hf-id="hf-f4l1" class="linea"><span data-hf-id="hf-f4w4" class="palabra" id="f4-w4">para</span> <span data-hf-id="hf-f4w5" class="palabra" id="f4-w5">crecer</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 5; i++) {
+            // entrada-palabra: el host arranca un cuadro antes del pulso; el primer cuadro visible es el pulso
+            tl.fromTo(`#f4-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.to('#f4', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(232)); // salida-texto: 1071–1075
+          tl.set({}, {}, F(237));
+          window.__timelines['frase-4'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

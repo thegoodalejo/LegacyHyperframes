@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Ceja 3 (cel, host 1565–1916): «SEMÁFORO DE ACTIVIDAD» entra 1566–1572; sale 1911–1915. Inter 700, 28 px, mayúsculas, dorado -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-ceja {
+          position: absolute;
+          left: 120px;
+          top: 428px;
+          color: var(--k-noche-dorado);
+          line-height: 1;
+          white-space: nowrap;
+        }
+      </style>
+      <div data-hf-id="hf-c3r" id="root" data-composition-id="ceja-3" data-width="1920" data-height="1080" data-duration="11.7">
+        <div data-hf-id="hf-c3t" class="k-ceja f-ceja" id="c3">Semáforo de actividad</div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo('#c3', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(6), ease: 'power4.out' }, 0); // entrada-linea
+          tl.to('#c3', { opacity: 0, filter: 'blur(8px)', duration: F(4), ease: 'power3.in' }, F(346)); // salida-texto: 1911–1915
+          tl.set({}, {}, F(351));
+          window.__timelines['ceja-3'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

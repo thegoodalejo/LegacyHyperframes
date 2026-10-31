@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Recorrido · Membresía (16:9)</title>
+    <!--
+      Recorrido del módulo Membresía de Kingdom, 1920×1080 (16:9), 97 s a 30 fps (2910 cuadros). Contrato: SPEC.md; desvíos y medidas en REVIEW.md.
+      GENERADO por _gen/gen.py desde _gen/index.tpl.html (los tramos, las marcas, los sonidos y los textos están en gen.py).
+      Estructura:
+        · compositions/fondo.html                 la noche del sitio (el halo se asienta en cada mundo)
+        · compositions/frase-1..9, ceja-1..5      los textos, cada uno en su lugar (celular: a la izquierda; escritorio: arriba)
+        · #ventana                                UNA .k-ventana que cambia de forma: celular 720×900 en (1104, 90) ↔ escritorio 1440×760 en
+                                                  (240, 260) (morph en 1074–1086, 1554–1566 y 2274–2286). Dentro, cuatro mundos centrados:
+            #w-cel1  acto 1 (0–1079), el del clip tal cual (G1 y G2): #cam, la tira del látigo 176–186, los iris 120, 375 y 780
+            #w-r1    C1 Coordinar (1080–1559), escritorio, coordinar.mp4 a 2 px por px CSS (D) en #cam-r1
+            #w-cel2  C2 Semáforo (1560–1919) y C3 Discipulado (1920–2279), celular: #tira2 con dos ranuras y el látigo vertical 1914–1924
+            #w-r4    C4 Tableros (2280–2759), escritorio: la página sin desplazar (capa A) y la desplazada 453 px CSS (capa B, encima, sin su
+                     barra fija): la cámara recorre una sola página
+        · identidad/cierre-comercial.html         el cierre del kit (92,0–97,0); campanas en el 92,38
+      La cámara es scale + x/y sobre un envoltorio; el <video> nunca se transforma ni se busca. Los encuadres (enc*) centran cajas de
+      pasos*.json y líneas medidas en las grabaciones (REVIEW.md §3).
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
+    <link rel="stylesheet" href="identidad/kit.css" />
+    <style>
+      :root {
+        /* El mundo del celular (SPEC §1.3 y §2.1): la grabación de 1170×2532 ajustada al ancho de la ventana de 720. */
+        --f-ventana-w: 720px;
+        --f-ventana-h: 900px;
+        --f-ventana-hvis: 900px;
+        --f-k: 0.615385;
+        --f-grab-alto: 1558.15px;
+        --f-latigo: 1000px;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #060d1f;
+      }
+      #root > [data-composition-src] {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+      }
+      #fondo {
+        z-index: 0;
+      }
+      #cierre-comercial {
+        z-index: 6;
+      }
+      /* La ventana: empieza en la forma del celular; el morph mueve su caja (left/top/width/height/radio). */
+      #ventana {
+        left: 1104px;
+        top: 90px;
+        width: 720px;
+        height: 900px;
+        border-radius: 28px;
+        z-index: 3;
+      }
+      /* Cada mundo ocupa su ventana nativa, centrado en la ventana (xPercent/yPercent −50 por GSAP): durante el morph se escala para
+         cubrirla siempre (nunca se ve el fondo de la ventana). */
+      .mundo-v {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 720px;
+        height: 900px;
+        overflow: hidden;
+      }
+      .mundo-v.esc {
+        width: 1440px;
+        height: 760px;
+      }
+      /* ── Acto 1 (el clip) ── */
+      #tira {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      .mundo {
+        position: absolute;
+        left: 0;
+        width: 100%;
+      }
+      #m1 {
+        top: 0;
+        height: var(--f-grab-alto);
+      }
+      #m2 {
+        top: var(--f-latigo);
+        height: var(--f-ventana-h);
+        overflow: hidden;
+        z-index: 2;
+      }
+      #m2in {
+        position: absolute;
+        left: 0;
+        top: calc(var(--f-ventana-hvis) - var(--f-grab-alto));
+        width: 100%;
+        height: var(--f-grab-alto);
+      }
+      #m3in {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: calc(3984px * var(--f-k));
+      }
+      #iris3 {
+        height: 100%;
+      }
+      #m3pre,
+      #m3post,
+      #m3abierta {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: var(--f-grab-alto);
+      }
+      #m3pre,
+      #m3abierta {
+        top: 0;
+      }
+      #m3post {
+        top: calc(1452px * var(--f-k));
+      }
+      #m3abierta {
+        clip-path: inset(0 0 calc(var(--f-grab-alto) - 2300px * var(--f-k)) 0);
+      }
+      .mundo video,
+      .mundo img,
+      .capa video,
+      .iris {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+      }
+      .iris,
+      .capa {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: var(--f-grab-alto);
+      }
+      /* ── Mundos nuevos ── */
+      .cam-esc {
+        width: 2560px;
+        height: 1440px;
+      }
+      .cam-esc .capa {
+        height: 1440px;
+      }
+      .cam-esc .capa video {
+        width: 2560px;
+        height: 1440px;
+      }
+      #cam-r4 {
+        height: 2346px;
+      }
+      /* Capa B de los tableros: la página desplazada 453 px CSS (906 px), sin su barra fija de arriba (57 px CSS = 114 px). */
+      #r4-b {
+        top: 906px;
+        clip-path: inset(114px 0 0 0);
+      }
+      #tira2 {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 720px;
+        height: 1900px;
+      }
+      .ranura {
+        position: absolute;
+        left: 0;
+        width: 720px;
+        height: 900px;
+        overflow: hidden;
+      }
+      #ranura-r2 {
+        top: 0;
+      }
+      #ranura-r3 {
+        top: var(--f-latigo);
+      }
+      .marcas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: var(--f-grab-alto);
+        pointer-events: none;
+      }
+      /* Marca del toque (las grabaciones no traen círculo): 20 px CSS de la app y su onda de 36 px CSS → ×1,62. */
+      .toque {
+        position: absolute;
+        width: 37px;
+        height: 37px;
+        margin: -18.5px 0 0 -18.5px;
+        border-radius: 50%;
+        background: rgba(27, 27, 31, 0.28);
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+        opacity: 0;
+      }
+      .onda {
+        position: absolute;
+        width: 66px;
+        height: 66px;
+        margin: -33px 0 0 -33px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(1, 91, 190, 0.9);
+        opacity: 0;
+      }
+      .toque.esc {
+        width: 40px;
+        height: 40px;
+        margin: -20px 0 0 -20px;
+      }
+      .onda.esc {
+        width: 72px;
+        height: 72px;
+        margin: -36px 0 0 -36px;
+      }
+      #datos {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        z-index: 4;
+      }
+      #dip {
+        position: absolute;
+        inset: 0;
+        background: #060d1f;
+        opacity: 0;
+        z-index: 5;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-root"
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="97"
+      data-width="1920"
+      data-height="1080"
+      data-motion-blur="on"
+      data-motion-blur-shutter="180"
+    >
+      <!-- ── Escenas (gráficos): el fondo, las frases y las cejas ── -->
+      <div data-hf-id="hf-h-fondo" id="fondo" data-composition-id="fondo" data-composition-src="compositions/fondo.html" data-track-kind="graphics"
+        data-start="0" data-duration="92" data-track-index="0" data-width="1920" data-height="1080"></div>
+      @@HOSTS@@
+      <!-- P13 · el cierre del Comercial (identidad/kit.json → piezas.cierre-comercial): 2760–2909 -->
+      <div data-hf-id="hf-h-cierre" id="cierre-comercial" data-composition-id="cierre-comercial" data-composition-src="identidad/cierre-comercial.html" data-track-kind="graphics"
+        data-variable-values='{"publico":"iglesia","llamado":"prueba","contacto":"sitio","fondo":"noche","idioma":"es"}'
+        data-start="92" data-duration="5" data-track-index="5" data-width="1920" data-height="1080"></div>
+
+      <!-- ── La ventana a la app real ─────────────────────────────────────────────────────────────────────────────── -->
+      <div data-hf-id="hf-ventana" id="ventana" class="k-ventana k-ventana-16x9" data-layout-allow-overflow>
+        <!-- Acto 1 · 0–1079: el cuerpo del clip (G1 y G2), reencuadrado. -->
+        <div data-hf-id="hf-w-cel1" id="w-cel1" class="mundo-v">
+          <div data-hf-id="hf-cam" id="cam" class="k-ventana-camara" data-layout-allow-overflow>
+            <div data-hf-id="hf-tira" id="tira">
+              <!-- Mundo 1: el celular de quien registra (cuenta 103). -->
+              <div data-hf-id="hf-m1" id="m1" class="mundo">
+                @@V:m1@@
+                <!-- 120–125 · still del cuadro 119 (grab. 466) debajo del iris -->
+                <img data-hf-id="hf-still1" id="still1" class="clip" src="assets/stills/still-466.png" alt="" data-track-index="9"
+                  data-start="4" data-duration="0.166667" />
+                <div data-hf-id="hf-iris1" id="iris1" class="iris">
+                  @@V:iris1@@
+                </div>
+                <div data-hf-id="hf-mk1" class="marcas">
+                  @@M:m1@@
+                </div>
+              </div>
+              <!-- Mundo 2: el celular de quien acompaña (cuenta 103, «Mi seguimiento»). -->
+              <div data-hf-id="hf-m2" id="m2" class="mundo">
+                <div data-hf-id="hf-m2in" id="m2in">
+                  @@V:m2in@@
+                  <!-- 375–380 · still del cuadro 374 (grab. 2401) debajo del iris -->
+                  <img data-hf-id="hf-still2" id="still2" class="clip" src="assets/stills/still-2401.png" alt="" data-track-index="9"
+                    data-start="12.5" data-duration="0.166667" />
+                  <div data-hf-id="hf-iris2" id="iris2" class="iris">
+                    @@V:iris2@@
+                  </div>
+                  <div data-hf-id="hf-mk2" class="marcas">
+                    @@M:m2in@@
+                  </div>
+                </div>
+                <!-- Mundo 3 (desde el 780): la ficha de Valeria (G2); la ficha sin desplazar encima de la desplazada, alineadas al píxel. -->
+                <div data-hf-id="hf-m3in" id="m3in">
+                  <div data-hf-id="hf-iris3" id="iris3" class="iris">
+                    <div data-hf-id="hf-m3post" id="m3post">
+                      @@V:m3post@@
+                    </div>
+                    <div data-hf-id="hf-m3pre" id="m3pre">
+                      @@V:m3pre@@
+                    </div>
+                    <div data-hf-id="hf-m3ab" id="m3abierta">
+                      @@V:m3ab@@
+                    </div>
+                  </div>
+                  <div data-hf-id="hf-mk3" class="marcas">
+                    @@M:m3@@
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C1 · Coordinar (1080–1559): escritorio, cuenta 101. -->
+        <div data-hf-id="hf-w-r1" id="w-r1" class="mundo-v esc">
+          <div data-hf-id="hf-cam-r1" id="cam-r1" class="k-ventana-camara cam-esc" data-layout-allow-overflow>
+            <div data-hf-id="hf-r1-base" id="r1-base" class="capa">
+              @@V:r1base@@
+            </div>
+            <div data-hf-id="hf-r1-iris" id="r1-iris" class="capa">
+              @@V:r1iris@@
+            </div>
+            <div data-hf-id="hf-mk-r1" class="marcas">
+              @@M:r1@@
+            </div>
+          </div>
+        </div>
+
+        <!-- C2 · Semáforo (1560–1919) y C3 · Discipulado (1920–2279): celular, cuenta 101, una tira para el látigo vertical. -->
+        <div data-hf-id="hf-w-cel2" id="w-cel2" class="mundo-v">
+          <div data-hf-id="hf-tira2" id="tira2">
+            <div data-hf-id="hf-ranura-r2" id="ranura-r2" class="ranura">
+              <div data-hf-id="hf-cam-r2" id="cam-r2" class="k-ventana-camara" data-layout-allow-overflow>
+                <div data-hf-id="hf-r2-base" id="r2-base" class="capa">
+                  @@V:r2base@@
+                </div>
+                <div data-hf-id="hf-r2-iris" id="r2-iris" class="capa">
+                  @@V:r2iris@@
+                </div>
+                <div data-hf-id="hf-mk-r2" class="marcas">
+                  @@M:r2@@
+                </div>
+              </div>
+            </div>
+            <div data-hf-id="hf-ranura-r3" id="ranura-r3" class="ranura">
+              <div data-hf-id="hf-cam-r3" id="cam-r3" class="k-ventana-camara" data-layout-allow-overflow>
+                <div data-hf-id="hf-r3-base" id="r3-base" class="capa">
+                  @@V:r3base@@
+                </div>
+                <div data-hf-id="hf-r3-iris1" id="r3-iris1" class="capa">
+                  @@V:r3iris1@@
+                  <div data-hf-id="hf-r3-iris2" id="r3-iris2" class="capa">
+                    @@V:r3iris2@@
+                  </div>
+                </div>
+                <div data-hf-id="hf-mk-r3" class="marcas">
+                  @@M:r3@@
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C4 · Tableros (2280–2759): escritorio, cuenta 101. -->
+        <div data-hf-id="hf-w-r4" id="w-r4" class="mundo-v esc">
+          <div data-hf-id="hf-cam-r4" id="cam-r4" class="k-ventana-camara cam-esc" data-layout-allow-overflow>
+            <div data-hf-id="hf-r4-a" id="r4-a" class="capa">
+              @@V:r4a@@
+            </div>
+            <div data-hf-id="hf-r4-b" id="r4-b" class="capa">
+              @@V:r4b@@
+            </div>
+            <div data-hf-id="hf-mk-r4" class="marcas">
+              @@M:r4@@
+            </div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-datos" id="datos" class="k-datos-ejemplo k-feed-datos">Datos de ejemplo</div>
+        <div data-hf-id="hf-dip" id="dip"></div>
+      </div>
+
+      <!-- ── Sonido ────────────────────────────────────────────────────────────────────────────────────────────────── -->
+      <!-- Música «Product Launch» (The_Mountain), alargada (SPEC §0.1): tres segmentos de la misma pista; 0,7 = −18 LUFS. Empalmes con un cruce
+           de 2 cuadros ANTES de la cabeza del compás (51,933–52,000 y 91,933–92,000). Fórmulas: a = video + 14,05 · b = video − 25,95 · c = video − 9,95. -->
+      <audio data-hf-id="hf-musica-a" id="musica-a" src="assets/musica/product-launch-the-mountain.mp3" data-start="0" data-media-start="14.05" data-duration="52"
+        data-track-index="40"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.7},{"t":51.933333,"v":0.7},{"t":52,"v":0}]}]}'></audio>
+      <audio data-hf-id="hf-musica-b" id="musica-b" src="assets/musica/product-launch-the-mountain.mp3" data-start="51.933333" data-media-start="25.983333" data-duration="40.066667"
+        data-track-index="41"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.066667,"v":0.7},{"t":40,"v":0.7},{"t":40.066667,"v":0}]}]}'></audio>
+      <audio data-hf-id="hf-musica-c" id="musica-c" src="assets/musica/product-launch-the-mountain.mp3" data-start="91.933333" data-media-start="81.983333" data-duration="4.066667"
+        data-track-index="40"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.066667,"v":0.7},{"t":0.266667,"v":0.7},{"t":0.466667,"v":0.25}]}]}'></audio>
+
+      <!-- Sonidos de acción del kit: data-start = cuadro del pico / 30 − acento (el pico cae un cuadro después de su imagen). Tres tomas rotadas
+           de toque, aparicion y desliz (b = +3 % de tono, c = −3 %). 1,4 = +3 dB en los toques clave. -->
+      @@SONIDOS@@
+      <!-- 2714–2771 · la subida hacia el cierre; su golpe (acento 1,5) en el 2761, con el golpe final de la pista -->
+      <audio data-hf-id="hf-snd-subida" id="snd-subida" src="identidad/audio/subida.wav" data-start="90.533333" data-duration="1.9" data-track-index="35" data-volume="1"></audio>
+      <!-- Sonido de marca: inicio del cierre + 0,38 s (identidad/kit.json → piezas.cierre-comercial.sonido) -->
+      <audio data-hf-id="hf-marca" id="marca-comercial" src="identidad/audio/sonido-marca.wav" data-start="92.38" data-duration="2.1" data-track-index="36" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.KD = {
+        fps: 30,
+        cel: { l: 1104, t: 90, w: 720, h: 900, r: 28 }, // .k-ventana-16x9
+        esc: { l: 240, t: 260, w: 1440, h: 760, r: 20 }, // .k-ventana-escritorio
+        grabacion: { w: 1170, h: 2532, cssW: 390, cssH: 844 }, // el celular grabado a 3×
+        latigo: 1000, // --f-latigo
+        G16: 1.083333, // el plano de reposo del celular: 360 px CSS de ancho visible (2,0 px por px CSS; SPEC §1.4)
+      };
+
+      (function () {
+        const KD = window.KD;
+        const F = (n) => n / KD.fps;
+        const W = KD.cel.w, HV = KD.cel.h;
+        const K = W / KD.grabacion.w; // px del video → px de la ventana (= --f-k)
+        const PPC = W / KD.grabacion.cssW; // px de la ventana por px CSS del celular al ajustar al ancho (1,846)
+        const VH = KD.grabacion.h * K; // alto de la grabación ajustada (= --f-grab-alto)
+        const OFF2 = HV - VH; // #m2in top
+        const g = (sc) => Math.max(KD.G16, sc); // del clip al recorrido: el ancho visible se conserva, con piso G16
+        const clamp01 = (v) => Math.min(1, Math.max(0, v));
+
+        // ── Encuadres ─────────────────────────────────────────────────────────────────────────────────────────────────
+        // Acto 1 (como el clip): la caja (centro en px CSS del celular) en el centro de la ventana, sin salirse de la grabación.
+        function enc(sc, cx, cy, off) {
+          const s = g(sc);
+          const rx = cx * PPC, ry = cy * PPC + off;
+          let x = W / 2 - s * rx, y = HV / 2 - s * ry;
+          x = Math.min(0, Math.max(W - s * W, x));
+          y = Math.min(-s * off, Math.max(HV - s * (VH + off), y));
+          return { scale: s, x, y };
+        }
+        const D3 = 484; // la ficha desplazada (px CSS)
+        const VH3 = (D3 + KD.grabacion.cssH) * PPC;
+        function enc3(sc, cx, cy) {
+          const e = enc(sc, cx, cy, 0);
+          e.y = Math.min(0, Math.max(HV - e.scale * VH3, HV / 2 - e.scale * cy * PPC));
+          return e;
+        }
+        // Celular de C2 y C3 (cada ranura con su cámara): escala sobre el ajuste al ancho; G16 1,0833 · F16 1,1504 · M16 1,3978 · C16 1,7972.
+        const NIV = { G: 1.083333, F: 1.1504, M: 1.3978, C: 1.7972 };
+        function encC(nv, cx, cy) {
+          const s = typeof nv === 'number' ? nv : NIV[nv];
+          let x = W / 2 - s * PPC * cx, y = HV / 2 - s * PPC * cy;
+          x = Math.min(0, Math.max(W - s * W, x));
+          y = Math.min(0, Math.max(HV - s * VH, y));
+          return { scale: s, x, y };
+        }
+        // Escritorio (C1 y C4): p = px de la ventana por px CSS; D = 2 (escala 1 del video de 2560), D⁺ = 2,25 (1,125). Nunca la pantalla entera.
+        const WE = KD.esc.w, HE = KD.esc.h;
+        function encE(nv, cx, cy, altoDoc) {
+          const p = nv === 'D+' ? 2.25 : 2;
+          let x = WE / 2 - p * cx, y = HE / 2 - p * cy;
+          x = Math.min(0, Math.max(WE - p * 1280, x));
+          y = Math.min(0, Math.max(HE - p * (altoDoc || 720), y));
+          return { scale: p / 2, x, y };
+        }
+
+        const E1 = {
+          arriba: enc(1, 195, 219, 0),
+          apellidos: enc(1, 195, 419.4, 0),
+          registrar: enc(1, 195, 530.6, 0),
+        };
+        const E2 = {
+          tarjeta: enc(1, 195, 844, OFF2),
+          tarjetaM: enc(1.4, 195, 530, OFF2),
+          despues: enc(1.8, 126, 592, OFF2),
+          pregunta: enc(1.4, 175, 320, OFF2),
+          observaciones: enc(1.4, 185, 558, OFF2),
+          botones: enc(1.3, 205, 673, OFF2),
+          resultado: enc(1.35, 211, 480, OFF2),
+          ahora: enc(1.5, 195, 372, OFF2),
+        };
+        const E3 = {
+          fila: enc(1.15, 195, 642.75, 0),
+          paso: enc3(1.15, 195, D3 + 350.75),
+          objetivos: enc3(1.08, 195, D3 + 414),
+          avance: enc3(1.1504, 195, D3 + 351), // F16: de «Avance» a la primera entrada del historial (CSS desplazado 139–563)
+          historial: enc3(1.1504, 195, D3 + 565), // F16: «Historial de pasos» y sus cuatro entradas (485–674) con «Objetivos» arriba
+        };
+        // C1 · Coordinar (px CSS de coordinar.mp4: viewport 1280×720)
+        const ER1 = {
+          resumen: encE('D', 502, 238), // las pestañas y la primera fila de indicadores, «Nuevos sin Acompañante» a la derecha
+          repartir: encE('D', 864, 330), // «Repartir» y las cuatro primeras filas (lado derecho: «Asignar»)
+          dialogo: encE('D+', 640, 360), // el diálogo «Repartir» (CSS 400–880 × 250–470)
+          resultado: encE('D+', 484, 300), // «Todos los nuevos tienen quién los acompañe.» y «Se repartieron 257 personas.»
+          acomp3: encE('D', 528, 435), // las tres primeras filas de «Quienes acompañan»
+          acomp2: encE('D+', 504, 385), // las dos primeras: «Acompaña a 11 de 12 · Red Timoteo» y su barra
+          acomp4: encE('D', 528, 490), // las cuatro primeras filas: cada uno con «Acompaña a N de 12» y su carga
+        };
+        // C2 · Semáforo (px CSS de semaforo.mp4: 390×844)
+        const ER2 = {
+          lista: encC('G', 195, 375), // «Agregar filtro», «1.324 de 1.324» y seis filas con su punto de color
+          tipos: encC('F', 195, 330), // la hoja «Agregar filtro»: «Semáforo de actividad» en el centro
+          colores: encC('F', 195, 715), // el editor: los cuatro colores con sus días, «Cancelar» y «Aplicar»
+          filtrada: encC('G', 195, 420), // el chip «Semáforo de actividad: Rojo», «62 de 1.324» y cinco filas rojas
+          chip: encC(1.7, 152, 392), // «Actividad: Rojo · hace 31 días» a 44 px (texto CSS 44–256: C16 cortaría «días»)
+          acciones: encC('M', 165, 440), // el chip, «Llamar» y «WhatsApp»
+        };
+        // C3 · Discipulado (px CSS de discipulado.mp4)
+        const ER3 = {
+          cabezas: encC('G', 195, 345), // «Discipulado» activo, «Quienes encabezan la pirámide (1)» y la cabeza entera (CSS 421–523)
+          cabeza: encC('M', 165, 405), // «Quienes encabezan la pirámide (1)» y la cabeza: «Pr Andrés … y Pr Carolina …», «24 directos · 725 en total» (debajo, la página vacía de la app)
+          raiz: encC('F', 185, 484), // la raíz abierta (CSS 382–586; el texto va de x 24 a 330: F16, M16 lo cortaría)
+          directos: encC('M', 175, 670), // «24 directos · 725», «Sus discípulos directos (12)» y el primero que discipula (toque en 690)
+          nivel: encC('G', 195, 520), // un nivel más abajo: las migas, la raíz «12 directos · 162 en total» y «Sus discípulos directos (7)»
+          migas: encC('F', 180, 372), // las migas enteras (CSS 24–336 × 345–400): F16, no C16 (C16 las cortaría)
+        };
+        // C4 · Tableros (px CSS de la página: la capa B empieza 453 px más abajo; altoDoc 1173 desde el 2520)
+        const ER4 = {
+          cifras: encE('D', 470, 265), // «Tableros», las vistas, «Toda la iglesia» y las cifras: Membresía 1.324 (+49,8 %) … En rojo en la ruta
+          semaforo: encE('D', 470, 530), // «Semáforo de actividad»: la explicación, la barra y «Verde · Amarillo · Rojo · Sin actividad»
+          rojo: encE('D+', 900, 551), // el otro lado de las mismas filas: la barra y 954 · 165 · 62 · 143 con su %
+          descarga: encE('D', 860, 300), // «Últimos 180 días», la descarga y las cifras
+          crecimiento: encE('D', 540, 815, 1173), // «Crecimiento (membresía)» (doc 710–917)
+          final: encE('D+', 900, 820, 1173), // el tramo final de la curva y «30 de oct de 2026»
+          abre: encE('D', 696, 800, 1173), // la gráfica abierta: el título, «2.000», la curva y las fechas
+        };
+
+        const tl = gsap.timeline({ paused: true });
+        const mover = (sel, e, n, d) => tl.to(sel, { ...e, duration: F(d || 14), ease: 'power2.inOut' }, F(n));
+
+        // ── Estado inicial ─────────────────────────────────────────────────────────────────────────────────────────────
+        ['#w-cel1', '#w-r1', '#w-cel2', '#w-r4'].forEach((sel, i) => {
+          tl.set(sel, { xPercent: -50, yPercent: -50, x: 0, scale: 1, opacity: i === 0 ? 1 : 0 }, 0);
+        });
+        tl.set('#cam', E1.arriba, 0);
+        tl.set('#cam-r1', ER1.resumen, 0);
+        tl.set('#cam-r2', ER2.lista, 0);
+        tl.set('#cam-r3', ER3.cabezas, 0);
+        tl.set('#cam-r4', ER4.cifras, 0);
+
+        // ── Acto 1 (cuadros del clip; SPEC §2.1) ───────────────────────────────────────────────────────────────────────
+        mover('#cam', E1.apellidos, 46);
+        mover('#cam', E1.registrar, 108, 12);
+        mover('#cam', E1.arriba, 150);
+        mover('#cam', E2.tarjetaM, 240);
+        mover('#cam', E2.despues, 300);
+        mover('#cam', E2.tarjeta, 345);
+        mover('#cam', E2.pregunta, 390);
+        mover('#cam', E2.observaciones, 480);
+        mover('#cam', E2.botones, 570);
+        mover('#cam', E2.resultado, 600);
+        mover('#cam', E2.ahora, 660, 9); // punch
+        mover('#cam', E2.tarjeta, 720);
+        mover('#cam', E3.fila, 810);
+        mover('#cam', E3.paso, 840);
+        mover('#cam', E3.objetivos, 900);
+        mover('#cam', E3.avance, 960);
+        mover('#cam', E3.historial, 1020); // lo nuevo: la ficha cuenta lo que ya pasó con Valeria
+
+        // ── C1 · Coordinar ─────────────────────────────────────────────────────────────────────────────────────────────
+        mover('#cam-r1', ER1.repartir, 1170);
+        mover('#cam-r1', ER1.dialogo, 1230);
+        mover('#cam-r1', ER1.resultado, 1320, 9); // punch con el resultado
+        mover('#cam-r1', ER1.acomp3, 1395);
+        mover('#cam-r1', ER1.acomp2, 1440);
+        mover('#cam-r1', ER1.acomp4, 1500);
+        // ── C2 · Semáforo ──────────────────────────────────────────────────────────────────────────────────────────────
+        mover('#cam-r2', ER2.tipos, 1635);
+        mover('#cam-r2', ER2.colores, 1665); // con el toque: el editor aparece (1668) abajo, fuera del encuadre de la hoja; la cámara baja con él
+        mover('#cam-r2', ER2.filtrada, 1755);
+        mover('#cam-r2', ER2.chip, 1860, 9); // punch
+        mover('#cam-r2', ER2.acciones, 1890);
+        // ── C3 · Discipulado ───────────────────────────────────────────────────────────────────────────────────────────
+        mover('#cam-r3', ER3.cabeza, 1980);
+        mover('#cam-r3', ER3.raiz, 2055);
+        mover('#cam-r3', ER3.directos, 2100);
+        mover('#cam-r3', ER3.nivel, 2175);
+        mover('#cam-r3', ER3.migas, 2220);
+        // ── C4 · Tableros ──────────────────────────────────────────────────────────────────────────────────────────────
+        mover('#cam-r4', ER4.semaforo, 2340);
+        mover('#cam-r4', ER4.rojo, 2400, 9); // punch
+        mover('#cam-r4', ER4.descarga, 2460);
+        mover('#cam-r4', ER4.crecimiento, 2520); // el desplazamiento de la app (capa B) queda dentro de este movimiento
+        mover('#cam-r4', ER4.final, 2580);
+        mover('#cam-r4', ER4.abre, 2700);
+
+        // ── Iris desde el toque: el círculo nace en el punto tocado (px locales del contenedor) ────────────────────────────
+        const iris = (sel, x, y, n) => {
+          const c = (r) => `circle(${r}px at ${x.toFixed(1)}px ${y.toFixed(1)}px)`;
+          tl.fromTo(sel, { clipPath: c(0) }, { clipPath: c(2600), duration: F(5), ease: 'power2.out' }, F(n));
+          tl.set(sel, { clipPath: 'none' }, F(n + 6));
+        };
+        iris('#iris1', 931 * K, 2184 * K, 120);
+        iris('#iris2', 671 * K, 2136 * K, 375);
+        iris('#iris3', 510 * K, (1476 + OFF2 / K) * K, 780);
+        iris('#r1-iris', 1149 * 2, 237 * 2, 1200);
+        iris('#r2-iris', 585 * K, 1251 * K, 1800);
+        iris('#r3-iris1', 519 * K, 1416 * K, 2040);
+        iris('#r3-iris2', 519 * K, (2049 + 21) * K, 2160);
+
+        // ── Látigos: una tira que sube ─────────────────────────────────────────────────────────────────────────────────
+        tl.fromTo('#tira', { y: 0 }, { y: -KD.latigo, duration: F(10), ease: 'power3.inOut' }, F(176));
+        tl.fromTo('#m2in', { scale: 1.04, transformOrigin: `${W / 2}px ${HV / 2 - OFF2}px` }, { scale: 1, duration: F(10), ease: 'power3.out' }, F(180));
+        tl.set('#m2', { overflow: 'visible' }, F(186));
+        tl.fromTo('#tira2', { y: 0 }, { y: -KD.latigo, duration: F(10), ease: 'power3.inOut' }, F(1914));
+        tl.fromTo('#ranura-r3', { scale: 1.04, transformOrigin: '50% 50%' }, { scale: 1, duration: F(10), ease: 'power3.out' }, F(1920));
+
+        // ── Morph: la ventana cambia de aparato (SPEC §1.5). Valores calculados por cuadro y unidos en línea recta (seek-safe y con
+        //    desenfoque de movimiento entre cuadros). El mundo que se va y el que llega se escalan desde el centro lo justo para
+        //    cubrir la ventana en cada cuadro (más su corrimiento de ±160 px): nunca se ve el fondo de la ventana. ──────────────
+        const io3 = gsap.parseEase('power3.inOut'), in3 = gsap.parseEase('power3.in'), out3 = gsap.parseEase('power3.out');
+        const caja = (A, B, p) => ({ left: A.l + (B.l - A.l) * p, top: A.t + (B.t - A.t) * p, width: A.w + (B.w - A.w) * p,
+          height: A.h + (B.h - A.h) * p, borderRadius: A.r + (B.r - A.r) * p });
+        function morph(golpe, A, B, sale, entra) {
+          const est = (f) => caja(A, B, io3(clamp01((f - (golpe - 6)) / 12)));
+          for (let f = golpe - 6; f < golpe + 6; f++) {
+            tl.fromTo('#ventana', est(f), { ...est(f + 1), duration: F(1), ease: 'none', immediateRender: false }, F(f));
+          }
+          const nat = (sel) => (sel === '#w-r1' || sel === '#w-r4' ? KD.esc : KD.cel);
+          const sal = (f) => {
+            const v = est(f), n = nat(sale), dx = -160 * in3(clamp01((f - (golpe - 6)) / 6));
+            return { x: dx, scale: Math.max(1, (v.width / 2 + Math.abs(dx)) / (n.w / 2), v.height / n.h) };
+          };
+          for (let f = golpe - 6; f < golpe; f++) {
+            tl.fromTo(sale, sal(f), { ...sal(f + 1), duration: F(1), ease: 'none', immediateRender: false }, F(f));
+          }
+          tl.set(sale, { opacity: 0 }, F(golpe)); // corte duro de contenido en el cuadro más rápido del morph
+          tl.set(entra, { opacity: 1 }, F(golpe));
+          const ent = (f) => {
+            const v = est(f), n = nat(entra), q = out3(clamp01((f - golpe) / 10)), dx = 160 * (1 - q), e = 1.04 - 0.04 * q;
+            return { x: dx, scale: e * Math.max((v.width / 2 + dx) / (n.w / 2), v.height / n.h) };
+          };
+          for (let f = golpe; f < golpe + 10; f++) {
+            tl.fromTo(entra, ent(f), { ...ent(f + 1), duration: F(1), ease: 'none', immediateRender: false }, F(f));
+          }
+        }
+        morph(1080, KD.cel, KD.esc, '#w-cel1', '#w-r1');
+        morph(1560, KD.esc, KD.cel, '#w-r1', '#w-cel2');
+        morph(2280, KD.cel, KD.esc, '#w-cel2', '#w-r4');
+
+        // ── Marcas de toque: 4 cuadros antes aparece, en el cuadro se hunde, 6 después se va; la onda nace en el cuadro (450 ms) ──
+        [@@TOQUES@@].forEach((n) => {
+          const t = F(n);
+          tl.fromTo(`#tq-${n}`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: F(4), ease: 'power2.out' }, t - F(4));
+          tl.to(`#tq-${n}`, { scale: 0.86, duration: F(2), ease: 'power2.in' }, t);
+          tl.to(`#tq-${n}`, { opacity: 0, scale: 1, duration: F(6), ease: 'power2.out' }, t + F(2));
+          tl.fromTo(`#on-${n}`, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.62, duration: 0.45, ease: 'power2.out', immediateRender: false }, t);
+        });
+
+        // ── Dip (2757–2759) y corte al cierre (2760) ──────────────────────────────────────────────────────────────────
+        tl.set('#dip', { opacity: 0.4 }, F(2757));
+        tl.set('#ventana', { opacity: 0 }, F(2760));
+        tl.set({}, {}, 97);
+        window.__timelines['main'] = tl;
+      })();
+    </script>
+  </body>
+</html>

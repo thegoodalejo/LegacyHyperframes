@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Frase 9 (esc, host 2639–2760): P12 · Que 2640 · ninguna 2642 · persona 2644 · se 2646 · pierda 2648; quieta hasta el corte al cierre (2760). La única palabra dorada del cuerpo -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+        }
+        .f-frase {
+          position: absolute;
+          left: 240px;
+          top: 118px;
+          width: 1440px;
+          font-size: 84px;
+          color: var(--k-noche-tinta);
+          text-wrap: initial;
+        }
+        .f-frase em {
+          color: var(--k-noche-dorado);
+        }
+        .linea {
+          display: block;
+          white-space: nowrap;
+        }
+        .palabra {
+          display: inline-block;
+        }
+      </style>
+      <div data-hf-id="hf-f9r" id="root" data-composition-id="frase-9" data-width="1920" data-height="1080" data-duration="4.033333">
+        <div data-hf-id="hf-f9t" class="k-titular f-frase" id="f9">
+          <span data-hf-id="hf-f9l0" class="linea"><span data-hf-id="hf-f9w1" class="palabra" id="f9-w1">Que</span> <em data-hf-id="hf-f9em"><span data-hf-id="hf-f9w2" class="palabra" id="f9-w2">ninguna</span></em> <span data-hf-id="hf-f9w3" class="palabra" id="f9-w3">persona</span> <span data-hf-id="hf-f9w4" class="palabra" id="f9-w4">se</span> <span data-hf-id="hf-f9w5" class="palabra" id="f9-w5">pierda</span></span>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const F = (n) => n / 30;
+          const tl = gsap.timeline({ paused: true });
+          for (let i = 1; i <= 5; i++) {
+            // entrada-palabra: el host arranca un cuadro antes del pulso; el primer cuadro visible es el pulso
+            tl.fromTo(`#f9-w${i}`, { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: F(4), ease: 'power4.out' }, F(2 * (i - 1)));
+          }
+          tl.set({}, {}, F(121));
+          window.__timelines['frase-9'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
