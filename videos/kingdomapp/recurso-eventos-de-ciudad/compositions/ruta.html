@@ -1,0 +1,230 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":30,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":3.5,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":4.1,\"fin\":10,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":10.6,\"fin\":15.5,\"palabras\":[]},{\"texto\":\"d\",\"inicio\":16.1,\"fin\":21,\"palabras\":[]},{\"texto\":\"e\",\"inicio\":21.6,\"fin\":28.6,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- La ruta del evento en dos carriles: arriba, los mensajes del evento a todos los inscritos (al registrarse, días antes, el evento);
+         abajo, el seguimiento: los participantes nuevos se reparten parejo entre tres llamadores; el reporte de la llamada (interés de 1 a 5,
+         transporte, alojamiento); y el punto dorado que pasa a la iglesia: una red, su ruta de crecimiento y quien lo acompaña. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .rut-arriba { position: absolute; left: 192px; top: 120px; width: 1536px; height: 120px; display: grid; justify-items: center; }
+        .rut-arriba .k-recurso-titular { grid-area: 1 / 1; width: 1536px; text-align: center; font-size: 84px; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .rut-escena { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .rut-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .rut-carril { position: absolute; left: 192px; width: 520px; opacity: 0; }
+        .rut-carril .k-recurso-ceja { display: block; margin-bottom: 6px; }
+        .rut-marca { position: absolute; top: 400px; width: 260px; margin-left: -130px; display: flex; flex-direction: column; align-items: center; gap: 14px; opacity: 0; }
+        .rut-marca .k-recurso-nodo { position: relative; margin: 0; width: 76px; height: 76px; }
+        .rut-marca .k-recurso-icono { --k-icono-tam: 38px; }
+        .rut-marca .k-recurso-etiqueta { color: var(--k-noche-tinta); text-align: center; }
+        .rut-envio { position: absolute; top: 438px; width: 40px; height: 40px; margin: -20px 0 0 -20px; color: var(--k-noche-dorado); opacity: 0; }
+        .rut-envio .k-recurso-icono { --k-icono-tam: 40px; }
+        .rut-llamador { position: absolute; width: 104px; height: 104px; margin: -52px 0 0 -52px; opacity: 0; }
+        .rut-llamador .k-recurso-icono { --k-icono-tam: 52px; }
+        .rut-reporte { position: absolute; left: 1250px; top: 600px; width: 478px; height: 300px; padding: 30px 36px; display: flex; flex-direction: column; gap: 20px; opacity: 0; }
+        .rut-fila { display: flex; align-items: center; gap: 16px; opacity: 0; }
+        .rut-fila .k-recurso-icono { --k-icono-tam: 36px; }
+        .rut-fila .k-recurso-etiqueta { color: var(--k-noche-tinta); }
+        .rut-estrella { display: inline-block; width: 22px; height: 22px; border-radius: 50%; background: rgba(169, 182, 214, 0.35); }
+        .rut-estrella.on { background: var(--k-noche-dorado); }
+        .rut-iglesia { position: absolute; left: 1150px; top: 700px; width: 170px; height: 170px; margin: -85px 0 0 -85px; opacity: 0; }
+        .rut-iglesia .k-recurso-icono { --k-icono-tam: 84px; }
+        .rut-red { position: absolute; left: 1150px; top: 700px; width: 300px; height: 300px; margin: -150px 0 0 -150px; border-radius: 50%; box-shadow: inset 0 0 0 3px rgba(53, 118, 218, 0.7); opacity: 0; }
+        .rut-paso { position: absolute; top: 700px; width: 64px; height: 64px; margin: -32px 0 0 -32px; opacity: 0; }
+        .rut-paso .k-recurso-icono { --k-icono-tam: 32px; }
+        .rut-nota { position: absolute; left: 1290px; top: 860px; width: 420px; text-align: center; opacity: 0; }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="ruta" data-width="1920" data-height="1080" data-duration="30">
+        <div class="rut-arriba" id="rut-arriba" data-layout-allow-overlap>
+          <div class="k-recurso-titular" id="rut-t0">La <em>ruta del evento</em></div>
+          <div class="k-recurso-titular" id="rut-t1">Mensajes <em>a todos</em></div>
+          <div class="k-recurso-titular" id="rut-t2">Llamadas <em>a los nuevos</em></div>
+          <div class="k-recurso-titular" id="rut-t3">Cada llamada, <em>con su reporte</em></div>
+          <div class="k-recurso-titular" id="rut-t4">Quien se queda, <em>pasa a la iglesia</em></div>
+        </div>
+        <div class="rut-escena" id="rut-escena" data-layout-allow-overlap>
+          <svg class="rut-svg" id="rut-svg" viewBox="0 0 1920 1080">
+            <line class="k-recurso-linea" id="rut-l-arriba" x1="760" y1="438" x2="1728" y2="438" style="stroke-dasharray: 968; stroke-dashoffset: 968" />
+            <line class="k-recurso-linea" id="rut-l-abajo" x1="560" y1="720" x2="1728" y2="720" style="stroke-dasharray: 1168; stroke-dashoffset: 1168" />
+            <path class="k-recurso-linea k-oro" id="rut-crece" d="M 1235 700 L 1680 700" style="stroke-dasharray: 445; stroke-dashoffset: 445" />
+          </svg>
+          <div class="rut-carril" id="rut-c0" style="top: 380px"><span class="k-recurso-ceja">Mensajes del evento</span><span class="k-recurso-etiqueta">A todos los inscritos</span></div>
+          <div class="rut-carril" id="rut-c1" style="top: 820px"><span class="k-recurso-ceja">Seguimiento</span><span class="k-recurso-etiqueta">Solo a los participantes nuevos</span></div>
+          <div class="rut-marca" id="rut-m0" style="left: 880px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/how_to_reg.svg)"></span></div><span class="k-recurso-etiqueta">Al registrarse</span></div>
+          <div class="rut-marca" id="rut-m1" style="left: 1240px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/calendar_month.svg)"></span></div><span class="k-recurso-etiqueta">Días antes</span></div>
+          <div class="rut-marca" id="rut-m2" style="left: 1600px"><div class="k-recurso-nodo k-oro"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/stadium.svg)"></span></div><span class="k-recurso-etiqueta">El evento</span></div>
+          <div class="rut-envio" id="rut-e0" style="left: 880px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/send.svg)"></span></div>
+          <div class="rut-envio" id="rut-e1" style="left: 1240px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/send.svg)"></span></div>
+          <div class="k-recurso-nodo rut-llamador" id="rut-ll0" style="left: 1000px; top: 620px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/support_agent.svg)"></span></div>
+          <div class="k-recurso-nodo rut-llamador" id="rut-ll1" style="left: 1000px; top: 760px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/support_agent.svg)"></span></div>
+          <div class="k-recurso-nodo rut-llamador" id="rut-ll2" style="left: 1000px; top: 900px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/support_agent.svg)"></span></div>
+          <div class="k-recurso-tarjeta rut-reporte" id="rut-reporte">
+            <span class="k-recurso-ceja">Reporte de la llamada</span>
+            <div class="rut-fila" id="rut-f0"><span class="k-recurso-etiqueta">Interés</span><span class="rut-estrella on"></span><span class="rut-estrella on"></span><span class="rut-estrella on"></span><span class="rut-estrella on"></span><span class="rut-estrella"></span></div>
+            <div class="rut-fila" id="rut-f1"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/route.svg)"></span><span class="k-recurso-etiqueta">Transporte</span></div>
+            <div class="rut-fila" id="rut-f2"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/home.svg)"></span><span class="k-recurso-etiqueta">Alojamiento</span></div>
+          </div>
+          <div class="rut-red" id="rut-red"></div>
+          <div class="k-recurso-nodo k-oro rut-iglesia" id="rut-iglesia"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/church.svg)"></span></div>
+          <div class="k-recurso-nodo rut-paso" id="rut-p0" style="left: 1400px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/school.svg)"></span></div>
+          <div class="k-recurso-nodo rut-paso" id="rut-p1" style="left: 1540px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/volunteer_activism.svg)"></span></div>
+          <div class="k-recurso-nodo k-oro rut-paso" id="rut-p2" style="left: 1680px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/star.svg)"></span></div>
+          <div class="k-recurso-etiqueta rut-nota" id="rut-nota">Su ruta de crecimiento</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          let s = 3109;
+          const azar = () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const escena = $('rut-escena');
+          const svg = $('rut-svg');
+          const NS = 'http://www.w3.org/2000/svg';
+          // Los participantes nuevos: 15 puntos verdes en un grupo a la izquierda del carril de abajo.
+          const grupo = { x: 520, y: 720 };
+          const nuevos = [];
+          for (let i = 0; i < 15; i++) {
+            const a = azar() * Math.PI * 2;
+            const r = Math.sqrt(azar()) * 80;
+            const x = grupo.x + Math.cos(a) * r;
+            const y = grupo.y + Math.sin(a) * r * 0.8;
+            const d = document.createElement('span');
+            d.className = 'k-recurso-punto k-verde';
+            d.id = `rut-n-${i}`;
+            d.style.left = `${x}px`;
+            d.style.top = `${y}px`;
+            escena.appendChild(d);
+            const ll = i % 3;
+            const k = Math.floor(i / 3);
+            nuevos.push({ el: d, x, y, ll, dx: 1080 + k * 28 - x, dy: 620 + ll * 140 - y });
+          }
+          const yo = document.createElement('span');
+          yo.className = 'k-recurso-punto k-oro';
+          yo.id = 'rut-yo';
+          yo.style.left = `${grupo.x}px`;
+          yo.style.top = `${grupo.y}px`;
+          yo.style.width = yo.style.height = '28px';
+          yo.style.margin = '-14px 0 0 -14px';
+          escena.appendChild(yo);
+          // Líneas del grupo a cada llamador.
+          const lineasLl = [620, 760, 900].map((y, i) => {
+            const l = document.createElementNS(NS, 'line');
+            const d = Math.hypot(948 - 600, y - 720);
+            l.setAttribute('class', 'k-recurso-linea');
+            l.setAttribute('id', `rut-ln-${i}`);
+            l.setAttribute('x1', 600); l.setAttribute('y1', 720);
+            l.setAttribute('x2', 948); l.setAttribute('y2', y);
+            l.style.strokeDasharray = `${d}`;
+            l.style.strokeDashoffset = `${d}`;
+            svg.appendChild(l);
+            return l;
+          });
+          const textos = [0, 1, 2, 3, 4].map((i) => partir($(`rut-t${i}`), `rut-t${i}p`));
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            textos.forEach((ps, i) => {
+              const f = F[i];
+              ps.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.14)));
+              const sale = F[i + 1] ? F[i + 1].inicio - 0.3 : T.salida(0.6);
+              tl.to(`#rut-t${i}`, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+            // Frase 0: los dos carriles se dibujan con sus rótulos.
+            const t0 = T.pulso(F[0].inicio + 0.5);
+            tl.fromTo('#rut-c0', { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, t0);
+            tl.to('#rut-l-arriba', { strokeDashoffset: 0, duration: 1, ease: 'power2.inOut' }, t0 + 0.2);
+            tl.fromTo('#rut-c1', { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, t0 + 1);
+            tl.to('#rut-l-abajo', { strokeDashoffset: 0, duration: 1, ease: 'power2.inOut' }, t0 + 1.2);
+            // Frase 1: las marcas y los envíos que viajan por el carril de arriba.
+            const tm = [cuando(F[1], 'registrar', F[1].inicio + 2.5), cuando(F[1], 'dias', F[1].fin - 2.5), cuando(F[1], 'boleta', F[1].fin - 1)];
+            tm.forEach((t, i) => tl.fromTo(`#rut-m${i}`, { y: 24, opacity: 0, scale: 0.85 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(1.8)' }, t - 0.12));
+            [0, 1].forEach((i) => {
+              const t = T.pulso(tm[i] + 0.4);
+              tl.fromTo(`#rut-e${i}`, { x: 0, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2 }, t);
+              tl.to(`#rut-e${i}`, { x: 1600 - (i ? 1240 : 880), duration: 1.2, ease: 'power2.inOut' }, t + 0.1);
+              tl.to(`#rut-e${i}`, { opacity: 0, duration: 0.2 }, t + 1.2);
+              tl.fromTo('#rut-m2', { scale: 1.12 }, { scale: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, t + 1.3);
+            });
+            // Frase 2: aparecen los nuevos, los llamadores y se reparten parejo.
+            const t2 = T.pulso(F[2].inicio - 0.2);
+            tl.to(['#rut-m0', '#rut-m1', '#rut-m2', '#rut-l-arriba', '#rut-c0'], { opacity: 0.3, duration: 0.4 }, t2);
+            const tn = T.reparto(nuevos.length, t2, t2 + 1.5);
+            nuevos.forEach((n, i) => tl.fromTo(n.el, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2)' }, tn[i] + (i % 2) * 0.1));
+            const tll = T.pulso(cuando(F[2], 'llamador', F[2].inicio + 2) - 0.2);
+            [0, 1, 2].forEach((i) => {
+              tl.fromTo(`#rut-ll${i}`, { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2)' }, tll + i * 0.15);
+              tl.to(lineasLl[i], { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }, tll + 0.2 + i * 0.15);
+            });
+            const tr = T.reparto(nuevos.length, tll + 0.8, F[2].fin + 0.5);
+            nuevos.forEach((n, i) => tl.to(n.el, { x: n.dx, y: n.dy, scale: 0.7, duration: 0.7, ease: 'power3.inOut' }, tr[i]));
+            // Frase 3: el reporte de la llamada, fila por fila.
+            const t3 = T.pulso(F[3].inicio - 0.2);
+            tl.fromTo('#rut-reporte', { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, t3);
+            const tf = [cuando(F[3], 'interes', F[3].inicio + 1), cuando(F[3], 'transporte', F[3].inicio + 2.5), cuando(F[3], 'alojamiento', F[3].fin - 1.5)];
+            tf.forEach((t, i) => tl.fromTo(`#rut-f${i}`, { x: 20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, t - 0.1));
+            tl.fromTo('#rut-ll0', { scale: 1.12 }, { scale: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, T.pulso(F[3].inicio + 0.5));
+            for (let k = 0; k < 2; k++) tl.fromTo('#rut-reporte', { scale: 1.03 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(cuando(F[3], 'reporte', F[3].fin - 0.6)) + k * 0.5);
+            // Frase 4: todo se apaga; el punto dorado pasa a la iglesia, entra a una red, su ruta crece y alguien lo acompaña.
+            const t4 = T.pulso(F[4].inicio - 0.3);
+            tl.to(['#rut-reporte', '#rut-c1', '#rut-l-abajo', ...lineasLl, '#rut-ll1', '#rut-ll2', ...nuevos.map((n) => n.el)], { opacity: 0.18, duration: 0.5 }, t4);
+            tl.to(['#rut-m0', '#rut-m1', '#rut-m2', '#rut-l-arriba', '#rut-c0'], { opacity: 0, duration: 0.5 }, t4);
+            tl.to('#rut-reporte', { opacity: 0, duration: 0.3 }, t4 + 0.5);
+            tl.fromTo(yo, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2.4)' }, t4);
+            tl.fromTo('#rut-iglesia', { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.8)' }, t4 + 0.4);
+            const tPasa = T.pulso(T.palabra(4, 3).inicio - 0.1);
+            tl.to(yo, { x: 1150 - grupo.x, y: -20, duration: Math.max(0.6, tPasa - t4 - 0.5), ease: 'power3.inOut' }, t4 + 0.5);
+            tl.fromTo('#rut-red', { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'power3.out' }, tPasa);
+            tl.fromTo('#rut-iglesia', { scale: 1.12 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, tPasa);
+            const tRed = T.pulso(cuando(F[4], 'red', tPasa + 1));
+            tl.to(yo, { x: 1150 - grupo.x + 150, y: -20, duration: 0.5, ease: 'power2.out' }, tRed);
+            const tCrece = T.pulso(cuando(F[4], 'crecimiento', tRed + 1.5) - 0.6);
+            tl.to('#rut-crece', { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, tCrece);
+            tl.fromTo('#rut-nota', { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, tCrece + 0.3);
+            [0, 1, 2].forEach((i) => tl.fromTo(`#rut-p${i}`, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' }, tCrece + 0.4 + i * 0.4));
+            const tAc = T.pulso(cuando(F[4], 'acompa', F[4].fin - 1) - 0.2);
+            tl.to('#rut-ll0', { opacity: 1, x: 300, y: -10, duration: 0.8, ease: 'power3.inOut' }, tAc);
+            tl.to(lineasLl[0], { opacity: 0, duration: 0.3 }, tAc);
+            tl.to('#rut-escena', { opacity: 0, y: -20, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['ruta'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

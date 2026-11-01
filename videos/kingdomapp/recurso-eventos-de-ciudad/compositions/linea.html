@@ -1,0 +1,203 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":26,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":5.5,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":6,\"fin\":7.6,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":8.3,\"fin\":14.5,\"palabras\":[]},{\"texto\":\"d\",\"inicio\":15.1,\"fin\":19,\"palabras\":[]},{\"texto\":\"e\",\"inicio\":19.5,\"fin\":24.6,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- La línea de la iglesia: texto cinético a la izquierda; a la derecha, la iglesia con su número en el centro y las personas alrededor
+         que le escriben (globos que viajan); el acompañamiento para conectarlo; el chatbot que responde a cualquier hora; la bandeja que recibe
+         a quien pide hablar con alguien; y tres personas del equipo que toman cada conversación. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .lin-texto { position: absolute; left: 192px; top: 108px; width: 840px; height: 864px; display: grid; align-items: center; }
+        .lin-texto .k-recurso-frase { grid-area: 1 / 1; width: 840px; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .lin-mapa { position: absolute; left: 1080px; top: 108px; width: 648px; height: 864px; }
+        .lin-svg { position: absolute; left: 0; top: 0; width: 648px; height: 864px; overflow: visible; }
+        .lin-nodo { position: absolute; opacity: 0; }
+        .lin-nodo .k-recurso-icono { --k-icono-tam: 64px; }
+        .lin-grande { width: 170px; height: 170px; margin: -85px 0 0 -85px; }
+        .lin-grande .k-recurso-icono { --k-icono-tam: 84px; }
+        .lin-rotulo { position: absolute; width: 300px; margin-left: -150px; text-align: center; opacity: 0; }
+        .lin-anillo { position: absolute; left: 324px; top: 432px; width: 250px; height: 250px; margin: -125px 0 0 -125px; border-radius: 50%; border: 3px dashed rgba(232, 185, 90, 0.6); box-sizing: border-box; opacity: 0; }
+        .lin-globo { position: absolute; width: 38px; height: 38px; margin: -19px 0 0 -19px; color: var(--k-noche-tinta); opacity: 0; }
+        .lin-globo .k-recurso-icono { --k-icono-tam: 38px; }
+        .lin-globo.oro { color: var(--k-noche-dorado); }
+        .lin-insignia { position: absolute; display: flex; align-items: center; gap: 12px; padding: 10px 20px; border-radius: 999px; background: rgba(12, 26, 58, 0.92); box-shadow: inset 0 0 0 2px rgba(232, 185, 90, 0.7); opacity: 0; }
+        .lin-insignia .k-recurso-icono { --k-icono-tam: 32px; color: var(--k-noche-dorado); }
+        .lin-insignia .k-recurso-etiqueta { color: var(--k-noche-tinta); font-size: 28px; white-space: nowrap; }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="linea" data-width="1920" data-height="1080" data-duration="26">
+        <div class="lin-texto" id="lin-texto" data-layout-allow-overlap>
+          <div class="k-recurso-frase" id="lin-t0">Tu propio <em>número</em>, con tu nombre</div>
+          <div class="k-recurso-frase" id="lin-t1">Te acompañamos <em>a conectarlo</em></div>
+          <div class="k-recurso-frase" id="lin-t2">Un <em>chatbot</em> que responde a cualquier hora</div>
+          <div class="k-recurso-frase" id="lin-t3">Si pide hablar con alguien, <em>la bandeja</em></div>
+          <div class="k-recurso-frase" id="lin-t4">Tu equipo, <em>sin compartir un celular</em></div>
+        </div>
+        <div class="lin-mapa" id="lin-mapa" data-layout-allow-overlap>
+          <svg class="lin-svg" id="lin-svg" viewBox="0 0 648 864"></svg>
+          <div class="lin-anillo" id="lin-anillo"></div>
+          <div class="k-recurso-nodo k-oro lin-nodo lin-grande" id="lin-iglesia" style="left: 324px; top: 432px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/church.svg)"></span></div>
+          <div class="k-recurso-etiqueta lin-rotulo" id="lin-r-iglesia" style="left: 324px; top: 572px">Tu número</div>
+          <div class="lin-insignia" id="lin-mano" style="left: 380px; top: 290px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/handshake.svg)"></span><span class="k-recurso-etiqueta">Con Kingdom</span></div>
+          <div class="k-recurso-nodo lin-nodo lin-grande" id="lin-bot" style="left: 324px; top: 432px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/hub.svg)"></span></div>
+          <div class="k-recurso-etiqueta lin-rotulo" id="lin-r-bot" style="left: 324px; top: 572px">Chatbot</div>
+          <div class="lin-insignia" id="lin-hora" style="left: 360px; top: 300px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/schedule.svg)"></span><span class="k-recurso-etiqueta">A cualquier hora</span></div>
+          <div class="k-recurso-nodo lin-nodo lin-grande" id="lin-bandeja" style="left: 324px; top: 432px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/forum.svg)"></span></div>
+          <div class="k-recurso-etiqueta lin-rotulo" id="lin-r-bandeja" style="left: 324px; top: 572px">Bandeja</div>
+          <div class="k-recurso-nodo lin-nodo" id="lin-e0" style="left: 580px; top: 200px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/person.svg)"></span></div>
+          <div class="k-recurso-nodo lin-nodo" id="lin-e1" style="left: 580px; top: 432px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/person.svg)"></span></div>
+          <div class="k-recurso-nodo lin-nodo" id="lin-e2" style="left: 580px; top: 664px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/person.svg)"></span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          const mapa = $('lin-mapa');
+          const C = { x: 324, y: 432 };
+          // Diez personas en un anillo alrededor de la iglesia.
+          const gente = [];
+          for (let i = 0; i < 10; i++) {
+            const a = (i / 10) * Math.PI * 2 - Math.PI / 2 + 0.3;
+            const x = C.x + Math.cos(a) * 280;
+            const y = C.y + Math.sin(a) * 300;
+            const d = document.createElement('span');
+            d.className = 'k-recurso-punto' + (i === 3 ? ' k-oro' : '');
+            d.id = `lin-g-${i}`;
+            d.style.left = `${x}px`;
+            d.style.top = `${y}px`;
+            mapa.appendChild(d);
+            gente.push({ el: d, x, y });
+          }
+          // Globos: 10 de las personas al centro (entrada) y 6 de vuelta (respuesta del chatbot, en dorado).
+          const globo = (id, x, y, oro) => {
+            const g = document.createElement('div');
+            g.className = 'lin-globo' + (oro ? ' oro' : '');
+            g.id = id;
+            g.style.left = `${x}px`;
+            g.style.top = `${y}px`;
+            g.innerHTML = '<span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/chat_bubble.svg)"></span>';
+            mapa.appendChild(g);
+            return g;
+          };
+          const entrada = gente.map((g, i) => globo(`lin-in-${i}`, g.x, g.y, false));
+          const respuesta = gente.slice(0, 6).map((g, i) => globo(`lin-out-${i}`, C.x, C.y, true));
+          const aEquipo = [0, 1, 2].map((i) => globo(`lin-eq-${i}`, C.x, C.y, false));
+          // Líneas de la bandeja al equipo.
+          const lineas = [200, 432, 664].map((y, i) => {
+            const l = document.createElementNS(NS, 'line');
+            const d = Math.hypot(520 - 410, y - C.y);
+            l.setAttribute('class', 'k-recurso-linea');
+            l.setAttribute('id', `lin-l-${i}`);
+            l.setAttribute('x1', 410); l.setAttribute('y1', C.y);
+            l.setAttribute("x2", 520); l.setAttribute("y2", y);
+            l.style.strokeDasharray = `${d}`;
+            l.style.strokeDashoffset = `${d}`;
+            $('lin-svg').appendChild(l);
+            return l;
+          });
+          const textos = [0, 1, 2, 3, 4].map((i) => partir($(`lin-t${i}`), `lin-t${i}p`));
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            textos.forEach((ps, i) => {
+              const f = F[i];
+              ps.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.14)));
+              const sale = F[i + 1] ? F[i + 1].inicio - 0.3 : T.salida(0.6);
+              tl.to(`#lin-t${i}`, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+            // Frase 0: la iglesia, su número y las personas que le escriben.
+            const t0 = T.pulso(F[0].inicio + 0.5);
+            tl.fromTo('#lin-iglesia', { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.8)' }, t0);
+            const tNum = T.pulso(cuando(F[0], 'numero', F[0].inicio + 2.5) - 0.2);
+            tl.fromTo('#lin-anillo', { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'power3.out' }, tNum);
+            tl.fromTo('#lin-r-iglesia', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, tNum + 0.2);
+            const tg = T.reparto(10, tNum + 0.5, F[0].fin + 0.5);
+            gente.forEach((g, i) => tl.fromTo(g.el, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2.4)' }, tg[i]));
+            entrada.forEach((b, i) => {
+              const t = tg[i] + 0.4;
+              tl.fromTo(b, { x: 0, y: 0, opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2 }, t);
+              tl.to(b, { x: C.x - gente[i].x, y: C.y - gente[i].y, scale: 0.6, duration: 0.9, ease: 'power2.in' }, t + 0.15);
+              tl.to(b, { opacity: 0, duration: 0.15 }, t + 1);
+            });
+            // Frase 1: el acompañamiento.
+            tl.fromTo('#lin-mano', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'back.out(1.8)' }, T.pulso(F[1].inicio));
+            for (let k = 0; k < 2; k++) tl.fromTo('#lin-iglesia', { scale: 1.06 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(F[1].inicio + 0.5) + k * 0.5);
+            // Frase 2: el chatbot ocupa el centro y responde a cada persona.
+            const t2 = T.pulso(cuando(F[2], 'chatbot', F[2].inicio + 0.3) - 0.2);
+            tl.to(['#lin-mano', '#lin-r-iglesia'], { opacity: 0, duration: 0.3 }, t2 - 0.3);
+            tl.to('#lin-iglesia', { scale: 0.5, y: -330, x: -230, duration: 0.6, ease: 'power3.inOut' }, t2 - 0.2);
+            tl.to('#lin-anillo', { opacity: 0, duration: 0.4 }, t2 - 0.2);
+            tl.fromTo('#lin-bot', { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: 'back.out(1.8)' }, t2 + 0.2);
+            tl.fromTo('#lin-r-bot', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, t2 + 0.4);
+            const tr = T.reparto(6, t2 + 0.8, F[2].fin - 0.5);
+            respuesta.forEach((b, i) => {
+              tl.fromTo(b, { x: 0, y: 0, opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2 }, tr[i]);
+              tl.to(b, { x: gente[i].x - C.x, y: gente[i].y - C.y, duration: 0.9, ease: 'power2.out' }, tr[i] + 0.1);
+              tl.to(b, { opacity: 0, duration: 0.2 }, tr[i] + 1);
+              tl.fromTo(gente[i].el, { scale: 1.6 }, { scale: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, tr[i] + 1);
+            });
+            tl.fromTo('#lin-hora', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'back.out(1.8)' }, T.pulso(cuando(F[2], 'cualquier', F[2].inicio + 2.5) - 0.2));
+            // Frase 3: quien pide hablar con alguien pasa a la bandeja.
+            const t3 = T.pulso(cuando(F[3], 'bandeja', F[3].fin - 1) - 0.4);
+            tl.to('#lin-hora', { opacity: 0, duration: 0.3 }, T.pulso(F[3].inicio) - 0.2);
+            tl.to(gente.filter((_, i) => i !== 3).map((g) => g.el), { opacity: 0.25, duration: 0.4 }, T.pulso(F[3].inicio));
+            tl.to('#lin-bot', { x: -170, scale: 0.6, opacity: 0.5, duration: 0.6, ease: 'power3.inOut' }, t3 - 0.2);
+            tl.to('#lin-r-bot', { opacity: 0, duration: 0.3 }, t3 - 0.2);
+            tl.fromTo('#lin-bandeja', { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: 'back.out(1.8)' }, t3 + 0.2);
+            tl.fromTo('#lin-r-bandeja', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, t3 + 0.4);
+            tl.to(gente[3].el, { x: C.x - gente[3].x, y: C.y - gente[3].y - 110, duration: 0.9, ease: 'power3.inOut' }, T.pulso(F[3].inicio + 0.5));
+            // Frase 4: el equipo toma las conversaciones.
+            const t4 = T.pulso(F[4].inicio);
+            const te = T.reparto(3, cuando(F[4], 'toma', F[4].inicio + 1) - 0.2, cuando(F[4], 'responde', F[4].inicio + 2.5));
+            [0, 1, 2].forEach((i) => {
+              tl.fromTo(`#lin-e${i}`, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2)' }, t4 + i * 0.25);
+              tl.to(lineas[i], { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }, t4 + 0.3 + i * 0.25);
+              tl.fromTo(aEquipo[i], { x: 0, y: 0, opacity: 0 }, { opacity: 1, duration: 0.2 }, te[i]);
+              tl.to(aEquipo[i], { x: 256, y: [200, 432, 664][i] - C.y, duration: 0.7, ease: 'power2.inOut' }, te[i] + 0.1);
+              tl.to(aEquipo[i], { opacity: 0, duration: 0.2 }, te[i] + 0.8);
+              tl.fromTo(`#lin-e${i}`, { scale: 1.12 }, { scale: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, te[i] + 0.8);
+            });
+            tl.to('#lin-mapa', { opacity: 0, scale: 0.95, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['linea'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

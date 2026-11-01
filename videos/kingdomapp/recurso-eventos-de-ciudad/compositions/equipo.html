@@ -1,0 +1,132 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":18,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":3.5,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":4.1,\"fin\":9.5,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":10.1,\"fin\":14,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- El equipo del evento: nueve personas en fila que se reparten en las tres funciones (ingreso, conteo y testimonios), cada una en su
+         palabra; luego un marco punteado encierra el evento y lo demás de la iglesia queda afuera, apagado. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .equ-arriba { position: absolute; left: 192px; top: 130px; width: 1536px; height: 120px; display: grid; justify-items: center; }
+        .equ-arriba .k-recurso-titular { grid-area: 1 / 1; width: 1536px; text-align: center; font-size: 84px; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .equ-escena { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .equ-f { position: absolute; top: 540px; width: 300px; margin: -90px 0 0 -150px; display: flex; flex-direction: column; align-items: center; gap: 22px; opacity: 0; }
+        .equ-f .k-recurso-nodo { position: relative; margin: 0; width: 180px; height: 180px; }
+        .equ-f .k-recurso-icono { --k-icono-tam: 84px; }
+        .equ-f .k-recurso-etiqueta { color: var(--k-noche-tinta); font-size: 34px; }
+        .equ-marco { position: absolute; left: 330px; top: 330px; width: 1260px; height: 560px; border-radius: 40px; border: 3px dashed rgba(232, 185, 90, 0.7); box-sizing: border-box; opacity: 0; }
+        .equ-marco-rotulo { position: absolute; left: 380px; top: 306px; padding: 0 16px; background: #060d1f; color: var(--k-noche-dorado); opacity: 0; }
+        .equ-fuera { position: absolute; width: 110px; height: 110px; margin: -55px 0 0 -55px; opacity: 0; }
+        .equ-fuera .k-recurso-icono { --k-icono-tam: 52px; }
+        .equ-nota { position: absolute; left: 192px; top: 930px; width: 1536px; text-align: center; opacity: 0; }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="equipo" data-width="1920" data-height="1080" data-duration="18">
+        <div class="equ-arriba" id="equ-arriba" data-layout-allow-overlap>
+          <div class="k-recurso-titular" id="equ-t0">Cada quien sabe <em>qué le toca</em></div>
+          <div class="k-recurso-titular" id="equ-t1">El <em>equipo del evento</em></div>
+          <div class="k-recurso-titular" id="equ-t2">Solo en <em>ese evento</em></div>
+        </div>
+        <div class="equ-escena" id="equ-escena" data-layout-allow-overlap>
+          <div class="equ-marco" id="equ-marco"></div>
+          <span class="k-recurso-etiqueta equ-marco-rotulo" id="equ-marco-rotulo">El evento</span>
+          <div class="equ-f" id="equ-f0" style="left: 560px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/qr_code_2.svg)"></span></div><span class="k-recurso-etiqueta">Ingreso</span></div>
+          <div class="equ-f" id="equ-f1" style="left: 960px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/done_all.svg)"></span></div><span class="k-recurso-etiqueta">Conteo</span></div>
+          <div class="equ-f" id="equ-f2" style="left: 1360px"><div class="k-recurso-nodo k-oro"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/favorite.svg)"></span></div><span class="k-recurso-etiqueta">Testimonios</span></div>
+          <div class="k-recurso-nodo equ-fuera" id="equ-o0" style="left: 200px; top: 420px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/groups.svg)"></span></div>
+          <div class="k-recurso-nodo equ-fuera" id="equ-o1" style="left: 200px; top: 740px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/school.svg)"></span></div>
+          <div class="k-recurso-nodo equ-fuera" id="equ-o2" style="left: 1720px; top: 420px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/dashboard.svg)"></span></div>
+          <div class="k-recurso-nodo equ-fuera" id="equ-o3" style="left: 1720px; top: 740px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/format_list_bulleted.svg)"></span></div>
+        </div>
+        <div class="k-recurso-etiqueta equ-nota" id="equ-nota">Sin ver otras partes de Membresía</div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          const escena = $('equ-escena');
+          // Nueve personas en fila; cada una termina junto a su función (tres por función, en arco debajo del nodo).
+          const fx = [560, 960, 1360];
+          const gente = [];
+          for (let i = 0; i < 9; i++) {
+            const d = document.createElement('span');
+            d.className = 'k-recurso-punto' + (i === 7 ? ' k-oro' : '');
+            d.id = `equ-g-${i}`;
+            const x0 = 960 + (i - 4) * 90;
+            d.style.left = `${x0}px`;
+            d.style.top = '560px';
+            d.style.width = d.style.height = '26px';
+            d.style.margin = '-13px 0 0 -13px';
+            escena.appendChild(d);
+            const f = i % 3;
+            const k = Math.floor(i / 3);
+            gente.push({ el: d, f, dx: fx[f] + (k - 1) * 70 - x0, dy: 790 - 560 + (k === 1 ? 26 : 0) });
+          }
+          const textos = [0, 1, 2].map((i) => partir($(`equ-t${i}`), `equ-t${i}p`));
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            textos.forEach((ps, i) => {
+              const f = F[i];
+              ps.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.14)));
+              const sale = F[i + 1] ? F[i + 1].inicio - 0.3 : T.salida(0.6);
+              tl.to(`#equ-t${i}`, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+            // Frase 0: la fila de personas aparece en pulsos.
+            const tg = T.reparto(9, F[0].inicio + 0.5, F[0].fin);
+            gente.forEach((g, i) => tl.fromTo(g.el, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2.4)' }, tg[i]));
+            // Frase 1: cada función en su palabra; sus tres personas bajan a su lugar.
+            const tf = [cuando(F[1], 'ingreso', F[1].inicio + 2.5), cuando(F[1], 'conteo', F[1].inicio + 3.5), cuando(F[1], 'testimonio', F[1].fin - 1)];
+            [0, 1, 2].forEach((f) => {
+              tl.fromTo(`#equ-f${f}`, { y: 30, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, tf[f] - 0.15);
+              gente.filter((g) => g.f === f).forEach((g, k) => tl.to(g.el, { x: g.dx, y: g.dy, duration: 0.7, ease: 'power3.inOut' }, tf[f] + 0.1 + k * 0.06));
+            });
+            // Frase 2: el marco del evento y lo demás afuera, apagado.
+            const t2 = T.pulso(F[2].inicio);
+            tl.fromTo('#equ-marco', { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: 'power3.out' }, t2);
+            tl.fromTo('#equ-marco-rotulo', { opacity: 0 }, { opacity: 1, duration: 0.4 }, t2 + 0.4);
+            const to = T.reparto(4, t2 + 0.5, F[2].fin);
+            [0, 1, 2, 3].forEach((i) => tl.fromTo(`#equ-o${i}`, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 0.32, duration: 0.45, ease: 'power3.out' }, to[i]));
+            tl.fromTo('#equ-nota', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, T.pulso(F[2].inicio + 1));
+            for (let k = 0; k < 3; k++) tl.fromTo('#equ-marco', { scale: 1.015 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(F[2].fin) + k * 0.5);
+            tl.to(['#equ-escena', '#equ-nota'], { opacity: 0, y: -20, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['equipo'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

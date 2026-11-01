@@ -1,0 +1,177 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":30,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":3.5,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":4.1,\"fin\":8.5,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":9.1,\"fin\":16,\"palabras\":[]},{\"texto\":\"d\",\"inicio\":16.7,\"fin\":21.5,\"palabras\":[]},{\"texto\":\"e\",\"inicio\":22,\"fin\":24.5,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Las boletas: una boleta abstracta (un objeto, no una pantalla) que arma su QR en pulsos; los tres tipos con su color; las reglas que
+         llevan a cada quien a su boleta; la boleta que viaja al WhatsApp dentro del horario de envío (un reloj de 24 h con su franja). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .bol-arriba { position: absolute; left: 192px; top: 120px; width: 1536px; height: 130px; display: grid; justify-items: center; }
+        .bol-arriba .k-recurso-titular { grid-area: 1 / 1; width: 1536px; text-align: center; font-size: 84px; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .bol-escena { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .bol-b { position: absolute; left: 640px; top: 450px; width: 640px; height: 300px; padding: 0; display: flex; opacity: 0; --acento: var(--k-azul); }
+        .bol-b::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 14px; border-radius: 28px 0 0 28px; background: var(--acento); }
+        .bol-izq { position: relative; width: 400px; height: 300px; padding: 44px 0 0 58px; box-sizing: border-box; border-right: 3px dashed rgba(234, 240, 255, 0.2); }
+        .bol-tipo { font-family: var(--k-fuente-marca); font-size: 52px; font-weight: 600; letter-spacing: 0.02em; line-height: 1; color: var(--acento); }
+        .bol-raya { display: block; height: 16px; border-radius: 8px; background: rgba(234, 240, 255, 0.24); margin-top: 26px; }
+        .bol-qr { position: relative; width: 240px; height: 300px; display: flex; align-items: center; justify-content: center; }
+        .bol-rejilla { display: grid; grid-template-columns: repeat(9, 16px); gap: 3px; }
+        .bol-rejilla i { display: block; width: 16px; height: 16px; border-radius: 3px; background: var(--k-noche-tinta); }
+        .bol-rejilla i.v { background: transparent; }
+        .bol-regla { position: absolute; top: 330px; width: 420px; margin-left: -210px; display: flex; align-items: center; justify-content: center; gap: 16px; padding: 18px 26px; border-radius: 999px; background: rgba(12, 26, 58, 0.85); box-shadow: inset 0 0 0 2px rgba(232, 185, 90, 0.5); opacity: 0; }
+        .bol-regla .k-recurso-etiqueta { color: var(--k-noche-tinta); }
+        .bol-regla .k-recurso-icono { --k-icono-tam: 34px; }
+        .bol-chat { position: absolute; left: 1440px; top: 600px; width: 220px; height: 220px; margin: -110px 0 0 -110px; opacity: 0; }
+        .bol-chat .k-recurso-icono { --k-icono-tam: 104px; }
+        .bol-reloj { position: absolute; left: 330px; top: 410px; width: 380px; height: 380px; opacity: 0; }
+        .bol-reloj svg { width: 380px; height: 380px; overflow: visible; }
+        .bol-hora { position: absolute; font-family: var(--k-fuente-marca); font-size: 40px; font-weight: 600; color: var(--k-noche-dorado); }
+        .bol-reloj .k-recurso-etiqueta { position: absolute; left: 0; top: 162px; width: 380px; text-align: center; }
+        .bol-flecha { position: absolute; left: 820px; top: 560px; width: 400px; height: 80px; overflow: visible; }
+        .bol-mismo { position: absolute; left: 1240px; top: 760px; width: 400px; text-align: center; opacity: 0; }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="boletas" data-width="1920" data-height="1080" data-duration="30">
+        <div class="bol-arriba" id="bol-arriba" data-layout-allow-overlap>
+          <div class="k-recurso-titular" id="bol-t0">Su <em>boleta</em>, con un QR</div>
+          <div class="k-recurso-titular" id="bol-t1">General, <em>VIP</em> o <em>staff</em></div>
+          <div class="k-recurso-titular" id="bol-t2">Una <em>regla</em> asigna el tipo</div>
+          <div class="k-recurso-titular" id="bol-t3">Llega a su <em>WhatsApp</em></div>
+          <div class="k-recurso-titular" id="bol-t4">Por el chat, <em>ahí mismo</em></div>
+        </div>
+        <div class="bol-escena" id="bol-escena" data-layout-allow-overlap>
+          <div class="bol-reloj" id="bol-reloj">
+            <svg viewBox="0 0 380 380">
+              <circle cx="190" cy="190" r="150" fill="none" stroke="rgba(234,240,255,0.16)" stroke-width="14" />
+              <circle id="bol-franja" cx="190" cy="190" r="150" fill="none" stroke="#e8b95a" stroke-width="14" stroke-linecap="round" transform="rotate(15 190 190)" style="stroke-dasharray: 550 942; stroke-dashoffset: 550" />
+            </svg>
+            <span class="bol-hora" style="left: 345px; top: 212px">07:00</span>
+            <span class="bol-hora" style="left: -20px; top: 40px">21:00</span>
+            <span class="k-recurso-etiqueta">Horario de envío</span>
+          </div>
+          <svg class="bol-flecha" id="bol-flecha" viewBox="0 0 400 80"><path class="k-recurso-linea k-oro" id="bol-arco" d="M 0 60 Q 200 -40 400 40" style="stroke-dasharray: 470; stroke-dashoffset: 470" /></svg>
+          <div class="k-recurso-nodo k-oro bol-chat" id="bol-chat"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/chat.svg)"></span></div>
+          <div class="k-recurso-etiqueta bol-mismo" id="bol-mismo">En el mismo chat</div>
+          <div class="bol-regla" id="bol-r0" style="left: 640px"><span class="k-recurso-etiqueta">Si es pastor</span><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/arrow_forward.svg)"></span><span class="k-recurso-etiqueta">General 1</span></div>
+          <div class="bol-regla" id="bol-r1" style="left: 1280px"><span class="k-recurso-etiqueta">Si es líder</span><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/arrow_forward.svg)"></span><span class="k-recurso-etiqueta">General 2</span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          let s = 7301;
+          const azar = () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          // Un QR abstracto de 9×9 (las tres esquinas fijas, el resto con semilla): siempre el mismo.
+          const esquina = (r, c) => (r < 3 && c < 3) || (r < 3 && c > 5) || (r > 5 && c < 3);
+          const celdas = [];
+          for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) celdas.push(esquina(r, c) ? !(r % 6 === 1 && c % 6 === 1) || true : azar() < 0.55);
+          const escena = $('bol-escena');
+          const boleta = (id, tipo, acento) => {
+            const b = document.createElement('div');
+            b.className = 'k-recurso-tarjeta bol-b';
+            b.id = id;
+            b.style.setProperty('--acento', acento);
+            const qr = celdas.map((on, k) => `<i id="${id}-q${k}" class="${on ? '' : 'v'}"></i>`).join('');
+            b.innerHTML = `<div class="bol-izq"><div class="bol-tipo">${tipo}</div><span class="bol-raya" style="width: 260px"></span><span class="bol-raya" style="width: 190px"></span><span class="bol-raya" style="width: 120px; background: rgba(232,185,90,0.5)"></span></div><div class="bol-qr"><div class="bol-rejilla">${qr}</div></div>`;
+            escena.appendChild(b);
+            return b;
+          };
+          const b0 = boleta('bol-b0', 'GENERAL', '#3576da');
+          const b1 = boleta('bol-b1', 'VIP', '#e8b95a');
+          const b2 = boleta('bol-b2', 'STAFF', '#26a69a');
+          const g1 = boleta('bol-g1', 'GENERAL 1', '#3576da');
+          const g2 = boleta('bol-g2', 'GENERAL 2', '#7f9cf5');
+          const yo = boleta('bol-yo', 'GENERAL', '#e8b95a');
+          const textos = [0, 1, 2, 3, 4].map((i) => partir($(`bol-t${i}`), `bol-t${i}p`));
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            textos.forEach((ps, i) => {
+              const f = F[i];
+              ps.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.14)));
+              const sale = F[i + 1] ? F[i + 1].inicio - 0.3 : T.salida(0.6);
+              tl.to(`#bol-t${i}`, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+            // Frase 0: la boleta entra y su QR se arma en tres pulsos.
+            const t0 = T.pulso(cuando(F[0], 'boleta', F[0].inicio + 1) - 0.25);
+            tl.fromTo(b0, { y: 40, opacity: 0, scale: 0.92 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }, t0);
+            const qs = celdas.map((_, k) => `#bol-b0-q${k}`);
+            [0, 1, 2].forEach((g) => tl.fromTo(qs.filter((_, k) => k % 3 === g), { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2)', stagger: 0.008 }, T.pulso(t0 + 0.6) + g * 0.5));
+            // Frase 1: tres tipos en fila, cada uno en su palabra.
+            const t1 = T.pulso(F[1].inicio);
+            tl.to(b0, { x: -580, scale: 0.58, duration: 0.6, ease: 'power3.inOut' }, t1);
+            const tv = [cuando(F[1], 'vip', F[1].inicio + 2), cuando(F[1], 'staff', F[1].fin - 1.4)];
+            tl.fromTo(b1, { x: 0, y: 40, scale: 0.58, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, tv[0] - 0.1);
+            tl.fromTo(b2, { x: 580, y: 40, scale: 0.58, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, tv[1] - 0.1);
+            const tColor = T.pulso(cuando(F[1], 'color', F[1].fin - 0.5) - 0.1);
+            [b0, b1, b2].forEach((b, i) => tl.fromTo(b, { y: 0 }, { y: -18, duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1, immediateRender: false }, tColor + i * 0.5));
+            // Frase 2: las reglas: dos boletas generales y su regla encima.
+            const t2 = T.pulso(F[2].inicio - 0.2);
+            tl.to([b0, b1, b2], { opacity: 0, y: 30, duration: 0.4, ease: 'power2.in' }, t2);
+            tl.fromTo(g1, { x: -320, y: 60, scale: 0.7, opacity: 0 }, { y: 30, opacity: 1, duration: 0.5, ease: 'power3.out' }, t2 + 0.4);
+            tl.fromTo(g2, { x: 320, y: 60, scale: 0.7, opacity: 0 }, { y: 30, opacity: 1, duration: 0.5, ease: 'power3.out' }, t2 + 0.6);
+            const tr = [cuando(F[2], 'pastor', F[2].inicio + 3.5), cuando(F[2], 'lider', F[2].fin - 1.5)];
+            tl.fromTo('#bol-r0', { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'back.out(1.8)' }, tr[0] - 0.15);
+            tl.fromTo('#bol-r1', { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'back.out(1.8)' }, tr[1] - 0.15);
+            tl.fromTo(g1, { scale: 0.76 }, { scale: 0.7, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(tr[0] + 0.3));
+            tl.fromTo(g2, { scale: 0.76 }, { scale: 0.7, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(tr[1] + 0.3));
+            // Frase 3: una boleta dorada viaja al WhatsApp; el reloj muestra la franja del horario de envío.
+            const t3 = T.pulso(F[3].inicio - 0.3);
+            tl.to([g1, g2, '#bol-r0', '#bol-r1'], { opacity: 0, y: '+=30', duration: 0.4, ease: 'power2.in' }, t3);
+            tl.fromTo(yo, { x: 0, y: 0, scale: 0.7, opacity: 0 }, { opacity: 1, duration: 0.4 }, t3 + 0.3);
+            const tw = T.pulso(cuando(F[3], 'whatsapp', F[3].inicio + 1.5) - 0.3);
+            tl.fromTo('#bol-chat', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(2)' }, tw);
+            tl.to('#bol-arco', { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' }, tw + 0.3);
+            tl.to(yo, { x: 480, y: 0, scale: 0.16, opacity: 0, duration: 0.8, ease: 'power3.in' }, tw + 0.6);
+            tl.fromTo('#bol-chat', { scale: 1.12 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, tw + 1.4);
+            const th = T.pulso(cuando(F[3], 'horario', F[3].fin - 1.6) - 0.2);
+            tl.fromTo('#bol-reloj', { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, th);
+            tl.to('#bol-franja', { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, th + 0.3);
+            // Frase 4: en el mismo chat: el globo late y el rótulo aparece.
+            const t4 = T.pulso(F[4].inicio);
+            tl.to('#bol-reloj', { opacity: 0.35, duration: 0.4 }, t4);
+            tl.fromTo('#bol-mismo', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, t4);
+            for (let k = 0; k < 4; k++) tl.fromTo('#bol-chat', { scale: 1.08 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, t4 + 0.5 + k * 0.5);
+            tl.to('#bol-escena', { opacity: 0, y: -20, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['boletas'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

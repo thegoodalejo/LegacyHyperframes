@@ -1,0 +1,183 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":28,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":5,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":5.6,\"fin\":11.5,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":12.1,\"fin\":16.5,\"palabras\":[]},{\"texto\":\"d\",\"inicio\":17.1,\"fin\":22,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Manillas y conteos: la manilla (una banda con su código) se une a la boleta con una línea dorada; después tres tipos de conteo como
+         tarjetas con su contador (Datos de ejemplo): las manillas llegan a «Pasó al altar» y «Aceptó a Cristo», el aforo suma con +1, +5,
+         +10 y +20, y una etiqueta de Membresía se pega a quienes se contaron. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .man-arriba { position: absolute; left: 192px; top: 120px; width: 1536px; height: 120px; display: grid; justify-items: center; }
+        .man-arriba .k-recurso-titular { grid-area: 1 / 1; width: 1536px; text-align: center; font-size: 84px; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .man-escena { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .man-banda { position: absolute; left: 980px; top: 520px; width: 460px; height: 96px; border-radius: 48px; background: #0c1a3a; box-shadow: inset 0 0 0 3px rgba(232, 185, 90, 0.8); display: flex; align-items: center; justify-content: center; gap: 4px; opacity: 0; }
+        .man-banda i { display: block; width: 7px; height: 52px; border-radius: 2px; background: var(--k-noche-tinta); }
+        .man-banda i.f { width: 3px; }
+        .man-boleta { position: absolute; left: 480px; top: 488px; width: 300px; height: 160px; padding: 0; display: flex; align-items: center; justify-content: center; opacity: 0; }
+        .man-boleta .k-recurso-icono { --k-icono-tam: 84px; }
+        .man-union { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .man-rotulo { position: absolute; left: 192px; top: 720px; width: 1536px; text-align: center; opacity: 0; }
+        .man-tiles { position: absolute; left: 192px; top: 330px; width: 1536px; height: 420px; }
+        .man-tile { position: absolute; top: 0; width: 470px; height: 380px; padding: 36px 40px; display: flex; flex-direction: column; justify-content: space-between; opacity: 0; }
+        .man-tile .k-recurso-icono { --k-icono-tam: 60px; }
+        .man-tile .k-recurso-contador { font-size: 120px; }
+        .man-tile .k-recurso-etiqueta { color: var(--k-noche-tinta); font-size: 34px; }
+        .man-botones { position: absolute; left: 1258px; top: 770px; width: 470px; display: flex; gap: 14px; justify-content: center; }
+        .man-boton { padding: 12px 22px; border-radius: 999px; background: rgba(12, 26, 58, 0.9); box-shadow: inset 0 0 0 2px rgba(53, 118, 218, 0.8); opacity: 0; }
+        .man-boton .k-recurso-etiqueta { color: var(--k-noche-tinta); }
+        .man-etiqueta { position: absolute; left: 725px; top: 770px; width: 470px; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 14px 20px; border-radius: 999px; background: rgba(232, 185, 90, 0.14); box-shadow: inset 0 0 0 2px rgba(232, 185, 90, 0.8); box-sizing: border-box; opacity: 0; }
+        .man-etiqueta .k-recurso-icono { --k-icono-tam: 34px; }
+        .man-etiqueta .k-recurso-etiqueta { color: var(--k-noche-dorado); }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="manillas" data-width="1920" data-height="1080" data-duration="28">
+        <div class="man-arriba" id="man-arriba" data-layout-allow-overlap>
+          <div class="k-recurso-titular" id="man-t0">Una <em>manilla</em> en la muñeca</div>
+          <div class="k-recurso-titular" id="man-t1">Contar, <em>sin hojas de papel</em></div>
+          <div class="k-recurso-titular" id="man-t2">El aforo, <em>sin manilla</em></div>
+          <div class="k-recurso-titular" id="man-t3">Una etiqueta <em>para seguirlos</em></div>
+        </div>
+        <div class="man-escena" id="man-escena" data-layout-allow-overlap>
+          <svg class="man-union" viewBox="0 0 1920 1080"><line class="k-recurso-linea k-oro" id="man-linea" x1="790" y1="568" x2="970" y2="568" style="stroke-dasharray: 180; stroke-dashoffset: 180" /></svg>
+          <div class="k-recurso-tarjeta man-boleta" id="man-boleta"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/confirmation_number.svg)"></span></div>
+          <div class="man-banda" id="man-banda"></div>
+          <div class="k-recurso-etiqueta man-rotulo" id="man-rotulo">Vinculada a su boleta</div>
+          <div class="man-tiles" id="man-tiles">
+            <div class="k-recurso-tarjeta man-tile" id="man-c0" style="left: 0"><span class="k-recurso-icono k-recurso-icono-oro" style="--k-icono: url(identidad/iconos/favorite.svg)"></span><span class="k-recurso-contador" id="man-n0">0</span><span class="k-recurso-etiqueta">Pasó al altar</span></div>
+            <div class="k-recurso-tarjeta man-tile" id="man-c1" style="left: 533px"><span class="k-recurso-icono k-recurso-icono-oro" style="--k-icono: url(identidad/iconos/celebration.svg)"></span><span class="k-recurso-contador" id="man-n1">0</span><span class="k-recurso-etiqueta">Aceptó a Cristo</span></div>
+            <div class="k-recurso-tarjeta man-tile" id="man-c2" style="left: 1066px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/groups.svg)"></span><span class="k-recurso-contador" id="man-n2">0</span><span class="k-recurso-etiqueta">Aforo general</span></div>
+          </div>
+          <div class="man-botones" id="man-botones">
+            <span class="man-boton" id="man-b0"><span class="k-recurso-etiqueta">+1</span></span>
+            <span class="man-boton" id="man-b1"><span class="k-recurso-etiqueta">+5</span></span>
+            <span class="man-boton" id="man-b2"><span class="k-recurso-etiqueta">+10</span></span>
+            <span class="man-boton" id="man-b3"><span class="k-recurso-etiqueta">+20</span></span>
+          </div>
+          <div class="man-etiqueta" id="man-etq"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/flag.svg)"></span><span class="k-recurso-etiqueta">Etiqueta de Membresía</span></div>
+        </div>
+        <span class="k-datos-ejemplo k-recurso-datos" id="man-datos" style="opacity: 0">Datos de ejemplo</span>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          let s = 8813;
+          const azar = () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          // El código de la manilla: barras con semilla.
+          const banda = $('man-banda');
+          for (let k = 0; k < 34; k++) { const i = document.createElement('i'); i.id = `man-bar-${k}`; if (azar() < 0.45) i.className = 'f'; banda.appendChild(i); }
+          // Manillas que llegan a los dos primeros conteos (puntos con anillo dorado).
+          const escena = $('man-escena');
+          const lecturas = [];
+          for (let i = 0; i < 12; i++) {
+            const d = document.createElement('span');
+            d.className = 'k-recurso-punto';
+            d.id = `man-l-${i}`;
+            const x = 300 + azar() * 1320;
+            d.style.left = `${x}px`;
+            d.style.top = '960px';
+            d.style.boxShadow = '0 0 0 4px rgba(232,185,90,0.7)';
+            escena.appendChild(d);
+            const destino = i % 3 === 2 ? 1 : 0;
+            lecturas.push({ el: d, destino, dx: (destino ? 960 : 427) - x, dy: 560 - 960 });
+          }
+          const textos = [0, 1, 2, 3].map((i) => partir($(`man-t${i}`), `man-t${i}p`));
+          const contador = (tl, id, de, a, t, d) => {
+            const o = { n: de };
+            tl.fromTo(o, { n: de }, { n: a, duration: d, ease: 'none', immediateRender: false, onUpdate: () => { $(id).textContent = Math.round(o.n).toLocaleString('es-CO'); } }, t);
+          };
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            textos.forEach((ps, i) => {
+              const f = F[i];
+              ps.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.14)));
+              const sale = F[i + 1] ? F[i + 1].inicio - 0.3 : T.salida(0.6);
+              tl.to(`#man-t${i}`, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+            // Frase 0: la banda entra, su código se dibuja, la boleta y la línea que las une.
+            const t0 = T.pulso(cuando(F[0], 'manilla', F[0].inicio + 1) - 0.2);
+            tl.fromTo('#man-banda', { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, t0);
+            tl.fromTo('#man-banda i', { scaleY: 0 }, { scaleY: 1, duration: 0.3, ease: 'power2.out', stagger: 0.02 }, t0 + 0.3);
+            const tv = T.pulso(cuando(F[0], 'vinculada', F[0].fin - 1.2) - 0.3);
+            tl.fromTo('#man-boleta', { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, tv - 0.5);
+            tl.to('#man-linea', { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }, tv);
+            tl.fromTo('#man-rotulo', { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, tv + 0.3);
+            for (let k = 0; k < 2; k++) tl.fromTo(['#man-banda', '#man-boleta'], { scale: 1.05 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, tv + 0.6 + k * 0.5);
+            // Frase 1: la pareja se va; aparecen los tres conteos y las manillas llegan a los dos primeros.
+            const t1 = T.pulso(F[1].inicio - 0.3);
+            tl.to(['#man-banda', '#man-boleta', '#man-linea', '#man-rotulo'], { opacity: 0, y: -30, duration: 0.4, ease: 'power2.in' }, t1);
+            [0, 1, 2].forEach((i) => tl.fromTo(`#man-c${i}`, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, t1 + 0.3 + i * 0.25));
+            tl.fromTo('#man-datos', { opacity: 0 }, { opacity: 1, duration: 0.3 }, t1 + 0.5);
+            const tl0 = T.reparto(lecturas.length, cuando(F[1], 'altar', F[1].inicio + 2) - 0.4, F[1].fin + 0.3);
+            lecturas.forEach((l, i) => {
+              tl.fromTo(l.el, { x: 0, y: 0, opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.2 }, tl0[i]);
+              tl.to(l.el, { x: l.dx, y: l.dy, scale: 0.4, duration: 0.6, ease: 'power3.in' }, tl0[i] + 0.1);
+              tl.to(l.el, { opacity: 0, duration: 0.1 }, tl0[i] + 0.7);
+              tl.fromTo(`#man-c${l.destino}`, { scale: 1.03 }, { scale: 1, duration: 0.3, ease: 'power2.out', immediateRender: false }, tl0[i] + 0.7);
+            });
+            contador(tl, 'man-n0', 0, 312, tl0[0] + 0.7, tl0[tl0.length - 1] - tl0[0]);
+            contador(tl, 'man-n1', 0, 147, tl0[2] + 0.7, tl0[tl0.length - 1] - tl0[2]);
+            // Frase 2: el aforo se ilumina y suma con cada botón, en pulsos.
+            const t2 = T.pulso(F[2].inicio - 0.2);
+            tl.to(['#man-c0', '#man-c1'], { opacity: 0.4, duration: 0.4 }, t2);
+            tl.to('#man-c2', { boxShadow: 'inset 0 0 0 2px rgba(53,118,218,0.9), 0 30px 60px -30px rgba(0,0,0,0.6)', duration: 0.4 }, t2);
+            const tb = [cuando(F[2], 'uno', F[2].fin - 2), cuando(F[2], 'cinco', F[2].fin - 1.2), cuando(F[2], 'diez', F[2].fin - 0.5), F[2].fin + 0.2];
+            const sumas = [1, 5, 10, 20];
+            let total = 1980;
+            contador(tl, 'man-n2', 0, total, t2, 0.8);
+            tb.forEach((t, i) => {
+              tl.fromTo(`#man-b${i}`, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, t - 0.15);
+              tl.fromTo(`#man-b${i}`, { scale: 1.12 }, { scale: 1, duration: 0.35, ease: 'power2.out', immediateRender: false }, t + 0.2);
+              contador(tl, 'man-n2', total, total + sumas[i], t + 0.2, 0.3);
+              total += sumas[i];
+            });
+            // Frase 3: la etiqueta de Membresía se pega a «Aceptó a Cristo».
+            const t3 = T.pulso(F[3].inicio - 0.2);
+            tl.to(['#man-c2', '#man-botones'], { opacity: 0.4, duration: 0.4 }, t3);
+            tl.to('#man-c1', { opacity: 1, boxShadow: 'inset 0 0 0 2px rgba(232,185,90,0.9), 0 30px 60px -30px rgba(0,0,0,0.6)', duration: 0.4 }, t3);
+            const te = T.pulso(cuando(F[3], 'etiqueta', F[3].inicio + 0.6) - 0.1);
+            tl.fromTo('#man-etq', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'back.out(1.8)' }, te);
+            for (let k = 0; k < 3; k++) tl.fromTo('#man-etq', { scale: 1.06 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(cuando(F[3], 'seguimiento', F[3].fin - 1) - 0.2) + k * 0.5);
+            tl.to(['#man-escena', '#man-datos'], { opacity: 0, y: -20, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['manillas'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

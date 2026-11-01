@@ -1,0 +1,173 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":30,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":4,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":4.6,\"fin\":10,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":10.6,\"fin\":15,\"palabras\":[]},{\"texto\":\"d\",\"inicio\":15.7,\"fin\":21,\"palabras\":[]},{\"texto\":\"e\",\"inicio\":21.5,\"fin\":26,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- La inscripción: tres puertas (enlace, QR y WhatsApp) que llevan al mismo formulario; los puntos viajan por cada camino con su color
+         (el origen); del formulario salen a dos anillos: Membresía (sólido) y Participantes (punteado); el miembro no se duplica. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .ins-texto { position: absolute; left: 192px; top: 108px; width: 820px; height: 864px; display: grid; align-items: center; }
+        .ins-texto .k-recurso-frase { grid-area: 1 / 1; width: 820px; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .ins-mapa { position: absolute; left: 1080px; top: 108px; width: 648px; height: 864px; }
+        .ins-svg { position: absolute; left: 0; top: 0; width: 648px; height: 864px; overflow: visible; }
+        .ins-puerta { position: absolute; display: flex; flex-direction: column; align-items: center; width: 200px; margin-left: -100px; gap: 14px; opacity: 0; }
+        .ins-puerta .k-recurso-nodo { position: relative; margin: 0; width: 110px; height: 110px; }
+        .ins-puerta .k-recurso-icono { --k-icono-tam: 56px; }
+        .ins-form { position: absolute; left: 470px; top: 432px; width: 150px; height: 150px; margin: -75px 0 0 -75px; opacity: 0; }
+        .ins-form .k-recurso-icono { --k-icono-tam: 72px; }
+        .ins-anillo { position: absolute; width: 300px; height: 300px; margin: -150px 0 0 -150px; border-radius: 50%; opacity: 0; }
+        .ins-anillo.solido { box-shadow: inset 0 0 0 3px rgba(53, 118, 218, 0.8); }
+        .ins-anillo.punteado { border: 3px dashed rgba(38, 166, 154, 0.85); box-sizing: border-box; }
+        .ins-rotulo { position: absolute; width: 340px; margin-left: -170px; text-align: center; opacity: 0; }
+        .ins-check { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; color: var(--k-noche-dorado); opacity: 0; }
+        .ins-check .k-recurso-icono { --k-icono-tam: 64px; }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="inscripcion" data-width="1920" data-height="1080" data-duration="30">
+        <div class="ins-texto" id="ins-texto" data-layout-allow-overlap>
+          <div class="k-recurso-frase" id="ins-t0">Inscribirse, <em>sin cuenta</em></div>
+          <div class="k-recurso-frase" id="ins-t1">Un <em>enlace</em>, un <em>QR</em> o el <em>WhatsApp</em></div>
+          <div class="k-recurso-frase" id="ins-t2">Las mismas preguntas, por <em>cualquier camino</em></div>
+          <div class="k-recurso-frase" id="ins-t3"><em>Participante:</em> con ficha, fuera de tu Membresía</div>
+          <div class="k-recurso-frase" id="ins-t4">Si ya es miembro, <em>no se duplica</em></div>
+        </div>
+        <div class="ins-mapa" id="ins-mapa" data-layout-allow-overlap>
+          <svg class="ins-svg" id="ins-svg" viewBox="0 0 648 864">
+            <path class="k-recurso-linea" id="ins-c0" d="M 150 160 C 300 160 330 432 400 432" />
+            <path class="k-recurso-linea" id="ins-c1" d="M 150 432 L 400 432" />
+            <path class="k-recurso-linea" id="ins-c2" d="M 150 704 C 300 704 330 432 400 432" />
+          </svg>
+          <div class="ins-puerta" id="ins-p0" style="left: 90px; top: 105px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/language.svg)"></span></div><span class="k-recurso-etiqueta">Enlace</span></div>
+          <div class="ins-puerta" id="ins-p1" style="left: 90px; top: 377px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/qr_code_2.svg)"></span></div><span class="k-recurso-etiqueta">QR</span></div>
+          <div class="ins-puerta" id="ins-p2" style="left: 90px; top: 649px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/chat.svg)"></span></div><span class="k-recurso-etiqueta">WhatsApp</span></div>
+          <div class="k-recurso-nodo k-oro ins-form" id="ins-form"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/assignment.svg)"></span></div>
+          <div class="ins-anillo solido" id="ins-a0" style="left: 470px; top: 220px"></div>
+          <div class="ins-anillo punteado" id="ins-a1" style="left: 470px; top: 644px"></div>
+          <div class="k-recurso-etiqueta ins-rotulo" id="ins-r0" style="left: 470px; top: 18px">Tu Membresía</div>
+          <div class="k-recurso-etiqueta ins-rotulo" id="ins-r1" style="left: 470px; top: 810px">Participantes del evento</div>
+          <div class="ins-check" id="ins-check" style="left: 470px; top: 220px"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/how_to_reg.svg)"></span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          let s = 4417;
+          const azar = () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const mapa = $('ins-mapa');
+          const punto = (x, y, clase, id) => {
+            const d = document.createElement('span');
+            d.className = `k-recurso-punto ${clase}`;
+            d.id = id;
+            d.style.left = `${x}px`;
+            d.style.top = `${y}px`;
+            mapa.appendChild(d);
+            return d;
+          };
+          const textos = [0, 1, 2, 3, 4].map((i) => partir($(`ins-t${i}`), `ins-t${i}p`));
+          // Los viajeros: 18 puntos, 6 por camino, que van de su puerta al formulario (en el color de su origen).
+          const tonos = ['', 'k-azul', 'k-verde'];
+          const origen = [{ x: 150, y: 160 }, { x: 150, y: 432 }, { x: 150, y: 704 }];
+          const viajeros = [];
+          for (let c = 0; c < 3; c++) for (let k = 0; k < 6; k++) viajeros.push({ c, el: punto(origen[c].x, origen[c].y, tonos[c], `ins-v-${c}-${k}`) });
+          // Del formulario a los anillos: 14 miembros (azul) y 22 participantes (verde), con su lugar final dentro de cada anillo.
+          const destino = (cx, cy) => { const a = azar() * Math.PI * 2; const r = Math.sqrt(azar()) * 110; return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r }; };
+          const repartidos = [];
+          for (let i = 0; i < 36; i++) {
+            const miembro = i % 5 < 2;
+            const d = destino(470, miembro ? 220 : 644);
+            repartidos.push({ el: punto(470, 432, miembro ? 'k-azul' : 'k-verde', `ins-d-${i}`), dx: d.x - 470, dy: d.y - 432 });
+          }
+          const yo = punto(470, 432, 'k-oro', 'ins-yo');
+          yo.style.width = yo.style.height = '26px';
+          yo.style.margin = '-13px 0 0 -13px';
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            // Texto: un bloque por frase.
+            textos.forEach((ps, i) => {
+              const f = F[i];
+              ps.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.14)));
+              const sale = F[i + 1] ? F[i + 1].inicio - 0.3 : T.salida(0.6);
+              tl.to(`#ins-t${i}`, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+            // Frase 0: el formulario aparece solo, en el centro del mapa, y late.
+            tl.fromTo('#ins-form', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(2)' }, T.pulso(F[0].inicio + 0.5));
+            for (let k = 0; k < 3; k++) tl.fromTo('#ins-form', { scale: 1.08 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(F[0].inicio + 1.5) + k * 1);
+            // Frase 1: cada puerta en su palabra y su camino se dibuja.
+            const tp = [cuando(F[1], 'enlace', F[1].inicio + 0.6), cuando(F[1], 'qr', F[1].inicio + 2), cuando(F[1], 'whatsapp', F[1].fin - 1.2)];
+            const largo = [330, 250, 330];
+            [0, 1, 2].forEach((c) => {
+              tl.fromTo(`#ins-p${c}`, { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }, tp[c] - 0.1);
+              tl.fromTo(`#ins-c${c}`, { strokeDasharray: largo[c], strokeDashoffset: largo[c] }, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' }, tp[c] + 0.2);
+            });
+            // Frase 2: los viajeros recorren los tres caminos en pulsos y entran al formulario.
+            const tv = T.reparto(6, F[2].inicio, F[2].fin - 1);
+            viajeros.forEach((v, i) => {
+              const k = i % 6;
+              tl.fromTo(v.el, { x: 0, y: 0, opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.2 }, tv[k] + v.c * 0.12);
+              tl.to(v.el, { x: 400 - origen[v.c].x, y: 432 - origen[v.c].y, duration: 0.9, ease: 'power2.inOut' }, tv[k] + v.c * 0.12 + 0.1);
+              tl.to(v.el, { scale: 0, opacity: 0, duration: 0.2 }, tv[k] + v.c * 0.12 + 0.95);
+            });
+            tv.forEach((t) => tl.fromTo('#ins-form', { scale: 1.1 }, { scale: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, t + 1));
+            // Frase 3: las puertas se apagan; aparecen los dos anillos y los puntos se reparten.
+            const t3 = T.pulso(F[3].inicio - 0.3);
+            tl.to(['#ins-p0', '#ins-p1', '#ins-p2', '#ins-c0', '#ins-c1', '#ins-c2'], { opacity: 0, x: -20, duration: 0.4, ease: 'power2.in' }, t3);
+            tl.fromTo(['#ins-a0', '#ins-a1'], { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'power3.out', stagger: 0.15 }, t3 + 0.3);
+            tl.fromTo(['#ins-r0', '#ins-r1'], { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.15 }, t3 + 0.5);
+            const tr = T.reparto(repartidos.length, F[3].inicio + 0.6, F[3].fin);
+            repartidos.forEach((r, i) => tl.fromTo(r.el, { x: 0, y: 0, opacity: 0 }, { x: r.dx, y: r.dy, opacity: 1, duration: 0.8, ease: 'power3.out' }, tr[i] + (i % 3) * 0.06));
+            const tPart = T.pulso(cuando(F[3], 'participante', F[3].inicio));
+            for (let k = 0; k < 3; k++) tl.fromTo('#ins-a1', { scale: 1.06 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, tPart + k * 0.5);
+            // Frase 4: un punto dorado va hacia los participantes, se detiene y sube a su ficha de Membresía.
+            const t4 = T.pulso(F[4].inicio);
+            tl.fromTo(yo, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2.4)' }, t4);
+            tl.to(yo, { y: 140, duration: 0.8, ease: 'power2.out' }, t4 + 0.4);
+            const tTel = T.pulso(cuando(F[4], 'telefono', F[4].inicio + 2) - 0.2);
+            tl.to(yo, { y: -212, duration: 0.9, ease: 'power3.inOut' }, tTel);
+            tl.fromTo('#ins-check', { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2)' }, tTel + 0.9);
+            tl.fromTo('#ins-a0', { scale: 1.08 }, { scale: 1, duration: 0.5, ease: 'power2.out', immediateRender: false }, tTel + 0.9);
+            tl.to(yo, { opacity: 0, duration: 0.3 }, tTel + 0.9);
+            // Salida.
+            tl.to('#ins-mapa', { opacity: 0, scale: 0.95, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['inscripcion'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

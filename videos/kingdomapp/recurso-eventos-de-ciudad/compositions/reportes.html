@@ -1,0 +1,195 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":22,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":2,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":2.5,\"fin\":9.5,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":10.1,\"fin\":15.5,\"palabras\":[]},{\"texto\":\"d\",\"inicio\":16.1,\"fin\":20.3,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Reportes: «medir» golpea en grande; luego un tablero abstracto (inscripciones por día, por camino, por tipo y cuántos entraron), una
+         tabla cruzada que se enciende celda a celda y se guarda, y el embudo de los envíos de boletas. Todo con «Datos de ejemplo». -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .rep-gigante { position: absolute; left: 192px; top: 0; width: 1536px; height: 1080px; display: flex; align-items: center; justify-content: center; }
+        .rep-gigante .k-recurso-gigante { width: 1536px; text-align: center; }
+        .rep-arriba { position: absolute; left: 192px; top: 120px; width: 1536px; height: 120px; display: grid; justify-items: center; }
+        .rep-arriba .k-recurso-titular { grid-area: 1 / 1; width: 1536px; text-align: center; font-size: 84px; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .rep-tablero { position: absolute; left: 192px; top: 300px; width: 1536px; height: 600px; }
+        .rep-dias { position: absolute; left: 0; top: 0; width: 860px; height: 560px; opacity: 0; }
+        .rep-barras { position: absolute; left: 40px; bottom: 80px; width: 780px; height: 380px; display: flex; align-items: flex-end; gap: 14px; }
+        .rep-barras .k-recurso-barra { flex: 1; }
+        .rep-dias .k-recurso-eje { position: absolute; left: 40px; bottom: 78px; width: 780px; }
+        .rep-dias .k-recurso-etiqueta { position: absolute; left: 40px; bottom: 20px; }
+        .rep-dias .k-recurso-ceja { position: absolute; left: 40px; top: 0; }
+        .rep-lado { position: absolute; left: 960px; top: 0; width: 576px; height: 560px; display: flex; flex-direction: column; gap: 22px; }
+        .rep-bloque { opacity: 0; }
+        .rep-bloque .k-recurso-ceja { display: block; margin-bottom: 12px; }
+        .rep-hbar { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+        .rep-hbar .k-recurso-etiqueta { width: 190px; flex: none; color: var(--k-noche-tinta); font-size: 28px; }
+        .rep-hbar i { display: block; height: 22px; border-radius: 11px; background: var(--k-azul); transform-origin: 0 50%; }
+        .rep-entraron { display: flex; align-items: baseline; gap: 16px; opacity: 0; }
+        .rep-entraron .k-recurso-contador { font-size: 96px; }
+        .rep-cruce { position: absolute; left: 270px; top: 0; width: 1000px; height: 600px; opacity: 0; }
+        .rep-celdas { position: absolute; left: 230px; top: 70px; display: grid; grid-template-columns: repeat(5, 140px); grid-auto-rows: 90px; gap: 10px; }
+        .rep-celdas i { display: block; border-radius: 12px; background: var(--k-noche-dorado); opacity: 0; }
+        .rep-fila-rot { position: absolute; left: 0; width: 210px; text-align: right; }
+        .rep-col-rot { position: absolute; top: 20px; width: 150px; margin-left: -5px; text-align: center; }
+        .rep-guardado { position: absolute; left: 600px; top: 500px; display: flex; align-items: center; gap: 14px; padding: 14px 24px; border-radius: 999px; background: rgba(232, 185, 90, 0.14); box-shadow: inset 0 0 0 2px rgba(232, 185, 90, 0.8); opacity: 0; }
+        .rep-guardado .k-recurso-icono { --k-icono-tam: 36px; }
+        .rep-guardado .k-recurso-etiqueta { color: var(--k-noche-dorado); }
+        .rep-embudo { position: absolute; left: 0; top: 0; width: 1536px; height: 600px; display: flex; flex-direction: column; align-items: center; gap: 26px; opacity: 0; }
+        .rep-etapa { position: relative; height: 104px; border-radius: 20px; background: rgba(53, 118, 218, 0.28); box-shadow: inset 0 0 0 2px rgba(53, 118, 218, 0.7); display: flex; align-items: center; justify-content: space-between; padding: 0 36px; box-sizing: border-box; opacity: 0; }
+        .rep-etapa .k-recurso-etiqueta { color: var(--k-noche-tinta); font-size: 34px; }
+        .rep-etapa .k-recurso-contador { font-size: 64px; }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="reportes" data-width="1920" data-height="1080" data-duration="22">
+        <div class="rep-gigante" id="rep-gigante" data-layout-allow-overlap><div class="k-recurso-gigante" id="rep-g">Todo se puede <em>medir</em></div></div>
+        <div class="rep-arriba" id="rep-arriba" data-layout-allow-overlap>
+          <div class="k-recurso-titular" id="rep-t1">Cada día, cada camino, <em>cada ingreso</em></div>
+          <div class="k-recurso-titular" id="rep-t2">Cruza dos preguntas <em>y guárdalo</em></div>
+          <div class="k-recurso-titular" id="rep-t3">Cada boleta, <em>de punta a punta</em></div>
+        </div>
+        <div class="rep-tablero" id="rep-tablero" data-layout-allow-overlap>
+          <div class="rep-dias" id="rep-dias">
+            <span class="k-recurso-ceja">Inscripciones por día</span>
+            <div class="rep-barras" id="rep-barras"></div>
+            <div class="k-recurso-eje"></div>
+            <span class="k-recurso-etiqueta">Desde que abrió la inscripción</span>
+          </div>
+          <div class="rep-lado" id="rep-lado">
+            <div class="rep-bloque" id="rep-camino">
+              <span class="k-recurso-ceja">Por camino</span>
+              <div class="rep-hbar"><span class="k-recurso-etiqueta">Formulario</span><i style="width: 300px"></i></div>
+              <div class="rep-hbar"><span class="k-recurso-etiqueta">WhatsApp</span><i style="width: 230px"></i></div>
+              <div class="rep-hbar"><span class="k-recurso-etiqueta">Equipo</span><i style="width: 110px"></i></div>
+              <div class="rep-hbar"><span class="k-recurso-etiqueta">Mi iglesia</span><i style="width: 80px"></i></div>
+            </div>
+            <div class="rep-bloque" id="rep-tipo">
+              <span class="k-recurso-ceja">Por tipo de boleta</span>
+              <div class="rep-hbar"><span class="k-recurso-etiqueta">General</span><i style="width: 320px; background: #3576da"></i></div>
+              <div class="rep-hbar"><span class="k-recurso-etiqueta">VIP · Staff</span><i style="width: 90px; background: #e8b95a"></i></div>
+            </div>
+            <div class="rep-entraron" id="rep-entraron"><span class="k-recurso-contador" id="rep-n">0</span><span class="k-recurso-etiqueta">entraron</span></div>
+          </div>
+          <div class="rep-cruce" id="rep-cruce">
+            <div class="rep-celdas" id="rep-celdas"></div>
+          </div>
+          <div class="rep-guardado" id="rep-guardado"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/star.svg)"></span><span class="k-recurso-etiqueta">Reporte guardado</span></div>
+          <div class="rep-embudo" id="rep-embudo">
+            <div class="rep-etapa" id="rep-e0" style="width: 1100px"><span class="k-recurso-etiqueta">Enviadas</span><span class="k-recurso-contador" id="rep-en0">0</span></div>
+            <div class="rep-etapa" id="rep-e1" style="width: 960px"><span class="k-recurso-etiqueta">Llegaron</span><span class="k-recurso-contador" id="rep-en1">0</span></div>
+            <div class="rep-etapa" id="rep-e2" style="width: 780px"><span class="k-recurso-etiqueta">Leídas</span><span class="k-recurso-contador" id="rep-en2">0</span></div>
+            <div class="rep-etapa" id="rep-e3" style="width: 560px; background: rgba(232,185,90,0.2); box-shadow: inset 0 0 0 2px rgba(232,185,90,0.8)"><span class="k-recurso-etiqueta">Tocaron un botón</span><span class="k-recurso-contador" id="rep-en3">0</span></div>
+          </div>
+        </div>
+        <span class="k-datos-ejemplo k-recurso-datos" id="rep-datos" style="opacity: 0">Datos de ejemplo</span>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          // Barras por día: una curva que sube con dos picos (siempre la misma).
+          const alturas = [12, 16, 14, 22, 30, 26, 38, 44, 40, 58, 66, 61, 82, 100];
+          const barras = $('rep-barras');
+          alturas.forEach((h, i) => { const b = document.createElement('span'); b.className = 'k-recurso-barra' + (i === alturas.length - 1 ? ' k-oro' : ''); b.id = `rep-b-${i}`; b.style.height = `${h}%`; barras.appendChild(b); });
+          // La tabla cruzada: 4 filas (de dónde vienen) × 5 columnas (rol), intensidades fijas.
+          const filas = ['Tu ciudad', 'La región', 'Otra región', 'Fuera del país'];
+          const cols = ['Pastor', 'Líder', 'Servidor', 'Miembro', 'Visitante'];
+          const intens = [[0.9, 0.7, 0.5, 0.8, 0.6], [0.6, 0.8, 0.4, 0.5, 0.3], [0.4, 0.5, 0.3, 0.3, 0.2], [0.2, 0.3, 0.15, 0.1, 0.12]];
+          const celdas = $('rep-celdas');
+          const cruce = $('rep-cruce');
+          intens.forEach((fila, r) => fila.forEach((v, c) => { const i = document.createElement('i'); i.id = `rep-x-${r}-${c}`; i.dataset.v = v; celdas.appendChild(i); }));
+          filas.forEach((f, r) => { const e = document.createElement('span'); e.className = 'k-recurso-etiqueta rep-fila-rot'; e.id = `rep-fr-${r}`; e.textContent = f; e.style.top = `${70 + r * 100 + 26}px`; cruce.appendChild(e); });
+          cols.forEach((c, k) => { const e = document.createElement('span'); e.className = 'k-recurso-etiqueta rep-col-rot'; e.id = `rep-cr-${k}`; e.textContent = c; e.style.left = `${230 + k * 150}px`; cruce.appendChild(e); });
+          // «Rep-col-rot» va arriba de las celdas (top 20); ajusto las celdas para dejar su renglón.
+          const textoG = partir($('rep-g'), 'rep-gp');
+          const textos = [1, 2, 3].map((i) => partir($(`rep-t${i}`), `rep-t${i}p`));
+          const contador = (tl, id, de, a, t, d) => {
+            const o = { n: de };
+            tl.fromTo(o, { n: de }, { n: a, duration: d, ease: 'power2.out', immediateRender: false, onUpdate: () => { $(id).textContent = Math.round(o.n).toLocaleString('es-CO'); } }, t);
+          };
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            // Frase 0: «medir» en grande.
+            textoG.forEach((c, j) => tl.fromTo(c, { y: 40, opacity: 0, filter: 'blur(8px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.45, ease: 'power3.out' }, Math.max(0, F[0].inicio - 0.08 + j * 0.14)));
+            tl.to('#rep-gigante', { y: -40, opacity: 0, filter: 'blur(8px)', duration: 0.35, ease: 'power2.in' }, F[1].inicio - 0.35);
+            [1, 2, 3].forEach((n, i) => {
+              const f = F[n];
+              textos[i].forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.14)));
+              const sale = F[n + 1] ? F[n + 1].inicio - 0.3 : T.salida(0.6);
+              tl.to(`#rep-t${n}`, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+            // Frase 1: el tablero.
+            const t1 = T.pulso(F[1].inicio);
+            tl.fromTo('#rep-datos', { opacity: 0 }, { opacity: 1, duration: 0.3 }, t1);
+            tl.fromTo('#rep-dias', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, t1);
+            const tDia = cuando(F[1], 'dia', F[1].inicio + 1.5) - 0.3;
+            tl.fromTo('#rep-barras .k-recurso-barra', { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: 'power3.out', stagger: 0.07 }, tDia);
+            const tCam = T.pulso(cuando(F[1], 'camino', F[1].inicio + 3) - 0.2);
+            tl.fromTo('#rep-camino', { x: 30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }, tCam);
+            tl.fromTo('#rep-camino i', { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power3.out', stagger: 0.1 }, tCam + 0.2);
+            const tTipo = T.pulso(cuando(F[1], 'tipo', F[1].inicio + 4.5) - 0.2);
+            tl.fromTo('#rep-tipo', { x: 30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }, tTipo);
+            tl.fromTo('#rep-tipo i', { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power3.out', stagger: 0.1 }, tTipo + 0.2);
+            const tEnt = T.pulso(cuando(F[1], 'entraron', F[1].fin - 0.8) - 0.2);
+            tl.fromTo('#rep-entraron', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, tEnt);
+            contador(tl, 'rep-n', 0, 6480, tEnt, 1.2);
+            // Frase 2: la tabla cruzada, celda a celda en pulsos; luego «Reporte guardado».
+            const t2 = T.pulso(F[2].inicio - 0.3);
+            tl.to(['#rep-dias', '#rep-lado'], { opacity: 0, y: -24, duration: 0.4, ease: 'power2.in' }, t2);
+            tl.fromTo('#rep-cruce', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, t2 + 0.3);
+            const tc = T.reparto(5, t2 + 0.8, cuando(F[2], 'guardar', F[2].fin - 1.5));
+            intens.forEach((fila, r) => fila.forEach((v, c) => tl.fromTo(`#rep-x-${r}-${c}`, { opacity: 0, scale: 0.6 }, { opacity: v, scale: 1, duration: 0.35, ease: 'back.out(1.8)' }, tc[c] + r * 0.06)));
+            const tg = T.pulso(cuando(F[2], 'guardar', F[2].fin - 1.5) - 0.1);
+            tl.fromTo('#rep-guardado', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'back.out(1.8)' }, tg);
+            for (let k = 0; k < 2; k++) tl.fromTo('#rep-guardado', { scale: 1.06 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, tg + 0.5 + k * 0.5);
+            // Frase 3: el embudo de los envíos.
+            const t3 = T.pulso(F[3].inicio - 0.3);
+            tl.to(['#rep-cruce', '#rep-guardado'], { opacity: 0, y: -24, duration: 0.4, ease: 'power2.in' }, t3);
+            tl.set('#rep-embudo', { opacity: 1 }, t3 + 0.3);
+            const te = [t3 + 0.4, T.pulso(cuando(F[3], 'llego', F[3].inicio + 2)), T.pulso(cuando(F[3], 'leyeron', F[3].inicio + 3)), T.pulso(cuando(F[3], 'boton', F[3].fin - 0.6) - 0.2)];
+            const valores = [6920, 6710, 5980, 2430];
+            te.forEach((t, i) => {
+              tl.fromTo(`#rep-e${i}`, { scaleX: 0.6, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.5, ease: 'power3.out' }, t);
+              contador(tl, `rep-en${i}`, 0, valores[i], t + 0.1, 0.8);
+            });
+            tl.to(['#rep-tablero', '#rep-datos'], { opacity: 0, y: -20, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['reportes'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":12,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":6.5,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":7.1,\"fin\":9.3,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- El acompañamiento: «Tu iglesia» y «Kingdom» como dos nodos unidos por una línea con el apretón de manos en el centro; por la línea
+         viajan el evento, el WhatsApp y la ruta (los procesos); y «Escríbenos» con el globo del chat antes del cierre. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .aco-arriba { position: absolute; left: 192px; top: 150px; width: 1536px; height: 130px; display: grid; justify-items: center; }
+        .aco-arriba .k-recurso-titular { grid-area: 1 / 1; width: 1536px; text-align: center; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .aco-escena { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .aco-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .aco-n { position: absolute; top: 600px; width: 340px; margin: -100px 0 0 -170px; display: flex; flex-direction: column; align-items: center; gap: 22px; opacity: 0; }
+        .aco-n .k-recurso-nodo { position: relative; margin: 0; width: 200px; height: 200px; }
+        .aco-n .k-recurso-icono { --k-icono-tam: 96px; }
+        .aco-n .k-recurso-etiqueta { color: var(--k-noche-tinta); font-size: 36px; }
+        .aco-mano { position: absolute; left: 960px; top: 600px; width: 130px; height: 130px; margin: -65px 0 0 -65px; opacity: 0; }
+        .aco-mano .k-recurso-icono { --k-icono-tam: 64px; }
+        .aco-viaje { position: absolute; left: 1430px; top: 600px; width: 48px; height: 48px; margin: -24px 0 0 -24px; color: var(--k-noche-dorado); opacity: 0; }
+        .aco-viaje .k-recurso-icono { --k-icono-tam: 48px; }
+        .aco-escribe { position: absolute; left: 192px; top: 820px; width: 1536px; display: flex; justify-content: center; align-items: center; gap: 22px; opacity: 0; }
+        .aco-escribe .k-recurso-icono { --k-icono-tam: 60px; color: var(--k-noche-dorado); }
+        .aco-escribe .k-recurso-frase { font-size: 64px; }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="acompanamiento" data-width="1920" data-height="1080" data-duration="12">
+        <div class="aco-arriba" id="aco-arriba" data-layout-allow-overlap>
+          <div class="k-recurso-titular" id="aco-t0">No lo haces <em>solo</em></div>
+        </div>
+        <div class="aco-escena" id="aco-escena" data-layout-allow-overlap>
+          <svg class="aco-svg" viewBox="0 0 1920 1080"><line class="k-recurso-linea k-oro" id="aco-linea" x1="590" y1="600" x2="1330" y2="600" style="stroke-dasharray: 740; stroke-dashoffset: 740" /></svg>
+          <div class="aco-n" id="aco-n0" style="left: 490px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/church.svg)"></span></div><span class="k-recurso-etiqueta">Tu iglesia</span></div>
+          <div class="aco-n" id="aco-n1" style="left: 1430px"><div class="k-recurso-nodo k-oro"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/support_agent.svg)"></span></div><span class="k-recurso-etiqueta">Kingdom</span></div>
+          <div class="k-recurso-nodo k-oro aco-mano" id="aco-mano"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/handshake.svg)"></span></div>
+          <div class="aco-viaje" id="aco-v0"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/stadium.svg)"></span></div>
+          <div class="aco-viaje" id="aco-v1"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/chat.svg)"></span></div>
+          <div class="aco-viaje" id="aco-v2"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/route.svg)"></span></div>
+          <div class="aco-escribe" id="aco-escribe"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/chat_bubble.svg)"></span><span class="k-recurso-frase" id="aco-t1"><em>Escríbenos</em> y lo preparamos contigo</span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          const t0p = partir($('aco-t0'), 'aco-t0p');
+          const t1p = partir($('aco-t1'), 'aco-t1p');
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const [f0, f1] = T.frases;
+            t0p.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f0.inicio - 0.08 + j * 0.16)));
+            // Los dos nodos, la línea y el apretón de manos en «acompañamos».
+            tl.fromTo('#aco-n0', { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, T.pulso(f0.inicio + 0.5));
+            const tAc = T.pulso(cuando(f0, 'acompa', f0.inicio + 1.5) - 0.3);
+            tl.fromTo('#aco-n1', { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, tAc - 0.5);
+            tl.to('#aco-linea', { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' }, tAc);
+            tl.fromTo('#aco-mano', { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2.2)' }, tAc + 0.5);
+            // Los procesos viajan de Kingdom a la iglesia, uno por pulso (el último en «evento»).
+            const tv = T.reparto(3, tAc + 1, cuando(f0, 'evento', f0.fin - 0.8));
+            [0, 1, 2].forEach((i) => {
+              tl.fromTo(`#aco-v${i}`, { x: 0, y: -70, opacity: 0 }, { opacity: 1, duration: 0.2 }, tv[i]);
+              tl.to(`#aco-v${i}`, { x: -940, duration: 1.4, ease: 'power2.inOut' }, tv[i] + 0.1);
+              tl.to(`#aco-v${i}`, { opacity: 0, duration: 0.2 }, tv[i] + 1.4);
+              tl.fromTo('#aco-n0', { scale: 1.05 }, { scale: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, tv[i] + 1.5);
+            });
+            // Frase 1: «Escríbenos».
+            tl.fromTo('#aco-escribe', { opacity: 0 }, { opacity: 1, duration: 0.2 }, f1.inicio - 0.2);
+            t1p.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f1.inicio - 0.08 + j * 0.14)));
+            for (let k = 0; k < 3; k++) tl.fromTo('#aco-mano', { scale: 1.08 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(f1.fin) + k * 0.5);
+            tl.to(['#aco-escena', '#aco-arriba'], { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['acompanamiento'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

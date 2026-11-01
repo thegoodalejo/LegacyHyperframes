@@ -1,0 +1,143 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":16,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":5,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":5.6,\"fin\":11,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":11.6,\"fin\":14.4,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Testimonios en el evento: el escáner recorre la manilla; aparecen la persona y el evento ya puestos; las tres etapas (antes, durante
+         y después) se encienden en una línea, cada una en su palabra; y la firma se dibuja sobre su renglón hasta el visto. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .tes-arriba { position: absolute; left: 192px; top: 120px; width: 1536px; height: 120px; display: grid; justify-items: center; }
+        .tes-arriba .k-recurso-titular { grid-area: 1 / 1; width: 1536px; text-align: center; font-size: 84px; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .tes-escena { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .tes-banda { position: absolute; left: 240px; top: 512px; width: 340px; height: 96px; border-radius: 48px; background: #0c1a3a; box-shadow: inset 0 0 0 3px rgba(232, 185, 90, 0.8); display: flex; align-items: center; justify-content: center; gap: 4px; overflow: hidden; opacity: 0; }
+        .tes-banda i { display: block; width: 6px; height: 50px; border-radius: 2px; background: var(--k-noche-tinta); }
+        .tes-banda i.f { width: 3px; }
+        .tes-luz { position: absolute; left: 0; top: 0; width: 12px; height: 96px; background: rgba(38, 166, 154, 0.9); box-shadow: 0 0 24px 6px rgba(38, 166, 154, 0.6); }
+        .tes-chips { position: absolute; left: 240px; top: 650px; width: 380px; display: flex; flex-direction: column; gap: 16px; }
+        .tes-chip { display: flex; align-items: center; gap: 14px; padding: 12px 22px; border-radius: 999px; background: rgba(12, 26, 58, 0.9); box-shadow: inset 0 0 0 2px rgba(234, 240, 255, 0.2); opacity: 0; width: max-content; }
+        .tes-chip .k-recurso-icono { --k-icono-tam: 34px; }
+        .tes-chip .k-recurso-etiqueta { color: var(--k-noche-tinta); }
+        .tes-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .tes-etapa { position: absolute; top: 560px; width: 280px; margin: -70px 0 0 -140px; display: flex; flex-direction: column; align-items: center; gap: 20px; opacity: 0; }
+        .tes-etapa .k-recurso-nodo { position: relative; margin: 0; width: 140px; height: 140px; }
+        .tes-etapa .k-recurso-icono { --k-icono-tam: 64px; }
+        .tes-etapa .k-recurso-etiqueta { color: var(--k-noche-tinta); font-size: 34px; }
+        .tes-firma { position: absolute; left: 760px; top: 760px; width: 760px; height: 170px; opacity: 0; }
+        .tes-firma svg { width: 760px; height: 170px; overflow: visible; }
+        .tes-firma .k-recurso-etiqueta { position: absolute; left: 0; top: 136px; }
+        .tes-visto { position: absolute; left: 1570px; top: 790px; width: 96px; height: 96px; color: #26a69a; opacity: 0; }
+        .tes-visto .k-recurso-icono { --k-icono-tam: 96px; }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="testimonios" data-width="1920" data-height="1080" data-duration="16">
+        <div class="tes-arriba" id="tes-arriba" data-layout-allow-overlap>
+          <div class="k-recurso-titular" id="tes-t0">Lo que <em>Dios hizo</em>, en el evento</div>
+          <div class="k-recurso-titular" id="tes-t1">Antes, durante <em>y después</em></div>
+          <div class="k-recurso-titular" id="tes-t2">Con su <em>firma</em></div>
+        </div>
+        <div class="tes-escena" id="tes-escena" data-layout-allow-overlap>
+          <svg class="tes-svg" viewBox="0 0 1920 1080">
+            <line class="k-recurso-linea" id="tes-l0" x1="830" y1="560" x2="1050" y2="560" style="stroke-dasharray: 220; stroke-dashoffset: 220" />
+            <line class="k-recurso-linea" id="tes-l1" x1="1190" y1="560" x2="1410" y2="560" style="stroke-dasharray: 220; stroke-dashoffset: 220" />
+          </svg>
+          <div class="tes-banda" id="tes-banda"><span class="tes-luz" id="tes-luz"></span></div>
+          <div class="tes-chips" id="tes-chips">
+            <span class="tes-chip" id="tes-c0"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/person.svg)"></span><span class="k-recurso-etiqueta">La persona</span></span>
+            <span class="tes-chip" id="tes-c1"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/event.svg)"></span><span class="k-recurso-etiqueta">El evento</span></span>
+          </div>
+          <div class="tes-etapa" id="tes-e0" style="left: 760px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/schedule.svg)"></span></div><span class="k-recurso-etiqueta">Antes</span></div>
+          <div class="tes-etapa" id="tes-e1" style="left: 1120px"><div class="k-recurso-nodo"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/favorite.svg)"></span></div><span class="k-recurso-etiqueta">Durante</span></div>
+          <div class="tes-etapa" id="tes-e2" style="left: 1480px"><div class="k-recurso-nodo k-oro"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/star.svg)"></span></div><span class="k-recurso-etiqueta">Después</span></div>
+          <div class="tes-firma" id="tes-firma">
+            <svg viewBox="0 0 760 170">
+              <line x1="0" y1="124" x2="760" y2="124" stroke="rgba(234,240,255,0.25)" stroke-width="2" />
+              <path id="tes-trazo" d="M 40 110 C 70 30, 110 30, 100 100 C 95 140, 150 60, 180 70 C 210 80, 190 120, 230 104 C 270 88, 280 40, 300 60 C 320 80, 300 120, 340 108 C 380 96, 400 50, 430 66 C 460 82, 440 118, 480 104 C 520 90, 560 70, 600 86 C 630 98, 660 92, 700 76" fill="none" stroke="#e8b95a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray: 1100; stroke-dashoffset: 1100" />
+            </svg>
+            <span class="k-recurso-etiqueta">Firma</span>
+          </div>
+          <div class="tes-visto" id="tes-visto"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          let s = 6007;
+          const azar = () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const banda = $('tes-banda');
+          for (let k = 0; k < 26; k++) { const i = document.createElement('i'); i.id = `tes-bar-${k}`; if (azar() < 0.45) i.className = 'f'; banda.appendChild(i); }
+          const textos = [0, 1, 2].map((i) => partir($(`tes-t${i}`), `tes-t${i}p`));
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            textos.forEach((ps, i) => {
+              const f = F[i];
+              ps.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.14)));
+              const sale = F[i + 1] ? F[i + 1].inicio - 0.3 : T.salida(0.6);
+              tl.to(`#tes-t${i}`, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+            // Frase 0: la manilla y el escáner que la recorre en la palabra «manilla».
+            tl.fromTo('#tes-banda', { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, T.pulso(F[0].inicio + 1));
+            const te = T.pulso(cuando(F[0], 'escanea', F[0].fin - 1.5) - 0.1);
+            tl.fromTo('#tes-luz', { x: -20, opacity: 0 }, { x: 340, opacity: 1, duration: 0.8, ease: 'power1.inOut' }, te);
+            tl.to('#tes-luz', { opacity: 0, duration: 0.2 }, te + 0.8);
+            tl.to('#tes-banda', { boxShadow: 'inset 0 0 0 3px rgba(38,166,154,0.9)', duration: 0.3 }, te + 0.8);
+            // Frase 1: la persona y el evento ya puestos; las tres etapas en sus palabras.
+            const t1 = T.pulso(F[1].inicio);
+            tl.fromTo('#tes-c0', { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, t1);
+            tl.fromTo('#tes-c1', { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, t1 + 0.5);
+            const tEt = [cuando(F[1], 'antes', F[1].fin - 2.2), cuando(F[1], 'durante', F[1].fin - 1.4), cuando(F[1], 'despues', F[1].fin - 0.6)];
+            tEt.forEach((t, i) => {
+              tl.fromTo(`#tes-e${i}`, { y: 30, opacity: 0, scale: 0.85 }, { y: 0, opacity: 0.3, scale: 0.92, duration: 0.45, ease: 'power3.out' }, t1 + 0.3 + i * 0.25);
+              tl.to(`#tes-e${i}`, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.8)' }, t - 0.12);
+              if (i > 0) tl.to(`#tes-l${i - 1}`, { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, t - 0.3);
+            });
+            for (let k = 0; k < 2; k++) tl.fromTo('#tes-e2', { scale: 1.06 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(F[1].fin) + k * 0.5);
+            // Frase 2: la firma se dibuja hasta el visto (en el pulso de «firma»).
+            const tP = cuando(F[2], 'persona', F[2].inicio + 0.6) - 0.1;
+            const tF = T.pulso(cuando(F[2], 'firma', F[2].inicio + 1.2) + 1.0);
+            tl.fromTo('#tes-firma', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, tP - 0.3);
+            tl.to('#tes-trazo', { strokeDashoffset: 0, duration: Math.max(0.6, tF - tP - 0.1), ease: 'power1.inOut' }, tP);
+            tl.fromTo('#tes-visto', { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2.4)' }, tF);
+            tl.to('#tes-escena', { opacity: 0, y: -20, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['testimonios'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

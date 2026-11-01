@@ -1,0 +1,232 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":32,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":6,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":6.6,\"fin\":14,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":14.6,\"fin\":18.5,\"palabras\":[]},{\"texto\":\"d\",\"inicio\":19.1,\"fin\":26,\"palabras\":[]},{\"texto\":\"e\",\"inicio\":26.6,\"fin\":31,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Plantillas, campañas, horario y automatizaciones como cuatro estaciones en una pista que la cámara recorre de izquierda a derecha,
+         una por frase; al final, los tres verbos (invita, confirma, da seguimiento) en grande. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .cam-arriba { position: absolute; left: 192px; top: 120px; width: 1536px; height: 120px; display: grid; justify-items: center; }
+        .cam-arriba .k-recurso-titular { grid-area: 1 / 1; width: 1536px; text-align: center; font-size: 84px; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .cam-ventana { position: absolute; left: 192px; top: 280px; width: 1536px; height: 660px; overflow: hidden; }
+        .cam-pista { position: absolute; left: 0; top: 0; width: 6144px; height: 660px; }
+        .cam-est { position: absolute; top: 0; width: 1536px; height: 660px; }
+        /* 1. Plantilla */
+        .cam-plantilla { position: absolute; left: 368px; top: 60px; width: 800px; height: 440px; padding: 44px 50px; display: flex; flex-direction: column; gap: 22px; opacity: 0; }
+        .cam-renglon { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .cam-raya { display: inline-block; height: 18px; border-radius: 9px; background: rgba(234, 240, 255, 0.24); }
+        .cam-dato { padding: 6px 18px; border-radius: 999px; background: rgba(232, 185, 90, 0.16); box-shadow: inset 0 0 0 2px rgba(232, 185, 90, 0.7); color: var(--k-noche-dorado); font-size: 28px; font-weight: 600; opacity: 0; }
+        .cam-botones { display: flex; gap: 18px; margin-top: 14px; }
+        .cam-boton { padding: 14px 26px; border-radius: 999px; box-shadow: inset 0 0 0 2px rgba(53, 118, 218, 0.9); color: var(--k-noche-tinta); font-size: 28px; font-weight: 600; opacity: 0; }
+        .cam-sello { position: absolute; left: 1060px; top: 30px; display: flex; align-items: center; gap: 12px; padding: 12px 22px; border-radius: 999px; background: rgba(12, 26, 58, 0.95); box-shadow: inset 0 0 0 2px rgba(38, 166, 154, 0.9); opacity: 0; }
+        .cam-sello .k-recurso-icono { --k-icono-tam: 34px; color: #26a69a; }
+        .cam-sello .k-recurso-etiqueta { color: var(--k-noche-tinta); font-size: 28px; }
+        /* 2. Público */
+        .cam-grupo { position: absolute; top: 80px; width: 360px; height: 300px; opacity: 0; }
+        .cam-grupo .k-recurso-etiqueta { position: absolute; left: 0; top: 250px; width: 360px; text-align: center; color: var(--k-noche-tinta); }
+        .cam-envio { position: absolute; left: 768px; top: 520px; width: 130px; height: 130px; margin: -65px 0 0 -65px; opacity: 0; }
+        .cam-envio .k-recurso-icono { --k-icono-tam: 60px; }
+        .cam-cuando { position: absolute; top: 494px; display: flex; gap: 16px; opacity: 0; }
+        .cam-cuando span { padding: 10px 22px; border-radius: 999px; box-shadow: inset 0 0 0 2px rgba(234, 240, 255, 0.3); }
+        .cam-svg { position: absolute; left: 0; top: 0; width: 1536px; height: 660px; overflow: visible; }
+        /* 3. Horario */
+        .cam-reloj { position: absolute; left: 518px; top: 80px; width: 500px; height: 500px; }
+        .cam-reloj svg { width: 500px; height: 500px; overflow: visible; }
+        .cam-hora { position: absolute; font-family: var(--k-fuente-marca); font-size: 44px; font-weight: 600; color: var(--k-noche-dorado); opacity: 0; }
+        .cam-media { position: absolute; left: 190px; top: -50px; width: 120px; text-align: center; color: var(--k-noche-tinta-2); opacity: 0; }
+        .cam-reloj .k-recurso-etiqueta.centro { position: absolute; left: 0; top: 300px; width: 500px; text-align: center; opacity: 0; }
+        .cam-aguja { position: absolute; left: 248px; top: 60px; width: 4px; height: 190px; border-radius: 2px; background: var(--k-noche-tinta); transform-origin: 50% 100%; opacity: 0; }
+        /* 4. Automatizaciones */
+        .cam-auto { position: absolute; left: 268px; width: 1000px; height: 150px; padding: 0 40px; display: flex; align-items: center; gap: 30px; opacity: 0; }
+        .cam-auto .k-recurso-icono { --k-icono-tam: 56px; }
+        .cam-auto .k-recurso-texto { flex: 1; color: var(--k-noche-tinta); }
+        .cam-auto .cam-flecha { color: var(--k-noche-dorado); }
+        /* Final */
+        .cam-verbos { position: absolute; left: 192px; top: 300px; width: 1536px; height: 600px; display: flex; align-items: center; justify-content: center; gap: 60px; }
+        .cam-verbo { display: flex; flex-direction: column; align-items: center; gap: 24px; opacity: 0; }
+        .cam-verbo .k-recurso-icono { --k-icono-tam: 96px; }
+        .cam-verbo .k-recurso-titular { text-align: center; }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="campanas" data-width="1920" data-height="1080" data-duration="32">
+        <div class="cam-arriba" id="cam-arriba" data-layout-allow-overlap>
+          <div class="k-recurso-titular" id="cam-t0">Las <em>plantillas</em></div>
+          <div class="k-recurso-titular" id="cam-t1">Una <em>campaña</em>, a quien la necesita</div>
+          <div class="k-recurso-titular" id="cam-t2">Dentro del <em>horario de envío</em></div>
+          <div class="k-recurso-titular" id="cam-t3">Las <em>automatizaciones</em></div>
+          <div class="k-recurso-titular" id="cam-t4">A escala, <em>sin perder a nadie</em></div>
+        </div>
+        <div class="cam-ventana" id="cam-ventana" data-layout-allow-overlap>
+          <div class="cam-pista" id="cam-pista" data-layout-allow-overflow>
+            <div class="cam-est" style="left: 0px">
+              <div class="k-recurso-tarjeta cam-plantilla" id="cam-plantilla">
+                <div class="cam-renglon"><span class="cam-raya" style="width: 120px"></span><span class="cam-dato" id="cam-d0">{nombre}</span><span class="cam-raya" style="width: 260px"></span></div>
+                <div class="cam-renglon"><span class="cam-raya" style="width: 200px"></span><span class="cam-dato" id="cam-d1">{evento}</span><span class="cam-raya" style="width: 180px"></span></div>
+                <div class="cam-renglon"><span class="cam-raya" style="width: 340px"></span><span class="cam-dato" id="cam-d2">{fecha}</span></div>
+                <div class="cam-botones"><span class="cam-boton" id="cam-b0">Confirmo asistencia</span><span class="cam-boton" id="cam-b1">No podré ir</span></div>
+              </div>
+              <div class="cam-sello" id="cam-sello"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/verified.svg)"></span><span class="k-recurso-etiqueta">Aprobada por WhatsApp</span></div>
+            </div>
+            <div class="cam-est" id="cam-est2" style="left: 1536px">
+              <svg class="cam-svg" viewBox="0 0 1536 660">
+                <path class="k-recurso-linea" id="cam-v0" d="M 180 380 C 180 470 600 520 700 520" style="stroke-dasharray: 600; stroke-dashoffset: 600" />
+                <path class="k-recurso-linea" id="cam-v1" d="M 768 380 L 768 455" style="stroke-dasharray: 80; stroke-dashoffset: 80" />
+                <path class="k-recurso-linea" id="cam-v2" d="M 1356 380 C 1356 470 936 520 836 520" style="stroke-dasharray: 600; stroke-dashoffset: 600" />
+              </svg>
+              <div class="cam-grupo" id="cam-g0" style="left: 0"><span class="k-recurso-etiqueta">Una red</span></div>
+              <div class="cam-grupo" id="cam-g1" style="left: 588px"><span class="k-recurso-etiqueta">Con una etiqueta</span></div>
+              <div class="cam-grupo" id="cam-g2" style="left: 1176px"><span class="k-recurso-etiqueta">Inscritos de un evento</span></div>
+              <div class="k-recurso-nodo k-oro cam-envio" id="cam-envio"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/send.svg)"></span></div>
+              <div class="cam-cuando" id="cam-c0" style="left: 880px"><span class="k-recurso-etiqueta">Ahora</span><span class="k-recurso-etiqueta">Programada</span></div>
+            </div>
+            <div class="cam-est" style="left: 3072px">
+              <div class="cam-reloj" id="cam-reloj">
+                <svg viewBox="0 0 500 500">
+                  <circle cx="250" cy="250" r="200" fill="none" stroke="rgba(234,240,255,0.14)" stroke-width="20" />
+                  <circle id="cam-franja" cx="250" cy="250" r="200" fill="none" stroke="#e8b95a" stroke-width="20" stroke-linecap="round" transform="rotate(15 250 250)" style="stroke-dasharray: 733 1257; stroke-dashoffset: 733" />
+                  <circle id="cam-medianoche" cx="250" cy="50" r="12" fill="rgba(169,182,214,0.6)" opacity="0" />
+                </svg>
+                <span class="k-recurso-etiqueta cam-media" id="cam-media">00:00</span>
+                <span class="cam-hora" id="cam-h0" style="left: 478px; top: 282px">07:00</span>
+                <span class="cam-hora" id="cam-h1" style="left: -70px; top: 70px">21:00</span>
+                <span class="cam-aguja" id="cam-aguja"></span>
+                <span class="k-recurso-etiqueta centro" id="cam-centro">Horario de envío</span>
+              </div>
+            </div>
+            <div class="cam-est" style="left: 4608px">
+              <div class="k-recurso-tarjeta cam-auto" id="cam-a0" style="top: 40px"><span class="k-recurso-icono k-recurso-icono-oro" style="--k-icono: url(identidad/iconos/person_add.svg)"></span><span class="k-recurso-texto">Llega alguien nuevo</span><span class="k-recurso-icono cam-flecha" style="--k-icono: url(identidad/iconos/send.svg)"></span></div>
+              <div class="k-recurso-tarjeta cam-auto" id="cam-a1" style="top: 230px"><span class="k-recurso-icono k-recurso-icono-oro" style="--k-icono: url(identidad/iconos/calendar_today.svg)"></span><span class="k-recurso-texto">Un día antes de cada reunión</span><span class="k-recurso-icono cam-flecha" style="--k-icono: url(identidad/iconos/send.svg)"></span></div>
+              <div class="k-recurso-tarjeta cam-auto" id="cam-a2" style="top: 420px"><span class="k-recurso-icono k-recurso-icono-oro" style="--k-icono: url(identidad/iconos/celebration.svg)"></span><span class="k-recurso-texto">El día de su cumpleaños</span><span class="k-recurso-icono cam-flecha" style="--k-icono: url(identidad/iconos/send.svg)"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cam-verbos" id="cam-verbos" data-layout-allow-overlap>
+          <div class="cam-verbo" id="cam-x0"><span class="k-recurso-icono k-recurso-icono-oro" style="--k-icono: url(identidad/iconos/campaign.svg)"></span><span class="k-recurso-titular">Invita</span></div>
+          <div class="cam-verbo" id="cam-x1"><span class="k-recurso-icono k-recurso-icono-oro" style="--k-icono: url(identidad/iconos/event_available.svg)"></span><span class="k-recurso-titular">Confirma</span></div>
+          <div class="cam-verbo" id="cam-x2"><span class="k-recurso-icono k-recurso-icono-oro" style="--k-icono: url(identidad/iconos/route.svg)"></span><span class="k-recurso-titular">Da <em>seguimiento</em></span></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          let s = 1201;
+          const azar = () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          // Los tres públicos: grupos de puntos con semilla (azul, tinta y verde).
+          const tonos = ['k-azul', '', 'k-verde'];
+          const grupos = [0, 1, 2].map((g) => {
+            const cont = $(`cam-g${g}`);
+            const ps = [];
+            for (let i = 0; i < 16; i++) {
+              const a = azar() * Math.PI * 2;
+              const r = Math.sqrt(azar()) * 100;
+              const d = document.createElement('span');
+              d.className = `k-recurso-punto ${tonos[g]}`;
+              d.id = `cam-p-${g}-${i}`;
+              d.style.left = `${180 + Math.cos(a) * r}px`;
+              d.style.top = `${120 + Math.sin(a) * r}px`;
+              cont.appendChild(d);
+              ps.push(d);
+            }
+            return ps;
+          });
+          const textos = [0, 1, 2, 3, 4].map((i) => partir($(`cam-t${i}`), `cam-t${i}p`));
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            textos.forEach((ps, i) => {
+              const f = F[i];
+              ps.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.14)));
+              const sale = F[i + 1] ? F[i + 1].inicio - 0.3 : T.salida(0.6);
+              tl.to(`#cam-t${i}`, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+            // La cámara: una estación por frase (pasa en el pulso de cada frase).
+            [1, 2, 3].forEach((i) => tl.to('#cam-pista', { x: -1536 * i, duration: 0.9, ease: 'power3.inOut' }, T.pulso(F[i].inicio - 0.6)));
+            // 1. La plantilla: los datos y los botones aparecen en sus palabras; el sello de aprobada.
+            tl.fromTo('#cam-plantilla', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: 'power3.out' }, T.pulso(F[0].inicio + 0.3));
+            const tAp = T.pulso(cuando(F[0], 'aprobados', F[0].inicio + 2) - 0.2);
+            tl.fromTo('#cam-sello', { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2)' }, tAp);
+            const tDatos = Math.min(T.pulso(cuando(F[0], 'datos', F[0].fin - 2) - 0.2), T.pulso(F[0].inicio + 1.5));
+            [0, 1, 2].forEach((i) => tl.fromTo(`#cam-d${i}`, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, tDatos + i * 0.25));
+            const tBot = tDatos + 1;
+            [0, 1].forEach((i) => tl.fromTo(`#cam-b${i}`, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, tBot + i * 0.25));
+            // 2. El público: tres grupos en sus palabras; el envío; ahora o programada.
+            const tGr = [cuando(F[1], 'red', F[1].inicio + 2.5), cuando(F[1], 'etiqueta', F[1].inicio + 3.3), cuando(F[1], 'inscritos', F[1].inicio + 4.2)];
+            tGr.forEach((t, g) => {
+              const tPre = T.pulso(F[1].inicio) + g * 0.25;
+              tl.fromTo(`#cam-g${g}`, { opacity: 0 }, { opacity: 0.35, duration: 0.3 }, tPre);
+              tl.fromTo(grupos[g], { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2)', stagger: 0.02 }, tPre);
+              tl.to(`#cam-g${g}`, { opacity: 1, duration: 0.3 }, t - 0.2);
+              tl.fromTo(grupos[g], { scale: 1.5 }, { scale: 1, duration: 0.4, ease: 'power2.out', stagger: 0.01, immediateRender: false }, t - 0.15);
+              tl.to(`#cam-v${g}`, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }, t + 0.3);
+            });
+            tl.fromTo('#cam-envio', { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2)' }, tGr[2] + 0.6);
+            const tAh = T.pulso(cuando(F[1], 'ahora', F[1].fin - 1.5) - 0.2);
+            tl.fromTo('#cam-c0', { x: -16, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, tAh);
+            for (let k = 0; k < 2; k++) tl.fromTo('#cam-envio', { scale: 1.1 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, tAh + 0.5 + k * 0.5);
+            // 3. El horario: la franja dorada se dibuja, la aguja da la vuelta y la medianoche queda apagada.
+            const t2 = T.pulso(F[2].inicio);
+            tl.fromTo('#cam-centro', { opacity: 0 }, { opacity: 1, duration: 0.4 }, t2);
+            tl.to('#cam-franja', { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, t2 + 0.2);
+            tl.fromTo(['#cam-h0', '#cam-h1'], { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.3 }, t2 + 0.6);
+            tl.fromTo('#cam-aguja', { opacity: 0, rotation: 0 }, { opacity: 0.6, rotation: 0, duration: 0.3 }, t2 + 0.3);
+            const tMed = T.pulso(cuando(F[2], 'medianoche', F[2].fin - 1) - 0.4);
+            tl.to('#cam-medianoche', { attr: { opacity: 1 }, duration: 0.3 }, tMed);
+            tl.fromTo('#cam-media', { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, tMed);
+            tl.to('#cam-aguja', { rotation: 105, opacity: 1, duration: 1, ease: 'power2.inOut' }, tMed + 0.6);
+            for (let k = 0; k < 2; k++) tl.fromTo('#cam-reloj', { scale: 1.03 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, tMed + 0.5 + k * 0.5);
+            // 4. Las automatizaciones, una por momento nombrado; cada una «envía» con un latido de su flecha.
+            const tAu = [cuando(F[3], 'nuevo', F[3].inicio + 2.5), cuando(F[3], 'reunion', F[3].inicio + 4), cuando(F[3], 'cumple', F[3].fin - 1)];
+            tAu.forEach((t, i) => {
+              tl.fromTo(`#cam-a${i}`, { x: 60, opacity: 0 }, { x: 0, opacity: 0.35, duration: 0.5, ease: 'power3.out' }, T.pulso(F[3].inicio) + i * 0.25);
+              tl.to(`#cam-a${i}`, { opacity: 1, duration: 0.35 }, t - 0.4);
+              tl.fromTo(`#cam-a${i}`, { scale: 1.04 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, t - 0.4);
+              tl.fromTo(`#cam-a${i} .cam-flecha`, { x: 0 }, { x: 24, duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1, immediateRender: false }, T.pulso(t + 0.4));
+            });
+            // 5. Los tres verbos.
+            const t4 = T.pulso(F[4].inicio - 0.4);
+            tl.to('#cam-ventana', { opacity: 0, y: -20, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, t4);
+            const tV = [cuando(F[4], 'invita', F[4].inicio + 1), cuando(F[4], 'confirma', F[4].inicio + 1.7), cuando(F[4], 'seguimiento', F[4].inicio + 2.4) - 0.3];
+            tV.forEach((t, i) => tl.fromTo(`#cam-x${i}`, { y: 40, opacity: 0, filter: 'blur(8px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.5, ease: 'power3.out' }, t - 0.1));
+            tl.to('#cam-verbos', { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['campanas'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

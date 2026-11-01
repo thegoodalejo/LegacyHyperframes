@@ -1,0 +1,188 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":24,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":3,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":3.5,\"fin\":6,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":6.6,\"fin\":11,\"palabras\":[]},{\"texto\":\"d\",\"inicio\":11.6,\"fin\":16,\"palabras\":[]},{\"texto\":\"e\",\"inicio\":16.5,\"fin\":18.5,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Gancho: la ciudad (columnas de puntos que suben como edificios), las iglesias que se unen, la multitud que llena el estadio y el
+         punto dorado que se aleja: «¿Cómo no perder a nadie?». Todo con KRecurso.tiempos(). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .gan-arriba { position: absolute; left: 192px; top: 150px; width: 1536px; height: 240px; display: grid; justify-items: center; align-items: start; }
+        .gan-arriba .k-recurso-titular { grid-area: 1 / 1; width: 1536px; text-align: center; opacity: 0; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .gan-ciudad { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .gan-suelo { position: absolute; left: 192px; top: 930px; width: 1536px; height: 2px; background: rgba(234, 240, 255, 0.22); }
+        .gan-iglesia { position: absolute; width: 104px; height: 104px; margin: -52px 0 0 -52px; }
+        .gan-iglesia .k-recurso-icono { --k-icono-tam: 52px; }
+        .gan-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .gan-estadio { position: absolute; left: 560px; top: 420px; width: 800px; height: 420px; border-radius: 50%; box-shadow: inset 0 0 0 3px rgba(232, 185, 90, 0.55); opacity: 0; }
+        .gan-etiqueta { position: absolute; left: 192px; top: 960px; width: 1536px; text-align: center; opacity: 0; }
+        .gan-final { position: absolute; left: 192px; top: 0; width: 1536px; height: 1080px; display: flex; align-items: center; justify-content: center; }
+        .gan-final .k-recurso-gigante { width: 1536px; text-align: center; font-size: 150px; }
+        .gan-yo { width: 30px; height: 30px; margin: -15px 0 0 -15px; box-shadow: 0 0 0 10px rgba(232, 185, 90, 0.16); }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="gancho" data-width="1920" data-height="1080" data-duration="24">
+        <div class="gan-ciudad" id="gan-ciudad" data-layout-allow-overlap>
+          <svg class="gan-lineas" id="gan-lineas" viewBox="0 0 1920 1080"></svg>
+          <div class="gan-estadio" id="gan-estadio"></div>
+          <div class="gan-suelo" id="gan-suelo"></div>
+        </div>
+        <div class="gan-arriba" id="gan-arriba" data-layout-allow-overlap>
+          <div class="k-recurso-titular" id="gan-t0">Una <em>cruzada</em> en tu ciudad</div>
+          <div class="k-recurso-titular" id="gan-t1">Un congreso de <em>varias iglesias</em></div>
+          <div class="k-recurso-titular" id="gan-t2">Miles de personas, <em>durante meses</em></div>
+          <div class="k-recurso-titular" id="gan-t3">Llega el día y se <em>llena</em> el lugar</div>
+        </div>
+        <div class="k-recurso-etiqueta gan-etiqueta" id="gan-etiqueta">Muchas no son de tu iglesia</div>
+        <div class="gan-final" id="gan-final" data-layout-allow-overlap>
+          <div class="k-recurso-gigante" id="gan-pregunta">¿Cómo no perder a <em>nadie</em>?</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const NS = 'http://www.w3.org/2000/svg';
+          let s = 2391;
+          const azar = () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          const ciudad = $('gan-ciudad');
+          const punto = (x, y, clase, id) => {
+            const d = document.createElement('span');
+            d.className = `k-recurso-punto ${clase}`;
+            d.id = id;
+            d.style.left = `${x}px`;
+            d.style.top = `${y}px`;
+            ciudad.appendChild(d);
+            return d;
+          };
+
+          // 1. La ciudad: 26 columnas de puntos (edificios) sobre el suelo.
+          const columnas = [];
+          for (let c = 0; c < 26; c++) {
+            const x = 240 + c * 57.6;
+            const alto = 2 + Math.round(azar() * 7);
+            const col = [];
+            for (let k = 0; k < alto; k++) col.push(punto(x, 905 - k * 26, 'k-tenue', `gan-c-${c}-${k}`));
+            columnas.push(col);
+          }
+          // 2. Iglesias que se unen (5 nodos con el ícono) y sus líneas al centro.
+          const centro = { x: 960, y: 610 };
+          const posIg = [{ x: 420, y: 520 }, { x: 700, y: 760 }, { x: 1220, y: 760 }, { x: 1500, y: 520 }, { x: 960, y: 470 }];
+          const iglesias = posIg.map((p, i) => {
+            const n = document.createElement('div');
+            n.className = 'k-recurso-nodo gan-iglesia' + (i === 4 ? ' k-oro' : '');
+            n.id = `gan-ig-${i}`;
+            n.style.left = `${p.x}px`;
+            n.style.top = `${p.y}px`;
+            n.innerHTML = '<span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/church.svg)"></span>';
+            ciudad.appendChild(n);
+            return n;
+          });
+          const lineasIg = posIg.slice(0, 4).map((p, i) => {
+            const l = document.createElementNS(NS, 'line');
+            const d = Math.hypot(p.x - posIg[4].x, p.y - posIg[4].y);
+            l.setAttribute('class', 'k-recurso-linea');
+            l.setAttribute('id', `gan-l-${i}`);
+            l.setAttribute('x1', posIg[4].x); l.setAttribute('y1', posIg[4].y);
+            l.setAttribute('x2', p.x); l.setAttribute('y2', p.y);
+            l.style.strokeDasharray = `${d}`;
+            l.style.strokeDashoffset = `${d}`;
+            $('gan-lineas').appendChild(l);
+            return l;
+          });
+          // 3. La multitud: 220 puntos que llegan de los bordes y se acomodan dentro del estadio (elipse).
+          const multitud = [];
+          for (let i = 0; i < 220; i++) {
+            const a = azar() * Math.PI * 2;
+            const r = Math.sqrt(azar());
+            const fx = centro.x + Math.cos(a) * r * 370;
+            const fy = centro.y + 20 + Math.sin(a) * r * 185;
+            const borde = azar() * Math.PI * 2;
+            const ox = centro.x + Math.cos(borde) * 1150;
+            const oy = centro.y + Math.sin(borde) * 700;
+            const tono = azar() < 0.55 ? 'k-tenue' : 'k-azul';
+            multitud.push({ el: punto(ox, oy, tono, `gan-m-${i}`), dx: fx - ox, dy: fy - oy });
+          }
+          const yo = punto(centro.x + 40, centro.y + 40, 'k-oro gan-yo', 'gan-yo');
+
+          const titulos = [0, 1, 2, 3].map((i) => partir($(`gan-t${i}`), `gan-t${i}p`));
+          const pregunta = partir($('gan-pregunta'), 'gan-pp');
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const F = T.frases;
+            // Titulares: uno por frase, palabra a palabra con la voz; sale antes de la frase siguiente.
+            titulos.forEach((ps, i) => {
+              const f = F[i];
+              tl.set(`#gan-t${i}`, { opacity: 1 }, Math.max(0, f.inicio - 0.1));
+              ps.forEach((c, j) => tl.fromTo(c, { y: 30, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, Math.max(0, f.inicio - 0.08 + j * 0.16)));
+              tl.to(`#gan-t${i}`, { y: -26, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, F[i + 1].inicio - 0.3);
+            });
+
+            // Frase 0: el suelo se dibuja y la ciudad sube en pulsos, columna a columna.
+            tl.fromTo('#gan-suelo', { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power3.out' }, T.pulso(F[0].inicio));
+            const tCols = T.reparto(columnas.length, F[0].inicio + 0.5, F[0].fin + 0.5);
+            columnas.forEach((col, c) => col.forEach((d, k) => tl.fromTo(d, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2)' }, tCols[c] + k * 0.04)));
+            // Frase 1: las iglesias aparecen y se unen al centro.
+            const tIg = T.reparto(5, F[1].inicio, F[1].fin);
+            iglesias.forEach((n, i) => tl.fromTo(n, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2)' }, tIg[i]));
+            lineasIg.forEach((l, i) => tl.to(l, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' }, T.pulso(F[1].fin - 0.6) + i * 0.08));
+            // Frase 2: la ciudad baja de tono, las iglesias se retiran y la multitud llega desde los bordes.
+            const t2 = T.pulso(F[2].inicio);
+            tl.to(columnas.flat(), { opacity: 0.25, duration: 0.6 }, t2);
+            tl.to([...iglesias, ...lineasIg], { opacity: 0, scale: 0.8, duration: 0.5, ease: 'power2.in' }, t2);
+            multitud.forEach((m, i) => tl.fromTo(m.el, { x: 0, y: 0, opacity: 0 }, { x: m.dx, y: m.dy, opacity: 1, duration: 1.6, ease: 'power3.out' }, t2 + 0.3 + (i % 40) * 0.07));
+            tl.fromTo('#gan-etiqueta', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }, T.pulso(F[2].inicio + (F[2].fin - F[2].inicio) * 0.55));
+            tl.to('#gan-etiqueta', { opacity: 0, duration: 0.3 }, F[3].inicio - 0.3);
+            // Frase 3: el estadio se cierra alrededor de la multitud y late en cuatro pulsos.
+            const t3 = T.pulso(F[3].inicio);
+            tl.fromTo('#gan-estadio', { scale: 1.25, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.9, ease: 'power3.out' }, t3);
+            tl.fromTo(yo, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2.4)' }, t3 + 1);
+            for (let k = 0; k < 4; k++) tl.fromTo('#gan-ciudad', { scale: 1.02 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, t3 + 1.5 + k * 0.5);
+            // Frase 4: todo se apaga y el punto dorado se aleja de la multitud; la pregunta golpea en el pulso.
+            const t4 = T.pulso(F[4].inicio - 0.5);
+            tl.to([...multitud.map((m) => m.el), '#gan-estadio', '#gan-suelo', ...columnas.flat()], { opacity: 0.12, duration: 0.5, ease: 'power2.out' }, t4);
+            tl.to(yo, { x: 520, y: -300, duration: 2.4, ease: 'power2.inOut' }, t4);
+            tl.to(yo, { opacity: 0.35, scale: 0.6, duration: 1.4, ease: 'power1.in' }, t4 + 1.4);
+            const t5 = T.pulso(F[4].inicio) - 0.08;
+            pregunta.forEach((c, j) => tl.fromTo(c, { y: 40, opacity: 0, filter: 'blur(8px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.45, ease: 'power3.out' }, t5 + j * 0.1));
+            tl.fromTo('#gan-pregunta', { scale: 1 }, { scale: 1.04, duration: Math.max(1, T.salida(0.6) - t5 - 0.5), ease: 'none' }, t5 + 0.5);
+            // Salida.
+            tl.to(['#gan-final', '#gan-ciudad'], { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, T.salida(0.5));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['gancho'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

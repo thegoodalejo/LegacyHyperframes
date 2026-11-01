@@ -1,0 +1,133 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":18,\"frases\":[{\"texto\":\"a\",\"inicio\":0.5,\"fin\":3,\"palabras\":[]},{\"texto\":\"b\",\"inicio\":3.5,\"fin\":8.5,\"palabras\":[]},{\"texto\":\"c\",\"inicio\":9.1,\"fin\":16,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- «Quiero servir»: el ícono grande a la izquierda; a la derecha caen tres solicitudes (Medios, Logística, Alabanza); el equipo las aprueba
+         (el visto en cada una), se vuelven staff con su línea de acceso y los tres días del evento se encienden. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .ser-izq { position: absolute; left: 192px; top: 108px; width: 640px; height: 864px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
+        .ser-icono { position: relative; margin: 0; width: 240px; height: 240px; opacity: 0; }
+        .ser-icono .k-recurso-icono { --k-icono-tam: 120px; }
+        .ser-izq .k-recurso-titular { text-align: center; width: 640px; }
+        .ser-izq .k-recurso-etiqueta { text-align: center; opacity: 0; }
+        .k-recurso-palabra.em { font-style: italic; font-weight: 500; }
+        .ser-lista { position: absolute; left: 960px; top: 200px; width: 768px; height: 680px; }
+        .ser-sol { position: absolute; left: 0; width: 768px; height: 180px; display: flex; align-items: center; gap: 30px; padding: 0 40px; opacity: 0; }
+        .ser-sol .k-recurso-icono { --k-icono-tam: 56px; }
+        .ser-datos { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+        .ser-funcion { font-family: var(--k-fuente-marca); font-size: 52px; font-weight: 560; line-height: 1.05; }
+        .ser-acceso { position: relative; height: 38px; }
+        .ser-acceso .k-recurso-etiqueta { position: absolute; left: 0; top: 0; white-space: nowrap; }
+        .ser-staff { color: #26a69a; opacity: 0; }
+        .ser-visto { flex: none; color: #26a69a; opacity: 0; }
+        .ser-visto .k-recurso-icono { --k-icono-tam: 64px; }
+        .ser-dias { position: absolute; left: 960px; top: 900px; width: 768px; display: flex; gap: 20px; align-items: center; }
+        .ser-dia { padding: 10px 26px; border-radius: 999px; box-shadow: inset 0 0 0 2px rgba(234, 240, 255, 0.24); opacity: 0; }
+        .ser-dia .k-recurso-etiqueta { color: var(--k-noche-tinta); }
+        /* El kit declara la máscara en identidad/kit.css y en el render la url(identidad/iconos/…) se resuelve contra esa hoja (identidad/identidad/…):
+           se declara aquí, en la escena, como hace capitulo-recurso. */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+      </style>
+
+      <div id="root" data-composition-id="servir" data-width="1920" data-height="1080" data-duration="18">
+        <div class="ser-izq" id="ser-izq">
+          <div class="k-recurso-nodo k-oro ser-icono" id="ser-icono"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/volunteer_activism.svg)"></span></div>
+          <div class="k-recurso-titular" id="ser-titulo">Quiero <em>servir</em></div>
+          <div class="k-recurso-etiqueta" id="ser-enlace">Un enlace y un QR propios, sin cuenta</div>
+        </div>
+        <div class="ser-lista" id="ser-lista">
+          <div class="k-recurso-tarjeta ser-sol" id="ser-s0" style="top: 0">
+            <span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/campaign.svg)"></span>
+            <div class="ser-datos"><div class="ser-funcion">Medios</div><div class="ser-acceso"><span class="k-recurso-etiqueta" id="ser-a0">Viene de otra iglesia</span><span class="k-recurso-etiqueta ser-staff" id="ser-x0">Staff · Medios</span></div></div>
+            <span class="ser-visto" id="ser-v0"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span>
+          </div>
+          <div class="k-recurso-tarjeta ser-sol" id="ser-s1" style="top: 250px">
+            <span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/construction.svg)"></span>
+            <div class="ser-datos"><div class="ser-funcion">Logística</div><div class="ser-acceso"><span class="k-recurso-etiqueta" id="ser-a1">Viene de tu iglesia</span><span class="k-recurso-etiqueta ser-staff" id="ser-x1">Staff · Logística — Zonas generales</span></div></div>
+            <span class="ser-visto" id="ser-v1"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span>
+          </div>
+          <div class="k-recurso-tarjeta ser-sol" id="ser-s2" style="top: 500px">
+            <span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/favorite.svg)"></span>
+            <div class="ser-datos"><div class="ser-funcion">Alabanza</div><div class="ser-acceso"><span class="k-recurso-etiqueta" id="ser-a2">Viene de otra iglesia</span><span class="k-recurso-etiqueta ser-staff" id="ser-x2">Staff · Alabanza</span></div></div>
+            <span class="ser-visto" id="ser-v2"><span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span>
+          </div>
+        </div>
+        <div class="ser-dias" id="ser-dias">
+          <span class="ser-dia" id="ser-d0"><span class="k-recurso-etiqueta">Día 1</span></span>
+          <span class="ser-dia" id="ser-d1"><span class="k-recurso-etiqueta">Día 2</span></span>
+          <span class="ser-dia" id="ser-d2"><span class="k-recurso-etiqueta">Día 3</span></span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const $ = (id) => document.getElementById(id);
+          const norm = (w) => w.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+          const cuando = (f, raiz, def) => { const p = f.palabras.find((x) => norm(x.texto).startsWith(raiz)); return p ? p.inicio : def; };
+          const partir = (el, pref) => {
+            const out = [];
+            const nodos = [...el.childNodes];
+            el.textContent = '';
+            nodos.forEach((n) => {
+              const clave = n.nodeType === 1 && n.tagName === 'EM';
+              (n.textContent || '').split(/\s+/).filter(Boolean).forEach((w) => {
+                if (/^[,.;:?!)]+$/.test(w) && out.length) { out[out.length - 1].textContent += w; return; }
+                const c = document.createElement('span');
+                c.className = 'k-recurso-palabra' + (clave ? ' k-recurso-clave em' : '');
+                c.id = `${pref}-${out.length}`;
+                c.textContent = w;
+                el.appendChild(c);
+                out.push(c);
+              });
+            });
+            return out;
+          };
+          const titulo = partir($('ser-titulo'), 'ser-tp');
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const [f0, f1, f2] = T.frases;
+            // Frase 0: el ícono y el título.
+            tl.fromTo('#ser-icono', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.8)' }, T.pulso(f0.inicio));
+            const tq = cuando(f0, 'quiero', f0.fin - 1.2);
+            titulo.forEach((c, j) => tl.fromTo(c, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.42, ease: 'power3.out' }, tq - 0.08 + j * 0.18));
+            for (let k = 0; k < 2; k++) tl.fromTo('#ser-icono', { scale: 1.06 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T.pulso(f0.fin) + k * 0.5);
+            // Frase 1: el enlace y las solicitudes que caen una a una.
+            tl.fromTo('#ser-enlace', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, T.pulso(f1.inicio));
+            const ts = T.reparto(3, cuando(f1, 'voluntario', f1.inicio + 1.5), f1.fin);
+            [0, 1, 2].forEach((i) => tl.fromTo(`#ser-s${i}`, { y: -50, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.55, ease: 'power3.out' }, ts[i]));
+            // Frase 2: el visto en cada una, su línea de staff y los tres días.
+            const ta = T.pulso(cuando(f2, 'aprueba', f2.inicio + 0.8) - 0.1);
+            [0, 1, 2].forEach((i) => {
+              const t = ta + i * 0.5;
+              tl.fromTo(`#ser-v${i}`, { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2.4)' }, t);
+              tl.to(`#ser-s${i}`, { boxShadow: 'inset 0 0 0 2px rgba(38,166,154,0.7), 0 30px 60px -30px rgba(0,0,0,0.6)', duration: 0.4 }, t);
+            });
+            const tst = T.pulso(cuando(f2, 'staff', ta + 1.8) - 0.1);
+            [0, 1, 2].forEach((i) => {
+              tl.to(`#ser-a${i}`, { y: -14, opacity: 0, duration: 0.3, ease: 'power2.in' }, tst + i * 0.15);
+              tl.fromTo(`#ser-x${i}`, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out' }, tst + 0.25 + i * 0.15);
+            });
+            const td = T.pulso(cuando(f2, 'todos', f2.fin - 1.5) - 0.2);
+            [0, 1, 2].forEach((i) => {
+              tl.fromTo(`#ser-d${i}`, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: 'back.out(1.8)' }, td + i * 0.25);
+              tl.to(`#ser-d${i}`, { boxShadow: 'inset 0 0 0 2px rgba(232,185,90,0.9)', duration: 0.3 }, td + 0.9 + i * 0.25);
+            });
+            tl.to(['#ser-izq', '#ser-lista', '#ser-dias'], { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in', stagger: 0.05 }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['servir'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "kingdomapp-recurso-eventos-de-ciudad",
+  "private": true,
+  "type": "module",
+  "description": "Recurso 2 de la serie: Eventos de ciudad, sin perder a nadie (Eventos masivos y Comunicaciones). Tipo Recurso, kit v1.2.",
+  "scripts": {
+    "preparar:es": "node ../_herramientas/recurso.mjs preparar --idioma es",
+    "dev": "npx --yes hyperframes@0.8.221 preview",
+    "check": "npx --yes hyperframes@0.8.221 check",
+    "render:es": "node ../_herramientas/recurso.mjs render --idioma es",
+    "entregar:es": "node ../_herramientas/recurso.mjs entregar --idioma es"
+  }
+}
