@@ -428,7 +428,10 @@
 .k-recurso-clave {
   color: var(--k-enfasis, var(--k-noche-dorado));
 }
-/* Ícono de Material Symbols (SVG local) como máscara: <span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/groups.svg)"></span> */
+/* Ícono de Material Symbols (SVG local) como máscara: <span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/groups.svg)"></span>
+   OJO (2026-11-01, los tres primeros recursos): en el render, la máscara que sale de ESTA regla queda vacía (el url() de la variable se
+   resuelve contra identidad/kit.css → identidad/identidad/…), aunque el snapshot la muestre. Cada composición repite en su propio <style>:
+   .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; } */
 .k-recurso-icono {
   display: inline-block;
   flex: none;

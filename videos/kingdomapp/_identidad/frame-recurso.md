@@ -41,7 +41,7 @@ components:
   fondo:      "identidad/fondo-recurso.html (kit), que monta el host debajo de todo el cuerpo: noche, halo que respira y puntos quietos; las escenas son transparentes"
   zona:       ".k-recurso-zona: 192 px a los lados, 108 px arriba y abajo (80 % seguro para títulos)"
   capitulo:   "identidad/capitulo-recurso.html (kit) con `capitulo: { numero, titulo, bajada, icono, fondo }` en guion.mjs; 3–6 s, sin voz"
-  icono:      ".k-recurso-icono con --k-icono: url(identidad/iconos/<nombre>.svg) (toma el color del texto; .k-recurso-icono-oro)"
+  icono:      ".k-recurso-icono con --k-icono: url(identidad/iconos/<nombre>.svg) (toma el color del texto; .k-recurso-icono-oro). La regla de la máscara (`-webkit-mask` y `mask: var(--k-icono) center / contain no-repeat`) se repite en el <style> de cada composición: la de kit.css sale vacía en el render aunque el snapshot la muestre (ver kit.css)"
   punto:      ".k-recurso-punto (+ .k-oro, .k-azul, .k-verde, .k-tenue): una persona"
   nodo:       ".k-recurso-nodo (+ .k-oro): una red, una célula, un grupo, un equipo (con un ícono dentro)"
   linea:      ".k-recurso-linea (+ .k-oro) en un <svg>: vínculos, rutas; se dibujan con strokeDashoffset"
