@@ -92,7 +92,8 @@ export async function montarKit(proyecto = PROYECTO) {
   console.log('Sonido de marca (identidad/audio/sonido-marca.wav) en el host, en estos segundos desde el inicio de cada pieza:');
   for (const [pieza, d] of Object.entries(kit.piezas)) {
     const variantes = d.variantes ? '  ' + Object.entries(d.variantes).map(([k, x]) => `${k}: ${x.duracion} s, sonido ${x.sonido} s`).join(' · ') : '';
-    console.log(`  ${pieza.padEnd(17)} ${d.ancho}×${d.alto}  ${d.duracion} s  sonido ${d.sonido} s${variantes}`);
+    const sonido = d.sonido === null || d.sonido === undefined ? 'sin sonido de marca' : `sonido ${d.sonido} s`;
+    console.log(`  ${pieza.padEnd(17)} ${d.ancho}×${d.alto}  ${d.duracion} s  ${sonido}${variantes}`);
   }
   if (accion) {
     console.log(`Sonidos de acción (identidad/audio/<nombre>.wav, data-volume="1" con la música a ${accion.mezcla.musica} LUFS; ` +

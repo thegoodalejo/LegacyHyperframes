@@ -1,6 +1,6 @@
 # Videos de Kingdom
 
-Videos de **Kingdom** (la app para iglesias) hechos con HyperFrames. Las directivas (tres tipos: Wiki, Comercial y Corto; la app real; datos
+Videos de **Kingdom** (la app para iglesias) hechos con HyperFrames. Las directivas (los tipos: Wiki, Comercial, Corto, Estrategia y Recurso; la app real; datos
 ficticios; aprobaciones) y la identidad viven en el repo de la app: `KingdomApp/docs/videos/README.md` y `KingdomApp/docs/videos/identidad.md`.
 Este directorio tiene el **kit de identidad** que todos los videos montan y las muestras que lo prueban.
 
@@ -8,10 +8,12 @@ Este directorio tiene el **kit de identidad** que todos los videos montan y las 
 
 | Carpeta | Qué es |
 |---|---|
-| `_identidad/` | Kit de identidad **v1.1**: intro y cierre del Tipo Wiki, cierres de marca del Comercial (16:9), del Corto (9:16) y del clip (4:5), `kit.json`, `kit.css` (con `.k-ventana` y `.k-feed-*`), `frame-wiki.md`, `frame-comercial.md`, `frame-corto.md`, favicon, Inter y Fraunces, íconos de sección, `sonido-marca.mjs`, `sonidos-accion.mjs`, `musica/` (las pistas, fuera de git, y el mapa de pulsos de «Product Launch») y licencias. **No se edita por video** |
+| `_identidad/` | Kit de identidad **v1.2**: intro y cierre del Tipo Wiki, cierres de marca del Comercial (16:9), del Corto (9:16) y del clip (4:5), las piezas del Tipo Recurso (`intro-recurso`, `capitulo-recurso`, `fondo-recurso`, `cierre-recurso`, `recurso.js`, `frame-recurso.md`), `kit.json`, `kit.css` (con `.k-ventana`, `.k-feed-*` y `.k-recurso-*`), `frame-wiki.md`, `frame-comercial.md`, `frame-corto.md`, favicon, Inter y Fraunces, 74 íconos de Material Symbols, `sonido-marca.mjs`, `sonidos-accion.mjs`, `musica/` (las pistas, fuera de git, y el mapa de pulsos de «Product Launch») y licencias. **No se edita por video** |
 | `_herramientas/montar-kit.mjs` | Copia el kit en `<proyecto>/identidad/`, comprueba el favicon contra la app, genera el sonido de marca a −20 LUFS y los sonidos de acción con su nivel de mezcla |
 | `muestra-kit/` | Muestra 16:9: intro Wiki → cuerpo con una captura real de la ayuda → cierre Wiki → cierre del Comercial |
 | `muestra-corto/` | Muestra 9:16: una escena de Corto con los componentes de `kit.css` → cierre del Corto |
+| `_herramientas/recurso.mjs` | Arma un video del Tipo Recurso desde su `guion.mjs`: voz, música en bucle, línea de tiempo en la rejilla de la música, host, VTT, render y entrega (ver «Tipo Recurso (v1.2)») |
+| `muestra-recurso/` | Muestra del Tipo Recurso (v1.2, 32 s): intro → capítulo → escena con voz y tipografía cinética en frases y pulsos → cierre, de punta a punta con `recurso.mjs` |
 | `muestra-clip/` | Muestra 4:5 (v1.1): la app real en `.k-ventana` con la cámara dentro, una frase con `.k-feed-*`, sonidos de acción sobre «Product Launch» → `cierre-clip` |
 | `<tipo>-<tema>/` | Un proyecto por video: `wiki-eventos-crear-y-editar`, `clip-sitio-membresia`, `comercial-iglesia-ordenada`, `corto-asistencia-sin-papel` |
 
@@ -23,7 +25,8 @@ En git va solo el código del video. Capturas, voces, música, renders, hojas de
 ## Requisitos de esta máquina
 
 - Node 22, FFmpeg y el CLI fijado por `npx`: `hyperframes@0.8.62` en las muestras v1 y la Wiki (el mismo de los videos de
-  LegacyEnterprise); `hyperframes@0.8.221` en los clips del sitio y `muestra-clip`.
+  LegacyEnterprise); `hyperframes@0.8.221` en los clips del sitio, `muestra-clip` y todo el Tipo Recurso (`recurso.mjs` la fija
+  y comprueba que tenga `tts`).
 - Voz: `../../.venv-tts/` y el modelo Kokoro (ver `../legacyenterprise/README.md`).
 - KingdomApp al lado (`F:\Proyectos\KingdomApp`, o la variable `KINGDOMAPP_REPO`): `montar-kit.mjs` compara el favicon del kit con
   `frontend-v2/public/favicon.svg` y se detiene si la app cambió de marca.
@@ -169,6 +172,7 @@ La biblioteca está en `_identidad/musica/` (los mp3 fuera de git) y en `kit.jso
 cd muestra-kit && npm run captura && npm run kit && npm run check && npm run render   # renders/muestra-kit-16x9.mp4 (16 s)
 cd ../muestra-corto && npm run kit && npm run check && npm run render  # renders/muestra-corto-9x16.mp4 (5 s)
 cd ../muestra-clip && npm run captura && npm run musica && npm run kit && npm run check && npm run render  # renders/muestra-clip-4x5.mp4 (6,5 s)
+cd ../muestra-recurso && npm run preparar:es && npm run check && npm run render:es && npm run entregar:es  # entrega/es/ (32 s, v1.2)
 ```
 
 ## Tutoriales de la wiki
@@ -179,3 +183,158 @@ cd ../muestra-clip && npm run captura && npm run musica && npm run kit && npm ru
 `entregar` deja el MP4 a −16 LUFS, el póster y el VTT en `KingdomApp/tools/ayuda/salida/tutorial/<idioma>/<articulo>/`. Piloto:
 `wiki-eventos-crear-y-editar/` (`npm run preparar:es`, `npm run check`, `npm run render:es`, `npm run entregar:es`; lo mismo con `en`).
 Proceso y lista de revisión: `KingdomApp/docs/ayuda/videos.md`.
+
+## Tipo Recurso (v1.2)
+
+Videos largos (5–7 min, 16:9) que el dueño comparte por WhatsApp a pastores y líderes que ya usan Kingdom (decisión 239; directivas en
+`KingdomApp/docs/videos/README.md` → «Tipo 5. Recurso»). **Motion design puro con la marca, sin la app** (excepción a la regla 1, decidida
+por el dueño), voz Kokoro fija y «Product Launch» en bucle. El sistema visual está en `_identidad/frame-recurso.md` (cópialo como
+`frame.md` del proyecto antes de diseñar). La herramienta es `_herramientas/recurso.mjs`, fijada a **`hyperframes@0.8.221`**.
+
+### El proyecto
+
+`recurso-<tema>/` (copiar `package.json` y `hyperframes.json` de `muestra-recurso/`) con:
+
+- `BRIEF.md` (línea `tipo: recurso`), `guion.mjs` y `compositions/<id>.html` (una por escena con voz o sin ella; las tarjetas de capítulo
+  son del kit).
+- Se generan (fuera de git): `identidad/`, `assets/voice/`, `assets/musica/`, `assets/mezcla/<idioma>/`, `index.html`, `tiempos-<idioma>.json`,
+  `renders/`, `snapshots/` y `entrega/`. `SCRIPT.md` (la narración) también se genera y sí va a git.
+
+### `guion.mjs`
+
+```js
+export default {
+  slug: 'pastor-resultados',                         // minúsculas y guiones; va a la ficha
+  titulo: { es: 'Lo que tu iglesia *ya puede ver*' }, // intro (máx. ~48 caracteres, 2 líneas); *así* va en itálica dorada
+  descripcion: { es: '…' },                          // página pública y vista previa de WhatsApp (~160 caracteres)
+  ceja: { es: 'Recursos' },                           // opcional (por defecto «Recursos»/«Resources»); o el nombre de la serie
+  siguiente: { es: 'Eventos de ciudad, de punta a punta' }, // opcional: «Sigue con» en el cierre (sin él, el cierre dura 6 s)
+  llamado: 'acompanamiento',                          // acompanamiento | compartir | ninguno
+  contacto: 'whatsapp',                               // whatsapp | sitio | ninguno
+  para: ['pastores', 'lideres'],                      // opcional, a la ficha: pastores | lideres | administradores | servidores
+  mensaje: { es: 'Pastor, mira este recurso: {enlace}' }, // opcional, a la ficha: el texto de WhatsApp, con {enlace}
+  poster: { en: 5.2 },                                // opcional: segundo del póster (por defecto, el final de la intro)
+  musica: {                                           // opcional: todo tiene valor por defecto (kit.json → mapa.recurso)
+    entrada: [0.05, 50.05],                           // tramo de la pista que abre (en cabezas de compás: 0,05 + 2k)
+    bucle: [[18.05, 66.05]],                          // tramos que se repiten en orden hasta cubrir el video
+    salida: 66.05,                                    // desde aquí la pista va de corrido hasta su final natural (86,05)
+    corte: 2,                                         // el bucle se corta en múltiplos de esto (s; 8 = medias frases, más holgura)
+    cruce: 0.03,                                      // cruce de potencia constante antes de cada cabeza de compás (s)
+    bajoLaVoz: 20,                                    // dB de la música por debajo de la voz (18–24)
+  },
+  escenas: [
+    { id: 'cap-1', capitulo: { numero: '1', titulo: { es: 'Ver a *cada persona*' }, bajada: { es: '…' }, icono: 'groups', fondo: 'noche' }, duracion: 4 },
+    {
+      id: 'medir',                                    // compositions/medir.html (o composicion: 'compositions/otra')
+      frases: [
+        { es: 'Cada domingo llegan *personas nuevas*.', clave: 'llegan', pausa: 0.5 },
+        { es: 'Kingdom te muestra quién volvió.', voz: { es: 'Kíngdom te muestra quién volvió.' }, alPulso: true },
+      ],
+      entrada: 0.5, cola: 0.8, minimo: 12,            // s: antes de la 1.ª frase, después de la última, duración mínima
+      variables: { rotulo: { es: '…' } },             // otras variables de la composición (por idioma o fijas)
+      sonidos: [{ sonido: 'aparicion', frase: 0, palabra: 3, desfase: -0.25, alPulso: true }], // opcional (sonidos de acción del kit)
+      estirable: true,                                // puede recibir la holgura de la música (en compases)
+      alinear: 'pulso',                               // pulso (por defecto con voz) | compas (por defecto sin voz)
+    },
+    { id: 'respiro', duracion: 3.5 },                  // escena sin voz: compositions/respiro.html con duración fija
+  ],
+};
+```
+
+- Frase: `es` (y `en`, `pt`) es el texto de la pantalla y del VTT; `voz` es otro texto solo para la pronunciación; `*clave*` marca palabras
+  (`clave: true` en sus tiempos) sin que la voz ni el VTT lleven asteriscos; `clave` (en la frase) es un nombre para buscarla con
+  `T.frase('nombre')`; `pausa` (0,3) es el silencio después; `desde` (s) es el inicio mínimo en la escena; `alPulso` la empuja al pulso
+  siguiente.
+- La duración de una escena con voz es `entrada + frases + pausas + cola` (o `minimo`), redondeada al pulso. Las escenas con voz empiezan
+  en un pulso y las que no tienen voz, en un compás.
+- `sonidos`: los de acción del kit (`toque`, `aparicion`, `desliz`, `subida`, `confirmacion`), en el host, con `en` (s en la escena) o
+  `frase`/`palabra`; `desfase` se suma antes de `alPulso`, igual que `T.pulso(t + desfase)` en la composición. Pocos y con causa en pantalla.
+
+### Comandos
+
+```bash
+cd recurso-<tema>
+node ../_herramientas/recurso.mjs preparar --idioma es   # kit, voz, música, tiempos, VTT, SCRIPT.md, index.html; imprime las mitades
+npx --yes hyperframes@0.8.221 check                     # 0 errores
+npx --yes hyperframes@0.8.221 snapshot --at <mitades> --no-end -o snapshots   # revisar la hoja de contacto (pocas imágenes)
+node ../_herramientas/recurso.mjs render --idioma es     # renders/recurso-es.mp4, temporales en renders/tmp (F:), mide el tiempo
+node ../_herramientas/recurso.mjs entregar --idioma es   # entrega/es/ y la verificación de sonoridad
+```
+
+`preparar` comprueba que `hyperframes@0.8.221 tts` exista (Kokoro, con `HYPERFRAMES_PYTHON` del `.venv-tts`), valida `para` y `mensaje`,
+monta el kit, genera la voz fija del kit (`ef_dora` a 1,1 en español; una frase por archivo, normalizada a −16 LUFS en dos pasadas y en
+caché por texto) e imprime cada escena, el plan de la música, la mezcla medida y los segundos para el snapshot.
+
+### Cómo lee sus tiempos una composición
+
+El host le pasa a cada escena, en `data-variable-values`, la variable `tiempos` (JSON) con su duración, sus frases y palabras y los golpes de
+la música, en segundos **relativos a la escena**. La composición la declara y la lee con `identidad/recurso.js` (que carga el host):
+
+```html
+<html data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos (los escribe recurso.mjs)","default":"{\"duracion\":8,\"frases\":[]}"}]'>
+…
+<script>
+  (function () {
+    const T = KRecurso.tiempos(window);   // al EMPEZAR el script: «window» dentro de la escena es el suyo (sus variables)
+    const f = T.frase(0);                 // { texto, inicio, fin, palabras: [{ texto, inicio, fin, clave? }] } (o T.frase('nombre'))
+    const tl = gsap.timeline({ paused: true });
+    f.palabras.forEach((p, j) => tl.fromTo(`#mi-p-${j}`, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, p.inicio - 0.08));
+    tl.fromTo('#mi-grafica', { scaleY: 0 }, { scaleY: 1, duration: 0.6 }, T.compas(f.fin));  // el cambio grande en un compás
+    tl.to('#mi-todo', { opacity: 0, duration: 0.4 }, T.salida());                              // sale en los últimos 0,5 s
+    tl.set({}, {}, T.duracion);
+    window.__timelines['mi-escena'] = tl;
+  })();
+</script>
+```
+
+- `T.pulso(t)`, `T.pulsoAntes(t)`, `T.compas(t)`: el pulso (0,5 s) o compás (2 s) en `t` o después (antes); `T.golpes`: golpes de la música
+  en la escena; `T.reparto(n, desde, hasta)`: n instantes en pulsos; `T.salida(d)`: `duracion − d`. Las palabras son **estimadas** (los
+  silencios de la voz separan los grupos de la puntuación y cada palabra dura según sus sílabas; ±0,15 s).
+- `KRecurso.tiempos()` sin `window` lee las variables del host (las del video entero), no las de la escena.
+- Una composición puede montarse en varias escenas (las variables son por instancia), como la tarjeta de capítulo.
+- Palabras en cajas: el espacio entre palabras es el margen de `.k-recurso-palabra`, no un espacio de texto (se perdía al partir la línea).
+- `tiempos-<idioma>.json` tiene todo también en tiempo absoluto: escenas, frases (`inicioAbs`, `finAbs`), subtítulos y la música.
+- Ejemplo completo: `muestra-recurso/compositions/personas.html` (texto cinético por palabra, puntos que aparecen en pulsos, líneas en la
+  palabra «une», un anillo en el pulso de la tercera frase, contador con «Datos de ejemplo»).
+
+### Alinear al pulso y el plan de música
+
+- La pista arranca en su 0,05, así que en el video **los pulsos caen en múltiplos de 0,5 s y los compases en segundos pares**. La intro dura
+  6 s (el título entra en el primer compás, el 2,0) y el cuerpo empieza en el 6,0, sobre `fondo-recurso` (la noche del cuerpo).
+- La música se encadena: `entrada` → `bucle` (cortado en `corte`) → `salida`, cada tramo empezando en un segundo par del video, con un
+  cruce de 30 ms que termina 10 ms antes de la cabeza de compás. La salida va de corrido hasta el final natural de la pista (86,05) y el
+  **último golpe (82,05) cae en la firma del cierre** (3,0 s después de que empieza el cierre con «Sigue con», o en su inicio sin él). Para
+  que eso cuadre, el cuerpo se alarga hasta 2 s (la holgura va a las escenas `estirable`, en compases, o a la última).
+- `tiempos-<idioma>.json` → `musica`: `segmentos` (video ↔ pista), `secciones` (entrada, subidas, respiro, clímax, salida, en tiempo del
+  video), `golpes` (los del mapa) y `fuertes` (los pulsos más intensos). Los cambios grandes van en esos golpes; los cortes, en pulsos.
+- **Mezcla determinista:** la cama (`assets/mezcla/<idioma>/musica.wav`) lleva el volumen de la biblioteca (−18 LUFS sin voz) y una
+  envolvente en dB calculada de las frases: baja 0,45 s antes de la voz, queda `bajoLaVoz − 2` dB abajo (18 con 20, así la música queda unos
+  20 dB por debajo de la voz) mientras haya frases con huecos de menos de 3 s, y sube en 1,2 s en las escenas sin voz. La voz va en
+  `voz.wav` (cada frase a −16 LUFS) y el sonido de marca en el host, en los segundos de `kit.json`. `preparar` mide e imprime la relación
+  (sobre los tramos con voz, que incluyen sus silencios internos: por eso da 1–2 dB menos que `bajoLaVoz`).
+
+### La entrega
+
+`entregar` toma `renders/recurso-<idioma>.mp4` y deja en `entrega/<idioma>/` (fuera de git) la forma exacta que espera el publicador de
+la app (Plataforma → Recursos):
+
+| Archivo | Qué es |
+|---|---|
+| `video-1080.mp4` | 1920×1080, H.264 High (`-tune animation`, CRF 20 con techo de 1,4 Mb/s, GOP de 2 s), AAC 128 kb/s, `+faststart`: ≤ ~69 MB en 6 min |
+| `video-720.mp4` | 1280×720 (CRF 22, techo 650 kb/s), AAC 96 kb/s: ≤ ~34 MB en 6 min, para datos móviles |
+| `poster.jpg` | 1200×630, menos de 300 KB (si no, WhatsApp puede no mostrar la vista previa); el final de la intro o `poster.en` |
+| `poster.webp` | El mismo cuadro en WebP |
+| `video.vtt` | Subtítulos (no quemados): un cue por frase o media frase, máx. 2 líneas de ~42 caracteres |
+| `ficha.json` | `{ slug, idioma, titulo, descripcion, duracion, ancho, alto, archivos: { "video-1080.mp4": { bytes, sha256 }, "video-720.mp4": {…}, "poster.jpg": {…}, "poster.webp": {…}, "video.vtt": {…} } }` y, si el guion los trae, `para` (lista de `pastores`, `lideres`, `administradores`, `servidores`) y `mensaje` (el texto de WhatsApp, con `{enlace}`). `duracion` en segundos (número); `ancho` y `alto` son los del video de 1080, en 16:9 (el publicador los compara con el archivo) |
+
+El audio sale del render a −16 LUFS integrados (dos pasadas lineales, con margen de pico para el AAC) y `entregar` **verifica** en los dos
+videos −16 ±0,5 LUFS y pico ≤ −1,5 dBTP, que el de 1080 mida 1920×1080 y que el póster pese menos de 300 KB; si algo falla, se detiene.
+Las medidas técnicas (sonoridad, pico, versiones) quedan en `renders/entrega-<idioma>.json`, aparte de la ficha. Publicar lo hace el
+líder; el dueño lo revisa ya publicado.
+
+### Medidas en esta máquina (2026-11-01, `muestra-recurso`, 32 s)
+
+- `preparar`: ~40 s con tres frases nuevas (Kokoro, ~10 s por frase); con la voz en caché, unos segundos.
+- `render`: **1,9–2,3 s por segundo de video** (32 s en 1,0–1,2 min): un recurso de 6 min tarda unos 12–14 min. `check` ~1 min y un
+  `snapshot` de 4 cuadros ~1 min.
+- Entrega de la muestra: `video-1080.mp4` 2,8 MB, `video-720.mp4` 1,3 MB, `poster.jpg` 38 KB (−16,15 LUFS, −2,3 dBTP).

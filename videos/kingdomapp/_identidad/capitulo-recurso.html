@@ -1,0 +1,219 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"numero","type":"string","label":"Número del capítulo (1, 2, 3…; vacío: sin número)","default":"1","maxLength":3},
+    {"id":"titulo","type":"string","label":"Título del capítulo (máx. ~40 caracteres; *palabras* en itálica dorada)","default":"Ver a *cada persona*","maxLength":48},
+    {"id":"bajada","type":"string","label":"Bajada opcional (una línea, Inter)","default":"","maxLength":72},
+    {"id":"icono","type":"string","label":"Ícono opcional (nombre de identidad/iconos/, sin .svg)","default":"","maxLength":40},
+    {"id":"fondo","type":"enum","label":"Fondo","default":"noche","options":[{"value":"noche","label":"Noche (transparente sobre el fondo del video)"},{"value":"claro","label":"Claro (respiro; a lo sumo dos por video)"}]},
+    {"id":"idioma","type":"enum","label":"Idioma","default":"es","options":[{"value":"es","label":"Español"},{"value":"en","label":"English"},{"value":"pt","label":"Português"}]},
+    {"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":4,\"frases\":[],\"compas0\":0}"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Tarjeta de capítulo del Tipo Recurso (16:9, de 3 a 6 s; la duración la pone el host), kit de identidad de Kingdom v1.2 (decisión 239;
+         frame-recurso.md → «Tarjeta de capítulo»). NO se edita por video: se monta con `capitulo: {…}` en guion.mjs, una vez por capítulo.
+         Coreografía en pulsos de 0,5 s desde el inicio (que recurso.mjs pone en un compás): 0 número, 0,5 regla y título, 1,0 bajada;
+         sale en los últimos 0,5 s. Sin voz: la música sube debajo. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          font-family: 'Inter', sans-serif;
+          color: #eaf0ff;
+        }
+        .lienzo {
+          position: absolute;
+          inset: 0;
+          --tinta: #eaf0ff;
+          --suave: #a9b6d6;
+          --oro: #e8b95a;
+          --linea: rgba(234, 240, 255, 0.18);
+        }
+        .lienzo.claro {
+          background: #f7f8fc;
+          --tinta: #0e1a33;
+          --suave: #46526d;
+          --oro: #7d5800;
+          --linea: rgba(14, 26, 51, 0.16);
+        }
+        .claro-halo {
+          position: absolute;
+          inset: -60px;
+          background:
+            radial-gradient(45% 57% at 86% 18%, rgba(53, 118, 218, 0.16), transparent 70%),
+            radial-gradient(33% 46% at 6% 100%, rgba(217, 162, 52, 0.16), transparent 70%);
+        }
+        .fila {
+          position: absolute;
+          left: 216px;
+          top: 0;
+          height: 1080px;
+          width: 1488px;
+          display: flex;
+          align-items: center;
+          gap: 64px;
+        }
+        .numero {
+          flex: none;
+          min-width: 150px;
+          color: var(--oro);
+          font-family: 'Fraunces', serif;
+          font-size: 240px;
+          font-style: italic;
+          font-weight: 400;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          font-variant-numeric: lining-nums;
+        }
+        .regla {
+          flex: none;
+          width: 3px;
+          height: 280px;
+          border-radius: 2px;
+          background: var(--linea);
+        }
+        .textos {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 26px;
+          max-width: 1120px;
+        }
+        .icono {
+          display: block;
+          width: 72px;
+          height: 72px;
+          background: var(--oro);
+          -webkit-mask: var(--icono) center / contain no-repeat;
+          mask: var(--icono) center / contain no-repeat;
+        }
+        .titulo {
+          color: var(--tinta);
+          font-family: 'Fraunces', serif;
+          font-size: 104px;
+          font-weight: 560;
+          line-height: 1.02;
+          letter-spacing: -0.02em;
+          text-wrap: balance;
+        }
+        .titulo em {
+          color: var(--oro);
+          font-style: italic;
+          font-weight: 500;
+        }
+        /* Sin espacios de texto entre palabras: el espacio entre dos cajas se perdía al partir la línea (Chrome del render). */
+        .palabra {
+          display: inline-block;
+          margin-right: 0.24em;
+        }
+        .palabra:last-child {
+          margin-right: 0;
+        }
+        .bajada {
+          color: var(--suave);
+          font-size: 38px;
+          font-weight: 500;
+          line-height: 1.3;
+        }
+        .oculto {
+          display: none;
+        }
+      </style>
+
+      <div id="root" data-composition-id="capitulo-recurso" data-width="1920" data-height="1080" data-duration="4">
+        <div class="lienzo" id="capitulo-recurso-lienzo">
+          <div class="claro-halo oculto" id="capitulo-recurso-halo"></div>
+          <div class="fila" id="capitulo-recurso-fila">
+            <div class="numero" id="capitulo-recurso-numero">1</div>
+            <span class="regla" id="capitulo-recurso-regla"></span>
+            <div class="textos">
+              <span class="icono oculto" id="capitulo-recurso-icono"></span>
+              <div class="titulo" id="capitulo-recurso-titulo">Ver a <em>cada persona</em></div>
+              <div class="bajada oculto" id="capitulo-recurso-bajada"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const v = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+          const T = window.KRecurso ? window.KRecurso.tiempos(window) : { duracion: 4 };
+          const dur = Math.max(3, Number(T.duracion) || 4);
+          const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          // Cada palabra en su caja; *así* va en itálica dorada (cajas al mismo nivel; el espacio es su margen).
+          let enfasis = false;
+          const html = String(v.titulo || 'Ver a *cada persona*')
+            .trim()
+            .split(/\s+/)
+            .map((w) => {
+              if (w.startsWith('*')) enfasis = true;
+              const limpio = w.replace(/^\*/, '').replace(/\*(?=[.,;:!?…»"”)]*$)/, '');
+              const out = limpio ? `<span class="palabra">${enfasis ? `<em>${esc(limpio)}</em>` : esc(limpio)}</span>` : '';
+              if (w.length > 1 && /\*[.,;:!?…»"”)]*$/.test(w)) enfasis = false;
+              return out;
+            })
+            .filter(Boolean)
+            .join('');
+          document.getElementById('capitulo-recurso-titulo').innerHTML = html;
+          const numero = String(v.numero || '').trim();
+          const n = document.getElementById('capitulo-recurso-numero');
+          if (numero) n.textContent = numero;
+          else {
+            n.classList.add('oculto');
+            document.getElementById('capitulo-recurso-regla').classList.add('oculto');
+          }
+          if (v.fondo === 'claro') {
+            document.getElementById('capitulo-recurso-lienzo').classList.add('claro');
+            document.getElementById('capitulo-recurso-halo').classList.remove('oculto');
+          }
+          const bajada = String(v.bajada || '').trim();
+          if (bajada) {
+            const b = document.getElementById('capitulo-recurso-bajada');
+            b.textContent = bajada;
+            b.classList.remove('oculto');
+          }
+          const icono = String(v.icono || '').trim();
+          if (/^[a-z0-9_]+$/.test(icono)) {
+            const i = document.getElementById('capitulo-recurso-icono');
+            i.style.setProperty('--icono', `url(identidad/iconos/${icono}.svg)`);
+            i.classList.remove('oculto');
+          }
+
+          const construir = () => {
+            const root = document.querySelector('[data-composition-id="capitulo-recurso"]');
+            const palabras = root.querySelectorAll('#capitulo-recurso-titulo .palabra');
+            const tl = gsap.timeline({ paused: true });
+            if (v.fondo === 'claro') {
+              tl.fromTo('#capitulo-recurso-lienzo', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: 'power2.out' }, 0);
+            }
+            tl.fromTo('#capitulo-recurso-numero', { y: 60, autoAlpha: 0, filter: 'blur(10px)' },
+              { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.7, ease: 'power4.out' }, 0);
+            tl.fromTo('#capitulo-recurso-regla', { scaleY: 0, transformOrigin: '50% 0%' },
+              { scaleY: 1, transformOrigin: '50% 0%', duration: 0.5, ease: 'power3.inOut' }, 0.4);
+            tl.fromTo('#capitulo-recurso-icono', { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(1.8)' }, 0.5);
+            tl.fromTo(palabras, { y: 40, autoAlpha: 0, filter: 'blur(6px)' },
+              { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.6, ease: 'power3.out', stagger: 0.08 }, 0.5);
+            tl.fromTo('#capitulo-recurso-bajada', { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'power2.out' }, 1.0);
+            // Deriva lenta mientras se sostiene (nada quieto) y salida hacia la izquierda en los últimos 0,5 s.
+            tl.fromTo('#capitulo-recurso-fila', { x: 0 }, { x: -28, duration: dur - 0.5, ease: 'none' }, 0);
+            tl.to('#capitulo-recurso-fila', { x: -90, autoAlpha: 0, filter: 'blur(8px)', duration: 0.42, ease: 'power2.in' }, dur - 0.5);
+            if (v.fondo === 'claro') tl.to('#capitulo-recurso-lienzo', { autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, dur - 0.32);
+            tl.set({}, {}, dur);
+            window.__timelines['capitulo-recurso'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

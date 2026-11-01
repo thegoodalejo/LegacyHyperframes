@@ -1,7 +1,7 @@
 {
-  "version": "v1.1",
-  "fecha": "2026-10-30",
-  "estado": "v1 aprobado por el dueño el 2026-10-30 con el sonido de marca «campanas» (opción C); v1.1 (cierre del clip en 4:5, la ventana, los textos para 4:5, los sonidos de acción y la biblioteca de música) aprobado el mismo día (KingdomApp docs/pendientes.md 40)",
+  "version": "v1.2",
+  "fecha": "2026-11-01",
+  "estado": "v1 y v1.1 aprobados por el dueño el 2026-10-30 (KingdomApp docs/pendientes.md 40); v1.2 (Tipo Recurso, decisión 239: intro-recurso, cierre-recurso, capitulo-recurso, fondo-recurso, recurso.js, frame-recurso.md, clases .k-recurso-* y más íconos) del 2026-11-01, la revisa el dueño con el primer recurso publicado",
   "fuente": "KingdomApp docs/videos/identidad.md",
   "favicon": {
     "archivo": "favicon.svg",
@@ -16,7 +16,13 @@
     "cierre-clip.html",
     "kit.css",
     "kit.json",
-    "favicon.svg"
+    "favicon.svg",
+    "intro-recurso.html",
+    "cierre-recurso.html",
+    "capitulo-recurso.html",
+    "fondo-recurso.html",
+    "recurso.js",
+    "frame-recurso.md"
   ],
   "piezas": {
     "intro-wiki": {
@@ -59,6 +65,47 @@
       "alto": 1350,
       "duracion": 2.5,
       "sonido": 0.38
+    },
+    "intro-recurso": {
+      "archivo": "intro-recurso.html",
+      "ancho": 1920,
+      "alto": 1080,
+      "duracion": 6,
+      "sonido": 0.38,
+      "firma": 0,
+      "nota": "Tipo Recurso: el título entra en el primer compás de la música (2,0 s con la pista desde su 0,05); el cuerpo empieza en el 6,0, también en compás"
+    },
+    "cierre-recurso": {
+      "archivo": "cierre-recurso.html",
+      "ancho": 1920,
+      "alto": 1080,
+      "duracion": 9,
+      "sonido": 3.38,
+      "firma": 3,
+      "nota": "Tipo Recurso, con «Sigue con». La firma (firma = segundo desde el inicio del cierre) cae en el último golpe de la música (musica.biblioteca.product-launch.mapa.ultimoGolpe); es el cuadro final del video",
+      "variantes": {
+        "sinSiguiente": {
+          "duracion": 6,
+          "sonido": 0.38,
+          "firma": 0
+        }
+      }
+    },
+    "capitulo-recurso": {
+      "archivo": "capitulo-recurso.html",
+      "ancho": 1920,
+      "alto": 1080,
+      "duracion": 4,
+      "sonido": null,
+      "nota": "Tipo Recurso: tarjeta de capítulo, de 3 a 6 s (la duración la pone el host); se monta una vez por capítulo con distintas variables"
+    },
+    "fondo-recurso": {
+      "archivo": "fondo-recurso.html",
+      "ancho": 1920,
+      "alto": 1080,
+      "duracion": 60,
+      "sonido": null,
+      "nota": "Tipo Recurso: el fondo de noche del cuerpo (halo que respira, puntos quietos), debajo de todas las escenas; la duración la pone el host"
     }
   },
   "sonido": {
@@ -158,7 +205,7 @@
         "autor": "The_Mountain",
         "origen": "https://pixabay.com/music/modern-classical-product-launch-153648/",
         "licencia": "Pixabay Content License · Content ID Registered",
-        "uso": "Todos los clips del sitio (y el recorrido de cada módulo)",
+        "uso": "Todos los clips del sitio (y el recorrido de cada módulo) y los videos del Tipo Recurso, en bucle (decisión 239)",
         "duracion": 86.05,
         "bpm": 120,
         "lufs": -14.9,
@@ -217,6 +264,24 @@
             "desde": 14.05,
             "hasta": 42.05,
             "nota": "Los clips de módulo usan los 28 s de 14,05 a 42,05 (14 compases) y la firma arranca en el golpe del 42,05; la música se desvanece en el primer segundo de la firma"
+          },
+          "ultimoGolpe": 82.05,
+          "fin": 86.05,
+          "recurso": {
+            "nota": "Plan por defecto del Tipo Recurso (recurso.mjs): la pista desde el 0,05 (sus compases caen en segundos pares del video), el bucle se encadena con cruces cortos justo antes de cada cabeza de compás y la salida termina en el final natural de la pista, con el último golpe (82,05) en la firma del cierre",
+            "entrada": [
+              0.05,
+              50.05
+            ],
+            "bucle": [
+              [
+                18.05,
+                66.05
+              ]
+            ],
+            "salida": 66.05,
+            "corte": 2,
+            "cruce": 0.03
           }
         }
       },
@@ -268,6 +333,7 @@
     }
   },
   "cambios": {
+    "v1.2": "2026-11-01: Tipo Recurso (decisión 239): intro-recurso.html (6 s), cierre-recurso.html (8 s con «Sigue con», 6 s sin él) capitulo-recurso.html (tarjeta de capítulo) y fondo-recurso.html (la noche del cuerpo), recurso.js (los tiempos de cada escena para las composiciones), frame-recurso.md, clases .k-recurso-* en kit.css, el plan de «Product Launch» en bucle (mapa.recurso, ultimoGolpe) y 62 íconos más de Material Symbols. Nada de lo anterior cambia de comportamiento.",
     "v1.1": "2026-10-30: cierre-clip.html (la firma en 4:5, 1080×1350, 2,5 s, con las variables y los tiempos del cierre del Corto), .k-ventana (la grabación real ampliada, en tamaños para 4:5, 9:16, 16:9 y escritorio) y .k-feed-* (textos para 4:5) en kit.css, los sonidos de acción propios (sonidos-accion.mjs: toque, aparicion, desliz, subida y confirmacion) y la biblioteca de música con el mapa de «Product Launch». Aprobado por el dueño el mismo día.",
     "v1-voz": "2026-10-30: la voz en español pasa de em_alex (1,0) a ef_dora (1,1), femenina y más fluida; la eligió el dueño entre Kokoro y Chatterbox (muestras en muestra-kit/renders/voces/).",
     "v1": "Primera versión (2026-10-30): firma «la corona se levanta», intro y cierre del Tipo Wiki, cierres de marca del Comercial (16:9) y del Corto (9:16, 2,5 s), sonido de marca propio «campanas», kit.css y frame-*.md. Aprobada por el dueño el mismo día."

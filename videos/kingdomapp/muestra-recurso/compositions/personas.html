@@ -1,0 +1,216 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":14,\"compas0\":0,\"golpes\":[],\"frases\":[{\"id\":\"f1\",\"texto\":\"Cada persona que llega a tu iglesia tiene un nombre y una historia.\",\"inicio\":0.5,\"fin\":4.2,\"palabras\":[]},{\"id\":\"f2\",\"texto\":\"Aquí la vemos como un punto de luz que se une a los demás.\",\"inicio\":4.5,\"fin\":7.8,\"palabras\":[]},{\"id\":\"f3\",\"texto\":\"Así se ven los recursos de Kingdom: ideas claras, al ritmo de la música.\",\"inicio\":8.1,\"fin\":12.2,\"palabras\":[]}]}"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Muestra del Tipo Recurso: tipografía cinética que sigue la voz (cada palabra en su tiempo estimado, las *claves* en dorado) y un
+         diagrama abstracto (personas como puntos) cuyos cambios caen en los pulsos de la música. Sin un solo número a mano: todo sale de
+         KRecurso.tiempos() (identidad/recurso.js). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          color: var(--k-noche-tinta);
+          font-family: var(--k-fuente);
+        }
+        .texto {
+          position: absolute;
+          left: 192px;
+          top: 0;
+          width: 860px;
+          height: 1080px;
+        }
+        .bloque {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          width: 860px;
+          transform: translateY(-50%);
+        }
+        .mapa {
+          position: absolute;
+          left: 1080px;
+          top: 160px;
+          width: 648px;
+          height: 760px;
+        }
+        .lineas {
+          position: absolute;
+          inset: 0;
+          width: 648px;
+          height: 760px;
+          overflow: visible;
+        }
+        .halo-yo {
+          position: absolute;
+          opacity: 0;
+          width: 120px;
+          height: 120px;
+          margin: -60px 0 0 -60px;
+          border-radius: 50%;
+          box-shadow: 0 0 0 3px var(--k-noche-dorado);
+        }
+        .conteo {
+          position: absolute;
+          left: 1080px;
+          top: 820px;
+          display: flex;
+          align-items: baseline;
+          gap: 18px;
+        }
+        .conteo .k-recurso-contador {
+          font-size: 96px;
+          color: var(--k-noche-dorado);
+        }
+      </style>
+
+      <div id="root" data-composition-id="personas" data-width="1920" data-height="1080" data-duration="14">
+        <div class="texto" id="personas-texto" data-layout-allow-overlap></div>
+        <div class="mapa" id="personas-mapa">
+          <svg class="lineas" id="personas-lineas" viewBox="0 0 648 760"></svg>
+          <div class="halo-yo" id="personas-halo" data-layout-allow-overflow></div>
+        </div>
+        <div class="conteo" id="personas-conteo">
+          <span class="k-recurso-contador" id="personas-numero">1</span>
+          <span class="k-recurso-etiqueta" id="personas-etiqueta">personas</span>
+        </div>
+        <span class="k-datos-ejemplo k-recurso-datos" id="personas-datos">Datos de ejemplo</span>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window); // al empezar el script, fuera de callbacks; «window» es el de esta escena
+          const [f1, f2, f3] = [T.frase(0), T.frase(1), T.frase(2)];
+          const texto = document.getElementById('personas-texto');
+          const mapa = document.getElementById('personas-mapa');
+          const svg = document.getElementById('personas-lineas');
+
+          // 1. Un bloque de texto por frase, cada palabra en su caja (las claves en dorado).
+          const bloques = T.frases.map((f, i) => {
+            const b = document.createElement('div');
+            b.className = 'bloque k-recurso-frase';
+            b.id = `personas-bloque-${i}`;
+            const ps = f.palabras.length ? f.palabras : f.texto.split(/\s+/).map((w) => ({ texto: w, inicio: f.inicio, fin: f.fin }));
+            ps.forEach((p, j) => {
+              const s = document.createElement('span');
+              s.className = 'k-recurso-palabra' + (p.clave ? ' k-recurso-clave' : '');
+              s.id = `personas-p-${i}-${j}`;
+              s.textContent = p.texto;
+              b.appendChild(s); // sin espacios de texto: el espacio es el margen de .k-recurso-palabra
+            });
+            texto.appendChild(b);
+            return { b, ps };
+          });
+
+          // 2. Personas como puntos: posiciones fijas con semilla (siempre las mismas) y su lugar final en un anillo.
+          let semilla = 239;
+          const azar = () => ((semilla = (semilla * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const N = 24;
+          const yo = { x: 324, y: 330 };
+          const puntos = [];
+          for (let i = 0; i < N - 1; i++) {
+            let x, y;
+            do {
+              x = 40 + azar() * 568;
+              y = 40 + azar() * 600;
+            } while (Math.hypot(x - yo.x, y - yo.y) < 110);
+            const a = (i / (N - 1)) * Math.PI * 2 - Math.PI / 2;
+            puntos.push({ x, y, ax: yo.x + Math.cos(a) * 250, ay: yo.y + Math.sin(a) * 250 });
+          }
+          const crear = (x, y, clase, id) => {
+            const d = document.createElement('span');
+            d.className = `k-recurso-punto ${clase}`;
+            d.id = id;
+            d.style.left = `${x}px`;
+            d.style.top = `${y}px`;
+            mapa.appendChild(d);
+            return d;
+          };
+          const dots = puntos.map((p, i) => crear(p.x, p.y, 'k-tenue', `personas-d-${i}`));
+          const yoDot = crear(yo.x, yo.y, 'k-oro', 'personas-yo');
+          yoDot.style.width = yoDot.style.height = '30px';
+          yoDot.style.margin = '-15px 0 0 -15px';
+          const halo = document.getElementById('personas-halo');
+          halo.style.left = `${yo.x}px`;
+          halo.style.top = `${yo.y}px`;
+          // Líneas del punto dorado a los 5 más cercanos.
+          const cercanos = puntos.map((p, i) => ({ i, d: Math.hypot(p.x - yo.x, p.y - yo.y) })).sort((a, b) => a.d - b.d).slice(0, 5);
+          const lineas = cercanos.map(({ i, d }, k) => {
+            const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            l.setAttribute('class', 'k-recurso-linea k-oro');
+            l.setAttribute('id', `personas-l-${k}`);
+            l.setAttribute('x1', yo.x); l.setAttribute('y1', yo.y);
+            l.setAttribute('x2', puntos[i].x); l.setAttribute('y2', puntos[i].y);
+            l.style.strokeDasharray = `${d}`;
+            l.style.strokeDashoffset = `${d}`;
+            svg.appendChild(l);
+            return { l, d };
+          });
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            // Texto: cada palabra entra un poco antes de oírse; el bloque sale justo antes de la frase siguiente.
+            bloques.forEach(({ b, ps }, i) => {
+              ps.forEach((p, j) => {
+                tl.fromTo(`#personas-p-${i}-${j}`, { y: 26, autoAlpha: 0, filter: 'blur(6px)' },
+                  { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.35, ease: 'power3.out' }, Math.max(0, p.inicio - 0.08));
+              });
+              const sig = T.frases[i + 1];
+              const sale = sig ? sig.inicio - 0.3 : T.salida(0.6);
+              tl.to(b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, sale);
+            });
+
+            // Frase 1: el punto dorado aparece en el pulso de «persona»; un halo late en cada palabra clave.
+            const tYo = T.pulso(T.palabra(0, 1).inicio - 0.25);
+            tl.fromTo(yoDot, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2.4)' }, tYo);
+            f1.palabras.filter((p) => p.clave).forEach((p) => {
+              const t = T.pulsoAntes(p.inicio);
+              tl.fromTo(halo, { scale: 0.4, autoAlpha: 0.9 }, { scale: 1.8, autoAlpha: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+            });
+            // Frase 2: los demás aparecen uno a uno en pulsos; las líneas se dibujan en «une» y los puntos se encienden en «demás».
+            const entradas = T.reparto(dots.length, f2.inicio, f2.inicio + 2);
+            dots.forEach((d, i) => tl.fromTo(d, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2)' }, entradas[i] + (i % 3) * 0.05));
+            const iUne = f2.palabras.findIndex((p) => /^une/.test(p.texto));
+            const tUne = T.pulso(T.palabra(1, Math.max(0, iUne)).inicio - 0.1);
+            lineas.forEach(({ l }, k) => tl.to(l, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }, tUne + k * 0.06));
+            const tDemas = T.pulso(T.palabra(1, f2.palabras.length - 1).inicio - 0.2);
+            tl.to(dots, { backgroundColor: '#eaf0ff', duration: 0.4, ease: 'power1.out', stagger: 0.015 }, tDemas);
+            // Frase 3: en el pulso de su inicio, todos forman un anillo alrededor del punto dorado; el conteo sube con «Datos de ejemplo».
+            const tAnillo = T.pulso(f3.inicio);
+            tl.to(lineas.map((x) => x.l), { autoAlpha: 0, duration: 0.3 }, tAnillo - 0.3);
+            dots.forEach((d, i) => tl.to(d, { x: puntos[i].ax - puntos[i].x, y: puntos[i].ay - puntos[i].y, duration: 1, ease: 'power3.inOut' }, tAnillo + (i % 4) * 0.03));
+            const cuenta = { n: 1 };
+            tl.fromTo('#personas-conteo', { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power2.out' }, tAnillo);
+            tl.fromTo('#personas-datos', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tAnillo);
+            tl.fromTo(cuenta, { n: 1 }, { n: N, duration: 1, ease: 'power2.out', onUpdate: () => {
+              document.getElementById('personas-numero').textContent = String(Math.round(cuenta.n));
+            } }, tAnillo);
+            // En la palabra clave «ritmo», el anillo late en cuatro pulsos seguidos.
+            const kRitmo = f3.palabras.find((p) => p.clave);
+            if (kRitmo) {
+              const t0 = T.pulso(kRitmo.inicio - 0.1);
+              for (let k = 0; k < 4; k++) {
+                tl.fromTo('#personas-mapa', { scale: 1.05 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, t0 + k * 0.5);
+              }
+            }
+            // Salida: el mapa y el conteo se recogen en los últimos 0,6 s.
+            tl.to(['#personas-mapa', '#personas-conteo', '#personas-datos'], { scale: 0.94, autoAlpha: 0, duration: 0.45, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['personas'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

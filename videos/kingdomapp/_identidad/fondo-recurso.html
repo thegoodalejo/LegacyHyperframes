@@ -1,0 +1,58 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"duracion","type":"number","label":"Duración del cuerpo (s; la pone recurso.mjs)","default":60,"min":1}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Fondo del cuerpo del Tipo Recurso (16:9), kit de identidad de Kingdom v1.2 (decisión 239; frame-recurso.md → «The Frame»): la noche del
+         sitio con el halo azul y dorado, que respira despacio de ida y vuelta durante todo el cuerpo, y la retícula de puntos quieta. Lo monta
+         el host debajo de todas las escenas, que van transparentes encima. NO se edita por video. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          background: #060d1f;
+        }
+        .halo {
+          position: absolute;
+          inset: -60px;
+          background:
+            radial-gradient(45% 57% at 86% 18%, rgba(53, 118, 218, 0.45), transparent 70%),
+            radial-gradient(33% 46% at 6% 100%, rgba(217, 162, 52, 0.22), transparent 70%);
+        }
+        .puntos {
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(rgba(169, 190, 235, 0.35) 2px, transparent 2.2px);
+          background-size: 42px 42px;
+          -webkit-mask-image: linear-gradient(90deg, transparent 35%, #000);
+          mask-image: linear-gradient(90deg, transparent 35%, #000);
+        }
+      </style>
+      <div id="root" data-composition-id="fondo-recurso" data-width="1920" data-height="1080" data-duration="60">
+        <div class="halo" id="fondo-recurso-halo" data-layout-allow-overflow></div>
+        <div class="puntos" id="fondo-recurso-puntos"></div>
+      </div>
+      <script>
+        (function () {
+          const v = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+          const d = Math.max(1, Number(v.duracion) || 60);
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo('#fondo-recurso-halo', { scale: 1.04, x: -24 }, { scale: 1, x: 0, duration: d / 2, ease: 'sine.inOut' }, 0);
+          tl.to('#fondo-recurso-halo', { scale: 1.05, x: 30, duration: d / 2, ease: 'sine.inOut' }, d / 2);
+          tl.set({}, {}, d);
+          window.__timelines['fondo-recurso'] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

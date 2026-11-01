@@ -14,3 +14,10 @@
 # Generados en cada preparación (por idioma) desde guion.mjs y el kit:
 wiki-*/index.html
 wiki-*/tiempos-*.json
+# Tipo Recurso (recurso.mjs): el host, los tiempos y la mezcla se generan por idioma; la entrega va al bucket, no a git.
+recurso-*/index.html
+recurso-*/tiempos-*.json
+muestra-recurso/index.html
+muestra-recurso/tiempos-*.json
+*/assets/mezcla/
+*/entrega/

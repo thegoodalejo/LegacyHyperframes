@@ -1,11 +1,12 @@
-/* Kit de identidad de los videos de Kingdom (v1.1): tokens y componentes para el CUERPO de los videos de los tres tipos.
+/* Kit de identidad de los videos de Kingdom (v1.2): tokens y componentes para el CUERPO de los videos de los tres tipos.
    La intro y los cierres son composiciones aparte (intro-wiki.html, cierre-*.html) y no dependen de este archivo.
    Uso, después de montar el kit, UNA vez en el <head> del host (index.html), en este orden; las escenas (subcomposiciones) usan las clases:
      <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
      <link rel="stylesheet" href="identidad/kit.css" />
    Nada de enlazarlo dentro del <template> de una escena ni con @import: así el CLI no lo encuentra y la escena queda sin estilos ni
    fuentes locales (probado con hyperframes 0.8.62).
-   Detalle y reglas: KingdomApp docs/videos/identidad.md y frame-wiki.md · frame-comercial.md · frame-corto.md. No se edita por video. */
+   Detalle y reglas: KingdomApp docs/videos/identidad.md y frame-wiki.md · frame-comercial.md · frame-corto.md · frame-recurso.md. No se edita
+   por video. */
 
 :root {
   /* Marca (frontend-v2/src/app/theme/brand-seeds.ts y el sitio público) */
@@ -358,4 +359,157 @@
   height: 52px;
   padding: 0 22px;
   font-size: 28px;
+}
+
+/* ─── v1.2 · Tipo Recurso (16:9, motion design sin la app; frame-recurso.md, decisión 239) ──────────────────────────────────────
+   El host (recurso.mjs) pone el fondo de noche (.k-noche .k-recurso-fondo con .k-halo y .k-puntos) debajo de todo el cuerpo: las escenas
+   van transparentes encima. Todo lo importante dentro de .k-recurso-zona (80 % seguro para títulos: 192 px a los lados, 108 px arriba y
+   abajo). Íconos: SVG de identidad/iconos/ como máscara (toman el color del texto), nunca una fuente de íconos ni emojis. */
+.k-recurso-fondo {
+  z-index: 0;
+}
+.k-recurso-zona {
+  position: absolute;
+  left: 192px;
+  right: 192px;
+  top: 108px;
+  bottom: 108px;
+}
+.k-recurso-ceja {
+  color: var(--k-ceja, var(--k-noche-dorado));
+  font-family: var(--k-fuente);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+/* Titulares: Fraunces, frase normal, máx. 2 líneas, énfasis <em> en itálica dorada sobre 1–3 palabras. */
+.k-recurso-titular,
+.k-recurso-frase,
+.k-recurso-gigante {
+  font-family: var(--k-fuente-marca);
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.k-recurso-titular { font-size: 96px; line-height: 1.04; }
+.k-recurso-frase { font-size: 72px; line-height: 1.1; }
+.k-recurso-gigante { font-size: 168px; line-height: 0.98; letter-spacing: -0.03em; }
+.k-recurso-titular em,
+.k-recurso-frase em,
+.k-recurso-gigante em {
+  color: var(--k-enfasis, var(--k-noche-dorado));
+  font-style: italic;
+  font-weight: 500;
+}
+.k-recurso-texto {
+  color: var(--k-suave, var(--k-noche-tinta-2));
+  font-family: var(--k-fuente);
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.k-recurso-etiqueta {
+  color: var(--k-suave, var(--k-noche-tinta-2));
+  font-family: var(--k-fuente);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+/* Tipografía cinética: cada palabra en su caja (entra con la voz, T.palabra(i, j)); la palabra clave se ilumina en dorado. */
+.k-recurso-palabra {
+  display: inline-block;
+  margin-right: 0.24em; /* el espacio entre palabras es este margen: un espacio de texto entre dos cajas se pierde al partir la línea */
+}
+.k-recurso-palabra:last-child {
+  margin-right: 0;
+}
+.k-recurso-clave {
+  color: var(--k-enfasis, var(--k-noche-dorado));
+}
+/* Ícono de Material Symbols (SVG local) como máscara: <span class="k-recurso-icono" style="--k-icono: url(identidad/iconos/groups.svg)"></span> */
+.k-recurso-icono {
+  display: inline-block;
+  flex: none;
+  width: var(--k-icono-tam, 96px);
+  height: var(--k-icono-tam, 96px);
+  background: currentColor;
+  -webkit-mask: var(--k-icono) center / contain no-repeat;
+  mask: var(--k-icono) center / contain no-repeat;
+}
+.k-recurso-icono-oro { color: var(--k-noche-dorado); }
+/* Diagramas abstractos: personas como puntos, redes y células como nodos unidos por líneas. */
+.k-recurso-punto {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  background: var(--k-noche-tinta);
+}
+.k-recurso-punto.k-oro { background: var(--k-noche-dorado); }
+.k-recurso-punto.k-azul { background: var(--k-azul); }
+.k-recurso-punto.k-verde { background: #26a69a; }
+.k-recurso-punto.k-tenue { background: rgba(169, 182, 214, 0.35); }
+.k-recurso-nodo {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border-radius: 50%;
+  background: var(--k-noche-2);
+  box-shadow: inset 0 0 0 2px rgba(234, 240, 255, 0.22);
+  color: var(--k-noche-tinta);
+}
+.k-recurso-nodo.k-oro { box-shadow: inset 0 0 0 3px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+.k-recurso-linea {
+  stroke: rgba(234, 240, 255, 0.28);
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+}
+.k-recurso-linea.k-oro { stroke: var(--k-noche-dorado); }
+/* Tarjeta sobre la noche (un dato, un paso, una idea); nunca una pantalla de la app redibujada. */
+.k-recurso-tarjeta {
+  box-sizing: border-box;
+  padding: 40px 44px;
+  border-radius: 28px;
+  background: rgba(12, 26, 58, 0.78);
+  box-shadow: inset 0 0 0 1px var(--k-noche-linea), 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+  color: var(--k-noche-tinta);
+}
+/* Contadores y gráficas: cifras en Fraunces con números tabulares; SIEMPRE con .k-datos-ejemplo cerca. */
+.k-recurso-contador {
+  font-family: var(--k-fuente-marca);
+  font-size: 160px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.k-recurso-barra {
+  display: block;
+  border-radius: 12px 12px 4px 4px;
+  background: var(--k-azul);
+  transform-origin: 50% 100%;
+}
+.k-recurso-barra.k-oro { background: var(--k-noche-dorado); }
+.k-recurso-eje {
+  height: 2px;
+  background: rgba(234, 240, 255, 0.22);
+}
+/* «Datos de ejemplo» en el Tipo Recurso: 28 px (el piso de lectura de check), abajo a la derecha dentro de la zona segura. */
+.k-datos-ejemplo.k-recurso-datos {
+  position: absolute;
+  right: 192px;
+  bottom: 108px;
+  height: 48px;
+  padding: 0 20px;
+  font-size: 28px;
+  background: rgba(12, 26, 58, 0.9);
+  box-shadow: inset 0 0 0 1px var(--k-noche-linea);
 }
