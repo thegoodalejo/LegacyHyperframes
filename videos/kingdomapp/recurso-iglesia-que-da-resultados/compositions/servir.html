@@ -1,0 +1,202 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":19.5,\"frases\":[{\"texto\":\"Al terminar, el líder cierra el turno y marca quién sirvió.\",\"inicio\":0.5,\"fin\":3.6,\"palabras\":[]},{\"texto\":\"Así queda un historial real de cada servidor, y la carga se reparte parejo.\",\"inicio\":4.1,\"fin\":8.3,\"palabras\":[]},{\"texto\":\"Y servir cuenta: cumple el paso Servir de su ruta de crecimiento.\",\"inicio\":8.9,\"fin\":12.6,\"palabras\":[]},{\"texto\":\"Los reportes te muestran la cobertura de cada reunión, y la carga de cada persona.\",\"inicio\":13.2,\"fin\":17.5,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Equipos · servir cuenta: el cierre del turno (sirvió / no llegó); el historial de cada servidor en semanas y la carga que se
+         empareja; el paso «Servir» de la ruta que se cumple; los reportes de cobertura por reunión y carga por persona (Datos de
+         ejemplo). Fuente: docs/modulos/equipos.md → «Cerrar el turno», «Objetivo de conexión Servir», «Reportes»; sitio/src/data/modulos.ts
+         (Equipos → «Servir cuenta»). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #servir-todo { position: absolute; inset: 0; }
+        #servir-texto { position: absolute; left: 192px; top: 108px; width: 800px; height: 864px; display: grid; align-items: center; }
+        #servir-texto .bloque { grid-area: 1 / 1; }
+        #servir-cierre, #servir-hist, #servir-ruta, #servir-rep { position: absolute; inset: 0; }
+        #servir-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .servir-fila { position: absolute; left: 1120px; width: 600px; height: 76px; display: flex; align-items: center; gap: 24px; }
+        .servir-p { width: 30px; height: 30px; border-radius: 50%; background: var(--k-noche-tinta-2); flex: none; }
+        .servir-raya { height: 12px; border-radius: 6px; background: rgba(234, 240, 255, 0.14); flex: none; }
+        .servir-marca { margin-left: auto; height: 52px; padding: 0 20px; display: flex; align-items: center; gap: 10px; border-radius: 999px; font-size: 28px; font-weight: 700; }
+        .servir-si { background: rgba(38, 166, 154, 0.18); color: #4fd1c5; }
+        .servir-no { background: rgba(224, 108, 90, 0.18); color: #f0907f; }
+        .servir-eti { position: absolute; }
+        .servir-cel { position: absolute; width: 38px; height: 38px; border-radius: 8px; }
+        .servir-bar { position: absolute; height: 34px; border-radius: 8px; background: var(--k-azul); transform-origin: 0 50%; }
+        .servir-pp { position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%; background: var(--k-noche-tinta-2); }
+        .servir-ruta-eti { position: absolute; top: 600px; width: 200px; text-align: center; }
+        #servir-cumple { position: absolute; left: 1470px; top: 380px; width: 300px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--k-noche-dorado); }
+        #servir-cumple .k-recurso-etiqueta { color: var(--k-noche-dorado); }
+        .servir-col { position: absolute; width: 44px; border-radius: 10px 10px 4px 4px; transform-origin: 50% 100%; }
+        .servir-por { position: absolute; width: 70px; text-align: center; font-size: 28px; }
+      </style>
+
+      <div id="root" data-composition-id="servir" data-width="1920" data-height="1080" data-duration="19.5">
+        <div id="servir-todo" data-layout-allow-overlap>
+          <svg id="servir-lineas" viewBox="0 0 1920 1080"></svg>
+          <div id="servir-cierre" data-layout-allow-overlap></div>
+          <div id="servir-hist" data-layout-allow-overlap></div>
+          <div id="servir-ruta" data-layout-allow-overlap></div>
+          <div id="servir-rep" data-layout-allow-overlap></div>
+          <div id="servir-texto" data-layout-allow-overlap></div>
+          <span class="k-datos-ejemplo k-recurso-datos" id="servir-datos">Datos de ejemplo</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('servir-texto'), svg = $('servir-lineas');
+          const rs = [
+            rotulo(texto, 'servir-r0', 0, 'El líder *cierra el turno* y marca quién sirvió.'),
+            rotulo(texto, 'servir-r1', 1, 'Un *historial real*, y la carga se reparte parejo.'),
+            rotulo(texto, 'servir-r2', 2, 'Y servir *cuenta*.', 'k-recurso-titular'),
+            rotulo(texto, 'servir-r3', 3, 'Cobertura de cada reunión, y carga de cada *persona*.'),
+          ];
+
+          // Cierre del turno: cinco filas; una «No llegó».
+          const cie = $('servir-cierre');
+          const ANCHOS = [220, 170, 240, 190, 210];
+          const filas = ANCHOS.map((w, i) => {
+            const f = el('div', 'servir-fila', cie, `servir-f-${i}`); f.style.top = `${300 + i * 100}px`;
+            el('span', 'servir-p', f); const r = el('span', 'servir-raya', f); r.style.width = `${w}px`;
+            const no = i === 3;
+            const m = el('span', 'servir-marca ' + (no ? 'servir-no' : 'servir-si'), f, `servir-m-${i}`); icono(m, no ? 'schedule' : 'check_circle', 30); el('span', '', m).textContent = no ? 'No llegó' : 'Sirvió';
+            return { f, m };
+          });
+
+          // Historial: 5 servidores × 12 semanas, y la carga que se empareja.
+          const hi = $('servir-hist');
+          const eH = el('div', 'k-recurso-etiqueta servir-eti', hi, 'servir-eti-h'); eH.textContent = 'Últimas 12 semanas'; Object.assign(eH.style, { left: '1100px', top: '220px' });
+          const H = ['101011010110', '010100101010', '110101011011', '001010010100', '100110101001'];
+          const celdas = [];
+          H.forEach((fila, r) => { const p = el('span', 'servir-pp', hi, `servir-hp-${r}`); p.style.left = '1112px'; p.style.top = `${292 + r * 48}px`; [...fila].forEach((v, c) => { const d = el('div', 'servir-cel', hi, `servir-c-${r}-${c}`); d.style.left = `${1144 + c * 47}px`; d.style.top = `${273 + r * 48}px`; d.style.background = v === '1' ? '#26a69a' : 'rgba(234,240,255,0.08)'; celdas.push({ d, c, v }); }); });
+          const eC = el('div', 'k-recurso-etiqueta servir-eti', hi, 'servir-eti-c'); eC.textContent = 'Carga por persona'; Object.assign(eC.style, { left: '1100px', top: '560px' });
+          const CARGA0 = [520, 120, 380, 80, 260], CARGA1 = [300, 270, 300, 250, 280];
+          const barras = CARGA0.map((w, i) => { const p = el('span', 'servir-pp', hi, `servir-bp-${i}`); p.style.left = '1112px'; p.style.top = `${640 + i * 62}px`; const b = el('div', 'servir-bar', hi, `servir-b-${i}`); b.style.left = '1144px'; b.style.top = `${623 + i * 62}px`; b.style.width = `${w}px`; return b; });
+
+          // Ruta pequeña con el paso «Servir».
+          const ru = $('servir-ruta');
+          const RP = [{ ic: 'door_open', t: 'Llega' }, { ic: 'groups', t: 'Grupo' }, { ic: 'school', t: 'Curso' }, { ic: 'volunteer_activism', t: 'Servir' }].map((p, i) => ({ ...p, x: 1110 + i * 170 }));
+          const lR = linea(svg, 'servir-lr', 1110, 540, 1620, 540, '');
+          const lRo = linea(svg, 'servir-lro', 1110, 540, 1620, 540, 'k-oro');
+          const nR = RP.map((p, i) => nodo(ru, `servir-rn-${i}`, p.x, 540, p.ic, i === 3 ? 120 : 96, i < 3));
+          const eR = RP.map((p, i) => { const e = el('div', 'k-recurso-etiqueta servir-ruta-eti', ru, `servir-re-${i}`); e.textContent = p.t; e.style.left = `${p.x - 100}px`; return e; });
+          const cumple = el('div', '', ru, 'servir-cumple'); icono(cumple, 'task_alt', 52); el('div', 'k-recurso-etiqueta', cumple).textContent = 'Paso cumplido';
+
+          // Reportes: cobertura por reunión (columnas) y carga por persona (barras).
+          const rep = $('servir-rep');
+          const e1 = el('div', 'k-recurso-etiqueta servir-eti', rep, 'servir-eti-r1'); e1.textContent = 'Cobertura por reunión'; Object.assign(e1.style, { left: '1100px', top: '230px' });
+          const COB = [100, 92, 100, 85, 96, 100];
+          const cols = COB.map((v, i) => { const c = el('div', 'servir-col', rep, `servir-col-${i}`); const h = v * 2.2; c.style.left = `${1110 + i * 100}px`; c.style.top = `${560 - h}px`; c.style.height = `${h}px`; c.style.background = v === 100 ? '#26a69a' : '#e8b95a'; const p = el('div', 'k-recurso-etiqueta servir-por', rep, `servir-por-${i}`); p.textContent = `${v}%`; p.style.left = `${1097 + i * 100}px`; p.style.top = `${560 - h - 44}px`; return c; });
+          const eje = el('div', 'k-recurso-eje', rep, 'servir-eje'); Object.assign(eje.style, { position: 'absolute', left: '1100px', top: '562px', width: '600px' });
+          const e2 = el('div', 'k-recurso-etiqueta servir-eti', rep, 'servir-eti-r2'); e2.textContent = 'Carga por persona · 90 días'; Object.assign(e2.style, { left: '1100px', top: '620px' });
+          const CP = [7, 6, 6, 5, 5];
+          const cps = CP.map((v, i) => { const b = el('div', 'servir-bar', rep, `servir-cp-${i}`); b.style.left = '1100px'; b.style.top = `${680 + i * 52}px`; b.style.height = '30px'; b.style.width = `${v * 70}px`; b.style.background = '#26a69a'; const n = el('div', 'k-recurso-etiqueta servir-eti', rep, `servir-cpn-${i}`); n.textContent = String(v); n.style.left = `${1100 + v * 70 + 16}px`; n.style.top = `${678 + i * 52}px`; return b; });
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            rs.forEach((r, i) => { entra(r); if (i < rs.length - 1) sale(r, fin(i)); });
+            gsap.set(['#servir-hist', '#servir-ruta', '#servir-rep', '#servir-datos', cumple], { autoAlpha: 0 });
+
+            // Frase 0: las filas del turno y, en «sirvió», las marcas una por pulso.
+            const f0 = T.frase(0);
+            filas.forEach(({ f }, i) => tl.fromTo(f, { x: 30, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, T.pulso(f0.inicio) + i * 0.2));
+            const tM = T.reparto(5, Math.max(T.pulso(f0.inicio) + 1.2, T.pulso(pal(0, /^marca/) - 0.3)), f0.fin + 0.8);
+            filas.forEach(({ m }, i) => tl.fromTo(m, { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2)' }, tM[i]));
+            const f1 = T.frase(1);
+            tl.to('#servir-cierre', { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f1.inicio - 0.35);
+
+            // Frase 1: el historial se llena semana a semana; en «parejo», la carga se empareja.
+            const t1 = T.pulso(f1.inicio);
+            tl.to('#servir-hist', { autoAlpha: 1, duration: 0.01 }, t1 - 0.05);
+            tl.to('#servir-datos', { autoAlpha: 1, duration: 0.3 }, t1);
+            celdas.forEach(({ d, c }) => tl.fromTo(d, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.25, ease: 'back.out(1.8)' }, t1 + c * 0.1));
+            barras.forEach((b, i) => tl.fromTo(b, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power3.out' }, t1 + 1.0 + i * 0.1));
+            const tPar = Math.max(t1 + 2, T.pulso(pal(1, /^parejo/) - 0.2));
+            barras.forEach((b, i) => tl.to(b, { scaleX: CARGA1[i] / CARGA0[i], backgroundColor: '#26a69a', duration: 0.8, ease: 'power3.inOut' }, tPar + i * 0.05));
+            const f2 = T.frase(2);
+            tl.to('#servir-hist', { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f2.inicio - 0.35);
+
+            // Frase 2: la ruta; en «cuenta», la línea dorada llega a «Servir», que se cumple.
+            const t2 = T.pulso(f2.inicio);
+            tl.to('#servir-ruta', { autoAlpha: 1, duration: 0.01 }, t2 - 0.05);
+            tl.to(lR, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out' }, t2);
+            nR.forEach((n, i) => { tl.fromTo(n, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2)' }, t2 + i * 0.15); tl.fromTo(eR[i], { y: 10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.3 }, t2 + i * 0.15 + 0.1); });
+            tl.to(lRo, { strokeDashoffset: 170, duration: 0.6, ease: 'power2.out' }, t2 + 0.3);
+            const tCuenta = Math.max(t2 + 1, T.pulso(pal(2, /^cuenta/) - 0.15));
+            tl.to(lRo, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }, tCuenta);
+            tl.to(nR[3], { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', backgroundColor: 'rgba(232,185,90,0.14)', duration: 0.35 }, tCuenta + 0.4);
+            tl.fromTo(nR[3], { scale: 1.25 }, { scale: 1, duration: 0.5, ease: 'power2.out', immediateRender: false }, tCuenta + 0.4);
+            tl.fromTo(cumple, { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'back.out(1.8)', immediateRender: false }, tCuenta + 0.7);
+            tl.fromTo(nR[3], { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1), 0 0 0 0px rgba(232,185,90,0.6)' }, { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1), 0 0 0 40px rgba(232,185,90,0)', duration: 1, ease: 'power2.out', immediateRender: false }, tCuenta + 1.2);
+            const f3 = T.frase(3);
+            tl.to(['#servir-ruta', lR, lRo], { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f3.inicio - 0.35);
+
+            // Frase 3: los reportes: cobertura por reunión en «cobertura», carga por persona en «carga».
+            const t3 = T.pulso(f3.inicio);
+            tl.to('#servir-rep', { autoAlpha: 1, duration: 0.01 }, t3 - 0.05);
+            const tCob = Math.max(t3, T.pulsoAntes(pal(3, /^cobertura/)));
+            tl.fromTo([e1, eje], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tCob);
+            cols.forEach((c, i) => { tl.fromTo(c, { scaleY: 0 }, { scaleY: 1, duration: 0.45, ease: 'power3.out' }, tCob + 0.2 + i * 0.15); tl.fromTo(`#servir-por-${i}`, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tCob + 0.4 + i * 0.15); });
+            const tCarga = Math.max(tCob + 1.4, T.pulsoAntes(pal(3, /^carga/)));
+            tl.fromTo(e2, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tCarga);
+            cps.forEach((b, i) => { tl.fromTo(b, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power3.out' }, tCarga + 0.2 + i * 0.12); tl.fromTo(`#servir-cpn-${i}`, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tCarga + 0.5 + i * 0.12); });
+
+            tl.to('#servir-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['servir'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

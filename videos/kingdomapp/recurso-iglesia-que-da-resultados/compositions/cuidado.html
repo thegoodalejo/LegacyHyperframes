@@ -1,0 +1,192 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":24,\"frases\":[{\"texto\":\"Todo empieza con las personas.\",\"inicio\":0.5,\"fin\":2.2,\"palabras\":[]},{\"texto\":\"Cuando alguien llega por primera vez, se registra desde el celular, aun sin señal.\",\"inicio\":2.7,\"fin\":7.0,\"palabras\":[]},{\"texto\":\"Y no se queda solo: quien coordina reparte a los nuevos de forma pareja entre quienes acompañan.\",\"inicio\":7.5,\"fin\":12.6,\"palabras\":[]},{\"texto\":\"Cada acompañante lo ve en Mi seguimiento: a quién llamar y qué paso sigue.\",\"inicio\":13.2,\"fin\":17.2,\"palabras\":[]},{\"texto\":\"Y tú sabes quién ya recibió su llamada, y quién todavía no.\",\"inicio\":17.7,\"fin\":21.0,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Membresía · cuidado: la iglesia como puntos; llega una persona nueva (dorada) y se registra sin señal; los nuevos se reparten
+         parejo entre tres acompañantes; en «llamar» cada nuevo late; al final, cuatro de seis ya tienen su llamada (Datos de ejemplo).
+         Fuente: docs/modulos/membresia.md → «Registrar a alguien», «Mi seguimiento», «Tablero del coordinador». -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #cuidado-todo { position: absolute; inset: 0; }
+        #cuidado-texto { position: absolute; left: 192px; top: 108px; width: 820px; height: 864px; display: grid; align-items: center; }
+        #cuidado-texto .bloque { grid-area: 1 / 1; }
+        #cuidado-diag { position: absolute; inset: 0; }
+        #cuidado-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .cuidado-eti { position: absolute; width: 240px; text-align: center; }
+        .cuidado-capa { position: absolute; left: 0; top: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 240px; }
+        #cuidado-conteo { position: absolute; left: 1080px; top: 800px; display: flex; align-items: baseline; gap: 20px; }
+        #cuidado-conteo .k-recurso-contador { font-size: 96px; color: var(--k-noche-dorado); }
+        .cuidado-flecha { position: absolute; margin: -16px 0 0 -16px; color: var(--k-noche-tinta-2); }
+        .cuidado-ping { position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; box-shadow: 0 0 0 2px var(--k-noche-dorado); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="cuidado" data-width="1920" data-height="1080" data-duration="24">
+        <div id="cuidado-todo" data-layout-allow-overlap>
+          <div id="cuidado-diag" data-layout-allow-overlap>
+            <svg id="cuidado-lineas" viewBox="0 0 1920 1080"></svg>
+          </div>
+          <div id="cuidado-texto" data-layout-allow-overlap></div>
+          <div id="cuidado-conteo">
+            <span class="k-recurso-contador" id="cuidado-numero">0 de 6</span>
+            <span class="k-recurso-etiqueta" id="cuidado-conteo-eti">con su llamada</span>
+          </div>
+          <span class="k-datos-ejemplo k-recurso-datos" id="cuidado-datos">Datos de ejemplo</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          let semilla = 2207;
+          const azar = () => ((semilla = (semilla * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function punto(padre, id, x, y, clase, tam) { const d = el('span', 'k-recurso-punto ' + (clase || ''), padre, id); d.style.left = `${x}px`; d.style.top = `${y}px`; if (tam) { d.style.width = d.style.height = `${tam}px`; d.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`; } return d; }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('cuidado-texto'), diag = $('cuidado-diag'), svg = $('cuidado-lineas');
+          const rs = [
+            rotulo(texto, 'cuidado-r0', 0, 'Todo empieza con las *personas*.', 'k-recurso-titular'),
+            rotulo(texto, 'cuidado-r1', 1, 'Llega por primera vez, y se registra aun *sin señal*.'),
+            rotulo(texto, 'cuidado-r2', 2, 'Los nuevos se reparten de forma *pareja* entre quienes acompañan.'),
+            rotulo(texto, 'cuidado-r3', 3, '*Mi seguimiento:* a quién llamar y qué paso sigue.'),
+            rotulo(texto, 'cuidado-r4', 4, 'Quién recibió su llamada, y quién *todavía no*.'),
+          ];
+
+          // La iglesia: puntos en un círculo amplio alrededor de (1400, 540).
+          const iglesia = [];
+          for (let i = 0; i < 26; i++) {
+            const a = azar() * Math.PI * 2, r = 70 + Math.sqrt(azar()) * 230;
+            iglesia.push(punto(diag, `cuidado-i-${i}`, 1400 + Math.cos(a) * r, 540 + Math.sin(a) * r, 'k-tenue'));
+          }
+          // Los acompañantes y los nuevos (dos por acompañante).
+          const A = [300, 520, 740].map((y) => ({ x: 1640, y }));
+          const nA = A.map((a, i) => nodo(diag, `cuidado-a-${i}`, a.x, a.y, 'person', 96));
+          const nuevosFin = [];
+          A.forEach((a) => { nuevosFin.push({ x: 1440, y: a.y - 26 }); nuevosFin.push({ x: 1500, y: a.y + 26 }); });
+          const nuevosIni = [0, 1, 2, 3, 4, 5].map((i) => ({ x: 1200 + (i % 2) * 70, y: 360 + i * 64 }));
+          const nuevos = nuevosFin.map((p, i) => punto(diag, `cuidado-n-${i}`, p.x, p.y, 'k-oro', 22));
+          const lN = nuevosFin.map((p, i) => linea(svg, `cuidado-ln-${i}`, p.x + 12, p.y, A[Math.floor(i / 2)].x - 50, A[Math.floor(i / 2)].y, 'k-oro'));
+          const pings = nuevosFin.map((p, i) => { const d = el('span', 'cuidado-ping', diag, `cuidado-ping-${i}`); d.style.left = `${p.x}px`; d.style.top = `${p.y}px`; return d; });
+          const flechas = A.map((a, i) => { const f = icono(diag, 'arrow_forward', 32); f.classList.add('cuidado-flecha'); f.id = `cuidado-f-${i}`; f.style.left = `${1568}px`; f.style.top = `${a.y - 58}px`; return f; });
+          // El que llega, con su estado de conexión encima.
+          const yo = { x: 1290, y: 520 };
+          const estado = el('div', 'cuidado-capa', diag, 'cuidado-estado');
+          estado.style.left = `${yo.x - 120}px`; estado.style.top = `${yo.y - 150}px`;
+          const sinSenal = el('div', 'cuidado-capa', estado, 'cuidado-sin'); icono(sinSenal, 'wifi_off', 56); el('div', 'k-recurso-etiqueta', sinSenal).textContent = 'Sin señal';
+          const listo = el('div', 'cuidado-capa', estado, 'cuidado-listo'); const icL = icono(listo, 'task_alt', 56); icL.style.color = '#26a69a'; el('div', 'k-recurso-etiqueta', listo).textContent = 'Registrada';
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            rs.forEach((r, i) => { entra(r); if (i < rs.length - 1) sale(r, fin(i)); });
+
+            // Frase 0: la iglesia aparece en pulsos y respira.
+            const f0 = T.frase(0);
+            const tIg = T.reparto(iglesia.length, f0.inicio, f0.fin + 0.4);
+            iglesia.forEach((d, i) => tl.fromTo(d, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2)' }, tIg[i] + (i % 4) * 0.04));
+            tl.fromTo(diag, { scale: 0.97 }, { scale: 1, duration: T.duracion, ease: 'none', transformOrigin: '1400px 540px' }, 0);
+
+            // Frase 1: el nuevo entra desde la derecha; «sin señal» y, al final de la frase, «Registrada».
+            const f1 = T.frase(1);
+            const tLlega = T.pulso(pal(1, /^llega/) - 0.1);
+            tl.fromTo(nuevos[0], { x: 420, y: yo.y - nuevosFin[0].y + 0, scale: 0, autoAlpha: 0 }, { x: yo.x - nuevosFin[0].x + 180, y: yo.y - nuevosFin[0].y, scale: 1.4, autoAlpha: 1, duration: 0.5, ease: 'power3.out' }, tLlega);
+            tl.to(nuevos[0], { x: yo.x - nuevosFin[0].x, duration: 0.8, ease: 'power2.inOut' }, tLlega + 0.5);
+            const tSin = T.pulso(pal(1, /^sin$/) - 0.15);
+            gsap.set(listo, { autoAlpha: 0 });
+            tl.fromTo(sinSenal, { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, tSin);
+            const tOk = Math.max(tSin + 1.0, T.pulso(f1.fin + 0.1));
+            tl.to(sinSenal, { y: -14, autoAlpha: 0, duration: 0.25, ease: 'power2.in' }, tOk);
+            tl.fromTo(listo, { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'back.out(1.8)', immediateRender: false }, tOk + 0.2);
+
+            // Frase 2: la iglesia se atenúa, llegan los acompañantes y los otros nuevos; en «pareja», cada uno va con el suyo.
+            const f2 = T.frase(2);
+            const t2 = T.pulso(f2.inicio);
+            tl.to(estado, { autoAlpha: 0, duration: 0.3 }, t2 - 0.2);
+            tl.to(iglesia, { autoAlpha: 0.25, duration: 0.6, stagger: 0.01 }, t2);
+            tl.to(nuevos[0], { x: nuevosIni[0].x - nuevosFin[0].x, y: nuevosIni[0].y - nuevosFin[0].y, scale: 1, duration: 0.7, ease: 'power3.inOut' }, t2);
+            nuevos.forEach((d, i) => { if (i) tl.fromTo(d, { x: nuevosIni[i].x - nuevosFin[i].x, y: nuevosIni[i].y - nuevosFin[i].y, scale: 0, autoAlpha: 0 }, { x: nuevosIni[i].x - nuevosFin[i].x, y: nuevosIni[i].y - nuevosFin[i].y, scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2)' }, t2 + i * 0.25); });
+            const tAc = T.pulso(pal(2, /^acompanan/) - 0.3);
+            const tPar = Math.min(tAc - 0.5, T.pulso(pal(2, /^pareja/) - 0.15));
+            nA.forEach((n, i) => tl.fromTo(n, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.42, ease: 'back.out(2)' }, Math.max(t2 + 0.5, tPar - 1.2) + i * 0.2));
+            nuevos.forEach((d, i) => tl.to(d, { x: 0, y: 0, duration: 0.8, ease: 'power3.inOut' }, tPar + (i % 2) * 0.12 + Math.floor(i / 2) * 0.06));
+            lN.forEach((l, i) => tl.to(l, { strokeDashoffset: 0, duration: 0.45, ease: 'power2.out' }, tPar + 0.7 + (i % 2) * 0.1));
+
+            // Frase 3: en «llamar», cada nuevo late; en «sigue», una flecha junto a cada acompañante.
+            const tLlamar = T.pulso(pal(3, /^llamar/) - 0.15);
+            pings.forEach((p, i) => tl.fromTo(p, { scale: 0.6, opacity: 0.95 }, { scale: 2, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, tLlamar + (i % 3) * 0.08));
+            pings.forEach((p, i) => tl.fromTo(p, { scale: 0.6, opacity: 0.95 }, { scale: 2, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, tLlamar + 1 + (i % 3) * 0.08));
+            const tSigue = T.pulso(pal(3, /^sigue/) - 0.2);
+            flechas.forEach((f, i) => tl.fromTo(f, { x: -16, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, tSigue + i * 0.12));
+            tl.fromTo(nA, { scale: 1 }, { scale: 1.1, duration: 0.25, yoyo: true, repeat: 1, stagger: 0.12, immediateRender: false }, tSigue);
+
+            // Frase 4: cuatro de seis pasan a verde («recibió su llamada»); los otros dos siguen dorados y laten; el conteo sube.
+            const f4 = T.frase(4);
+            const tRec = T.pulso(pal(4, /^recibio/) - 0.1);
+            const verdes = [0, 1, 2, 4];
+            verdes.forEach((k, j) => {
+              tl.to(nuevos[k], { backgroundColor: '#26a69a', duration: 0.3, ease: 'power1.out' }, tRec + j * 0.25);
+              tl.to(lN[k], { stroke: '#26a69a', duration: 0.3 }, tRec + j * 0.25);
+            });
+            const tNo = T.pulso(pal(4, /^todavia/) - 0.1);
+            [3, 5].forEach((k) => {
+              for (let r = 0; r < 3; r++) tl.fromTo(pings[k], { scale: 0.6, opacity: 0.95 }, { scale: 2, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, tNo + r);
+            });
+            const cuenta = { n: 0 };
+            tl.fromTo('#cuidado-conteo', { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, tRec - 0.3);
+            tl.fromTo('#cuidado-datos', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tRec - 0.3);
+            tl.fromTo(cuenta, { n: 0 }, { n: 4, duration: 1, ease: 'none', onUpdate: () => { $('cuidado-numero').textContent = `${Math.round(cuenta.n)} de 6`; } }, tRec);
+
+            tl.to('#cuidado-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['cuidado'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

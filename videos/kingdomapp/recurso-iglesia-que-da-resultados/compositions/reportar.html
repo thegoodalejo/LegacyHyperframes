@@ -1,0 +1,226 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":22.5,\"frases\":[{\"texto\":\"Ahora, las reuniones.\",\"inicio\":0.5,\"fin\":1.8,\"palabras\":[]},{\"texto\":\"Cultos, casas de paz, células: cada iglesia define las suyas.\",\"inicio\":2.2,\"fin\":5.6,\"palabras\":[]},{\"texto\":\"Al terminar, el líder la reporta desde su celular, en pasos guiados.\",\"inicio\":6.1,\"fin\":9.6,\"palabras\":[]},{\"texto\":\"Marca a los de siempre en un toque, agrega a la persona nueva y cuenta a los visitantes.\",\"inicio\":10.1,\"fin\":14.8,\"palabras\":[]},{\"texto\":\"¿No hay señal? Se guarda, y se envía solo cuando vuelve la conexión.\",\"inicio\":15.3,\"fin\":19.0,\"palabras\":[]},{\"texto\":\"Ninguna reunión se queda en una libreta.\",\"inicio\":19.5,\"fin\":21.5,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Eventos · reportar: las categorías de la iglesia (cultos, casas de paz, células y las suyas); los pasos guiados del reporte
+         (Asistencia → Reporte → Listo); las casillas de los habituales que se marcan en una ola, la persona nueva y los visitantes;
+         sin señal, el reporte queda «por enviar» y se envía solo. Fuente: docs/modulos/eventos.md → «Principios», «Reportar»;
+         sitio/src/data/modulos.ts (Eventos). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #reportar-todo { position: absolute; inset: 0; }
+        #reportar-texto { position: absolute; left: 192px; right: 192px; top: 130px; height: 140px; }
+        #reportar-texto .bloque { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+        #reportar-centro { position: absolute; left: 192px; right: 192px; top: 400px; height: 300px; }
+        #reportar-centro .bloque { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+        #reportar-cats, #reportar-form, #reportar-envio, #reportar-final { position: absolute; inset: 0; }
+        #reportar-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .reportar-eti { position: absolute; width: 260px; text-align: center; }
+        .reportar-casilla { position: absolute; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; box-shadow: inset 0 0 0 3px rgba(169, 182, 214, 0.55); }
+        .reportar-check { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--k-noche); opacity: 0; }
+        #reportar-visit { position: absolute; left: 1400px; top: 500px; width: 330px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+        #reportar-visit .k-recurso-contador { font-size: 120px; color: var(--k-noche-dorado); }
+        #reportar-capsula { position: absolute; left: 660px; top: 470px; width: 600px; height: 150px; display: flex; align-items: center; gap: 28px; padding: 0 44px; }
+        .reportar-estado { position: absolute; left: 160px; top: 0; height: 150px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+        .reportar-estado .k-recurso-titular { font-size: 56px; }
+        #reportar-senal { position: absolute; left: 896px; top: 330px; color: var(--k-noche-tinta-2); }
+        .reportar-ic { position: absolute; left: 44px; top: 39px; }
+        #reportar-final-ics { position: absolute; left: 0; right: 0; top: 700px; display: flex; justify-content: center; gap: 60px; color: var(--k-noche-dorado); }
+      </style>
+
+      <div id="root" data-composition-id="reportar" data-width="1920" data-height="1080" data-duration="22.5">
+        <div id="reportar-todo" data-layout-allow-overlap>
+          <svg id="reportar-lineas" viewBox="0 0 1920 1080"></svg>
+          <div id="reportar-cats" data-layout-allow-overlap></div>
+          <div id="reportar-form" data-layout-allow-overlap>
+            <div id="reportar-visit">
+              <span class="k-recurso-contador" id="reportar-visit-n">+0</span>
+              <span class="k-recurso-etiqueta" id="reportar-visit-eti">visitantes</span>
+            </div>
+          </div>
+          <div id="reportar-envio" data-layout-allow-overlap>
+            <div id="reportar-capsula" class="k-recurso-tarjeta"></div>
+          </div>
+          <div id="reportar-final" data-layout-allow-overlap>
+            <div id="reportar-final-ics"></div>
+          </div>
+          <div id="reportar-texto" data-layout-allow-overlap></div>
+          <div id="reportar-centro" data-layout-allow-overlap></div>
+          <span class="k-datos-ejemplo k-recurso-datos" id="reportar-datos">Datos de ejemplo</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('reportar-texto'), svg = $('reportar-lineas');
+          const rs = [
+            rotulo(texto, 'reportar-r0', 0, 'Ahora, las *reuniones*.', 'k-recurso-titular'),
+            rotulo(texto, 'reportar-r1', 1, 'Cada iglesia define *las suyas*.'),
+            rotulo(texto, 'reportar-r2', 2, 'Desde su celular, en *pasos guiados*.'),
+            rotulo(texto, 'reportar-r3', 3, 'Los de siempre, en *un toque*.'),
+            rotulo(texto, 'reportar-r4', 4, '¿No hay señal? Se envía *solo*.'),
+          ];
+          const r5 = rotulo($('reportar-centro'), 'reportar-r5', 5, 'Ninguna reunión se queda en una *libreta*.', 'k-recurso-titular');
+
+          // Categorías.
+          const cats = $('reportar-cats');
+          const K = [
+            { x: 528, ic: 'church', t: 'Cultos', re: /^cultos/ },
+            { x: 816, ic: 'home', t: 'Casas de paz', re: /^casas/ },
+            { x: 1104, ic: 'groups', t: 'Células', re: /^celulas/ },
+            { x: 1392, ic: 'tune', t: 'Las tuyas', re: /^suyas/ },
+          ];
+          const nK = K.map((k, i) => nodo(cats, `reportar-k-${i}`, k.x, 560, k.ic, 150, i === 3));
+          const eK = K.map((k, i) => { const e = el('div', 'k-recurso-etiqueta reportar-eti', cats, `reportar-ke-${i}`); e.textContent = k.t; e.style.left = `${k.x - 130}px`; e.style.top = '655px'; return e; });
+
+          // Pasos del reporte.
+          const form = $('reportar-form');
+          const S = [{ x: 680, t: 'Asistencia' }, { x: 960, t: 'Reporte' }, { x: 1240, t: 'Listo' }];
+          const lS = [0, 1].map((i) => linea(svg, `reportar-ls-${i}`, S[i].x + 40, 330, S[i + 1].x - 40, 330, ''));
+          const lSoro = [0, 1].map((i) => linea(svg, `reportar-lso-${i}`, S[i].x + 40, 330, S[i + 1].x - 40, 330, 'k-oro'));
+          const nS = S.map((s, i) => { const n = nodo(form, `reportar-s-${i}`, s.x, 330, i < 2 ? null : 'task_alt', 76); if (i < 2) { const num = el('div', 'k-recurso-etiqueta', n); num.textContent = String(i + 1); num.style.color = 'inherit'; } return n; });
+          const eS = S.map((s, i) => { const e = el('div', 'k-recurso-etiqueta reportar-eti', form, `reportar-se-${i}`); e.textContent = s.t; e.style.left = `${s.x - 130}px`; e.style.top = '380px'; return e; });
+          // Casillas: 3 filas de 8 (los habituales) y la persona nueva.
+          const casillas = [];
+          for (let f = 0; f < 3; f++) for (let c = 0; c < 8; c++) {
+            const d = el('div', 'reportar-casilla', form, `reportar-c-${f}-${c}`); d.style.left = `${470 + c * 104}px`; d.style.top = `${560 + f * 96}px`;
+            const ch = el('div', 'reportar-check', d); icono(ch, 'check_circle', 46);
+            casillas.push(d);
+          }
+          const nuevo = nodo(form, 'reportar-nuevo', 1300, 752, 'person_add', 64, true);
+
+          // Envío sin señal.
+          const capsula = $('reportar-capsula');
+          const icNube = el('div', 'reportar-ic', capsula, 'reportar-ic-nube'); icono(icNube, 'cloud', 72);
+          const icOk = el('div', 'reportar-ic', capsula, 'reportar-ic-ok'); const ok = icono(icOk, 'task_alt', 72); ok.style.color = '#26a69a';
+          const ePend = el('div', 'reportar-estado', capsula, 'reportar-pend'); el('div', 'k-recurso-titular', ePend).textContent = '1 por enviar'; el('div', 'k-recurso-etiqueta', ePend).textContent = 'Guardado en el celular';
+          const eEnv = el('div', 'reportar-estado', capsula, 'reportar-env'); el('div', 'k-recurso-titular', eEnv).textContent = 'Enviado'; el('div', 'k-recurso-etiqueta', eEnv).textContent = 'Al volver la conexión';
+          const senal = el('div', '', $('reportar-envio'), 'reportar-senal'); icono(senal, 'wifi_off', 128);
+          const ics = ['event_available', 'done_all', 'insights'].map((n) => icono($('reportar-final-ics'), n, 72));
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            rs.forEach((r, i) => { entra(r); sale(r, fin(i)); });
+            entra(r5);
+            gsap.set(['#reportar-visit', '#reportar-datos', capsula, senal, eEnv, icOk], { autoAlpha: 0 });
+
+            // Frases 0–1: una categoría por palabra; «las tuyas» en dorado.
+            const t0 = T.pulso(T.frase(0).inicio + 0.3);
+            K.forEach((k, i) => {
+              const t = i === 0 ? Math.min(t0, T.pulsoAntes(pal(1, k.re))) : T.pulsoAntes(pal(1, k.re) - 0.02);
+              tl.fromTo(nK[i], { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: i === 0 ? 0.35 : 1, duration: 0.45, ease: 'back.out(2)' }, t);
+              tl.fromTo(eK[i], { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, Math.max(t, T.pulsoAntes(pal(1, k.re))) + 0.1);
+            });
+            tl.to(nK[0], { autoAlpha: 1, duration: 0.3 }, T.pulsoAntes(pal(1, /^cultos/)));
+            tl.fromTo(nK[3], { boxShadow: '0 0 0 0px rgba(232,185,90,0.6), inset 0 0 0 3px rgba(232,185,90,1)' }, { boxShadow: '0 0 0 40px rgba(232,185,90,0), inset 0 0 0 3px rgba(232,185,90,1)', duration: 1, ease: 'power2.out', immediateRender: false }, T.pulsoAntes(pal(1, /^suyas/)) + 0.3);
+            const f2 = T.frase(2);
+            tl.to('#reportar-cats', { y: -60, autoAlpha: 0, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, f2.inicio - 0.45);
+
+            // Frase 2: los tres pasos del reporte.
+            const tP = T.reparto(3, T.pulso(f2.inicio), pal(2, /^guiados/));
+            nS.forEach((n, i) => { tl.fromTo(n, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.4, ease: 'back.out(2)' }, tP[i]); tl.fromTo(eS[i], { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, tP[i] + 0.1); });
+            lS.forEach((l, i) => tl.to(l, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, tP[i + 1] - 0.2));
+            tl.to(nS[0], { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', duration: 0.3 }, tP[2] + 0.5);
+            const tC = T.reparto(24, tP[0] + 0.5, f2.fin + 0.3);
+            casillas.forEach((c, i) => tl.fromTo(c, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.25, ease: 'back.out(2)' }, tC[i] + (i % 4) * 0.03));
+
+            // Frase 3: en «siempre», los habituales se marcan en una ola; la persona nueva; los visitantes suben a +3.
+            const tSiempre = T.pulso(pal(3, /^siempre/) - 0.2);
+            const marcadas = casillas.filter((_, i) => ![5, 13, 22].includes(i));
+            marcadas.forEach((c, j) => {
+              const t = tSiempre + (j % 8) * 0.05 + Math.floor(j / 8) * 0.08;
+              tl.to(c, { backgroundColor: '#26a69a', boxShadow: 'inset 0 0 0 3px rgba(38,166,154,1)', duration: 0.2 }, t);
+              tl.to(c.firstChild, { opacity: 1, duration: 0.2 }, t + 0.05);
+            });
+            tl.to('#reportar-datos', { autoAlpha: 1, duration: 0.3 }, tSiempre);
+            const tNueva = T.pulso(pal(3, /^nueva/) - 0.2);
+            tl.fromTo(nuevo, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, tNueva);
+            tl.fromTo(nuevo, { boxShadow: '0 0 0 0px rgba(232,185,90,0.6), inset 0 0 0 3px rgba(232,185,90,1)' }, { boxShadow: '0 0 0 28px rgba(232,185,90,0), inset 0 0 0 3px rgba(232,185,90,1)', duration: 0.9, ease: 'power2.out', immediateRender: false }, tNueva + 0.3);
+            const tVis = T.pulso(pal(3, /^visitantes/) - 0.3);
+            tl.fromTo('#reportar-visit', { x: 20, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out', immediateRender: false }, tVis - 0.2);
+            const v = { n: 0 };
+            tl.fromTo(v, { n: 0 }, { n: 3, duration: 1.5, ease: 'steps(3)', onUpdate: () => { $('reportar-visit-n').textContent = `+${Math.round(v.n)}`; } }, tVis);
+            [0, 0.5, 1].forEach((d) => tl.fromTo('#reportar-visit-n', { scale: 1.15 }, { scale: 1, duration: 0.35, ease: 'power2.out', immediateRender: false, transformOrigin: '0% 50%' }, tVis + d + 0.5));
+            tl.to(lSoro[0], { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }, T.pulso(T.frase(3).fin));
+            tl.to(nS[1], { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', duration: 0.3 }, T.pulso(T.frase(3).fin) + 0.4);
+
+            // Frase 4: sin señal, todo se guarda en una cápsula «por enviar»; en «solo», se envía y pasa a «Enviado».
+            const f4 = T.frase(4);
+            const t4 = T.pulso(f4.inicio);
+            tl.fromTo(senal, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out', immediateRender: false }, t4);
+            tl.to('#reportar-form', { scale: 0.7, y: 80, autoAlpha: 0, duration: 0.4, ease: 'power3.in', transformOrigin: '960px 600px' }, t4 + 0.3);
+            tl.to([...lS, ...lSoro], { autoAlpha: 0, duration: 0.3 }, t4 + 0.3);
+            tl.fromTo(capsula, { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.6)', immediateRender: false }, t4 + 0.8);
+            for (let r = 0; r < 2; r++) tl.fromTo(icNube, { y: 0 }, { y: -8, duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut', immediateRender: false }, t4 + 1.5 + r * 0.5);
+            const tSolo = Math.max(t4 + 2.5, T.pulso(pal(4, /^envia/) - 0.15));
+            tl.to(senal, { autoAlpha: 0, y: -20, duration: 0.35, ease: 'power2.in' }, tSolo);
+            tl.to([icNube, ePend], { autoAlpha: 0, y: -14, duration: 0.3, ease: 'power2.in' }, tSolo);
+            tl.fromTo([icOk, eEnv], { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'back.out(1.8)', immediateRender: false }, tSolo + 0.25);
+            tl.fromTo(capsula, { boxShadow: '0 0 0 0px rgba(38,166,154,0.6), inset 0 0 0 1px rgba(234,240,255,0.12)' }, { boxShadow: '0 0 0 36px rgba(38,166,154,0), inset 0 0 0 1px rgba(234,240,255,0.12)', duration: 1, ease: 'power2.out', immediateRender: false }, tSolo + 0.3);
+            tl.to('#reportar-datos', { autoAlpha: 0, duration: 0.3 }, t4 + 0.3);
+
+            // Frase 5: la idea final, centrada, con tres íconos que llegan en pulsos.
+            const f5 = T.frase(5);
+            tl.to('#reportar-envio', { y: 60, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f5.inicio - 0.1);
+            const tI = T.reparto(3, T.pulso(pal(5, /^libreta/) - 0.3), f5.fin + 0.6);
+            ics.forEach((ic, i) => tl.fromTo(ic, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.4, ease: 'back.out(2)' }, tI[i]));
+
+            tl.to('#reportar-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['reportar'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

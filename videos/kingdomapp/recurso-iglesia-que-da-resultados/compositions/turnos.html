@@ -1,0 +1,221 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":26.5,\"frases\":[{\"texto\":\"Detrás de cada reunión hay personas que sirven.\",\"inicio\":0.5,\"fin\":2.9,\"palabras\":[]},{\"texto\":\"Alabanza, seguridad, medios, audiovisual: cada equipo con sus líderes y sus integrantes.\",\"inicio\":3.4,\"fin\":8.4,\"palabras\":[]},{\"texto\":\"El líder arma el turno, y Kingdom le sugiere a quién poner: quien sabe hacerlo, y ha servido menos.\",\"inicio\":9.0,\"fin\":14.8,\"palabras\":[]},{\"texto\":\"Cada persona acepta su turno desde el celular, con sus instrucciones: a qué hora llegar y cómo vestirse.\",\"inicio\":15.4,\"fin\":21.2,\"palabras\":[]},{\"texto\":\"Y antes de la reunión, ves qué puestos están cubiertos, y cuáles faltan.\",\"inicio\":21.8,\"fin\":25.3,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Equipos · turnos: los que sirven alrededor de la iglesia; cuatro equipos con sus líderes e integrantes; el turno de un equipo
+         (funciones y puestos) con la sugerencia de a quién poner; cada persona acepta y recibe sus instrucciones; la cobertura de la
+         reunión por equipo (Datos de ejemplo). Fuente: docs/modulos/equipos.md → «Objetivo», «Programar un turno», «Instrucciones», «La
+         persona recibe la asignación y responde», «Reportes»; sitio/src/data/modulos.ts (Equipos). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #turnos-todo { position: absolute; inset: 0; }
+        #turnos-texto { position: absolute; left: 192px; top: 108px; width: 800px; height: 864px; display: grid; align-items: center; }
+        #turnos-texto .bloque { grid-area: 1 / 1; }
+        #turnos-iglesia, #turnos-equipos, #turnos-turno, #turnos-cob { position: absolute; inset: 0; }
+        #turnos-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .turnos-eti { position: absolute; width: 260px; text-align: center; }
+        .turnos-fn { position: absolute; top: 430px; width: 170px; height: 54px; margin-left: -85px; display: flex; align-items: center; justify-content: center; border-radius: 999px; background: var(--k-noche-2); box-shadow: inset 0 0 0 2px rgba(234, 240, 255, 0.22); font-size: 28px; font-weight: 700; color: var(--k-noche-tinta); }
+        .turnos-puesto { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; box-shadow: inset 0 0 0 3px rgba(169, 182, 214, 0.5); display: flex; align-items: center; justify-content: center; color: var(--k-noche); }
+        .turnos-puesto .k-recurso-icono { opacity: 0; }
+        #turnos-sug { position: absolute; left: 1560px; top: 760px; width: 170px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--k-noche-dorado); }
+        #turnos-sug .k-recurso-etiqueta { color: var(--k-noche-dorado); text-align: center; }
+        #turnos-cand { position: absolute; left: 1645px; top: 700px; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; background: var(--k-noche-dorado); }
+        #turnos-instr { position: absolute; left: 1090px; top: 700px; width: 640px; padding: 30px 36px; display: flex; flex-direction: column; gap: 18px; }
+        .turnos-ins { display: flex; align-items: center; gap: 18px; font-size: 32px; font-weight: 600; color: var(--k-noche-tinta); }
+        .turnos-ins .k-recurso-icono { color: var(--k-noche-dorado); }
+        .turnos-fila { position: absolute; left: 1090px; width: 640px; }
+        .turnos-fila-cab { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+        .turnos-fila-cab .k-recurso-etiqueta:first-child { color: var(--k-noche-tinta); font-size: 34px; }
+        .turnos-pista { display: flex; gap: 8px; }
+        .turnos-seg { flex: 1 0 0; height: 30px; border-radius: 8px; transform-origin: 0 50%; }
+      </style>
+
+      <div id="root" data-composition-id="turnos" data-width="1920" data-height="1080" data-duration="26.5">
+        <div id="turnos-todo" data-layout-allow-overlap>
+          <svg id="turnos-lineas" viewBox="0 0 1920 1080"></svg>
+          <div id="turnos-iglesia" data-layout-allow-overlap></div>
+          <div id="turnos-equipos" data-layout-allow-overlap></div>
+          <div id="turnos-turno" data-layout-allow-overlap></div>
+          <div id="turnos-cob" data-layout-allow-overlap></div>
+          <div id="turnos-texto" data-layout-allow-overlap></div>
+          <span class="k-datos-ejemplo k-recurso-datos" id="turnos-datos">Datos de ejemplo</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('turnos-texto'), svg = $('turnos-lineas');
+          const rs = [
+            rotulo(texto, 'turnos-r0', 0, 'Detrás de cada reunión, personas que *sirven*.', 'k-recurso-titular'),
+            rotulo(texto, 'turnos-r1', 1, 'Cada equipo, con sus *líderes* y sus integrantes.'),
+            rotulo(texto, 'turnos-r2', 2, 'El líder arma el turno, y Kingdom *sugiere* a quién poner.'),
+            rotulo(texto, 'turnos-r3', 3, 'Cada persona *acepta*, con sus instrucciones.'),
+            rotulo(texto, 'turnos-r4', 4, 'Ves qué puestos están *cubiertos*, y cuáles faltan.'),
+          ];
+
+          // La iglesia y quienes sirven alrededor.
+          const igl = $('turnos-iglesia');
+          const nIg = nodo(igl, 'turnos-ig', 1404, 540, 'church', 150, true);
+          const anillo = Array.from({ length: 14 }, (_, i) => { const a = (i / 14) * Math.PI * 2 - Math.PI / 2; const d = el('span', 'k-recurso-punto', igl, `turnos-an-${i}`); d.style.left = `${1404 + Math.cos(a) * 230}px`; d.style.top = `${540 + Math.sin(a) * 230}px`; return d; });
+
+          // Cuatro equipos con su líder (dorado) e integrantes.
+          const eq = $('turnos-equipos');
+          const EQ = [
+            { x: 1240, y: 340, ic: 'favorite', t: 'Alabanza', re: /^alabanza/ },
+            { x: 1568, y: 340, ic: 'verified', t: 'Seguridad', re: /^seguridad/ },
+            { x: 1240, y: 680, ic: 'campaign', t: 'Medios', re: /^medios/ },
+            { x: 1568, y: 680, ic: 'play_circle', t: 'Audiovisual', re: /^audiovisual/ },
+          ];
+          const nEq = EQ.map((e, i) => nodo(eq, `turnos-eq-${i}`, e.x, e.y, e.ic, 116));
+          const eEq = EQ.map((e, i) => { const l = el('div', 'k-recurso-etiqueta turnos-eti', eq, `turnos-eqe-${i}`); l.textContent = e.t; l.style.left = `${e.x - 130}px`; l.style.top = `${e.y + 66}px`; return l; });
+          const miembros = EQ.map((e, i) => [-48, -16, 16, 48].map((dx, k) => { const d = el('span', 'k-recurso-punto' + (k === 0 ? ' k-oro' : ' k-tenue'), eq, `turnos-mb-${i}-${k}`); d.style.left = `${e.x + dx}px`; d.style.top = `${e.y + 128}px`; return d; }));
+
+          // El turno de Alabanza: funciones y puestos.
+          const tu = $('turnos-turno');
+          const nAl = nodo(tu, 'turnos-al', 1404, 260, 'favorite', 112, true);
+          const FN = [{ x: 1170, t: 'Voz' }, { x: 1404, t: 'Teclado' }, { x: 1638, t: 'Sonido' }];
+          const pFn = FN.map((f, i) => { const p = el('div', 'turnos-fn', tu, `turnos-fn-${i}`); p.textContent = f.t; p.style.left = `${f.x}px`; return p; });
+          const lFn = FN.map((f, i) => linea(svg, `turnos-lfn-${i}`, 1404, 316, f.x, 430, ''));
+          const puestos = [];
+          FN.forEach((f, i) => [-34, 34].forEach((dx, k) => { if (i === 2 && k === 1) return; const p = el('div', 'turnos-puesto', tu, `turnos-pu-${i}-${k}`); p.style.left = `${f.x + dx}px`; p.style.top = '560px'; icono(p, 'check_circle', 56); puestos.push(p); }));
+          const vacio = el('div', 'turnos-puesto', tu, 'turnos-vacio'); vacio.style.left = `${1638 + 34}px`; vacio.style.top = '560px'; icono(vacio, 'check_circle', 56);
+          const cand = el('div', '', tu, 'turnos-cand');
+          const sug = el('div', '', tu, 'turnos-sug'); icono(sug, 'lightbulb', 44); el('div', 'k-recurso-etiqueta', sug).textContent = 'Sugerida';
+          const instr = el('div', 'k-recurso-tarjeta', tu, 'turnos-instr');
+          [['schedule', 'Llegada: 7:00 a. m.'], ['person', 'Vestimenta: camisa blanca']].forEach(([ic, t], i) => { const r = el('div', 'turnos-ins', instr, `turnos-ins-${i}`); icono(r, ic, 44); el('span', '', r).textContent = t; });
+
+          // Cobertura por equipo.
+          const cob = $('turnos-cob');
+          const CB = [['Alabanza', 6, 6], ['Seguridad', 7, 8], ['Medios', 4, 4], ['Audiovisual', 3, 5]];
+          const filas = CB.map(([t, c, r], i) => {
+            const f = el('div', 'turnos-fila', cob, `turnos-fila-${i}`); f.style.top = `${250 + i * 150}px`;
+            const cab = el('div', 'turnos-fila-cab', f); el('span', 'k-recurso-etiqueta', cab).textContent = t; el('span', 'k-recurso-etiqueta', cab).textContent = `${c} de ${r}`;
+            const pista = el('div', 'turnos-pista', f);
+            const segs = Array.from({ length: r }, (_, k) => { const s = el('div', 'turnos-seg', pista, `turnos-sg-${i}-${k}`); if (k < c) s.style.background = c === r ? '#26a69a' : '#e8b95a'; else s.style.boxShadow = 'inset 0 0 0 3px #e06c5a'; return s; });
+            return { f, segs };
+          });
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            rs.forEach((r, i) => { entra(r); if (i < rs.length - 1) sale(r, fin(i)); });
+            gsap.set(['#turnos-turno', '#turnos-cob', '#turnos-datos', ...lFn], { autoAlpha: 0 });
+
+            // Frase 0: la iglesia y su anillo de servidores.
+            const f0 = T.frase(0);
+            tl.fromTo(nIg, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.8)' }, T.pulso(f0.inicio));
+            const tAn = T.reparto(14, f0.inicio + 0.4, f0.fin + 0.2);
+            anillo.forEach((d, i) => tl.fromTo(d, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2)' }, tAn[i]));
+            tl.to(anillo, { backgroundColor: '#e8b95a', duration: 0.3, stagger: 0.03 }, T.pulso(pal(0, /^sirven/) - 0.15));
+            const f1 = T.frase(1);
+            tl.to('#turnos-iglesia', { scale: 0.6, autoAlpha: 0, duration: 0.45, ease: 'power2.in', transformOrigin: '1404px 540px' }, f1.inicio - 0.3);
+
+            // Frase 1: un equipo por palabra; en «líderes», el líder de cada uno se ilumina; en «integrantes», los demás.
+            EQ.forEach((e, i) => {
+              const t = T.pulsoAntes(pal(1, e.re) - 0.02);
+              tl.fromTo(nEq[i], { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.42, ease: 'back.out(2)' }, t);
+              tl.fromTo(eEq[i], { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, t + 0.1);
+            });
+            const tLid = T.pulso(pal(1, /^lideres/) - 0.15);
+            miembros.forEach((m) => tl.fromTo(m[0], { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2)' }, tLid));
+            const tInt = Math.max(tLid + 0.5, T.pulso(pal(1, /^integrantes/) - 0.15));
+            miembros.forEach((m) => m.slice(1).forEach((d, k) => tl.fromTo(d, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2)' }, tInt + k * 0.1)));
+            const f2 = T.frase(2);
+            tl.to('#turnos-equipos', { autoAlpha: 0, duration: 0.4, ease: 'power2.in' }, f2.inicio - 0.3);
+
+            // Frase 2: el turno de Alabanza; un puesto vacío; Kingdom sugiere a alguien, que entra al puesto.
+            const t2 = T.pulso(f2.inicio);
+            tl.to('#turnos-turno', { autoAlpha: 1, duration: 0.01 }, t2 - 0.05);
+            gsap.set(['#turnos-instr', cand, sug], { autoAlpha: 0 });
+            tl.fromTo(nAl, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, t2);
+            pFn.forEach((p, i) => { tl.fromTo(p, { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, t2 + 0.4 + i * 0.2); tl.to(lFn[i], { autoAlpha: 1, strokeDashoffset: 0, duration: 0.4 }, t2 + 0.3 + i * 0.2); });
+            [...puestos, vacio].forEach((p, i) => tl.fromTo(p, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2)' }, t2 + 1 + i * 0.12));
+            puestos.forEach((p, i) => tl.to(p, { backgroundColor: 'rgba(169,182,214,0.35)', duration: 0.3 }, t2 + 1.6 + i * 0.1));
+            const tSug = Math.max(t2 + 2.2, T.pulso(pal(2, /^sugiere/) - 0.15));
+            for (let r = 0; r < 2; r++) tl.fromTo(vacio, { boxShadow: 'inset 0 0 0 3px rgba(224,108,90,1), 0 0 0 0px rgba(224,108,90,0.5)' }, { boxShadow: 'inset 0 0 0 3px rgba(224,108,90,1), 0 0 0 18px rgba(224,108,90,0)', duration: 0.8, ease: 'power2.out', immediateRender: false }, tSug - 1 + r * 0.5);
+            tl.fromTo(cand, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.4, ease: 'back.out(2)', immediateRender: false }, tSug);
+            tl.fromTo(sug, { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, immediateRender: false }, tSug + 0.2);
+            const tPone = Math.max(tSug + 1.5, T.pulso(pal(2, /^menos/) - 0.3));
+            tl.to(cand, { x: 1672 - 1645, y: 560 - 700, scale: 0.8, duration: 0.6, ease: 'power3.inOut' }, tPone);
+            tl.to(sug, { autoAlpha: 0, duration: 0.3 }, tPone);
+            tl.to(vacio, { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', duration: 0.3 }, tPone + 0.5);
+
+            // Frase 3: los puestos aceptan uno por pulso (verde con su visto) y llegan las instrucciones.
+            const f3 = T.frase(3);
+            tl.to(cand, { autoAlpha: 0, duration: 0.2 }, T.pulso(f3.inicio));
+            const todos = [...puestos, vacio];
+            const tAcep = T.reparto(todos.length, T.pulso(pal(3, /^acepta/) - 0.2), pal(3, /^instrucciones/));
+            todos.forEach((p, i) => { tl.to(p, { backgroundColor: '#26a69a', boxShadow: 'inset 0 0 0 3px rgba(38,166,154,1)', duration: 0.25 }, tAcep[i]); tl.to(p.firstChild, { opacity: 1, duration: 0.2 }, tAcep[i] + 0.05); });
+            const tIns = T.pulso(pal(3, /^instrucciones/) - 0.2);
+            tl.fromTo('#turnos-instr', { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: 'power3.out', immediateRender: false }, tIns);
+            [0, 1].forEach((i) => tl.fromTo(`#turnos-ins-${i}`, { x: -16, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, Math.max(tIns + 0.3 + i * 0.5, T.pulsoAntes(pal(3, i ? /^vestirse/ : /^hora/)))));
+            const f4 = T.frase(4);
+            tl.to(['#turnos-turno', ...lFn], { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f4.inicio - 0.35);
+
+            // Frase 4: la cobertura de la reunión, equipo por equipo; en «faltan», los vacantes laten.
+            const t4 = T.pulso(f4.inicio);
+            tl.to('#turnos-cob', { autoAlpha: 1, duration: 0.01 }, t4 - 0.05);
+            tl.to('#turnos-datos', { autoAlpha: 1, duration: 0.3 }, t4);
+            filas.forEach(({ f, segs }, i) => { tl.fromTo(f, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, t4 + i * 0.3); segs.forEach((s, k) => tl.fromTo(s, { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: 'power2.out' }, t4 + i * 0.3 + 0.2 + k * 0.05)); });
+            const tFal = Math.max(t4 + 1.6, T.pulso(pal(4, /^faltan/) - 0.15));
+            const vacantes = filas.flatMap(({ segs }, i) => segs.slice(CB[i][1]));
+            for (let r = 0; r < 3; r++) tl.fromTo(vacantes, { opacity: 1 }, { opacity: 0.35, duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut', immediateRender: false }, tFal + r * 0.5);
+
+            tl.to('#turnos-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['turnos'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

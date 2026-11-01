@@ -1,0 +1,165 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":20,\"frases\":[{\"texto\":\"¿Sabías que con Kingdom puedes estructurar tu iglesia?\",\"inicio\":0.5,\"fin\":3.6,\"palabras\":[]},{\"texto\":\"Tus redes, tus grupos y tus líderes, cada uno en su lugar.\",\"inicio\":4.3,\"fin\":7.6,\"palabras\":[]},{\"texto\":\"Y debajo de cada líder, las personas que cuida.\",\"inicio\":8.1,\"fin\":10.6,\"palabras\":[]},{\"texto\":\"Tu iglesia deja de ser una lista de nombres, y se ve como lo que es: una red de cuidado.\",\"inicio\":11.2,\"fin\":16.4,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Gancho: «¿Sabías que…?». Una nube de puntos sueltos (personas sin orden) se acomoda, en la palabra «estructurar», en un árbol:
+         iglesia → redes → líderes → personas. En «red» las líneas se vuelven doradas. Fuente: docs/modulos/membresia.md → «Estructura». -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #sabias-todo { position: absolute; inset: 0; }
+        #sabias-texto { position: absolute; left: 192px; right: 192px; top: 120px; height: 300px; }
+        #sabias-texto .bloque { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+        #sabias-texto .k-recurso-titular { font-size: 92px; }
+        #sabias-arbol { position: absolute; inset: 0; }
+        #sabias-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .sabias-nivel { position: absolute; left: 192px; width: 200px; }
+        .sabias-fina { stroke-width: 2; }
+      </style>
+
+      <div id="root" data-composition-id="sabias" data-width="1920" data-height="1080" data-duration="20">
+        <div id="sabias-todo" data-layout-allow-overlap>
+          <div id="sabias-arbol" data-layout-allow-overlap>
+            <svg id="sabias-lineas" viewBox="0 0 1920 1080"></svg>
+          </div>
+          <div id="sabias-texto" data-layout-allow-overlap></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          let semilla = 1101;
+          const azar = () => ((semilla = (semilla * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('sabias-texto'), arbol = $('sabias-arbol'), svg = $('sabias-lineas');
+          const r0 = rotulo(texto, 'sabias-r0', 0, '¿Sabías que con Kingdom puedes *estructurar* tu iglesia?', 'k-recurso-titular');
+          const r1 = rotulo(texto, 'sabias-r1', 1, 'Tus *redes*, tus *grupos* y tus *líderes*, cada uno en su lugar.');
+          const r2 = rotulo(texto, 'sabias-r2', 2, 'Y debajo de cada líder, las *personas* que cuida.');
+          const r3 = rotulo(texto, 'sabias-r3', 3, 'No una lista de nombres: una *red* de cuidado.', 'k-recurso-titular');
+
+          // El árbol: iglesia (960, 470) → 4 redes (y 630) → 8 líderes (y 780) → 32 personas (y 905).
+          const IG = { x: 960, y: 470 };
+          const redes = [480, 800, 1120, 1440].map((x) => ({ x, y: 630 }));
+          const lideres = [];
+          redes.forEach((r) => [-78, 78].forEach((dx) => lideres.push({ x: r.x + dx, y: 780, r })));
+          const personas = [];
+          lideres.forEach((l) => [-33, -11, 11, 33].forEach((dx, q) => personas.push({ x: l.x + dx, y: 905 + (q % 2) * 14, l })));
+
+          const lRedes = redes.map((r, i) => linea(svg, `sabias-lr-${i}`, IG.x, IG.y + 50, r.x, r.y - 44, ''));
+          const lLideres = lideres.map((l, i) => linea(svg, `sabias-ll-${i}`, l.r.x, l.r.y + 44, l.x, l.y - 32, 'sabias-fina'));
+          const lPersonas = personas.map((p, i) => linea(svg, `sabias-lp-${i}`, p.l.x, p.l.y + 32, p.x, p.y - 8, 'sabias-fina'));
+
+          const nIg = nodo(arbol, 'sabias-iglesia', IG.x, IG.y, 'church', 112, true);
+          const nRedes = redes.map((r, i) => nodo(arbol, `sabias-red-${i}`, r.x, r.y, 'groups', 88));
+          const nLideres = lideres.map((l, i) => nodo(arbol, `sabias-lider-${i}`, l.x, l.y, 'person', 64));
+          // Personas: empiezan sueltas por la mitad de abajo y van a su lugar debajo de su líder.
+          const dots = personas.map((p, i) => {
+            const d = el('span', 'k-recurso-punto k-tenue', arbol, `sabias-p-${i}`);
+            d.style.left = `${p.x}px`; d.style.top = `${p.y}px`;
+            p.sx = 260 + azar() * 1400 - p.x; p.sy = 470 + azar() * 460 - p.y;
+            p.dx = (azar() - 0.5) * 50; p.dy = (azar() - 0.5) * 36;
+            return d;
+          });
+          // Etiquetas de nivel, a la izquierda.
+          const niveles = [['Redes', 630], ['Líderes', 780], ['Personas', 905]].map(([t, y], i) => {
+            const e = el('div', 'k-recurso-etiqueta sabias-nivel', arbol, `sabias-nivel-${i}`); e.textContent = t; e.style.top = `${y - 19}px`; return e;
+          });
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            [r0, r1, r2, r3].forEach((r, i) => { entra(r); if (i < 3) sale(r, fin(i)); });
+
+            // Frase 0: las personas sueltas aparecen de a pocas en pulsos y derivan despacio (nada quieto).
+            const tEst = T.pulso(pal(0, /^estructurar/) - 0.1);
+            const llegadas = T.reparto(dots.length, 0.3, Math.max(0.8, tEst - 0.6));
+            dots.forEach((d, i) => {
+              const p = personas[i];
+              tl.fromTo(d, { x: p.sx, y: p.sy, scale: 0, autoAlpha: 0 }, { x: p.sx, y: p.sy, scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2)' }, llegadas[i] + (i % 3) * 0.06);
+              tl.to(d, { x: p.sx + p.dx, y: p.sy + p.dy, duration: Math.max(0.6, tEst - llegadas[i] - 0.3), ease: 'sine.inOut' }, llegadas[i] + 0.3);
+            });
+            // «estructurar»: cada persona va a su lugar (todavía tenue) y aparece la iglesia arriba.
+            dots.forEach((d, i) => tl.to(d, { x: 0, y: 0, duration: 1.1, ease: 'power3.inOut' }, tEst + (i % 8) * 0.025));
+            tl.fromTo(nIg, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.55, ease: 'back.out(2)' }, tEst + 0.5);
+            tl.fromTo(nIg, { boxShadow: '0 0 0 0px rgba(232,185,90,0.55), inset 0 0 0 3px rgba(232,185,90,1)' }, { boxShadow: '0 0 0 40px rgba(232,185,90,0), inset 0 0 0 3px rgba(232,185,90,1)', duration: 1.2, ease: 'power2.out', immediateRender: false }, tEst + 0.8);
+            tl.fromTo(niveles[2], { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: 'power3.out' }, tEst + 1.0);
+
+            // Frase 1: redes en «redes», líderes en «líderes»; las líneas se dibujan al aparecer cada nivel.
+            const tRedes = T.pulso(pal(1, /^redes/) - 0.15);
+            nRedes.forEach((n, i) => tl.fromTo(n, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, tRedes + i * 0.12));
+            lRedes.forEach((l, i) => tl.to(l, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }, tRedes + i * 0.12));
+            tl.fromTo(niveles[0], { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: 'power3.out' }, tRedes);
+            const tGrupos = Math.max(tRedes + 0.7, T.pulso(pal(1, /^grupos/) - 0.15));
+            nRedes.forEach((n, i) => tl.fromTo(n, { scale: 1 }, { scale: 1.12, duration: 0.25, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, tGrupos + i * 0.08));
+            const tLid = Math.max(tGrupos + 0.6, T.pulso(pal(1, /^lideres/) - 0.15));
+            nLideres.forEach((n, i) => tl.fromTo(n, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.4, ease: 'back.out(2)' }, tLid + i * 0.07));
+            lLideres.forEach((l, i) => tl.to(l, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.inOut' }, tLid + i * 0.07));
+            tl.fromTo(niveles[1], { x: -24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.45, ease: 'power3.out' }, tLid);
+
+            // Frase 2: cada líder se une con las personas que cuida; las personas se encienden.
+            const tPers = T.pulso(pal(2, /^personas/) - 0.2);
+            lPersonas.forEach((l, i) => tl.to(l, { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, tPers + Math.floor(i / 4) * 0.08));
+            tl.to(dots, { backgroundColor: '#eaf0ff', duration: 0.4, stagger: 0.02, ease: 'power1.out' }, tPers);
+
+            // Frase 3: en «red», todo el árbol se vuelve dorado y respira tres veces al pulso.
+            const tRed = T.pulso(pal(3, /^red$/) - 0.15);
+            tl.to([...lRedes, ...lLideres, ...lPersonas], { stroke: '#e8b95a', duration: 0.6, stagger: 0.004, ease: 'power1.inOut' }, tRed);
+            tl.to(dots, { backgroundColor: '#e8b95a', duration: 0.5, stagger: 0.01 }, tRed + 0.2);
+            for (let k = 0; k < 3; k++) tl.fromTo(arbol, { scale: 1.025 }, { scale: 1, duration: 0.48, ease: 'power2.out', immediateRender: false, transformOrigin: '50% 75%' }, tRed + 0.5 + k);
+
+            tl.to('#sabias-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['sabias'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":24,\"frases\":[{\"texto\":\"Además, cada persona tiene un semáforo de actividad.\",\"inicio\":0.5,\"fin\":3.3,\"palabras\":[]},{\"texto\":\"Verde, si participó hace poco.\",\"inicio\":3.9,\"fin\":5.6,\"palabras\":[]},{\"texto\":\"Amarillo, si se está alejando.\",\"inicio\":5.9,\"fin\":7.6,\"palabras\":[]},{\"texto\":\"Rojo, si hace tiempo que no la vemos.\",\"inicio\":7.9,\"fin\":9.8,\"palabras\":[]},{\"texto\":\"Y gris, si no tiene actividad.\",\"inicio\":10.1,\"fin\":11.8,\"palabras\":[]},{\"texto\":\"Tu iglesia decide cuántos días vale cada color.\",\"inicio\":12.4,\"fin\":14.8,\"palabras\":[]},{\"texto\":\"Así ves a tiempo a quien se está enfriando, y lo buscas antes de perderlo.\",\"inicio\":15.3,\"fin\":19.6,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Membresía · semáforo de actividad: cuatro círculos (verde, amarillo, rojo y el anillo gris «Sin actividad»), cada uno en su
+         palabra, con las personas que caen en él; los días por defecto de cada color (configurables) y la iglesia en una barra de partes
+         (Datos de ejemplo). Fuente: docs/modulos/membresia.md → «Semáforo de actividad (2026-10-29)». El rojo (#e06c5a) solo existe aquí
+         y en los semáforos de los módulos: la paleta del kit no trae rojo y el semáforo de la app lo necesita. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #semaforo-todo { position: absolute; inset: 0; }
+        #semaforo-texto { position: absolute; left: 192px; right: 192px; top: 120px; height: 200px; }
+        #semaforo-texto .bloque { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+        .semaforo-luz { position: absolute; top: 500px; width: 190px; height: 190px; margin: -95px 0 0 -95px; border-radius: 50%; }
+        .semaforo-eti { position: absolute; top: 625px; width: 280px; text-align: center; font-size: 34px; color: var(--k-noche-tinta); }
+        .semaforo-dias { position: absolute; top: 680px; width: 280px; text-align: center; }
+        #semaforo-ajuste { position: absolute; left: 960px; top: 470px; }
+        #semaforo-barra { position: absolute; left: 360px; top: 800px; width: 1200px; height: 56px; display: flex; gap: 6px; }
+        .semaforo-seg { height: 56px; border-radius: 12px; transform-origin: 0 50%; }
+        .semaforo-por { position: absolute; top: 872px; width: 200px; text-align: center; }
+        .semaforo-p { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: rgba(169, 182, 214, 0.6); }
+        #semaforo-marco { position: absolute; top: 790px; height: 76px; border-radius: 18px; box-shadow: 0 0 0 3px var(--k-noche-dorado); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="semaforo" data-width="1920" data-height="1080" data-duration="24">
+        <div id="semaforo-todo" data-layout-allow-overlap>
+          <div id="semaforo-luces" data-layout-allow-overlap></div>
+          <div id="semaforo-barra"></div>
+          <div id="semaforo-marco"></div>
+          <div id="semaforo-texto" data-layout-allow-overlap></div>
+          <span class="k-datos-ejemplo k-recurso-datos" id="semaforo-datos">Datos de ejemplo</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          let semilla = 3301;
+          const azar = () => ((semilla = (semilla * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('semaforo-texto'), luces = $('semaforo-luces'), barra = $('semaforo-barra');
+          const r0 = rotulo(texto, 'semaforo-r0', 0, 'Un *semáforo de actividad*', 'k-recurso-titular');
+          const r5 = rotulo(texto, 'semaforo-r5', 5, 'Tu iglesia decide cuántos *días* vale cada color.');
+          const r6 = rotulo(texto, 'semaforo-r6', 6, 'Así ves *a tiempo* a quien se está enfriando.');
+
+          const C = [
+            { x: 540, color: '#26a69a', t: 'Verde', dias: '0 a 10 días', por: '48 %', w: 48, frase: 1 },
+            { x: 820, color: '#e8b95a', t: 'Amarillo', dias: '11 a 30 días', por: '27 %', w: 27, frase: 2 },
+            { x: 1100, color: '#e06c5a', t: 'Rojo', dias: '31 a 50 días', por: '15 %', w: 15, frase: 3 },
+            { x: 1380, color: null, t: 'Sin actividad', dias: 'Más de 50', por: '10 %', w: 10, frase: 4 },
+          ];
+          const nLuz = C.map((c, i) => {
+            const d = el('div', 'semaforo-luz', luces, `semaforo-luz-${i}`); d.style.left = `${c.x}px`;
+            if (c.color) { d.style.background = c.color; d.style.boxShadow = `0 0 60px -10px ${c.color}`; } else d.style.boxShadow = 'inset 0 0 0 6px rgba(169,182,214,0.7)';
+            return d;
+          });
+          const eLuz = C.map((c, i) => { const e = el('div', 'k-recurso-etiqueta semaforo-eti', luces, `semaforo-eti-${i}`); e.textContent = c.t; e.style.left = `${c.x - 140}px`; return e; });
+          const eDias = C.map((c, i) => { const e = el('div', 'k-recurso-etiqueta semaforo-dias', luces, `semaforo-dias-${i}`); e.textContent = c.dias; e.style.left = `${c.x - 140}px`; return e; });
+          // Personas que caen en cada color (se absorben en el círculo).
+          const caen = C.map((c, i) => Array.from({ length: 7 }, (_, k) => {
+            const d = el('span', 'semaforo-p', luces, `semaforo-p-${i}-${k}`); d.style.left = `${c.x}px`; d.style.top = '500px';
+            return { d, dx: (azar() - 0.5) * 420, dy: 260 + azar() * 160 };
+          }));
+          // La barra de partes y sus porcentajes.
+          const segs = C.map((c, i) => {
+            const s = el('div', 'semaforo-seg', barra, `semaforo-seg-${i}`); s.style.flex = `${c.w} 0 0`;
+            if (c.color) s.style.background = c.color; else s.style.boxShadow = 'inset 0 0 0 3px rgba(169,182,214,0.7)';
+            return s;
+          });
+          let acum = 0; const anchoUtil = 1200 - 18;
+          const pors = C.map((c, i) => {
+            const centro = 360 + acum + (anchoUtil * c.w) / 100 / 2 + i * 6; acum += (anchoUtil * c.w) / 100;
+            const e = el('div', 'k-recurso-etiqueta semaforo-por', $('semaforo-todo'), `semaforo-por-${i}`); e.textContent = c.por; e.style.left = `${centro - 100}px`; return e;
+          });
+          const marco = $('semaforo-marco');
+          marco.style.left = `${360 + (anchoUtil * 48) / 100 + 6 - 10}px`; marco.style.width = `${(anchoUtil * 27) / 100 + 20}px`;
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            entra(r0); sale(r0, T.frase(5).inicio - 0.3);
+            entra(r5); sale(r5, T.frase(6).inicio - 0.3);
+            entra(r6);
+
+            // Frase 0: cuatro anillos tenues anuncian los lugares.
+            const t0 = T.pulso(T.frase(0).fin - 0.6);
+            nLuz.forEach((n, i) => tl.fromTo(n, { scale: 0.3, autoAlpha: 0 }, { scale: 0.42, autoAlpha: 0.22, duration: 0.4, ease: 'power2.out' }, t0 + i * 0.12));
+
+            // Frases 1–4: cada color en su palabra; sus personas caen en él y el círculo late.
+            C.forEach((c, i) => {
+              const t = T.pulso(T.frase(c.frase).inicio - 0.1);
+              tl.to(nLuz[i], { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(1.8)' }, t);
+              tl.fromTo(eLuz[i], { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, t + 0.1);
+              caen[i].forEach(({ d, dx, dy }, k) => {
+                tl.fromTo(d, { x: dx, y: dy, autoAlpha: 0 }, { x: dx, y: dy, autoAlpha: 1, duration: 0.2 }, t + 0.1 + k * 0.05);
+                tl.to(d, { x: 0, y: 0, scale: 0.4, duration: 0.6, ease: 'power3.in' }, t + 0.3 + k * 0.05);
+                tl.to(d, { autoAlpha: 0, duration: 0.1 }, t + 0.9 + k * 0.05);
+              });
+              tl.fromTo(nLuz[i], { scale: 1.1 }, { scale: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, t + 1.0);
+            });
+
+            // Frase 5: los días por defecto de cada color, uno por pulso (se configuran en Ajustes → Seguimiento).
+            const f5 = T.frase(5);
+            const tD = T.reparto(4, pal(5, /^dias/) - 0.2, f5.fin);
+            eDias.forEach((e, i) => tl.fromTo(e, { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, tD[i]));
+            tl.fromTo(nLuz, { y: 0 }, { y: -6, duration: 0.25, yoyo: true, repeat: 1, stagger: 0.5, ease: 'sine.inOut', immediateRender: false }, tD[0]);
+
+            // Frase 6: la iglesia entera en una barra de partes; el amarillo, «a tiempo», se enmarca y late.
+            const f6 = T.frase(6);
+            const tB = T.pulso(f6.inicio);
+            segs.forEach((s, i) => tl.fromTo(s, { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: 'power3.out' }, tB + i * 0.25));
+            pors.forEach((p, i) => tl.fromTo(p, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, tB + 0.3 + i * 0.25));
+            tl.fromTo('#semaforo-datos', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tB);
+            const tTiempo = Math.max(tB + 1.5, T.pulso(pal(6, /^tiempo/) - 0.1));
+            tl.fromTo(marco, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power3.out' }, tTiempo);
+            tl.fromTo(nLuz[1], { boxShadow: '0 0 0 0px rgba(232,185,90,0.7)' }, { boxShadow: '0 0 0 40px rgba(232,185,90,0)', duration: 1, ease: 'power2.out', immediateRender: false }, tTiempo);
+            tl.fromTo(nLuz[1], { boxShadow: '0 0 0 0px rgba(232,185,90,0.7)' }, { boxShadow: '0 0 0 40px rgba(232,185,90,0)', duration: 1, ease: 'power2.out', immediateRender: false }, tTiempo + 1);
+            [0, 2, 3].forEach((i) => tl.to([nLuz[i], eLuz[i], eDias[i]], { autoAlpha: 0.35, duration: 0.5 }, tTiempo + 0.2));
+            tl.to(segs.filter((_, i) => i !== 1), { opacity: 0.45, duration: 0.5 }, tTiempo + 0.2);
+
+            tl.to('#semaforo-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['semaforo'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

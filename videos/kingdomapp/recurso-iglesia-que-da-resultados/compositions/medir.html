@@ -1,0 +1,232 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":25.5,\"frases\":[{\"texto\":\"Para ti, cada evento tiene su semáforo: al día, por reportar o retrasado.\",\"inicio\":0.5,\"fin\":4.6,\"palabras\":[]},{\"texto\":\"Puede tener su meta, y Kingdom te muestra su tendencia: si crece, o si necesita apoyo.\",\"inicio\":5.1,\"fin\":10.0,\"palabras\":[]},{\"texto\":\"En el tablero ves la asistencia, las personas por reunión y los nuevos del período.\",\"inicio\":10.6,\"fin\":14.9,\"palabras\":[]},{\"texto\":\"Y en el mapa, dónde viven tus personas,\",\"inicio\":15.5,\"fin\":17.6,\"palabras\":[]},{\"texto\":\"y en qué zonas todavía no hay una reunión cerca.\",\"inicio\":17.9,\"fin\":20.4,\"palabras\":[]},{\"texto\":\"Quizás ahí va tu próxima casa de paz.\",\"inicio\":20.9,\"fin\":23.0,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Eventos · lo que mide el pastor: el semáforo de cada evento (al día, por reportar, retrasado); la meta y la tendencia dibujadas
+         (una sube y logra su meta, otra baja y pide apoyo); el tablero (asistencia, personas por reunión, nuevos); el mapa de densidad
+         («Dónde viven») con los eventos encima y una zona con gente y sin reunión, donde aparece la próxima casa de paz. Datos de
+         ejemplo. Fuente: docs/modulos/eventos.md → «Alertas, tendencia, metas y niveles», «Tablero y mapa»; sitio/src/data/modulos.ts
+         (Eventos → «Metas y semáforo», «El mapa de tu ciudad»). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #medir-todo { position: absolute; inset: 0; }
+        #medir-texto { position: absolute; left: 192px; top: 108px; width: 800px; height: 864px; display: grid; align-items: center; }
+        #medir-texto .bloque { grid-area: 1 / 1; }
+        #medir-arriba { position: absolute; left: 192px; right: 192px; top: 120px; height: 140px; }
+        #medir-arriba .bloque { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+        #medir-sem, #medir-graf, #medir-tab, #medir-mapa { position: absolute; inset: 0; }
+        .medir-estado { position: absolute; left: 1250px; height: 60px; display: flex; align-items: center; gap: 16px; }
+        .medir-estado .k-recurso-etiqueta { font-size: 36px; color: var(--k-noche-tinta); }
+        .medir-bola { width: 28px; height: 28px; border-radius: 50%; }
+        #medir-svg { position: absolute; left: 1080px; top: 250px; width: 648px; height: 520px; overflow: visible; }
+        .medir-g-eti { position: absolute; }
+        .medir-cifra { position: absolute; left: 1100px; width: 620px; display: flex; flex-direction: column; gap: 0; }
+        .medir-cifra .k-recurso-contador { font-size: 104px; }
+        .medir-celda { position: absolute; width: 32px; height: 32px; border-radius: 7px; background: #3576da; }
+        .medir-ev { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: var(--k-noche); box-shadow: inset 0 0 0 5px var(--k-noche-dorado); }
+        #medir-zona { position: absolute; border-radius: 22px; border: 3px dashed var(--k-noche-dorado); opacity: 0; }
+        #medir-pin { position: absolute; color: var(--k-noche-dorado); }
+        #medir-leyenda { position: absolute; left: 232px; top: 952px; display: flex; gap: 36px; }
+        .medir-ley { display: flex; align-items: center; gap: 12px; }
+      </style>
+
+      <div id="root" data-composition-id="medir" data-width="1920" data-height="1080" data-duration="25.5">
+        <div id="medir-todo" data-layout-allow-overlap>
+          <div id="medir-sem" data-layout-allow-overlap></div>
+          <div id="medir-graf" data-layout-allow-overlap><svg id="medir-svg" viewBox="0 0 648 520"></svg></div>
+          <div id="medir-tab" data-layout-allow-overlap></div>
+          <div id="medir-mapa" data-layout-allow-overlap></div>
+          <div id="medir-texto" data-layout-allow-overlap></div>
+          <div id="medir-arriba" data-layout-allow-overlap></div>
+          <span class="k-datos-ejemplo k-recurso-datos" id="medir-datos">Datos de ejemplo</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+          const fmt = (n) => { const s = String(Math.round(n)); return s.length > 3 ? `${s.slice(0, -3)}.${s.slice(-3)}` : s; };
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('medir-texto'), arriba = $('medir-arriba');
+          const rs = [
+            rotulo(texto, 'medir-r0', 0, 'Cada evento, con su *semáforo*.'),
+            rotulo(texto, 'medir-r1', 1, 'Su *meta*, y su *tendencia*: si crece, o si necesita apoyo.'),
+            rotulo(texto, 'medir-r2', 2, 'En el *tablero*: asistencia, personas por reunión y nuevos.'),
+          ];
+          const ra = [
+            rotulo(arriba, 'medir-r3', 3, 'En el *mapa*, dónde viven tus personas', 'k-recurso-frase'),
+            rotulo(arriba, 'medir-r4', 4, 'Y en qué zonas *no hay una reunión* cerca', 'k-recurso-frase'),
+            rotulo(arriba, 'medir-r5', 5, 'Quizás ahí va tu próxima *casa de paz*', 'k-recurso-frase'),
+          ];
+
+          // (a) Semáforo de los eventos.
+          const sem = $('medir-sem');
+          const E = [
+            { y: 330, c: '#26a69a', t: 'Al día', re: /^dia/ },
+            { y: 530, c: '#e8b95a', t: 'Por reportar', re: /^reportar/ },
+            { y: 730, c: '#e06c5a', t: 'Retrasado', re: /^retrasado/ },
+          ];
+          const nE = E.map((e, i) => nodo(sem, `medir-e-${i}`, 1160, e.y, 'home', 108));
+          const sE = E.map((e, i) => { const s = el('div', 'medir-estado', sem, `medir-s-${i}`); s.style.top = `${e.y - 30}px`; const b = el('span', 'medir-bola', s); b.style.background = e.c; b.style.boxShadow = `0 0 24px ${e.c}`; el('span', 'k-recurso-etiqueta', s).textContent = e.t; return s; });
+
+          // (b) Meta y tendencia.
+          const g = $('medir-svg');
+          svgEl('line', { x1: 0, y1: 500, x2: 648, y2: 500, class: 'k-recurso-linea' }, g);
+          const meta = svgEl('line', { x1: 0, y1: 190, x2: 648, y2: 190, class: 'k-recurso-linea k-oro', id: 'medir-meta' }, g);
+          meta.style.strokeDasharray = '14 12'; meta.style.opacity = '0';
+          const camino = (pts) => pts.map((p, i) => `${i ? 'L' : 'M'}${((i / (pts.length - 1)) * 600).toFixed(1)},${500 - p}`).join(' ');
+          const sube = svgEl('path', { d: camino([120, 140, 132, 168, 190, 206, 232, 250, 276, 300, 318, 342]), class: 'k-recurso-linea k-oro', id: 'medir-sube' }, g);
+          const baja = svgEl('path', { d: camino([210, 204, 196, 200, 182, 170, 166, 150, 142, 128, 120, 108]), class: 'k-recurso-linea', id: 'medir-baja' }, g);
+          [sube, baja].forEach((p) => { p.style.strokeWidth = '6'; p.style.strokeDasharray = '800'; p.style.strokeDashoffset = '800'; });
+          baja.style.stroke = '#e06c5a';
+          const gEti = (txt, x, y, color, id) => { const e = el('div', 'k-recurso-etiqueta medir-g-eti', $('medir-graf'), id); e.textContent = txt; e.style.left = `${x}px`; e.style.top = `${y}px`; if (color) e.style.color = color; return e; };
+          const eMeta = gEti('Meta', 1080, 250 + 190 - 50, '#e8b95a', 'medir-eti-meta');
+          const eCrece = gEti('Crece', 1600, 250 + 500 - 342 - 60, '#eaf0ff', 'medir-eti-crece');
+          const eApoyo = gEti('Necesita apoyo', 1460, 250 + 500 - 108 + 14, '#eaf0ff', 'medir-eti-apoyo');
+          const estrella = el('div', '', $('medir-graf'), 'medir-estrella'); estrella.style.position = 'absolute'; estrella.style.left = `${1080 + 518 - 26}px`; estrella.style.top = `${250 + 500 - 190 - 26}px`; estrella.style.color = '#e8b95a'; icono(estrella, 'star', 52);
+
+          // (c) Tablero.
+          const tab = $('medir-tab');
+          const N = [{ t: 'Asistencia', v: 1940, re: /^asistencia/ }, { t: 'Personas por reunión', v: 12, re: /^personas/ }, { t: 'Nuevos del período', v: 34, re: /^nuevos/ }];
+          const cifras = N.map((n, i) => { const c = el('div', 'medir-cifra', tab, `medir-c-${i}`); c.style.top = `${200 + i * 230}px`; el('div', 'k-recurso-etiqueta', c).textContent = n.t; const num = el('div', 'k-recurso-contador', c, `medir-n-${i}`); num.textContent = '0'; return { c, num, o: { n: 0 } }; });
+
+          // (d) El mapa: celdas de densidad (≈1 km) con cuatro zonas; la cuarta no tiene evento.
+          const mapa = $('medir-mapa');
+          const blobs = [{ x: 520, y: 560, r: 92, a: 1 }, { x: 650, y: 700, r: 78, a: 0.8 }, { x: 990, y: 720, r: 105, a: 1 }, { x: 1180, y: 460, r: 88, a: 0.85 }, { x: 830, y: 420, r: 62, a: 0.6 }, { x: 1530, y: 770, r: 92, a: 0.95 }, { x: 380, y: 820, r: 56, a: 0.5 }, { x: 1380, y: 400, r: 50, a: 0.45 }];
+          const celdas = [];
+          for (let cx = 0; cx < 37; cx++) for (let cy = 0; cy < 16; cy++) {
+            const x = 232 + cx * 40, y = 300 + cy * 40;
+            let d = 0; blobs.forEach((b) => { d += b.a * Math.exp(-(((x - b.x) ** 2 + (y - b.y) ** 2) / (2 * b.r * b.r))); });
+            if (d < 0.2) continue;
+            const o = Math.min(0.92, 0.1 + Math.pow(Math.min(1, d), 1.6) * 0.85);
+            const c = el('div', 'medir-celda', mapa, `medir-cel-${cx}-${cy}`); c.style.left = `${x}px`; c.style.top = `${y}px`; celdas.push({ c, x, o });
+          }
+          const EV = [[520, 540], [480, 600], [570, 590], [650, 700], [980, 700], [1040, 760], [930, 740], [1180, 450], [1210, 500]];
+          const evs = EV.map(([x, y], i) => { const e = el('div', 'medir-ev', mapa, `medir-ev-${i}`); e.style.left = `${x}px`; e.style.top = `${y}px`; return e; });
+          const zona = el('div', '', mapa, 'medir-zona'); Object.assign(zona.style, { left: '1372px', top: '612px', width: '316px', height: '316px' });
+          const pin = el('div', '', mapa, 'medir-pin'); pin.style.left = '1494px'; pin.style.top = '650px'; icono(pin, 'location_on', 72);
+          const nuevaCasa = nodo(mapa, 'medir-nueva', 1530, 770, 'home', 96, true);
+          const ley = el('div', '', mapa, 'medir-leyenda');
+          const l1 = el('div', 'medir-ley', ley); const b1 = el('span', '', l1); Object.assign(b1.style, { width: '26px', height: '26px', borderRadius: '6px', background: '#3576da' }); el('span', 'k-recurso-etiqueta', l1).textContent = 'Dónde viven';
+          const l2 = el('div', 'medir-ley', ley); const b2 = el('span', 'medir-ev', l2); Object.assign(b2.style, { position: 'relative', margin: '0' }); el('span', 'k-recurso-etiqueta', l2).textContent = 'Reuniones';
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            rs.forEach((r, i) => { entra(r); sale(r, fin(i)); });
+            ra.forEach((r, i) => { entra(r); if (i < 2) sale(r, fin(i + 3)); });
+            gsap.set(['#medir-graf', '#medir-datos', eMeta, eCrece, eApoyo, estrella, ley, nuevaCasa], { autoAlpha: 0 });
+
+            // Frase 0: tres eventos y su estado, cada uno en su palabra.
+            const f0 = T.frase(0);
+            nE.forEach((n, i) => tl.fromTo(n, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.42, ease: 'back.out(2)' }, T.pulso(f0.inicio) + i * 0.5));
+            E.forEach((e, i) => {
+              const t = Math.max(T.pulso(f0.inicio) + i * 0.5 + 0.3, T.pulsoAntes(pal(0, e.re) - 0.02));
+              tl.fromTo(sE[i], { x: -20, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, t);
+              tl.to(nE[i], { boxShadow: `inset 0 0 0 3px ${e.c}`, duration: 0.3 }, t);
+            });
+            const f1 = T.frase(1);
+            tl.to('#medir-sem', { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f1.inicio - 0.4);
+
+            // Frase 1: la meta (línea punteada) y la tendencia: una sube y logra su meta (★), otra baja y pide apoyo.
+            tl.to(['#medir-datos', '#medir-graf'], { autoAlpha: 1, duration: 0.3 }, f1.inicio);
+            const tMeta = T.pulso(pal(1, /^meta/) - 0.15);
+            tl.fromTo(meta, { opacity: 0, strokeDashoffset: 300 }, { opacity: 1, strokeDashoffset: 0, duration: 0.8, ease: 'power2.out' }, tMeta);
+            tl.fromTo(eMeta, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, immediateRender: false }, tMeta + 0.2);
+            const tTend = T.pulso(pal(1, /^tendencia/) - 0.2);
+            tl.to(sube, { strokeDashoffset: 0, duration: 1.6, ease: 'power1.inOut' }, tTend);
+            tl.fromTo(estrella, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2.2)', immediateRender: false }, tTend + 1.4);
+            tl.fromTo(eCrece, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, immediateRender: false }, Math.max(tTend + 1.4, T.pulsoAntes(pal(1, /^crece/))));
+            const tApoyo = Math.max(tTend + 1.6, T.pulso(pal(1, /^necesita/) - 0.4));
+            tl.to(baja, { strokeDashoffset: 0, duration: 1.2, ease: 'power1.inOut' }, tApoyo);
+            tl.fromTo(eApoyo, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, immediateRender: false }, tApoyo + 0.8);
+            const f2 = T.frase(2);
+            tl.to('#medir-graf', { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f2.inicio - 0.4);
+
+            // Frase 2: el tablero, una cifra por palabra.
+            N.forEach((n, i) => {
+              const t = T.pulsoAntes(pal(2, n.re) - 0.05);
+              const o = cifras[i].o;
+              tl.fromTo(cifras[i].c, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, t);
+              tl.fromTo(o, { n: 0 }, { n: n.v, duration: 0.9, ease: 'power2.out', onUpdate: () => { cifras[i].num.textContent = fmt(o.n); } }, t + 0.1);
+            });
+            const f3 = T.frase(3);
+            tl.to(['#medir-tab'], { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f3.inicio - 0.4);
+
+            // Frase 3: el mapa aparece en un barrido de izquierda a derecha; luego, las reuniones.
+            const tMapa = T.pulso(pal(3, /^mapa/) - 0.3);
+            celdas.forEach(({ c, x, o }) => tl.fromTo(c, { opacity: 0, scale: 0.4 }, { opacity: o, scale: 1, duration: 0.35, ease: 'power2.out' }, tMapa + ((x - 232) / 1480) * 1.1));
+            tl.fromTo(ley, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, immediateRender: false }, tMapa + 0.6);
+            const tViven = T.pulso(pal(3, /^viven/) - 0.1);
+            evs.forEach((e, i) => tl.fromTo(e, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2.2)' }, Math.max(tMapa + 1.2, tViven) + i * 0.12));
+            tl.fromTo(mapa, { scale: 1.04 }, { scale: 1, duration: 6, ease: 'sine.out', transformOrigin: '50% 60%' }, tMapa);
+
+            // Frase 4: la zona con gente y sin reunión se enmarca y el pin late.
+            const tZona = T.pulso(pal(4, /^zonas/) - 0.15);
+            tl.fromTo(zona, { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out' }, tZona);
+            tl.fromTo(pin, { y: -40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'back.out(2)' }, tZona + 0.3);
+            [0, 1, 2].forEach((r) => tl.fromTo(pin, { y: 0 }, { y: -12, duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut', immediateRender: false }, tZona + 1 + r * 0.5));
+            tl.to(celdas.filter(({ x }) => x < 1340).map((c) => c.c), { opacity: 0.18, duration: 0.5 }, tZona + 0.4);
+            tl.to(evs, { autoAlpha: 0.4, duration: 0.5 }, tZona + 0.4);
+
+            // Frase 5: la próxima casa de paz aparece en la zona.
+            const f5 = T.frase(5);
+            const tCasa = T.pulso(pal(5, /^casa/) - 0.3);
+            tl.to(pin, { autoAlpha: 0, y: -20, duration: 0.3 }, tCasa - 0.3);
+            tl.fromTo(nuevaCasa, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(2)', immediateRender: false }, tCasa);
+            tl.fromTo(nuevaCasa, { boxShadow: '0 0 0 0px rgba(232,185,90,0.6), inset 0 0 0 3px rgba(232,185,90,1)' }, { boxShadow: '0 0 0 50px rgba(232,185,90,0), inset 0 0 0 3px rgba(232,185,90,1)', duration: 1.1, ease: 'power2.out', immediateRender: false }, tCasa + 0.4);
+            tl.fromTo(nuevaCasa, { boxShadow: '0 0 0 0px rgba(232,185,90,0.6), inset 0 0 0 3px rgba(232,185,90,1)' }, { boxShadow: '0 0 0 50px rgba(232,185,90,0), inset 0 0 0 3px rgba(232,185,90,1)', duration: 1.1, ease: 'power2.out', immediateRender: false }, tCasa + 1.4);
+            
+
+            tl.to('#medir-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['medir'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":25.5,\"frases\":[{\"texto\":\"Y no lo haces solo.\",\"inicio\":0.5,\"fin\":1.8,\"palabras\":[]},{\"texto\":\"Al empezar, Kingdom te da una ruta de arranque, paso a paso, para acomodarlo a tu iglesia.\",\"inicio\":2.4,\"fin\":7.4,\"palabras\":[]},{\"texto\":\"En la Ayuda está la Escuela Kingdom, con lecciones y videos cortos para cada líder.\",\"inicio\":8.0,\"fin\":12.4,\"palabras\":[]},{\"texto\":\"Y nuestro equipo ve cómo avanza tu iglesia, y te acompaña a mejorar tus procesos.\",\"inicio\":13.0,\"fin\":17.4,\"palabras\":[]},{\"texto\":\"Porque la meta no es usar una app. Es cuidar mejor a cada persona, y poder verlo.\",\"inicio\":18.2,\"fin\":22.5,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- El acompañamiento: la iglesia no está sola; la ruta de arranque por etapas (Tu iglesia, Tu gente, Tu equipo); la Escuela Kingdom
+         con sus rutas de aprendizaje (administrador, líder de red, servidor); el equipo de Kingdom que ve el avance de cada iglesia y la
+         acompaña a mejorar sus procesos; el remate, con el anillo de personas alrededor del punto dorado. Fuente: docs/modulos/arranque.md
+         → «Objetivo», «La ruta de arranque», «La Escuela Kingdom», «Plataforma» (seguimiento); frame-recurso.md → llamado
+         «acompanamiento». No nombra las sesiones por Google Meet: están dormidas (pendientes 41). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #acompana-todo { position: absolute; inset: 0; }
+        #acompana-texto { position: absolute; left: 192px; top: 108px; width: 800px; height: 864px; display: grid; align-items: center; }
+        #acompana-texto .bloque { grid-area: 1 / 1; }
+        #acompana-centro { position: absolute; left: 192px; right: 192px; top: 250px; height: 300px; }
+        #acompana-centro .bloque { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+        #acompana-solo, #acompana-ruta, #acompana-escuela, #acompana-equipo, #acompana-final { position: absolute; inset: 0; }
+        #acompana-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .acompana-eti { position: absolute; width: 300px; }
+        .acompana-eti-c { position: absolute; width: 260px; text-align: center; }
+        .acompana-leccion { position: absolute; left: 1120px; width: 600px; height: 104px; padding: 0 30px; display: flex; align-items: center; gap: 22px; font-size: 34px; font-weight: 600; }
+        .acompana-leccion .k-recurso-icono { color: var(--k-noche-dorado); }
+        #acompana-anillo { position: absolute; left: 1150px; top: 520px; width: 240px; height: 240px; overflow: visible; }
+        .acompana-paso { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 200px; color: var(--k-noche-dorado); }
+        .acompana-paso .k-recurso-etiqueta { color: var(--k-noche-tinta); text-align: center; }
+      </style>
+
+      <div id="root" data-composition-id="acompana" data-width="1920" data-height="1080" data-duration="25.5">
+        <div id="acompana-todo" data-layout-allow-overlap>
+          <svg id="acompana-lineas" viewBox="0 0 1920 1080"></svg>
+          <div id="acompana-solo" data-layout-allow-overlap></div>
+          <div id="acompana-ruta" data-layout-allow-overlap></div>
+          <div id="acompana-escuela" data-layout-allow-overlap></div>
+          <div id="acompana-equipo" data-layout-allow-overlap>
+            <svg id="acompana-anillo" viewBox="0 0 240 240"></svg>
+          </div>
+          <div id="acompana-final" data-layout-allow-overlap></div>
+          <div id="acompana-texto" data-layout-allow-overlap></div>
+          <div id="acompana-centro" data-layout-allow-overlap></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          let semilla = 7703;
+          const azar = () => ((semilla = (semilla * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('acompana-texto'), centro = $('acompana-centro'), svg = $('acompana-lineas');
+          const r0 = rotulo(centro, 'acompana-r0', 0, 'Y no lo haces *solo*.', 'k-recurso-titular');
+          const rs = [
+            rotulo(texto, 'acompana-r1', 1, 'Una *ruta de arranque*, paso a paso, a la medida de tu iglesia.'),
+            rotulo(texto, 'acompana-r2', 2, 'La *Escuela Kingdom*, con lecciones y videos cortos para cada líder.'),
+            rotulo(texto, 'acompana-r3', 3, 'Y nuestro equipo te *acompaña* a mejorar tus procesos.'),
+          ];
+          const r4 = rotulo(centro, 'acompana-r4', 4, 'Cuidar mejor a cada persona, y *poder verlo*.', 'k-recurso-titular');
+
+          // «No lo haces solo»: la iglesia y, a su lado, el equipo de Kingdom.
+          const so = $('acompana-solo');
+          const nIgS = nodo(so, 'acompana-ig-s', 860, 700, 'church', 130);
+          const nKS = nodo(so, 'acompana-k-s', 1060, 700, 'support_agent', 130, true);
+          const lSolo = linea(svg, 'acompana-l-solo', 925, 700, 995, 700, 'k-oro');
+
+          // Ruta de arranque: etapas en vertical.
+          const ru = $('acompana-ruta');
+          const ET = [
+            { ic: 'rocket_launch', t: 'Empieza' }, { ic: 'church', t: 'Tu iglesia' }, { ic: 'groups', t: 'Tu gente' }, { ic: 'diversity_3', t: 'Tu equipo' }, { ic: 'flag', t: 'Tus módulos' },
+          ].map((e, i) => ({ ...e, x: 1260, y: 230 + i * 155 }));
+          const lEt = linea(svg, 'acompana-l-ruta', 1260, 230, 1260, 230 + 4 * 155, '');
+          const lEtOro = linea(svg, 'acompana-l-ruta-oro', 1260, 230, 1260, 230 + 4 * 155, 'k-oro');
+          const nEt = ET.map((e, i) => nodo(ru, `acompana-et-${i}`, e.x, e.y, e.ic, 100));
+          const eEt = ET.map((e, i) => { const l = el('div', 'k-recurso-etiqueta acompana-eti', ru, `acompana-ete-${i}`); l.textContent = e.t; l.style.left = `${e.x + 76}px`; l.style.top = `${e.y - 20}px`; l.style.fontSize = '34px'; l.style.color = '#eaf0ff'; return l; });
+
+          // Escuela Kingdom: rutas de aprendizaje.
+          const es = $('acompana-escuela');
+          const nLibro = nodo(es, 'acompana-libro', 1420, 270, 'menu_book', 130, true);
+          const LE = ['Ruta del administrador', 'Ruta del líder de red', 'Ruta del servidor'];
+          const lecciones = LE.map((t, i) => { const c = el('div', 'k-recurso-tarjeta acompana-leccion', es, `acompana-lec-${i}`); c.style.top = `${430 + i * 135}px`; icono(c, 'play_circle', 52); el('span', '', c).textContent = t; return c; });
+
+          // El equipo de Kingdom y la iglesia: un anillo de avance y los pasos de la mejora.
+          const eqp = $('acompana-equipo');
+          const nIg = nodo(eqp, 'acompana-ig', 1270, 640, 'church', 140);
+          const anillo = $('acompana-anillo');
+          svgEl('circle', { cx: 120, cy: 120, r: 108, class: 'k-recurso-linea' }, anillo);
+          const arco = svgEl('circle', { cx: 120, cy: 120, r: 108, class: 'k-recurso-linea k-oro', id: 'acompana-arco', transform: 'rotate(-90 120 120)' }, anillo);
+          arco.style.strokeWidth = '6'; arco.style.strokeDasharray = '679'; arco.style.strokeDashoffset = '679';
+          const nK = nodo(eqp, 'acompana-k', 1600, 330, 'support_agent', 140, true);
+          const eK = el('div', 'k-recurso-etiqueta acompana-eti-c', eqp, 'acompana-k-eti'); eK.textContent = 'Equipo de Kingdom'; eK.style.left = '1470px'; eK.style.top = '214px';
+          const eI = el('div', 'k-recurso-etiqueta acompana-eti-c', eqp, 'acompana-ig-eti'); eI.textContent = 'Tu iglesia'; eI.style.left = '1140px'; eI.style.top = '780px';
+          const lK = linea(svg, 'acompana-l-k', 1540, 390, 1340, 580, 'k-oro');
+          const PS = [{ ic: 'visibility', t: 'Ve el avance', x: 1620, y: 560 }, { ic: 'tune', t: 'Ajusta', x: 1620, y: 720 }, { ic: 'trending_up', t: 'Mejora', x: 1520, y: 840 }];
+          const pasos = PS.map((p, i) => { const d = el('div', 'acompana-paso', eqp, `acompana-ps-${i}`); d.style.left = `${p.x - 100}px`; d.style.top = `${p.y - 30}px`; icono(d, p.ic, 48); el('div', 'k-recurso-etiqueta', d).textContent = p.t; return d; });
+
+          // Final: el anillo de personas alrededor del punto dorado.
+          const fi = $('acompana-final');
+          const yo = el('span', 'k-recurso-punto k-oro', fi, 'acompana-yo'); Object.assign(yo.style, { left: '960px', top: '770px', width: '34px', height: '34px', margin: '-17px 0 0 -17px' });
+          const ring = Array.from({ length: 24 }, (_, i) => { const a = (i / 24) * Math.PI * 2; const d = el('span', 'k-recurso-punto', fi, `acompana-rg-${i}`); d.style.left = `${960 + Math.cos(a) * 160}px`; d.style.top = `${770 + Math.sin(a) * 160}px`; return { d, sx: (azar() - 0.5) * 900, sy: (azar() - 0.5) * 300 }; });
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            entra(r0); sale(r0, fin(0));
+            rs.forEach((r, i) => { entra(r); sale(r, fin(i + 1)); });
+            entra(r4);
+            gsap.set(['#acompana-ruta', '#acompana-escuela', '#acompana-equipo', '#acompana-final', lEt, lEtOro, lK], { autoAlpha: 0 });
+
+            // Frase 0: la iglesia y, en «solo», el equipo de Kingdom a su lado.
+            const f0 = T.frase(0);
+            tl.fromTo(nIgS, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, T.pulso(f0.inicio) - 0.5);
+            const tSolo = T.pulso(pal(0, /^solo/) - 0.15);
+            tl.fromTo(nKS, { x: 120, scale: 0, autoAlpha: 0 }, { x: 0, scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.8)' }, tSolo);
+            tl.to(lSolo, { strokeDashoffset: 0, duration: 0.35 }, tSolo + 0.4);
+            tl.to(['#acompana-solo', lSolo], { y: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, T.frase(1).inicio - 0.35);
+
+            // Frase 1: la ruta de arranque: etapas en pulsos, y el avance dorado baja por ellas.
+            const f1 = T.frase(1);
+            const t1 = T.pulso(pal(1, /^ruta/) - 0.4);
+            tl.to(['#acompana-ruta', lEt], { autoAlpha: 1, duration: 0.01 }, t1 - 0.05);
+            tl.to(lEt, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, t1);
+            const tE = T.reparto(5, t1, t1 + 2);
+            nEt.forEach((n, i) => { tl.fromTo(n, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.4, ease: 'back.out(2)' }, tE[i]); tl.fromTo(eEt[i], { x: -14, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.35 }, tE[i] + 0.1); });
+            const tPaso = Math.max(tE[4] + 0.5, T.pulso(pal(1, /^paso/) - 0.15));
+            tl.to(lEtOro, { autoAlpha: 1, duration: 0.01 }, tPaso);
+            [0, 1, 2, 3].forEach((k) => {
+              tl.to(lEtOro, { strokeDashoffset: 620 - (k + 1) * 155, duration: 0.4, ease: 'power2.inOut' }, tPaso + k * 0.5);
+              tl.to(nEt[k], { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', duration: 0.3 }, tPaso + k * 0.5);
+            });
+            tl.to(nEt[4], { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', duration: 0.3 }, tPaso + 2);
+            const f2 = T.frase(2);
+            tl.to(['#acompana-ruta', lEt, lEtOro], { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f2.inicio - 0.35);
+
+            // Frase 2: la Escuela Kingdom y sus rutas de aprendizaje, una por pulso.
+            const t2 = T.pulso(f2.inicio);
+            tl.to('#acompana-escuela', { autoAlpha: 1, duration: 0.01 }, t2 - 0.05);
+            tl.fromTo(nLibro, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.8)' }, Math.max(t2, T.pulso(pal(2, /^escuela/) - 0.3)));
+            const tL = T.reparto(3, T.pulso(pal(2, /^lecciones/) - 0.3), Math.max(T.pulso(pal(2, /^lecciones/)) + 1, T.frase(2).fin - 0.8));
+            lecciones.forEach((c, i) => tl.fromTo(c, { x: 40, autoAlpha: 0, filter: 'blur(6px)' }, { x: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.45, ease: 'power3.out' }, tL[i]));
+            const f3 = T.frase(3);
+            tl.to('#acompana-escuela', { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f3.inicio - 0.35);
+
+            // Frase 3: el equipo de Kingdom ve el avance (el anillo se llena) y acompaña: los pasos de la mejora, uno por pulso.
+            const t3 = T.pulso(f3.inicio);
+            tl.to('#acompana-equipo', { autoAlpha: 1, duration: 0.01 }, t3 - 0.05);
+            tl.fromTo(nK, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, t3);
+            tl.fromTo(eK, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35 }, t3 + 0.2);
+            tl.fromTo(nIg, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, t3 + 0.5);
+            tl.fromTo(eI, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35 }, t3 + 0.7);
+            const tAv = Math.max(t3 + 0.8, T.pulso(pal(3, /^avanza/) - 0.2));
+            tl.to(arco, { strokeDashoffset: 679 * 0.3, duration: 1.4, ease: 'power2.inOut' }, tAv);
+            const tAc = Math.max(tAv + 0.8, T.pulso(pal(3, /^acompana/) - 0.2));
+            tl.to(lK, { autoAlpha: 1, strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, tAc);
+            const tPs = T.reparto(3, tAc + 0.5, Math.max(tAc + 1.5, f3.fin + 0.3));
+            pasos.forEach((p, i) => tl.fromTo(p, { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'back.out(1.8)' }, tPs[i]));
+            tl.to(arco, { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, tPs[2]);
+            const f4 = T.frase(4);
+            tl.to(['#acompana-equipo', lK], { y: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f4.inicio - 0.35);
+
+            // Frase 4: el remate centrado; las personas vienen de todas partes a formar el anillo alrededor del punto dorado.
+            const t4 = T.pulso(f4.inicio);
+            tl.to('#acompana-final', { autoAlpha: 1, duration: 0.01 }, t4 - 0.05);
+            tl.fromTo(yo, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(2)' }, t4);
+            ring.forEach(({ d, sx, sy }, i) => tl.fromTo(d, { x: sx, y: sy, autoAlpha: 0 }, { x: 0, y: 0, autoAlpha: 1, duration: 1.3, ease: 'power3.out' }, t4 + 0.3 + (i % 6) * 0.08));
+            const tVer = T.pulso(pal(4, /^verlo/) - 0.4);
+            tl.to(ring.map((r) => r.d), { backgroundColor: '#e8b95a', duration: 0.4, stagger: 0.03 }, tVer);
+            for (let r = 0; r < 2; r++) tl.fromTo('#acompana-final', { scale: 1.04 }, { scale: 1, duration: 0.5, ease: 'power2.out', immediateRender: false, transformOrigin: '960px 770px' }, tVer + 0.8 + r);
+
+            tl.to('#acompana-todo', { autoAlpha: 0, filter: 'blur(6px)', duration: 0.7, ease: 'power2.in' }, T.salida(0.8));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['acompana'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":23.5,\"frases\":[{\"texto\":\"Entonces, pastor, ¿qué gana tu iglesia?\",\"inicio\":0.5,\"fin\":2.6,\"palabras\":[]},{\"texto\":\"Decisiones con datos, no con suposiciones.\",\"inicio\":3.3,\"fin\":5.6,\"palabras\":[]},{\"texto\":\"Nadie se pierde: cada persona tiene quién la cuide, y ves a tiempo a quien se aleja.\",\"inicio\":6.3,\"fin\":11.0,\"palabras\":[]},{\"texto\":\"Líderes que rinden cuentas, sin papeles, y sin perseguir a nadie por su reporte.\",\"inicio\":11.7,\"fin\":16.0,\"palabras\":[]},{\"texto\":\"Y todo conectado: la asistencia, los cursos y el servicio mueven la misma ruta de cada persona.\",\"inicio\":16.7,\"fin\":22.4,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Lo que gana tu iglesia (resumen): la pregunta en grande; tres frases gigantes que llegan al centro, una por frase de la voz, y
+         se guardan en una lista a la izquierda con su ícono y su bajada; al final, la asistencia, los cursos y el servicio se unen en la
+         misma ruta. Fuente: el resumen de los capítulos 1–4 (membresia.md, eventos.md, academia.md, equipos.md → la ruta de crecimiento
+         que cumplen la asistencia, la Academia y el objetivo «Servir»). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #gana-todo { position: absolute; inset: 0; }
+        #gana-centro { position: absolute; left: 192px; right: 192px; top: 400px; height: 280px; }
+        #gana-centro .bloque { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 112px; }
+        .gana-item { position: absolute; left: 192px; width: 860px; display: grid; grid-template-columns: 84px 1fr; column-gap: 28px; align-items: center; }
+        .gana-item .gana-ic { grid-row: 1 / span 2; width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--k-noche-2); box-shadow: inset 0 0 0 3px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+        .gana-item .k-recurso-frase { font-size: 60px; white-space: nowrap; transform-origin: 0 50%; width: max-content; justify-self: start; }
+        .gana-item .k-recurso-etiqueta { margin-top: 6px; }
+        #gana-hub { position: absolute; inset: 0; }
+        #gana-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .gana-eti { position: absolute; width: 220px; text-align: center; }
+      </style>
+
+      <div id="root" data-composition-id="gana" data-width="1920" data-height="1080" data-duration="23.5">
+        <div id="gana-todo" data-layout-allow-overlap>
+          <svg id="gana-lineas" viewBox="0 0 1920 1080"></svg>
+          <div id="gana-hub" data-layout-allow-overlap></div>
+          <div id="gana-lista" data-layout-allow-overlap data-layout-allow-overflow></div>
+          <div id="gana-centro" data-layout-allow-overlap></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const r0 = rotulo($('gana-centro'), 'gana-r0', 0, '¿Qué gana tu *iglesia*?', 'k-recurso-titular');
+          const lista = $('gana-lista');
+          const IT = [
+            { f: 1, ic: 'query_stats', t: 'Decisiones con *datos*', b: 'No con suposiciones', y: 230 },
+            { f: 2, ic: 'diversity_1', t: 'Nadie se *pierde*', b: 'Cada persona, con quién la cuide', y: 420 },
+            { f: 3, ic: 'task_alt', t: 'Líderes que *rinden cuentas*', b: 'Sin papeles ni perseguir reportes', y: 610 },
+          ];
+          const items = IT.map((it, i) => {
+            const d = el('div', 'gana-item', lista, `gana-it-${i}`); d.setAttribute('data-layout-allow-overflow', ''); d.style.top = `${it.y}px`;
+            const ic = el('div', 'gana-ic', d, `gana-ic-${i}`); icono(ic, it.ic, 44);
+            const r = rotulo(d, `gana-t-${i}`, it.f, it.t, 'k-recurso-frase');
+            const b = el('div', 'k-recurso-etiqueta', d, `gana-b-${i}`); b.textContent = it.b;
+            return { d, ic, r, b };
+          });
+          // El centro: la ruta de cada persona, y lo que la mueve.
+          const hub = $('gana-hub'), svg = $('gana-lineas');
+          const C = { x: 1440, y: 560 };
+          const nC = nodo(hub, 'gana-ruta', C.x, C.y, 'route', 150, true);
+          const eC = el('div', 'k-recurso-etiqueta gana-eti', hub, 'gana-eti-ruta'); eC.textContent = 'La ruta de cada persona'; Object.assign(eC.style, { left: `${C.x - 160}px`, width: '320px', top: `${C.y + 90}px`, color: '#e8b95a' });
+          const SAT = [
+            { a: -150, ic: 'event_available', t: 'Asistencia', re: /^asistencia/ },
+            { a: -90, ic: 'school', t: 'Cursos', re: /^cursos/ },
+            { a: -30, ic: 'volunteer_activism', t: 'Servicio', re: /^servicio/ },
+          ].map((s) => ({ ...s, x: C.x + Math.cos((s.a * Math.PI) / 180) * 260, y: C.y + Math.sin((s.a * Math.PI) / 180) * 260 }));
+          const nS = SAT.map((s, i) => nodo(hub, `gana-s-${i}`, s.x, s.y, s.ic, 108));
+          const eS = SAT.map((s, i) => { const e = el('div', 'k-recurso-etiqueta gana-eti', hub, `gana-se-${i}`); e.textContent = s.t; e.style.left = `${s.x - 110}px`; e.style.top = `${s.y - 104}px`; return e; });
+          const lS = SAT.map((s, i) => linea(svg, `gana-ls-${i}`, s.x, s.y, C.x, C.y, 'k-oro'));
+          const luces = SAT.map((s, i) => { const d = el('span', 'k-recurso-punto k-oro', hub, `gana-luz-${i}`); d.style.left = `${s.x}px`; d.style.top = `${s.y}px`; return d; });
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            entra(r0);
+            tl.to(r0.b, { y: -40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.35, ease: 'power2.in' }, T.frase(1).inicio - 0.4);
+            tl.fromTo(r0.b, { scale: 0.96 }, { scale: 1.02, duration: 3, ease: 'sine.out' }, T.frase(0).inicio);
+
+            // Frases 1–3: cada frase llega grande al centro (desplazada y escalada desde su lugar en la lista) y, al empezar la siguiente
+            // frase, vuelve a su lugar: el ícono y la bajada aparecen entonces.
+            const ESC = 1.75;
+            items.forEach((it, i) => {
+              const titulo = it.r.b;
+              const ctx = document.createElement('canvas').getContext('2d'); ctx.font = '560 60px Fraunces';
+              const palabras = it.r.ps.map((p) => p.s.textContent);
+              const w = palabras.reduce((acc, p) => acc + ctx.measureText(p).width - p.length * 1.2, 0) + (palabras.length - 1) * 0.24 * 60, h = 66; // medido con canvas: la escena puede estar oculta al construir
+              const cx = 192 + 84 + 28; // donde empieza el título en la lista
+              const dx = 960 - (cx + (w * ESC) / 2), dy = 790 - (IT[i].y + h / 2);
+              const f = T.frase(IT[i].f);
+              entra(it.r);
+              tl.fromTo(titulo, { x: dx, y: dy, scale: ESC }, { x: dx, y: dy, scale: ESC, duration: 0.01 }, 0);
+              const tVuelve = T.frases[IT[i].f + 1].inicio - 0.5;
+              tl.to(titulo, { x: 0, y: 0, scale: 1, duration: 0.7, ease: 'power3.inOut' }, tVuelve);
+              tl.fromTo(it.ic, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, tVuelve + 0.5);
+              tl.fromTo(it.b, { x: -16, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, tVuelve + 0.6);
+              tl.fromTo(titulo, { filter: 'blur(0px)' }, { filter: 'blur(0px)', duration: 0.01 }, f.inicio);
+            });
+
+            // Frase 4: la ruta en el centro y, en cada palabra, lo que la mueve; la luz viaja por cada línea.
+            const f4 = T.frase(4);
+            const t4 = T.pulso(f4.inicio);
+            tl.fromTo(nC, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.8)' }, t4);
+            tl.fromTo(eC, { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4 }, t4 + 0.2);
+            SAT.forEach((s, i) => {
+              const t = Math.max(t4 + 0.6 + i * 0.5, T.pulsoAntes(pal(4, s.re) - 0.02));
+              tl.fromTo(nS[i], { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.42, ease: 'back.out(2)' }, t);
+              tl.fromTo(eS[i], { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35 }, t + 0.1);
+              tl.to(lS[i], { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, t + 0.2);
+            });
+            const tMueven = Math.max(t4 + 2.4, T.pulso(pal(4, /^mueven/) - 0.15));
+            for (let r = 0; r < 3; r++) luces.forEach((d, i) => {
+              const s = SAT[i];
+              tl.fromTo(d, { x: 0, y: 0, autoAlpha: 0 }, { x: C.x - s.x, y: C.y - s.y, autoAlpha: 1, duration: 0.8, ease: 'power2.in', immediateRender: r === 0 }, tMueven + r * 1);
+              tl.to(d, { autoAlpha: 0, duration: 0.12 }, tMueven + r * 1 + 0.8);
+            });
+            for (let r = 0; r < 3; r++) tl.fromTo(nC, { scale: 1.1 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, tMueven + 0.8 + r);
+
+            tl.to('#gana-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['gana'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,224 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":22,\"frases\":[{\"texto\":\"Al cerrar el grupo, el profesor propone a quienes cumplieron, y quien coordina aprueba la graduación.\",\"inicio\":0.5,\"fin\":6.0,\"palabras\":[]},{\"texto\":\"Cada graduado recibe su certificado, con la firma del pastor y un código que cualquiera puede verificar.\",\"inicio\":6.6,\"fin\":12.4,\"palabras\":[]},{\"texto\":\"Y su ruta de crecimiento avanza sola.\",\"inicio\":13.0,\"fin\":15.0,\"palabras\":[]},{\"texto\":\"En el tablero ves los grupos en curso, los alumnos en riesgo y los graduados de cada período.\",\"inicio\":15.6,\"fin\":20.6,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Academia · graduar: el profesor propone a quienes cumplieron y quien coordina aprueba; el certificado con la firma del pastor,
+         el sello y el código verificable (QR); la ruta de crecimiento avanza sola; el tablero con grupos en curso, alumnos en riesgo y
+         graduados por mes (Datos de ejemplo). Fuente: docs/modulos/academia.md → «Cerrar y graduar», «Seguimiento del profesor, reportes
+         y tablero»; sitio/src/data/modulos.ts (Academia → «Graduación y certificado», «Conectado con la ruta»). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #graduar-todo { position: absolute; inset: 0; }
+        #graduar-texto { position: absolute; left: 192px; top: 108px; width: 800px; height: 864px; display: grid; align-items: center; }
+        #graduar-texto .bloque { grid-area: 1 / 1; }
+        #graduar-cierre, #graduar-cert, #graduar-ruta, #graduar-tab { position: absolute; inset: 0; }
+        #graduar-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .graduar-al { position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: rgba(169, 182, 214, 0.35); }
+        .graduar-eti { position: absolute; width: 220px; text-align: center; }
+        #graduar-doc { position: absolute; left: 1090px; top: 250px; width: 640px; height: 440px; padding: 44px 48px; border-radius: 28px; }
+        #graduar-doc .k-recurso-ceja { margin-bottom: 14px; }
+        #graduar-doc .k-recurso-titular { font-size: 60px; }
+        .graduar-renglon { height: 12px; border-radius: 6px; background: rgba(234, 240, 255, 0.14); margin-top: 18px; transform-origin: 0 50%; }
+        #graduar-firma { position: absolute; left: 48px; top: 290px; width: 260px; height: 80px; overflow: visible; }
+        #graduar-firma-eti { position: absolute; left: 48px; top: 372px; font-size: 28px; }
+        #graduar-sello { position: absolute; right: 44px; top: 270px; color: var(--k-noche-dorado); }
+        #graduar-qr { position: absolute; left: 1090px; top: 718px; display: flex; align-items: center; gap: 16px; }
+        #graduar-qr .k-recurso-icono { color: var(--k-noche-tinta); }
+        .graduar-ok { display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 20px; border-radius: 999px; background: rgba(38, 166, 154, 0.16); color: #4fd1c5; font-size: 28px; font-weight: 700; }
+        .graduar-cifra { position: absolute; top: 210px; display: flex; flex-direction: column; white-space: nowrap; }
+        .graduar-cifra .k-recurso-contador { font-size: 96px; }
+        .graduar-barra { position: absolute; bottom: 260px; width: 60px; transform-origin: 50% 100%; }
+        .graduar-mes { position: absolute; top: 834px; width: 80px; text-align: center; }
+        #graduar-eje { position: absolute; left: 1100px; top: 820px; width: 620px; }
+        #graduar-tab-eti { position: absolute; left: 1100px; top: 440px; }
+      </style>
+
+      <div id="root" data-composition-id="graduar" data-width="1920" data-height="1080" data-duration="22">
+        <div id="graduar-todo" data-layout-allow-overlap>
+          <svg id="graduar-lineas" viewBox="0 0 1920 1080"></svg>
+          <div id="graduar-cierre" data-layout-allow-overlap></div>
+          <div id="graduar-cert" data-layout-allow-overlap>
+            <div id="graduar-doc" class="k-recurso-tarjeta">
+              <div class="k-recurso-ceja">Certificado</div>
+              <div class="k-recurso-titular">Escuela de líderes</div>
+              <div class="graduar-renglon" id="graduar-rg-0" style="width: 70%"></div>
+              <div class="graduar-renglon" id="graduar-rg-1" style="width: 52%"></div>
+              <svg id="graduar-firma" viewBox="0 0 260 80"><path id="graduar-trazo" class="k-recurso-linea k-oro" d="M6 58 C 30 10, 46 10, 50 50 S 72 70, 90 30 S 120 8, 128 46 S 150 72, 172 34 C 184 18, 200 22, 196 44 S 222 60, 254 30"></path></svg>
+              <div class="k-recurso-etiqueta" id="graduar-firma-eti">Firma del pastor</div>
+              <div id="graduar-sello"></div>
+            </div>
+            <div id="graduar-qr"></div>
+          </div>
+          <div id="graduar-ruta" data-layout-allow-overlap></div>
+          <div id="graduar-tab" data-layout-allow-overlap>
+            <div class="k-recurso-eje" id="graduar-eje"></div>
+            <div class="k-recurso-etiqueta" id="graduar-tab-eti">Graduados por mes</div>
+          </div>
+          <div id="graduar-texto" data-layout-allow-overlap></div>
+          <span class="k-datos-ejemplo k-recurso-datos" id="graduar-datos">Datos de ejemplo</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('graduar-texto'), svg = $('graduar-lineas');
+          const rs = [
+            rotulo(texto, 'graduar-r0', 0, 'El profesor *propone*, y quien coordina *aprueba*.'),
+            rotulo(texto, 'graduar-r1', 1, 'Su *certificado*, con la firma del pastor y un código para verificar.'),
+            rotulo(texto, 'graduar-r2', 2, 'Y su ruta de crecimiento *avanza sola*.', 'k-recurso-titular'),
+            rotulo(texto, 'graduar-r3', 3, 'En el *tablero*: grupos en curso, alumnos en riesgo y graduados.'),
+          ];
+
+          // Cierre del grupo: 8 alumnos; 6 cumplieron. Flecha al coordinador.
+          const cie = $('graduar-cierre');
+          const al = Array.from({ length: 8 }, (_, i) => { const d = el('span', 'graduar-al', cie, `graduar-al-${i}`); d.style.left = `${1140 + (i % 4) * 80}px`; d.style.top = `${480 + Math.floor(i / 4) * 90}px`; return d; });
+          const cumplen = [0, 1, 2, 4, 5, 7];
+          const eProf = el('div', 'k-recurso-etiqueta graduar-eti', cie, 'graduar-eti-prof'); eProf.textContent = 'El grupo'; eProf.style.left = `${1260 - 110}px`; eProf.style.top = '390px';
+          const lFlecha = linea(svg, 'graduar-flecha', 1450, 525, 1570, 525, 'k-oro');
+          const nCoord = nodo(cie, 'graduar-coord', 1640, 525, 'badge', 120);
+          const eCoord = el('div', 'k-recurso-etiqueta graduar-eti', cie, 'graduar-eti-coord'); eCoord.textContent = 'Coordina'; eCoord.style.left = `${1640 - 110}px`; eCoord.style.top = '600px';
+          const okCoord = el('div', '', cie, 'graduar-okc'); Object.assign(okCoord.style, { position: 'absolute', left: '1612px', top: '660px', color: '#e8b95a' }); icono(okCoord, 'task_alt', 56);
+
+          // Certificado.
+          icono($('graduar-sello'), 'workspace_premium', 120);
+          const trazo = $('graduar-trazo'); trazo.style.strokeWidth = '4'; trazo.style.strokeDasharray = '700'; trazo.style.strokeDashoffset = '700';
+          const qr = $('graduar-qr'); icono(qr, 'qr_code_2', 72); const ok = el('div', 'graduar-ok', qr, 'graduar-ok'); icono(ok, 'verified', 32); el('span', '', ok).textContent = 'Código verificable';
+
+          // Ruta (pequeña).
+          const ru = $('graduar-ruta');
+          const RP = [{ ic: 'door_open', t: 'Llega' }, { ic: 'groups', t: 'Grupo' }, { ic: 'school', t: 'Curso' }, { ic: 'volunteer_activism', t: 'Servir' }].map((p, i) => ({ ...p, x: 1150 + i * 180 }));
+          const lRuta = linea(svg, 'graduar-lruta', 1150, 540, 1690, 540, '');
+          const lRutaOro = linea(svg, 'graduar-lruta-oro', 1150, 540, 1510, 540, 'k-oro');
+          const nR = RP.map((p, i) => nodo(ru, `graduar-rn-${i}`, p.x, 540, p.ic, 96, i < 2));
+          const eR = RP.map((p, i) => { const e = el('div', 'k-recurso-etiqueta graduar-eti', ru, `graduar-re-${i}`); e.textContent = p.t; e.style.left = `${p.x - 110}px`; e.style.top = '600px'; return e; });
+
+          // Tablero.
+          const tab = $('graduar-tab');
+          const CF = [{ t: 'Grupos en curso', v: 6, re: /^grupos/ }, { t: 'En riesgo', v: 4, re: /^riesgo/ }, { t: 'Graduados', v: 38, re: /^graduados/ }];
+          const cifras = CF.map((c, i) => { const d = el('div', 'graduar-cifra', tab, `graduar-c-${i}`); d.style.left = `${[1100, 1380, 1560][i]}px`; el('div', 'k-recurso-etiqueta', d).textContent = c.t; const n = el('div', 'k-recurso-contador', d, `graduar-n-${i}`); n.textContent = '0'; if (i === 1) n.style.color = '#e8b95a'; return { d, n, o: { n: 0 } }; });
+          const MES = [['Jun', 120], ['Jul', 60], ['Ago', 150], ['Sep', 90], ['Oct', 210], ['Nov', 170]];
+          const barras = MES.map(([m, h], i) => { const b = el('div', 'k-recurso-barra' + (i === 4 ? ' k-oro' : ''), tab, `graduar-b-${i}`); b.style.left = `${1120 + i * 102}px`; b.style.height = `${h}px`; b.style.top = `${820 - h}px`; b.style.width = '60px'; b.style.position = 'absolute'; const e = el('div', 'k-recurso-etiqueta graduar-mes', tab, `graduar-m-${i}`); e.textContent = m; e.style.left = `${1110 + i * 102}px`; return b; });
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            rs.forEach((r, i) => { entra(r); if (i < rs.length - 1) sale(r, fin(i)); });
+            gsap.set(['#graduar-cert', '#graduar-ruta', '#graduar-tab', '#graduar-datos', okCoord], { autoAlpha: 0 });
+
+            // Frase 0: el grupo; en «cumplieron», seis pasan a verde; la flecha al coordinador; en «aprueba», su visto dorado.
+            const f0 = T.frase(0);
+            const tA = T.reparto(8, f0.inicio, f0.inicio + 1.5);
+            al.forEach((d, i) => tl.fromTo(d, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2)' }, tA[i]));
+            tl.fromTo(eProf, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35 }, tA[0]);
+            const tCum = T.pulso(pal(0, /^cumplieron/) - 0.3);
+            cumplen.forEach((k, j) => tl.to(al[k], { backgroundColor: '#26a69a', duration: 0.25 }, tCum + j * 0.1));
+            tl.to(lFlecha, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, tCum + 0.8);
+            tl.fromTo(nCoord, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.42, ease: 'back.out(2)' }, tCum + 1.1);
+            tl.fromTo(eCoord, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35 }, tCum + 1.2);
+            const tAp = Math.max(tCum + 1.8, T.pulso(pal(0, /^aprueba/) - 0.1));
+            tl.to(nCoord, { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', duration: 0.3 }, tAp);
+            tl.fromTo(okCoord, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.42, ease: 'back.out(2.2)', immediateRender: false }, tAp + 0.2);
+            const f1 = T.frase(1);
+            tl.to('#graduar-cierre', { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f1.inicio - 0.3);
+            tl.to(lFlecha, { autoAlpha: 0, duration: 0.3 }, f1.inicio - 0.3);
+
+            // Frase 1: el certificado; en «firma», el trazo; en «verificar», el QR y el sello verificable.
+            const tCert = T.pulso(pal(1, /^certificado/) - 0.3);
+            tl.to('#graduar-cert', { autoAlpha: 1, duration: 0.01 }, tCert);
+            tl.fromTo('#graduar-doc', { y: 40, rotationX: 0, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.55, ease: 'power3.out' }, tCert);
+            ['#graduar-rg-0', '#graduar-rg-1'].forEach((r, i) => tl.fromTo(r, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power3.out' }, tCert + 0.4 + i * 0.15));
+            tl.fromTo('#graduar-sello', { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(2)' }, tCert + 0.8);
+            const tFirma = Math.max(tCert + 1, T.pulso(pal(1, /^firma/) - 0.2));
+            tl.to(trazo, { strokeDashoffset: 0, duration: 1.2, ease: 'power1.inOut' }, tFirma);
+            tl.fromTo('#graduar-firma-eti', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35 }, tFirma + 0.6);
+            const tVer = Math.max(tFirma + 1.3, T.pulso(pal(1, /^verificar/) - 0.5));
+            tl.fromTo('#graduar-qr', { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: 'back.out(1.8)' }, tVer);
+            const f2 = T.frase(2);
+            tl.to('#graduar-cert', { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f2.inicio - 0.35);
+
+            // Frase 2: la ruta pequeña; el paso «Curso» se cumple solo.
+            const t2 = T.pulso(f2.inicio);
+            tl.to('#graduar-ruta', { autoAlpha: 1, duration: 0.01 }, t2 - 0.05);
+            tl.to(lRuta, { strokeDashoffset: 0, duration: 0.7, ease: 'power2.out' }, t2);
+            nR.forEach((n, i) => { tl.fromTo(n, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2)' }, t2 + i * 0.15); tl.fromTo(eR[i], { y: 10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.3 }, t2 + i * 0.15 + 0.1); });
+            tl.to(lRutaOro, { strokeDashoffset: 360, duration: 0.01 }, t2);
+            const tSola = T.pulso(pal(2, /^avanza/) - 0.15);
+            tl.to(lRutaOro, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' }, tSola);
+            tl.to(nR[2], { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', backgroundColor: 'rgba(232,185,90,0.14)', duration: 0.35 }, tSola + 0.5);
+            tl.fromTo(nR[2], { scale: 1.2 }, { scale: 1, duration: 0.5, ease: 'power2.out', immediateRender: false }, tSola + 0.5);
+            const f3 = T.frase(3);
+            tl.to('#graduar-ruta', { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f3.inicio - 0.35);
+            tl.to([lRuta, lRutaOro], { autoAlpha: 0, duration: 0.3 }, f3.inicio - 0.35);
+
+            // Frase 3: el tablero: tres cifras en su palabra y los graduados por mes.
+            tl.to('#graduar-tab', { autoAlpha: 1, duration: 0.01 }, T.pulso(f3.inicio) - 0.05);
+            tl.to('#graduar-datos', { autoAlpha: 1, duration: 0.3 }, T.pulso(f3.inicio));
+            CF.forEach((c, i) => {
+              const t = Math.max(T.pulso(f3.inicio) + i * 0.5, T.pulsoAntes(pal(3, c.re) - 0.05));
+              const o = cifras[i].o;
+              tl.fromTo(cifras[i].d, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, t);
+              tl.fromTo(o, { n: 0 }, { n: c.v, duration: 0.8, ease: 'power2.out', onUpdate: () => { cifras[i].n.textContent = String(Math.round(o.n)); } }, t + 0.1);
+            });
+            const tB = T.pulso(f3.inicio) + 0.5;
+            tl.fromTo('#graduar-eje', { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power2.out', transformOrigin: '0 50%' }, tB);
+            tl.fromTo('#graduar-tab-eti', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tB);
+            barras.forEach((b, i) => { tl.fromTo(b, { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: 'power3.out' }, tB + 0.3 + i * 0.25); tl.fromTo(`#graduar-m-${i}`, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, tB + 0.3 + i * 0.25); });
+
+            tl.to('#graduar-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['graduar'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

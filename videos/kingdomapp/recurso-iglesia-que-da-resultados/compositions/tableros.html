@@ -1,0 +1,198 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":20.5,\"frases\":[{\"texto\":\"Y todo eso lo ves en los tableros.\",\"inicio\":0.5,\"fin\":2.4,\"palabras\":[]},{\"texto\":\"Personas activas, nuevas, en ruta y conectadas, con su cambio en el período.\",\"inicio\":2.9,\"fin\":7.2,\"palabras\":[]},{\"texto\":\"De toda la iglesia, o de cada red.\",\"inicio\":7.7,\"fin\":9.6,\"palabras\":[]},{\"texto\":\"Y si necesitas algo puntual, armas el reporte a tu medida, en PDF o en Excel.\",\"inicio\":10.1,\"fin\":14.6,\"palabras\":[]},{\"texto\":\"Llévalo a tu reunión de liderazgo, y decide con datos.\",\"inicio\":15.1,\"fin\":18.0,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Membresía · tableros: cuatro contadores (activas, nuevas, en ruta, conectadas) que suben en su palabra, con su cambio; la línea
+         del crecimiento; el filtro de red que los recalcula; «Armar el reporte» con sus columnas y PDF o Excel. Todo con «Datos de
+         ejemplo». Fuente: docs/modulos/membresia.md → «Tableros», «Buscar y ver personas» (Armar el reporte), «Semáforo de actividad»
+         (columnas Actividad y Última actividad); sitio/src/data/modulos.ts (Membresía → «Tableros y reportes»). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #tableros-todo { position: absolute; inset: 0; }
+        #tableros-texto { position: absolute; left: 192px; top: 108px; width: 800px; height: 864px; display: grid; align-items: center; }
+        #tableros-texto .bloque { grid-area: 1 / 1; }
+        #tableros-panel { position: absolute; inset: 0; }
+        .tableros-tarjeta { position: absolute; width: 320px; height: 200px; padding: 26px 30px; display: flex; flex-direction: column; justify-content: space-between; }
+        .tableros-tarjeta .k-recurso-contador { font-size: 76px; }
+        .tableros-fila { display: flex; align-items: center; justify-content: space-between; }
+        .tableros-delta { display: flex; align-items: center; gap: 6px; color: #26a69a; font-size: 28px; font-weight: 700; }
+        #tableros-chips { position: absolute; left: 1060px; top: 118px; display: flex; gap: 14px; }
+        .tableros-chip { height: 52px; padding: 0 22px; display: flex; align-items: center; border-radius: 999px; font-size: 28px; font-weight: 600; color: var(--k-noche-tinta-2); box-shadow: inset 0 0 0 2px rgba(234, 240, 255, 0.22); }
+        #tableros-graf { position: absolute; left: 1060px; top: 680px; width: 668px; height: 200px; overflow: visible; }
+        #tableros-graf-eti { position: absolute; left: 1060px; top: 900px; }
+        #tableros-doc { position: absolute; left: 1100px; top: 190px; width: 600px; height: 600px; padding: 40px 44px; }
+        #tableros-doc .k-recurso-titular { font-size: 64px; }
+        .tableros-cols { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+        .tableros-col { height: 50px; padding: 0 18px; display: flex; align-items: center; border-radius: 12px; background: rgba(232, 185, 90, 0.16); color: var(--k-noche-dorado); font-size: 28px; font-weight: 700; }
+        .tableros-renglon { height: 14px; border-radius: 7px; background: rgba(234, 240, 255, 0.14); margin-top: 22px; transform-origin: 0 50%; }
+        #tableros-formatos { position: absolute; left: 1100px; top: 820px; display: flex; gap: 18px; }
+        .tableros-formato { height: 64px; padding: 0 30px; display: flex; align-items: center; gap: 12px; border-radius: 16px; background: var(--k-noche-2); box-shadow: inset 0 0 0 2px var(--k-noche-dorado); font-size: 32px; font-weight: 700; color: var(--k-noche-tinta); }
+      </style>
+
+      <div id="root" data-composition-id="tableros" data-width="1920" data-height="1080" data-duration="20.5">
+        <div id="tableros-todo" data-layout-allow-overlap>
+          <div id="tableros-panel" data-layout-allow-overlap>
+            <div id="tableros-chips">
+              <div class="tableros-chip" id="tableros-chip-0">Toda la iglesia</div>
+              <div class="tableros-chip" id="tableros-chip-1">Red Jóvenes</div>
+            </div>
+            <svg id="tableros-graf" viewBox="0 0 668 200"></svg>
+            <div class="k-recurso-etiqueta" id="tableros-graf-eti">Crecimiento, día a día</div>
+          </div>
+          <div id="tableros-doc" class="k-recurso-tarjeta">
+            <div class="k-recurso-titular" id="tableros-doc-titulo">Tu reporte</div>
+            <div class="tableros-cols" id="tableros-cols">
+              <div class="tableros-col" id="tableros-col-0">Nombre</div>
+              <div class="tableros-col" id="tableros-col-1">Red</div>
+              <div class="tableros-col" id="tableros-col-2">Actividad</div>
+              <div class="tableros-col" id="tableros-col-3">Última actividad</div>
+            </div>
+            <div id="tableros-renglones"></div>
+          </div>
+          <div id="tableros-formatos">
+            <div class="tableros-formato" id="tableros-pdf">PDF</div>
+            <div class="tableros-formato" id="tableros-excel">Excel</div>
+          </div>
+          <div id="tableros-texto" data-layout-allow-overlap></div>
+          <span class="k-datos-ejemplo k-recurso-datos" id="tableros-datos">Datos de ejemplo</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+          const fmt = (n) => { const s = String(Math.round(n)); return s.length > 3 ? `${s.slice(0, -3)}.${s.slice(-3)}` : s; };
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('tableros-texto'), panel = $('tableros-panel');
+          const rs = [
+            rotulo(texto, 'tableros-r0', 0, 'Todo eso, en los *tableros*.', 'k-recurso-titular'),
+            rotulo(texto, 'tableros-r1', 1, 'Activas, nuevas, en ruta y conectadas, con su *cambio*.'),
+            rotulo(texto, 'tableros-r2', 2, 'De toda la iglesia, o de cada *red*.'),
+            rotulo(texto, 'tableros-r3', 3, 'El reporte a tu medida, en *PDF* o en *Excel*.'),
+            rotulo(texto, 'tableros-r4', 4, 'Y decide con *datos*.', 'k-recurso-titular'),
+          ];
+          const C = [
+            { t: 'Activas', a: 1248, b: 312, d: '+38', re: /^activas/ },
+            { t: 'Nuevas', a: 86, b: 21, d: '+12', re: /^nuevas/ },
+            { t: 'En ruta', a: 142, b: 38, d: '+9', re: /^ruta/ },
+            { t: 'Conectadas', a: 57, b: 15, d: '+7', re: /^conectadas/ },
+          ];
+          const tarjetas = C.map((c, i) => {
+            const t = el('div', 'k-recurso-tarjeta tableros-tarjeta', panel, `tableros-t-${i}`);
+            t.style.left = `${1060 + (i % 2) * 348}px`; t.style.top = `${200 + Math.floor(i / 2) * 228}px`;
+            el('div', 'k-recurso-etiqueta', t).textContent = c.t;
+            const fila = el('div', 'tableros-fila', t);
+            const num = el('span', 'k-recurso-contador', fila, `tableros-num-${i}`); num.textContent = '0';
+            const delta = el('span', 'tableros-delta', fila, `tableros-delta-${i}`); icono(delta, 'trending_up', 30); el('span', '', delta).textContent = c.d;
+            return { t, num, delta, v: { n: 0 } };
+          });
+          // Línea de crecimiento (dos versiones: toda la iglesia y una red).
+          const graf = $('tableros-graf');
+          svgEl('line', { x1: 0, y1: 200, x2: 668, y2: 200, class: 'k-recurso-linea' }, graf);
+          const camino = (pts) => pts.map((p, i) => `${i ? 'L' : 'M'}${((i / (pts.length - 1)) * 668).toFixed(1)},${200 - p}`).join(' ');
+          const gA = svgEl('path', { d: camino([40, 46, 52, 50, 61, 70, 74, 83, 92, 98, 110, 121, 128, 142, 150, 163]), class: 'k-recurso-linea k-oro', id: 'tableros-gA' }, graf);
+          const gB = svgEl('path', { d: camino([20, 22, 27, 26, 30, 37, 36, 44, 47, 55, 58, 63, 72, 76, 83, 90]), class: 'k-recurso-linea k-oro', id: 'tableros-gB' }, graf);
+          [gA, gB].forEach((g) => { g.style.strokeWidth = '5'; g.style.strokeDasharray = '900'; g.style.strokeDashoffset = '900'; });
+          const renglones = $('tableros-renglones');
+          const filas = [0.92, 0.78, 0.86, 0.64, 0.8, 0.7].map((w, i) => { const r = el('div', 'tableros-renglon', renglones, `tableros-rg-${i}`); r.style.width = `${w * 100}%`; return r; });
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            rs.forEach((r, i) => { entra(r); if (i < rs.length - 1) sale(r, fin(i)); });
+
+            // Frase 0: las cuatro tarjetas entran en pulsos.
+            const tT = T.reparto(4, T.pulso(pal(0, /^tableros/) - 0.3), T.frase(0).fin + 0.4);
+            tarjetas.forEach((c, i) => tl.fromTo(c.t, { y: 30, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.45, ease: 'power3.out' }, tT[i]));
+            gsap.set(tarjetas.map((c) => c.delta), { autoAlpha: 0 });
+            gsap.set(['#tableros-doc', '#tableros-formatos', '#tableros-chips', '#tableros-graf-eti'], { autoAlpha: 0 });
+
+            // Frase 1: cada contador sube en su palabra; después, la línea del crecimiento.
+            const f1 = T.frase(1);
+            tl.fromTo('#tableros-datos', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, T.pulso(f1.inicio) - 0.2);
+            C.forEach((c, i) => {
+              const t = T.pulso(pal(1, c.re) - 0.1);
+              const v = tarjetas[i].v;
+              tl.fromTo(v, { n: 0 }, { n: c.a, duration: 0.9, ease: 'power2.out', onUpdate: () => { tarjetas[i].num.textContent = fmt(v.n); } }, t);
+              tl.fromTo(tarjetas[i].t, { scale: 1.06 }, { scale: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, t);
+            });
+            const tCambio = T.pulso(pal(1, /^cambio/) - 0.2);
+            tarjetas.forEach((c, i) => tl.fromTo(c.delta, { x: -10, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out', immediateRender: false }, tCambio + i * 0.12));
+            tl.to(gA, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut' }, tCambio);
+            tl.fromTo('#tableros-graf-eti', { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, immediateRender: false }, tCambio + 0.2);
+
+            // Frase 2: los filtros de red; en «red», los contadores se recalculan y la línea cambia.
+            const f2 = T.frase(2);
+            tl.fromTo('#tableros-chips', { y: -14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out', immediateRender: false }, T.pulso(f2.inicio));
+            tl.fromTo('#tableros-chip-0', { boxShadow: 'inset 0 0 0 2px rgba(234,240,255,0.22)', color: '#a9b6d6' }, { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', duration: 0.3 }, T.pulso(f2.inicio) + 0.2);
+            const tRed = Math.max(T.pulso(f2.inicio) + 1, T.pulso(pal(2, /^red$/) - 0.15));
+            tl.to('#tableros-chip-0', { boxShadow: 'inset 0 0 0 2px rgba(234,240,255,0.22)', color: '#a9b6d6', duration: 0.3 }, tRed);
+            tl.fromTo('#tableros-chip-1', { boxShadow: 'inset 0 0 0 2px rgba(234,240,255,0.22)', color: '#a9b6d6' }, { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', duration: 0.3 }, tRed);
+            C.forEach((c, i) => { const v = tarjetas[i].v; tl.to(v, { n: c.b, duration: 0.8, ease: 'power2.inOut', onUpdate: () => { tarjetas[i].num.textContent = fmt(v.n); } }, tRed + i * 0.08); });
+            tl.to(gA, { opacity: 0.18, duration: 0.4 }, tRed);
+            tl.to(gB, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, tRed + 0.1);
+
+            // Frase 3: el tablero se recoge y aparece el reporte: sus columnas una por pulso, sus renglones y PDF o Excel.
+            const tRep = T.pulso(pal(3, /^reporte/) - 0.6);
+            tl.to(panel, { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, tRep - 0.5);
+            tl.fromTo('#tableros-doc', { y: 40, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.5, ease: 'power3.out', immediateRender: false }, tRep);
+            const tPdf = pal(3, /^pdf/);
+            const tCols = T.reparto(4, tRep + 0.5, Math.max(tRep + 2, tPdf - 0.2));
+            [0, 1, 2, 3].forEach((i) => tl.fromTo(`#tableros-col-${i}`, { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, tCols[i]));
+            filas.forEach((r, i) => tl.fromTo(r, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: 'power3.out' }, tCols[1] + i * 0.12));
+            tl.fromTo('#tableros-formatos', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, T.pulsoAntes(tPdf) - 0.05);
+            tl.fromTo('#tableros-pdf', { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'back.out(1.8)' }, T.pulsoAntes(tPdf));
+            tl.fromTo('#tableros-excel', { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'back.out(1.8)' }, Math.max(T.pulsoAntes(tPdf) + 0.5, T.pulsoAntes(pal(3, /^excel/))));
+
+            // Frase 4: el reporte va a la reunión: se adelanta y late en «datos».
+            const f4 = T.frase(4);
+            tl.to(['#tableros-doc', '#tableros-formatos'], { y: -20, duration: 1.2, ease: 'sine.inOut' }, T.pulso(f4.inicio));
+            const tDatos = T.pulso(pal(4, /^datos/) - 0.15);
+            tl.fromTo('#tableros-doc', { boxShadow: '0 0 0 0px rgba(232,185,90,0.6), inset 0 0 0 1px rgba(234,240,255,0.12)' }, { boxShadow: '0 0 0 36px rgba(232,185,90,0), inset 0 0 0 1px rgba(234,240,255,0.12)', duration: 1, ease: 'power2.out', immediateRender: false }, tDatos);
+            tl.fromTo('#tableros-doc', { boxShadow: '0 0 0 0px rgba(232,185,90,0.6), inset 0 0 0 1px rgba(234,240,255,0.12)' }, { boxShadow: '0 0 0 36px rgba(232,185,90,0), inset 0 0 0 1px rgba(234,240,255,0.12)', duration: 1, ease: 'power2.out', immediateRender: false }, tDatos + 1);
+
+            tl.to('#tableros-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['tableros'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

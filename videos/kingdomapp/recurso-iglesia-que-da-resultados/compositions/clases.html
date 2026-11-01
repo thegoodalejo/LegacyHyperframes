@@ -1,0 +1,212 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":22,\"frases\":[{\"texto\":\"Tu visión necesita líderes formados.\",\"inicio\":0.5,\"fin\":2.4,\"palabras\":[]},{\"texto\":\"Con Academia, armas cada curso una vez, y lo repites con cada grupo.\",\"inicio\":2.9,\"fin\":6.8,\"palabras\":[]},{\"texto\":\"En clase, el profesor muestra un código de cuatro números,\",\"inicio\":7.4,\"fin\":10.4,\"palabras\":[]},{\"texto\":\"y cada alumno marca su asistencia desde el celular. Sin listas de papel.\",\"inicio\":10.7,\"fin\":14.8,\"palabras\":[]},{\"texto\":\"La sábana de notas te dice quién cumple, y quién va en riesgo,\",\"inicio\":15.4,\"fin\":18.6,\"palabras\":[]},{\"texto\":\"a tiempo para acompañarlo.\",\"inicio\":18.9,\"fin\":20.8,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Academia · clases: la escuela de líderes; un curso que se define una vez y se repite en grupos; el código de cuatro números y
+         los alumnos que marcan su asistencia; la sábana de notas con quién cumple y quién va en riesgo, enmarcado para acompañarlo.
+         Fuente: docs/modulos/academia.md → «Objetivo», «Principios», «Tomar asistencia», «Seguimiento del profesor, reportes y tablero»;
+         sitio/src/data/modulos.ts (Academia → «Notas con semáforo»). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #clases-todo { position: absolute; inset: 0; }
+        #clases-texto { position: absolute; left: 192px; top: 108px; width: 800px; height: 864px; display: grid; align-items: center; }
+        #clases-texto .bloque { grid-area: 1 / 1; }
+        #clases-arriba { position: absolute; left: 192px; right: 192px; top: 130px; height: 140px; }
+        #clases-arriba .bloque { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+        #clases-escuela, #clases-curso, #clases-codigo, #clases-sabana { position: absolute; inset: 0; }
+        #clases-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .clases-tarjeta { position: absolute; display: flex; align-items: center; gap: 22px; padding: 28px 34px; color: var(--k-noche-tinta); }
+        .clases-tarjeta .k-recurso-titular { font-size: 48px; }
+        .clases-tarjeta .clases-col { display: flex; flex-direction: column; gap: 4px; }
+        .clases-tarjeta .k-recurso-icono { color: var(--k-noche-dorado); }
+        .clases-digito { position: absolute; top: 380px; width: 170px; height: 220px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0; }
+        .clases-digito .k-recurso-gigante { font-size: 150px; color: var(--k-noche-dorado); }
+        .clases-alumno { position: absolute; top: 720px; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; box-shadow: inset 0 0 0 3px rgba(169, 182, 214, 0.55); }
+        #clases-marcaron { position: absolute; left: 0; right: 0; top: 790px; display: flex; justify-content: center; align-items: baseline; gap: 18px; }
+        #clases-marcaron .k-recurso-contador { font-size: 80px; }
+        .clases-celda { position: absolute; width: 64px; height: 56px; border-radius: 10px; }
+        .clases-fila-p { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; background: var(--k-noche-tinta-2); }
+        #clases-marco { position: absolute; border-radius: 16px; box-shadow: 0 0 0 3px var(--k-noche-dorado); opacity: 0; }
+        #clases-mano { position: absolute; color: var(--k-noche-dorado); }
+        #clases-sab-eti { position: absolute; left: 1100px; top: 250px; }
+      </style>
+
+      <div id="root" data-composition-id="clases" data-width="1920" data-height="1080" data-duration="22">
+        <div id="clases-todo" data-layout-allow-overlap>
+          <svg id="clases-lineas" viewBox="0 0 1920 1080"></svg>
+          <div id="clases-escuela" data-layout-allow-overlap></div>
+          <div id="clases-curso" data-layout-allow-overlap></div>
+          <div id="clases-codigo" data-layout-allow-overlap>
+            <div id="clases-marcaron">
+              <span class="k-recurso-contador" id="clases-marcaron-n">0 de 12</span>
+              <span class="k-recurso-etiqueta">marcaron su asistencia</span>
+            </div>
+          </div>
+          <div id="clases-sabana" data-layout-allow-overlap>
+            <div class="k-recurso-etiqueta" id="clases-sab-eti">Sábana de notas</div>
+          </div>
+          <div id="clases-texto" data-layout-allow-overlap></div>
+          <div id="clases-arriba" data-layout-allow-overlap></div>
+          <span class="k-datos-ejemplo k-recurso-datos" id="clases-datos">Datos de ejemplo</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          let semilla = 5501;
+          const azar = () => ((semilla = (semilla * 1664525 + 1013904223) % 4294967296) / 4294967296);
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('clases-texto'), arriba = $('clases-arriba'), svg = $('clases-lineas');
+          const r0 = rotulo(texto, 'clases-r0', 0, 'Tu visión necesita líderes *formados*.', 'k-recurso-titular');
+          const r1 = rotulo(texto, 'clases-r1', 1, 'Cada curso, *una vez*; y se repite con cada grupo.');
+          const r2 = rotulo(arriba, 'clases-r2', 2, 'Un *código* de cuatro números,');
+          const r3 = rotulo(arriba, 'clases-r3', 3, 'y cada alumno marca *su asistencia*.');
+          const r4 = rotulo(texto, 'clases-r4', 4, 'Quién cumple, y quién va en *riesgo*,');
+          const r5 = rotulo(texto, 'clases-r5', 5, 'a tiempo para *acompañarlo*.', 'k-recurso-titular');
+
+          // Escuela: el nodo y sus líderes en formación (un arco de puntos).
+          const esc = $('clases-escuela');
+          const nEsc = nodo(esc, 'clases-esc', 1404, 520, 'school', 190, true);
+          const arco = Array.from({ length: 11 }, (_, i) => { const a = Math.PI * (0.05 + (i / 10) * 0.9); const d = el('span', 'k-recurso-punto', esc, `clases-ar-${i}`); d.style.left = `${1404 - Math.cos(a) * 250}px`; d.style.top = `${520 + Math.sin(a) * 250}px`; return d; });
+
+          // Curso y grupos.
+          const cur = $('clases-curso');
+          const tarj = (padre, id, x, y, ic, t1, t2) => { const c = el('div', 'k-recurso-tarjeta clases-tarjeta', padre, id); c.style.left = `${x}px`; c.style.top = `${y}px`; icono(c, ic, 56); const col = el('div', 'clases-col', c); el('div', 'k-recurso-titular', col).textContent = t1; el('div', 'k-recurso-etiqueta', col).textContent = t2; return c; };
+          const cCurso = tarj(cur, 'clases-c-curso', 1110, 190, 'menu_book', 'El curso', 'Se arma una vez');
+          const G = [['Grupo 1', 'Martes'], ['Grupo 2', 'Jueves'], ['Grupo 3', 'En línea']];
+          const cGrupos = G.map((g, i) => tarj(cur, `clases-c-g${i}`, 1180 + i * 0, 430 + i * 165, i === 2 ? 'play_circle' : 'calendar_today', g[0], g[1]));
+          const lG = G.map((g, i) => linea(svg, `clases-lg-${i}`, 1150, 320, 1150, 500 + i * 165, ''));
+
+          // Código y alumnos.
+          const cod = $('clases-codigo');
+          const DIG = ['4', '8', '2', '7'];
+          const digs = DIG.map((d, i) => { const c = el('div', 'k-recurso-tarjeta clases-digito', cod, `clases-d-${i}`); c.style.left = `${960 - 2 * 190 + 10 + i * 190}px`; const g = el('div', 'k-recurso-gigante', c, `clases-dg-${i}`); g.textContent = d; return c; });
+          const alumnos = Array.from({ length: 12 }, (_, i) => { const d = el('div', 'clases-alumno', cod, `clases-al-${i}`); d.style.left = `${960 - 5.5 * 70 + i * 70}px`; return d; });
+
+          // Sábana: 6 personas × 7 actividades; la fila 3 va en riesgo.
+          const sab = $('clases-sabana');
+          const COL = { v: '#26a69a', a: '#e8b95a', r: '#e06c5a' };
+          const F = ['vvvvvvv', 'vvavvvv', 'vrarrav', 'vvvvavv', 'vvvvvvv', 'avvvvva'];
+          const celdas = [];
+          F.forEach((fila, r) => {
+            const p = el('span', 'clases-fila-p', sab, `clases-fp-${r}`); p.style.left = '1110px'; p.style.top = `${338 + r * 72 + 28}px`;
+            [...fila].forEach((k, c) => { const d = el('div', 'clases-celda', sab, `clases-ce-${r}-${c}`); d.style.left = `${1150 + c * 76}px`; d.style.top = `${338 + r * 72}px`; d.style.background = COL[k]; celdas.push({ d, r, c }); });
+          });
+          const marco = el('div', '', sab, 'clases-marco'); Object.assign(marco.style, { left: '1090px', top: `${338 + 2 * 72 - 8}px`, width: `${60 + 7 * 76 + 8}px`, height: '72px' });
+          const mano = el('div', '', sab, 'clases-mano'); mano.style.left = '1660px'; mano.style.top = `${338 + 2 * 72 - 4}px`; icono(mano, 'handshake', 64);
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            [r0, r1, r2, r3, r4, r5].forEach((r, i) => { entra(r); if (i < 5) sale(r, fin(i)); });
+            gsap.set(['#clases-datos', '#clases-marcaron', mano, '#clases-sab-eti'], { autoAlpha: 0 });
+
+            // Frase 0: la escuela y su arco de líderes en formación.
+            const f0 = T.frase(0);
+            tl.fromTo(nEsc, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.55, ease: 'back.out(1.8)' }, T.pulso(f0.inicio));
+            const tA = T.reparto(arco.length, f0.inicio + 0.5, f0.fin + 0.3);
+            arco.forEach((d, i) => tl.fromTo(d, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2)' }, tA[i]));
+            const tForm = T.pulso(pal(0, /^formados/) - 0.1);
+            tl.to(arco, { backgroundColor: '#e8b95a', duration: 0.3, stagger: 0.04 }, tForm);
+            const f1 = T.frase(1);
+            tl.to('#clases-escuela', { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f1.inicio - 0.3);
+
+            // Frase 1: el curso y sus grupos en cascada.
+            tl.fromTo(cCurso, { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: 'power3.out' }, T.pulso(pal(1, /^curso/) - 0.2));
+            const tG = T.reparto(3, T.pulso(pal(1, /^repites/) - 0.3), f1.fin + 0.4);
+            cGrupos.forEach((c, i) => { tl.fromTo(c, { y: -60, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'power3.out' }, tG[i]); tl.to(lG[i], { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, tG[i]); });
+            const f2 = T.frase(2);
+            tl.to(['#clases-curso', ...lG], { x: 40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f2.inicio - 0.4);
+
+            // Frase 2: el código entra dígito por dígito.
+            const tCod = T.reparto(4, T.pulso(pal(2, /^codigo/) - 0.3), f2.fin);
+            digs.forEach((d, i) => { tl.fromTo(d, { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, tCod[i]); tl.fromTo(d.firstChild, { y: 120 }, { y: 0, duration: 0.45, ease: 'power3.out' }, tCod[i] + 0.05); });
+            const tAl = T.reparto(12, tCod[0] + 0.5, f2.fin + 0.3);
+            alumnos.forEach((a, i) => tl.fromTo(a, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.25, ease: 'back.out(2)' }, tAl[i]));
+
+            // Frase 3: los alumnos marcan su asistencia en pulsos; el conteo sube (9 de 12).
+            const f3 = T.frase(3);
+            const tM = T.reparto(9, T.pulso(pal(3, /^marca/) - 0.2), f3.fin - 0.5);
+            const orden = [0, 3, 1, 5, 7, 2, 10, 8, 11];
+            orden.forEach((k, j) => {
+              tl.to(alumnos[k], { backgroundColor: '#26a69a', boxShadow: 'inset 0 0 0 3px rgba(38,166,154,1)', duration: 0.2 }, tM[j]);
+              tl.fromTo(alumnos[k], { scale: 1.4 }, { scale: 1, duration: 0.35, ease: 'power2.out', immediateRender: false }, tM[j]);
+            });
+            tl.fromTo('#clases-marcaron', { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out', immediateRender: false }, tM[0] - 0.3);
+            tl.to('#clases-datos', { autoAlpha: 1, duration: 0.3 }, tM[0] - 0.3);
+            const cuenta = { n: 0 };
+            tl.fromTo(cuenta, { n: 0 }, { n: 9, duration: tM[8] - tM[0] + 0.2, ease: 'none', onUpdate: () => { $('clases-marcaron-n').textContent = `${Math.round(cuenta.n)} de 12`; } }, tM[0]);
+            const f4 = T.frase(4);
+            tl.to('#clases-codigo', { y: -40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.4, ease: 'power2.in' }, f4.inicio - 0.4);
+
+            // Frase 4: la sábana, columna por columna; en «riesgo», la fila 3 se enmarca y lo demás se atenúa.
+            tl.fromTo('#clases-sab-eti', { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, immediateRender: false }, T.pulso(f4.inicio));
+            celdas.forEach(({ d, r, c }) => tl.fromTo(d, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(1.8)' }, T.pulso(f4.inicio) + c * 0.18 + r * 0.03));
+            F.forEach((_, r) => tl.fromTo(`#clases-fp-${r}`, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3 }, T.pulso(f4.inicio) + r * 0.08));
+            const tRiesgo = T.pulso(pal(4, /^riesgo/) - 0.15);
+            tl.fromTo(marco, { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power3.out' }, tRiesgo);
+            tl.to(celdas.filter((x) => x.r !== 2).map((x) => x.d), { opacity: 0.3, duration: 0.5 }, tRiesgo + 0.2);
+
+            // Frase 5: la mano que acompaña llega a esa fila.
+            const tAcomp = T.pulso(pal(5, /^acompanarlo/) - 0.2);
+            tl.fromTo(mano, { x: 40, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.5, ease: 'back.out(1.8)', immediateRender: false }, tAcomp);
+            tl.to('#clases-fp-2', { backgroundColor: '#e8b95a', scale: 1.3, duration: 0.4, ease: 'back.out(2)' }, tAcomp + 0.2);
+            [0, 1].forEach((r) => tl.fromTo(mano, { scale: 1 }, { scale: 1.15, duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut', immediateRender: false }, tAcomp + 0.7 + r * 0.5));
+
+            tl.to('#clases-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['clases'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

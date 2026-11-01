@@ -1,0 +1,182 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":24,\"frases\":[{\"texto\":\"Cada persona también tiene su ruta de crecimiento.\",\"inicio\":0.5,\"fin\":3.2,\"palabras\":[]},{\"texto\":\"La llamada de bienvenida, la visita, su grupo, un curso, servir.\",\"inicio\":3.8,\"fin\":7.6,\"palabras\":[]},{\"texto\":\"Kingdom propone el siguiente paso.\",\"inicio\":8.1,\"fin\":10.0,\"palabras\":[]},{\"texto\":\"Y el paso se cumple con hechos: una asistencia, un curso terminado, un turno servido.\",\"inicio\":10.4,\"fin\":15.4,\"palabras\":[]},{\"texto\":\"En el camino, cada persona suma sus logros: sus hitos y sus niveles.\",\"inicio\":16.0,\"fin\":19.8,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Membresía · ruta de crecimiento: seis pasos en fila (llega, llamada, visita, grupo, curso, servir) unidos por una línea; el
+         marcador dorado de la persona avanza; el siguiente paso propuesto late; tres hechos (asistencia, curso terminado, turno servido)
+         caen en su paso y lo cumplen; los logros salen a una fila abajo. Fuente: sitio/src/data/modulos.ts (Membresía → «Ruta de
+         crecimiento»), docs/modulos/membresia.md → «Mi seguimiento», «Logros»; eventos.md → «Membresía ↔ Eventos»; equipos.md → «Objetivo
+         de conexión Servir». -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #ruta-todo { position: absolute; inset: 0; }
+        #ruta-texto { position: absolute; left: 192px; right: 192px; top: 130px; height: 220px; }
+        #ruta-texto .bloque { position: absolute; left: 0; right: 0; top: 0; }
+        #ruta-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .ruta-eti { position: absolute; top: 694px; width: 220px; text-align: center; }
+        .ruta-chip { position: absolute; top: 420px; width: 260px; display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--k-noche-dorado); }
+        .ruta-chip .k-recurso-etiqueta { color: var(--k-noche-tinta); }
+        #ruta-marca { position: absolute; left: 0; top: 0; width: 56px; height: 56px; margin: -28px 0 0 -28px; color: var(--k-noche-dorado); }
+        #ruta-prop { position: absolute; top: 470px; width: 260px; text-align: center; color: var(--k-noche-dorado); }
+        .ruta-anillo { position: absolute; width: 140px; height: 140px; margin: -70px 0 0 -70px; border-radius: 50%; box-shadow: 0 0 0 3px var(--k-noche-dorado); opacity: 0; }
+        .ruta-logro { position: absolute; top: 800px; width: 220px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .ruta-logro .k-recurso-nodo { position: relative; margin: 0; left: 0; top: 0; }
+      </style>
+
+      <div id="root" data-composition-id="ruta" data-width="1920" data-height="1080" data-duration="24">
+        <div id="ruta-todo" data-layout-allow-overlap>
+          <svg id="ruta-lineas" viewBox="0 0 1920 1080"></svg>
+          <div id="ruta-diag" data-layout-allow-overlap></div>
+          <div id="ruta-texto" data-layout-allow-overlap></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            if (x !== null) { n.style.left = `${x}px`; n.style.top = `${y}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`; }
+            n.style.width = n.style.height = `${tam}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re, desde) => { const f = T.frase(i); const p = (f.palabras || []).slice(desde || 0).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('ruta-texto'), diag = $('ruta-diag'), svg = $('ruta-lineas');
+          const r0 = rotulo(texto, 'ruta-r0', 0, 'Su *ruta de crecimiento*', 'k-recurso-titular');
+          const r2 = rotulo(texto, 'ruta-r2', 2, 'Kingdom *propone* el siguiente paso', 'k-recurso-titular');
+          const r3 = rotulo(texto, 'ruta-r3', 3, 'Se cumple con *hechos*', 'k-recurso-titular');
+          const r4 = rotulo(texto, 'ruta-r4', 4, 'Y suma sus *logros*', 'k-recurso-titular');
+
+          const Y = 620;
+          const P = [
+            { t: 'Llega', ic: 'door_open', re: null },
+            { t: 'Llamada', ic: 'waving_hand', re: /^llamada/ },
+            { t: 'Visita', ic: 'home', re: /^visita/ },
+            { t: 'Grupo', ic: 'groups', re: /^grupo/ },
+            { t: 'Curso', ic: 'school', re: /^curso/ },
+            { t: 'Servir', ic: 'volunteer_activism', re: /^servir/ },
+          ].map((p, i) => ({ ...p, x: 300 + i * 264 }));
+          const base = svgEl('line', { x1: 300, y1: Y, x2: 1620, y2: Y, id: 'ruta-base', class: 'k-recurso-linea' }, svg);
+          base.style.strokeDasharray = '1320'; base.style.strokeDashoffset = '1320';
+          const avance = svgEl('line', { x1: 300, y1: Y, x2: 1620, y2: Y, id: 'ruta-avance', class: 'k-recurso-linea k-oro' }, svg);
+          avance.style.strokeWidth = '5'; avance.style.strokeDasharray = '1320'; avance.style.strokeDashoffset = '1320';
+          const nP = P.map((p, i) => nodo(diag, `ruta-n-${i}`, p.x, Y, p.ic, 116));
+          const eP = P.map((p, i) => { const e = el('div', 'k-recurso-etiqueta ruta-eti', diag, `ruta-eti-${i}`); e.textContent = p.t; e.style.left = `${p.x - 110}px`; return e; });
+          const marca = el('div', '', diag, 'ruta-marca'); icono(marca, 'person_pin_circle', 56);
+          const anillo = el('div', 'ruta-anillo', diag, 'ruta-anillo'); anillo.style.left = `${P[1].x}px`; anillo.style.top = `${Y}px`;
+          const prop = el('div', 'k-recurso-etiqueta', diag, 'ruta-prop'); prop.textContent = 'Siguiente paso'; prop.style.left = `${P[1].x - 130}px`;
+          const H = [
+            { k: 3, ic: 'event_available', t: 'Asistencia', re: /^asistencia/ },
+            { k: 4, ic: 'school', t: 'Curso terminado', re: /^curso/ },
+            { k: 5, ic: 'confirmation_number', t: 'Turno servido', re: /^turno/ },
+          ];
+          const chips = H.map((h, i) => { const c = el('div', 'ruta-chip', diag, `ruta-chip-${i}`); c.style.left = `${P[h.k].x - 130}px`; icono(c, h.ic, 52); el('div', 'k-recurso-etiqueta', c).textContent = h.t; return c; });
+          const LG = [{ ic: 'workspace_premium', t: 'Bautismo' }, { ic: 'star', t: 'Nivel 1' }, { ic: 'verified', t: 'Nivel 2' }];
+          const logros = LG.map((l, i) => { const c = el('div', 'ruta-logro', diag, `ruta-logro-${i}`); c.style.left = `${700 + i * 260 - 110}px`; nodo(c, `ruta-lg-${i}`, null, null, l.ic, 92, true); el('div', 'k-recurso-etiqueta', c).textContent = l.t; return c; });
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            entra(r0); sale(r0, T.frase(2).inicio - 0.3);
+            entra(r2); sale(r2, fin(2));
+            entra(r3); sale(r3, fin(3));
+            entra(r4);
+
+            // Frase 0: la línea de la ruta se dibuja y aparece el primer paso con la persona.
+            const f0 = T.frase(0);
+            const tRuta = T.pulso(pal(0, /^ruta/) - 0.1);
+            tl.to(base, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut' }, tRuta);
+            tl.fromTo(nP[0], { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, tRuta);
+            tl.fromTo(eP[0], { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, tRuta + 0.1);
+            tl.fromTo(marca, { x: P[0].x, y: Y - 104, scale: 0, autoAlpha: 0 }, { x: P[0].x, y: Y - 104, scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, T.pulso(f0.fin));
+
+            // Frase 1: un paso por palabra.
+            P.forEach((p, i) => {
+              if (!i) return;
+              const t = T.pulsoAntes(pal(1, p.re) - 0.02);
+              tl.fromTo(nP[i], { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.42, ease: 'back.out(2)' }, t);
+              tl.fromTo(eP[i], { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, t + 0.1);
+            });
+
+            // Paso cumplido: el nodo se vuelve dorado y la línea dorada avanza hasta él.
+            const cumplir = (k, t) => {
+              tl.to(nP[k], { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', backgroundColor: 'rgba(232,185,90,0.14)', duration: 0.35, ease: 'power2.out' }, t);
+              tl.fromTo(nP[k], { scale: 1.15 }, { scale: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, t);
+              tl.to(avance, { strokeDashoffset: 1320 - (P[k].x - 300), duration: 0.5, ease: 'power2.inOut' }, t - 0.3);
+              tl.to(marca, { x: P[k].x, duration: 0.5, ease: 'power2.inOut' }, t - 0.3);
+            };
+
+            // Frase 2: «Llega» cumplido; el siguiente paso (Llamada) late con su anillo y su rótulo.
+            const f2 = T.frase(2);
+            cumplir(0, T.pulso(f2.inicio));
+            const tProp = T.pulso(pal(2, /^propone/) - 0.1);
+            tl.fromTo(prop, { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, tProp);
+            for (let r = 0; r < 3; r++) tl.fromTo(anillo, { scale: 0.85, opacity: 0.9 }, { scale: 1.35, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, tProp + r * 0.5 + 0.2);
+            tl.to(prop, { autoAlpha: 0, duration: 0.3 }, fin(2));
+
+            // Frase 3: llamada y visita se cumplen al empezar; los tres hechos caen en su paso y lo cumplen.
+            const f3 = T.frase(3);
+            cumplir(1, T.pulso(f3.inicio));
+            cumplir(2, T.pulso(f3.inicio) + 0.5);
+            let desde = 0;
+            H.forEach((h, i) => {
+              const tw = pal(3, h.re, desde); desde = Math.max(desde, (T.frase(3).palabras || []).findIndex((w) => w.inicio === tw) + 1);
+              const t = T.pulsoAntes(tw);
+              tl.fromTo(chips[i], { y: -30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }, t);
+              tl.to(chips[i], { y: 130, scale: 0.85, autoAlpha: 0, duration: 0.45, ease: 'power3.in' }, t + 0.7);
+              cumplir(h.k, t + 1.1);
+            });
+
+            // Frase 4: los logros salen del marcador a su fila, uno por pulso.
+            const f4 = T.frase(4);
+            const tL = T.reparto(3, pal(4, /^logros/) - 0.2, f4.fin);
+            logros.forEach((l, i) => tl.fromTo(l, { y: -150, scale: 0.4, autoAlpha: 0 }, { y: 0, scale: 1, autoAlpha: 1, duration: 0.6, ease: 'back.out(1.6)' }, tL[i]));
+            tl.fromTo(diag, { y: 0 }, { y: -40, duration: 1, ease: 'power2.inOut' }, T.pulso(f4.inicio) - 0.5);
+            tl.fromTo(svg, { y: 0 }, { y: -40, duration: 1, ease: 'power2.inOut' }, T.pulso(f4.inicio) - 0.5);
+
+            tl.to('#ruta-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['ruta'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

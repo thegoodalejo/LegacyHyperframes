@@ -1,0 +1,184 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"duracion\":26,\"frases\":[{\"texto\":\"Pastor, tú no tienes que pasar el día en la app.\",\"inicio\":0.5,\"fin\":3.3,\"palabras\":[]},{\"texto\":\"Tus líderes son los que la usan: reportan, acompañan, enseñan y sirven.\",\"inicio\":3.9,\"fin\":8.0,\"palabras\":[]},{\"texto\":\"Kingdom les da una forma clara de hacer su trabajo con excelencia.\",\"inicio\":8.5,\"fin\":12.0,\"palabras\":[]},{\"texto\":\"Y a ti te muestra lo que importa: los resultados.\",\"inicio\":12.6,\"fin\":15.3,\"palabras\":[]},{\"texto\":\"Veamos lo que puedes medir en cuatro módulos: Membresía, Eventos, Academia y Equipos.\",\"inicio\":16.0,\"fin\":21.5,\"palabras\":[]}]}"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- La idea central: el pastor arriba (nodo dorado); sus líderes abajo con cuatro verbos. En «excelencia» los líderes se encienden; en
+         «resultados» su trabajo sube como luz al pastor y su ícono pasa a «insights». Después, los cuatro módulos en fila. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        /* icono-local */ /* la máscara se declara aquí (no solo en kit.css): así url(identidad/iconos/…) resuelve contra el documento en el render */
+        .k-recurso-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        #pastor-todo { position: absolute; inset: 0; }
+        #pastor-texto { position: absolute; left: 192px; top: 108px; width: 820px; height: 864px; display: grid; align-items: center; }
+        #pastor-texto .bloque { grid-area: 1 / 1; }
+        #pastor-arriba { position: absolute; left: 192px; right: 192px; top: 150px; height: 200px; }
+        #pastor-arriba .bloque { position: absolute; left: 0; right: 0; top: 0; text-align: center; }
+        #pastor-diag, #pastor-modulos { position: absolute; inset: 0; }
+        #pastor-lineas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+        .pastor-eti { position: absolute; width: 200px; text-align: center; }
+        .pastor-modulo-eti { position: absolute; width: 300px; text-align: center; font-size: 36px; color: var(--k-noche-tinta); }
+        .pastor-luz { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--k-noche-dorado); box-shadow: 0 0 18px rgba(232, 185, 90, 0.8); }
+        .pastor-capa { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+      </style>
+
+      <div id="root" data-composition-id="pastor" data-width="1920" data-height="1080" data-duration="26">
+        <div id="pastor-todo" data-layout-allow-overlap>
+          <div id="pastor-diag" data-layout-allow-overlap>
+            <svg id="pastor-lineas" viewBox="0 0 1920 1080"></svg>
+          </div>
+          <div id="pastor-modulos" data-layout-allow-overlap></div>
+          <div id="pastor-texto" data-layout-allow-overlap></div>
+          <div id="pastor-arriba" data-layout-allow-overlap></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window);
+          const NS = 'http://www.w3.org/2000/svg';
+          const norm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '');
+          const $ = (id) => document.getElementById(id);
+          function el(tag, cls, padre, id) { const d = document.createElement(tag); if (cls) d.className = cls; if (id) d.id = id; padre.appendChild(d); return d; }
+          function svgEl(tag, attrs, padre) { const d = document.createElementNS(NS, tag); for (const k in attrs) d.setAttribute(k, attrs[k]); padre.appendChild(d); return d; }
+          function icono(padre, nombre, tam) { const s = el('span', 'k-recurso-icono', padre); s.style.setProperty('--k-icono', `url(identidad/iconos/${nombre}.svg)`); s.style.setProperty('--k-icono-tam', `${tam}px`); return s; }
+          function nodo(padre, id, x, y, nombre, tam, oro) {
+            const n = el('div', 'k-recurso-nodo' + (oro ? ' k-oro' : ''), padre, id);
+            n.style.left = `${x}px`; n.style.top = `${y}px`;
+            n.style.width = n.style.height = `${tam}px`; n.style.margin = `${-tam / 2}px 0 0 ${-tam / 2}px`;
+            if (nombre) icono(n, nombre, Math.round(tam * 0.48));
+            return n;
+          }
+          function linea(svg, id, x1, y1, x2, y2, clase) {
+            const l = svgEl('line', { x1, y1, x2, y2, id, class: 'k-recurso-linea ' + (clase || '') }, svg);
+            const d = Math.hypot(x2 - x1, y2 - y1); l.style.strokeDasharray = `${d}`; l.style.strokeDashoffset = `${d}`; return l;
+          }
+          function etiqueta(padre, id, x, y, texto, cls) { const e = el('div', 'k-recurso-etiqueta ' + (cls || 'pastor-eti'), padre, id); e.textContent = texto; e.style.left = `${x - (cls ? 150 : 100)}px`; e.style.top = `${y}px`; return e; }
+          function rotulo(padre, id, i, texto, clase) {
+            const f = T.frase(i); const voz = f.palabras || [];
+            const b = el('div', 'bloque ' + (clase || 'k-recurso-frase'), padre, id);
+            let k = 0, tPrev = f.inicio, enClave = false; const ps = [];
+            texto.split(/\s+/).forEach((w0, j) => {
+              let w = w0, c = enClave;
+              if (w.startsWith('*')) { c = true; enClave = true; w = w.slice(1); }
+              if (/\*[.,:;!?»]*$/.test(w)) { c = true; enClave = false; w = w.replace('*', ''); }
+              let t = null; const n = norm(w);
+              for (let m = k; m < Math.min(voz.length, k + 5); m++) if (norm(voz[m].texto) === n) { t = voz[m].inicio; k = m + 1; break; }
+              if (t === null) t = tPrev + 0.12;
+              tPrev = t;
+              const s = el('span', 'k-recurso-palabra' + (c ? ' k-recurso-clave' : ''), b, `${id}-${j}`); s.textContent = w;
+              ps.push({ s, t });
+            });
+            return { b, ps };
+          }
+          const pal = (i, re) => { const f = T.frase(i); const p = (f.palabras || []).find((w) => re.test(norm(w.texto))); return p ? p.inicio : f.inicio; };
+          const fin = (i) => (T.frases[i + 1] ? T.frases[i + 1].inicio - 0.3 : T.salida(0.6));
+
+          // ── Construcción ──────────────────────────────────────────────────────────────────────────────────────────────
+          const texto = $('pastor-texto'), diag = $('pastor-diag'), svg = $('pastor-lineas'), mods = $('pastor-modulos');
+          const rs = [
+            rotulo(texto, 'pastor-r0', 0, 'Pastor, tú no tienes que pasar el día *en la app*.'),
+            rotulo(texto, 'pastor-r1', 1, 'Tus *líderes* son los que la usan.'),
+            rotulo(texto, 'pastor-r2', 2, 'Una forma clara de trabajar con *excelencia*.'),
+            rotulo(texto, 'pastor-r3', 3, 'Y a ti te muestra lo que importa: los *resultados*.'),
+          ];
+          const r4 = rotulo($('pastor-arriba'), 'pastor-r4', 4, 'Lo que puedes *medir*, en cuatro módulos', 'k-recurso-titular');
+
+          const P = { x: 1404, y: 250 };
+          const nP = nodo(diag, 'pastor-pastor', P.x, P.y, null, 136, true);
+          const capaPersona = el('div', 'pastor-capa', nP, 'pastor-capa-persona'); icono(capaPersona, 'person', 64);
+          const capaInsights = el('div', 'pastor-capa', nP, 'pastor-capa-insights'); icono(capaInsights, 'insights', 64);
+          const eP = etiqueta(diag, 'pastor-eti-p', P.x, P.y - 118, 'Pastor');
+          eP.style.color = '#e8b95a';
+          const L = [
+            { x: 1150, y: 560, ic: 'edit_note', t: 'Reportan', re: /^reportan/ },
+            { x: 1310, y: 730, ic: 'handshake', t: 'Acompañan', re: /^acompanan/ },
+            { x: 1498, y: 730, ic: 'school', t: 'Enseñan', re: /^ensenan/ },
+            { x: 1658, y: 560, ic: 'volunteer_activism', t: 'Sirven', re: /^sirven/ },
+          ];
+          const nL = L.map((l, i) => nodo(diag, `pastor-l-${i}`, l.x, l.y, l.ic, 108));
+          const eL = L.map((l, i) => etiqueta(diag, `pastor-eti-${i}`, l.x, l.y + 64, l.t));
+          const lineas = L.map((l, i) => linea(svg, `pastor-ln-${i}`, l.x, l.y - 54, P.x, P.y + 68, ''));
+          const luces = [];
+          L.forEach((l, i) => { for (let k = 0; k < 3; k++) { const d = el('span', 'pastor-luz', diag, `pastor-luz-${i}-${k}`); d.style.left = `${l.x}px`; d.style.top = `${l.y - 54}px`; luces.push({ d, l, k }); } });
+
+          const M = [
+            { x: 480, ic: 'groups', t: 'Membresía', re: /^membresia/ },
+            { x: 800, ic: 'event_available', t: 'Eventos', re: /^eventos/ },
+            { x: 1120, ic: 'school', t: 'Academia', re: /^academia/ },
+            { x: 1440, ic: 'volunteer_activism', t: 'Equipos', re: /^equipos/ },
+          ];
+          const nM = M.map((m, i) => nodo(mods, `pastor-m-${i}`, m.x, 610, m.ic, 168));
+          const eM = M.map((m, i) => etiqueta(mods, `pastor-me-${i}`, m.x, 720, m.t, 'pastor-modulo-eti'));
+          const svgM = svgEl('svg', { id: 'pastor-lineas-m', viewBox: '0 0 1920 1080', style: 'position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible' }, mods);
+          mods.insertBefore(svgM, mods.firstChild);
+          const lM = [0, 1, 2].map((i) => linea(svgM, `pastor-lm-${i}`, M[i].x + 84, 610, M[i + 1].x - 84, 610, 'k-oro'));
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const entra = (r) => r.ps.forEach((p) => tl.fromTo(p.s, { y: 26, autoAlpha: 0, filter: 'blur(6px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power3.out' }, Math.max(0, p.t - 0.08)));
+            const sale = (r, t) => tl.to(r.b, { y: -24, autoAlpha: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+            rs.forEach((r, i) => { entra(r); sale(r, fin(i)); });
+            entra(r4);
+
+            // Frase 0: aparece el pastor; un anillo late en «app».
+            const f0 = T.frase(0);
+            tl.fromTo(nP, { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.55, ease: 'back.out(2)' }, T.pulso(f0.inicio));
+            tl.fromTo(eP, { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, T.pulso(f0.inicio) + 0.3);
+            gsap.set(capaInsights, { autoAlpha: 0 });
+            tl.fromTo(diag, { x: 30 }, { x: 0, duration: 3, ease: 'sine.out' }, 0);
+
+            // Frase 1: un líder por verbo, con su línea hacia el pastor.
+            L.forEach((l, i) => {
+              const t = T.pulsoAntes(pal(1, l.re) - 0.05);
+              tl.fromTo(nL[i], { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.42, ease: 'back.out(2)' }, t);
+              tl.fromTo(eL[i], { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, t + 0.1);
+              tl.to(lineas[i], { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' }, t + 0.2);
+            });
+
+            // Frase 2: en «excelencia», los líderes se encienden en dorado, uno por pulso.
+            const tEx = T.pulso(pal(2, /^excelencia/) - 0.15);
+            nL.forEach((n, i) => tl.to(n, { boxShadow: 'inset 0 0 0 3px rgba(232,185,90,1)', color: '#e8b95a', duration: 0.35, ease: 'power2.out' }, tEx + i * 0.25));
+            tl.to(lineas, { stroke: '#e8b95a', duration: 0.5, stagger: 0.25 }, tEx);
+
+            // Frase 3: la luz sube de los líderes al pastor en pulsos; en «resultados», su ícono pasa a «insights».
+            const f3 = T.frase(3);
+            const tLuz = T.pulso(f3.inicio);
+            luces.forEach(({ d, l, k }, j) => {
+              const t = tLuz + k * 0.5 + (j % 3 === 0 ? 0 : 0) + (L.indexOf(l) * 0.08);
+              tl.fromTo(d, { x: 0, y: 0, autoAlpha: 0, scale: 0.6 }, { x: P.x - l.x, y: P.y + 68 - (l.y - 54), autoAlpha: 1, scale: 1, duration: 0.9, ease: 'power2.in' }, t);
+              tl.to(d, { autoAlpha: 0, duration: 0.15 }, t + 0.9);
+            });
+            const tRes = Math.max(tLuz + 1.5, T.pulso(pal(3, /^resultados/) - 0.15));
+            tl.to(capaPersona, { autoAlpha: 0, scale: 0.6, duration: 0.3, ease: 'power2.in' }, tRes);
+            tl.fromTo(capaInsights, { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: 'back.out(2)', immediateRender: false }, tRes + 0.2);
+            tl.fromTo(nP, { boxShadow: '0 0 0 0px rgba(232,185,90,0.6), inset 0 0 0 3px rgba(232,185,90,1)' }, { boxShadow: '0 0 0 46px rgba(232,185,90,0), inset 0 0 0 3px rgba(232,185,90,1)', duration: 1.1, ease: 'power2.out', immediateRender: false }, tRes + 0.2);
+            tl.fromTo(nP, { scale: 1.12 }, { scale: 1, duration: 0.5, ease: 'power2.out', immediateRender: false }, tRes + 0.2);
+
+            // Frase 4: el diagrama se va y llegan los cuatro módulos, cada uno en su nombre.
+            const f4 = T.frase(4);
+            tl.to(diag, { x: -40, autoAlpha: 0, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, f4.inicio - 0.45);
+            M.forEach((m, i) => {
+              const t = T.pulsoAntes(pal(4, m.re) - 0.05);
+              tl.fromTo(nM[i], { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)' }, t);
+              tl.fromTo(eM[i], { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }, t + 0.1);
+              if (i > 0) tl.to(lM[i - 1], { strokeDashoffset: 0, duration: 0.4, ease: 'power2.inOut' }, t - 0.1);
+            });
+            const tUltimo = T.pulsoAntes(pal(4, /^equipos/)) + 1;
+            nM.forEach((n, i) => tl.fromTo(n, { scale: 1 }, { scale: 1.08, duration: 0.25, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, tUltimo + i * 0.5));
+
+            tl.to('#pastor-todo', { y: -30, autoAlpha: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }, T.salida(0.6));
+            tl.set({}, {}, T.duracion);
+            window.__timelines['pastor'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

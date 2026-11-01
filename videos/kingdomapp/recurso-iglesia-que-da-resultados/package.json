@@ -1,0 +1,13 @@
+{
+  "name": "kingdomapp-recurso-iglesia-que-da-resultados",
+  "private": true,
+  "type": "module",
+  "description": "Recurso 1 de la serie «Recursos» de Kingdom: «Tu iglesia, con resultados que se ven», para el pastor principal (Membresía, Eventos, Academia y Equipos, y el acompañamiento de Kingdom). Motion design sin la app, voz Kokoro y «Product Launch» en bucle.",
+  "scripts": {
+    "preparar:es": "node ../_herramientas/recurso.mjs preparar --idioma es",
+    "dev": "npx --yes hyperframes@0.8.221 preview",
+    "check": "npx --yes hyperframes@0.8.221 check",
+    "render:es": "node ../_herramientas/recurso.mjs render --idioma es",
+    "entregar:es": "node ../_herramientas/recurso.mjs entregar --idioma es"
+  }
+}
