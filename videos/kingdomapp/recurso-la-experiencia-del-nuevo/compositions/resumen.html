@@ -1,0 +1,249 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"id\":\"resumen\",\"composicion\":\"compositions/resumen.html\",\"compId\":\"resumen\",\"inicio\":365.5,\"duracion\":20,\"fin\":385.5,\"conVoz\":true,\"inicioAbs\":365.5,\"idioma\":\"es\",\"compas0\":0.5,\"golpes\":[0.5,4.5,7,8.5,12,12.5],\"frases\":[{\"id\":\"voz-resumen-1\",\"clave\":\"asi\",\"texto\":\"Así se ve la experiencia del nuevo.\",\"inicio\":0.5,\"fin\":2.505,\"inicioAbs\":366,\"finAbs\":368.005,\"palabras\":[{\"texto\":\"Así\",\"inicio\":0.53,\"fin\":0.842},{\"texto\":\"se\",\"inicio\":0.842,\"fin\":1.022},{\"texto\":\"ve\",\"inicio\":1.022,\"fin\":1.201},{\"texto\":\"la\",\"inicio\":1.201,\"fin\":1.38},{\"texto\":\"experiencia\",\"inicio\":1.38,\"fin\":1.958},{\"texto\":\"del\",\"inicio\":1.958,\"fin\":2.138},{\"texto\":\"nuevo.\",\"inicio\":2.138,\"fin\":2.45,\"clave\":true}]},{\"id\":\"voz-resumen-2\",\"clave\":\"r1\",\"texto\":\"Escanea el QR. Recorre su bienvenida. Se une a una comunidad.\",\"inicio\":3.105,\"fin\":6.604,\"inicioAbs\":368.605,\"finAbs\":372.104,\"palabras\":[{\"texto\":\"Escanea\",\"inicio\":3.135,\"fin\":3.56},{\"texto\":\"el\",\"inicio\":3.56,\"fin\":3.732},{\"texto\":\"QR.\",\"inicio\":3.732,\"fin\":3.903},{\"texto\":\"Recorre\",\"inicio\":3.903,\"fin\":4.329},{\"texto\":\"su\",\"inicio\":4.329,\"fin\":4.5},{\"texto\":\"bienvenida.\",\"inicio\":4.5,\"fin\":5.053},{\"texto\":\"Se\",\"inicio\":5.053,\"fin\":5.224},{\"texto\":\"une\",\"inicio\":5.224,\"fin\":5.523},{\"texto\":\"a\",\"inicio\":5.523,\"fin\":5.694},{\"texto\":\"una\",\"inicio\":5.694,\"fin\":5.993},{\"texto\":\"comunidad.\",\"inicio\":5.993,\"fin\":6.545}]},{\"id\":\"voz-resumen-3\",\"clave\":\"r2\",\"texto\":\"Avanza en sus planes. Se inscribe, estudia y sirve.\",\"inicio\":7.004,\"fin\":9.82,\"inicioAbs\":372.504,\"finAbs\":375.32,\"palabras\":[{\"texto\":\"Avanza\",\"inicio\":7.034,\"fin\":7.49},{\"texto\":\"en\",\"inicio\":7.49,\"fin\":7.673},{\"texto\":\"sus\",\"inicio\":7.673,\"fin\":7.857},{\"texto\":\"planes.\",\"inicio\":7.857,\"fin\":8.176},{\"texto\":\"Se\",\"inicio\":8.176,\"fin\":8.36},{\"texto\":\"inscribe,\",\"inicio\":8.36,\"fin\":8.815},{\"texto\":\"estudia\",\"inicio\":8.815,\"fin\":9.271},{\"texto\":\"y\",\"inicio\":9.271,\"fin\":9.454},{\"texto\":\"sirve.\",\"inicio\":9.454,\"fin\":9.774}]},{\"id\":\"voz-resumen-4\",\"clave\":\"con\",\"texto\":\"Y en cada paso, alguien de tu iglesia está con ella.\",\"inicio\":10.42,\"fin\":13.215,\"inicioAbs\":375.92,\"finAbs\":378.715,\"palabras\":[{\"texto\":\"Y\",\"inicio\":10.45,\"fin\":10.618},{\"texto\":\"en\",\"inicio\":10.618,\"fin\":10.786},{\"texto\":\"cada\",\"inicio\":10.786,\"fin\":11.079},{\"texto\":\"paso,\",\"inicio\":11.079,\"fin\":11.371},{\"texto\":\"alguien\",\"inicio\":11.371,\"fin\":11.664},{\"texto\":\"de\",\"inicio\":11.664,\"fin\":11.832},{\"texto\":\"tu\",\"inicio\":11.832,\"fin\":12},{\"texto\":\"iglesia\",\"inicio\":12,\"fin\":12.417},{\"texto\":\"está\",\"inicio\":12.417,\"fin\":12.709},{\"texto\":\"con\",\"inicio\":12.709,\"fin\":12.877},{\"texto\":\"ella.\",\"inicio\":12.877,\"fin\":13.17}]},{\"id\":\"voz-resumen-5\",\"clave\":\"acompanada\",\"texto\":\"Una persona nueva que se siente acompañada.\",\"inicio\":13.915,\"fin\":16.347,\"inicioAbs\":379.415,\"finAbs\":381.847,\"palabras\":[{\"texto\":\"Una\",\"inicio\":13.945,\"fin\":14.244},{\"texto\":\"persona\",\"inicio\":14.244,\"fin\":14.671},{\"texto\":\"nueva\",\"inicio\":14.671,\"fin\":14.97},{\"texto\":\"que\",\"inicio\":14.97,\"fin\":15.142},{\"texto\":\"se\",\"inicio\":15.142,\"fin\":15.314},{\"texto\":\"siente\",\"inicio\":15.314,\"fin\":15.614},{\"texto\":\"acompañada.\",\"inicio\":15.614,\"fin\":16.295,\"clave\":true}]},{\"id\":\"voz-resumen-6\",\"clave\":\"cada\",\"texto\":\"Y una iglesia que ve cómo avanza cada una.\",\"inicio\":16.847,\"fin\":19.151,\"inicioAbs\":382.347,\"finAbs\":384.651,\"palabras\":[{\"texto\":\"Y\",\"inicio\":16.877,\"fin\":17.026},{\"texto\":\"una\",\"inicio\":17.026,\"fin\":17.285},{\"texto\":\"iglesia\",\"inicio\":17.285,\"fin\":17.654},{\"texto\":\"que\",\"inicio\":17.654,\"fin\":17.802},{\"texto\":\"ve\",\"inicio\":17.802,\"fin\":17.951},{\"texto\":\"cómo\",\"inicio\":17.951,\"fin\":18.21},{\"texto\":\"avanza\",\"inicio\":18.21,\"fin\":18.579},{\"texto\":\"cada\",\"inicio\":18.579,\"fin\":18.838,\"clave\":true},{\"texto\":\"una.\",\"inicio\":18.838,\"fin\":19.097,\"clave\":true}]}]}"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- «La experiencia del nuevo» · escena «resumen» (storyboard en SPEC.md). Motion design sin la app (Tipo Recurso, frame.md): texto que sigue
+         la voz y un diagrama abstracto; todos los tiempos salen de KRecurso.tiempos() (identidad/recurso.js), en los pulsos y compases. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .col { position: absolute; left: 192px; top: 210px; width: 860px; height: 660px; }
+        .bloque { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+        .ceja-e { position: absolute; left: 192px; top: 132px; }
+        .dia { position: absolute; left: 1080px; top: 140px; width: 648px; height: 800px; }
+        .svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+        .ancla { position: absolute; width: 0; height: 0; }
+        .centro { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; }
+        .chip { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 28px; border-radius: 32px; background: rgba(12, 26, 58, 0.92);
+          box-shadow: inset 0 0 0 1px rgba(234, 240, 255, 0.18); font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1; color: var(--k-noche-tinta); }
+        .chip.oro { box-shadow: inset 0 0 0 2px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+        .chip.azul { box-shadow: inset 0 0 0 2px var(--k-azul); }
+        .chip .k-recurso-icono { --k-icono-tam: 34px; }
+        .rot { font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--k-noche-tinta-2); }
+        .rot.oro { color: var(--k-noche-dorado); }
+        /* Íconos como máscara con el estilo en el documento (no en kit.css): la url() de --k-icono se resuelve contra la página, igual que en la tarjeta de capítulo del kit. */
+        .ico { display: inline-block; flex: none; width: var(--k-icono-tam, 56px); height: var(--k-icono-tam, 56px); background: currentColor;
+          -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .ico-oro { color: var(--k-noche-dorado); }
+        .col.arriba { left: 192px; top: 150px; width: 1536px; height: 300px; }
+        .col.arriba .bloque { align-items: center; text-align: center; }
+        .col.arriba .k-recurso-frase { max-width: 1400px; }
+        .res-mapa { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      </style>
+
+      <div id="root" data-composition-id="resumen" data-width="1920" data-height="1080" data-duration="20">
+        <div class="col arriba" id="res-col"></div>
+        <div class="res-mapa" id="res-mapa" data-layout-allow-overflow data-layout-allow-overlap>
+          <svg class="svg" id="res-svg" viewBox="0 0 1920 1080"></svg>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window); // al empezar el script: «window» es el de esta escena
+          // ── H: piezas comunes de las escenas de este recurso (texto cinético con la voz, anclas, nodos, puntos, líneas, entradas) ──
+          const H = (() => {
+            const NS = 'http://www.w3.org/2000/svg';
+            const r3 = (n) => Math.round(n * 1000) / 1000;
+            // «texto con *énfasis*» → [{ texto, clave }]
+            const partir = (s) => {
+              const out = [];
+              let on = false;
+              for (const w of String(s).split(/\s+/)) {
+                if (!w) continue;
+                let t = '', c = false;
+                for (const ch of w) {
+                  if (ch === '*') { on = !on; continue; }
+                  t += ch;
+                  if (on) c = true;
+                }
+                out.push({ texto: t, clave: c });
+              }
+              return out;
+            };
+            const el = (tag, cls, padre, id, css) => {
+              const d = document.createElement(tag);
+              if (cls) d.className = cls;
+              if (id) d.id = id;
+              if (css) Object.assign(d.style, css);
+              padre.appendChild(d);
+              return d;
+            };
+            const icono = (n, tam, oro) =>
+              `<span class="ico${oro ? ' ico-oro' : ''}" style="--k-icono:url(identidad/iconos/${n}.svg);--k-icono-tam:${tam || 56}px"></span>`;
+            // Un ancla es un punto (0×0) en x, y: se anima el ancla (escala desde su centro) y su contenido queda centrado encima.
+            const ancla = (padre, id, x, y, html, cls) => {
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const c = el('div', `centro ${cls || ''}`, a);
+              c.innerHTML = html;
+              return a;
+            };
+            const chip = (padre, id, x, y, html, cls) => ancla(padre, id, x, y, html, `chip ${cls || ''}`);
+            const nodo = (padre, id, x, y, ic, oro, tam) => {
+              const t = tam || 120;
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const n = el('div', `k-recurso-nodo${oro ? ' k-oro' : ''}`, a, `${id}-n`, { left: '0px', top: '0px', width: `${t}px`, height: `${t}px`, margin: `-${t / 2}px 0 0 -${t / 2}px` });
+              n.innerHTML = icono(ic, Math.round(t * 0.46));
+              return a;
+            };
+            const punto = (padre, id, x, y, cls, tam) => {
+              const d = el('span', `k-recurso-punto ${cls || ''}`, padre, id, { left: `${x}px`, top: `${y}px` });
+              if (tam) Object.assign(d.style, { width: `${tam}px`, height: `${tam}px`, margin: `-${tam / 2}px 0 0 -${tam / 2}px` });
+              return d;
+            };
+            const linea = (svg, id, x1, y1, x2, y2, oro) => {
+              const l = document.createElementNS(NS, 'line');
+              l.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''}`);
+              l.setAttribute('id', id);
+              [['x1', x1], ['y1', y1], ['x2', x2], ['y2', y2]].forEach(([k, v]) => l.setAttribute(k, v));
+              const L = Math.hypot(x2 - x1, y2 - y1) + 2;
+              l.style.strokeDasharray = `${L} ${L + 40}`;
+              l.style.strokeDashoffset = `${L + 14}`;
+              svg.appendChild(l);
+              return l;
+            };
+            const camino = (svg, id, d, oro, cls) => {
+              const p = document.createElementNS(NS, 'path');
+              p.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''} ${cls || ''}`);
+              p.setAttribute('id', id);
+              p.setAttribute('d', d);
+              svg.appendChild(p);
+              const L = p.getTotalLength() + 2;
+              p.style.strokeDasharray = `${L} ${L + 40}`;
+              p.style.strokeDashoffset = `${L + 14}`;
+              return { p, L, punto: (u) => p.getPointAtLength(Math.max(0, Math.min(1, u)) * (L - 2)) };
+            };
+            const dibujar = (tl, l, t, d) => tl.to(l, { strokeDashoffset: 0, duration: d || 0.6, ease: 'power2.inOut' }, t);
+            // Entradas y salidas del frame: subir con desenfoque (power3.out) · escalas pequeñas con back.out · salir subiendo (power2.in).
+            const entra = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, y: (o && o.dy) ?? 30, filter: 'blur(6px)' },
+              { opacity: 1, y: 0, filter: 'blur(0px)', duration: (o && o.d) || 0.5, ease: 'power3.out', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const pop = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, scale: 0 },
+              { opacity: 1, scale: 1, duration: (o && o.d) || 0.45, ease: 'back.out(2)', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const sale = (tl, s, t, o) => tl.to(s, { opacity: 0, y: (o && o.dy) ?? -24, filter: 'blur(6px)', duration: (o && o.d) || 0.35, ease: 'power2.in', stagger: (o && o.stagger) || 0 }, t);
+            const late = (tl, s, t, o) => tl.fromTo(s, { scale: (o && o.de) || 1.12 }, { scale: 1, duration: (o && o.d) || 0.45, ease: 'power2.out', immediateRender: false }, t);
+            const halo = (tl, s, t) => tl.fromTo(s, { scale: 0.5, opacity: 0.9 }, { scale: 1.9, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+            // La palabra clave n de una frase (o la palabra que empieza con re).
+            const clave = (f, n) => (f.palabras.filter((p) => p.clave)[n || 0] || f.palabras[0] || { inicio: f.inicio, fin: f.fin });
+            const palabra = (f, re) => f.palabras.find((p) => re.test(p.texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^[^a-z0-9]+/, ''))) || { inicio: f.inicio, fin: f.fin };
+            // Texto cinético: un bloque por frase en «cont». textos[i]: undefined = la frase tal cual (sus palabras con sus tiempos);
+            // una cadena = un rótulo corto cuyas palabras entran repartidas sobre las de la frase; null = sin texto (sigue el anterior).
+            const bloques = (T, cont, pref, textos, clase) => {
+              textos = textos || [];
+              return T.frases.map((f, i) => {
+                const tx = textos[i];
+                if (tx === null) return null;
+                const b = el('div', 'bloque', cont, `${pref}-b-${i}`);
+                const fr = el('div', clase || 'k-recurso-frase', b, `${pref}-f-${i}`);
+                let ps;
+                if (tx === undefined) {
+                  ps = f.palabras.length ? f.palabras.map((p) => ({ texto: p.texto, clave: !!p.clave, inicio: p.inicio }))
+                    : partir(f.texto).map((p, j, a) => ({ ...p, inicio: f.inicio + (j * (f.fin - f.inicio)) / a.length }));
+                } else {
+                  const ws = partir(tx);
+                  const np = f.palabras.length;
+                  ps = ws.map((w, j) => ({ ...w, inicio: np ? f.palabras[Math.min(np - 1, Math.floor((j * np) / ws.length))].inicio : f.inicio + (j * (f.fin - f.inicio)) / ws.length }));
+                }
+                const spans = ps.map((p, j) => {
+                  const s = el('span', `k-recurso-palabra${p.clave ? ' k-recurso-clave' : ''}`, fr, `${pref}-p-${i}-${j}`);
+                  s.textContent = p.texto;
+                  return { s, inicio: p.inicio };
+                });
+                return { i, b, fr, spans };
+              });
+            };
+            const animarBloques = (tl, T, bs, finUltimo) => {
+              const vis = bs.filter(Boolean);
+              vis.forEach((x, k) => {
+                x.spans.forEach(({ s, inicio }) => tl.fromTo(s, { y: 28, opacity: 0, filter: 'blur(6px)' },
+                  { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, Math.max(0, inicio - 0.08)));
+                const sig = vis[k + 1];
+                const t = sig ? T.frases[sig.i].inicio - 0.32 : (finUltimo ?? T.salida(0.6));
+                tl.to(x.fr, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+              });
+            };
+            // Semilla fija para posiciones «al azar» (siempre las mismas).
+            const azar = (s) => () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+            return { r3, partir, el, icono, ancla, chip, nodo, punto, linea, camino, dibujar, entra, pop, sale, late, halo, clave, palabra, bloques, animarBloques, azar };
+          })();
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const [f0, f1, f2, f3, f4, f5] = T.frases;
+            const mapa = document.getElementById('res-mapa');
+            const svg = document.getElementById('res-svg');
+            const bs = H.bloques(T, document.getElementById('res-col'), 'res', [undefined, 'Escanea, recorre, se *une*', 'Avanza, se inscribe, estudia y *sirve*',
+              'Y en cada paso, *alguien* está con ella', undefined, undefined]);
+            H.animarBloques(tl, T, bs);
+            
+            // La ruta completa de la persona nueva, de punta a punta del cuadro.
+            const Y = 640;
+            const paradas = [['qr_code_2', 'El QR', /^qr/, 1], ['waving_hand', 'Bienvenida', /^bienvenida/, 1], ['groups', 'Comunidad', /^comunidad/, 1],
+              ['task_alt', 'Sus planes', /^planes/, 2], ['confirmation_number', 'Eventos', /^inscribe/, 2], ['school', 'Cursos', /^estudia/, 2], ['volunteer_activism', 'Servir', /^sirve/, 2]];
+            const X0 = 300, PASO = 220;
+            const camino = H.camino(svg, 'res-camino', `M${X0} ${Y} L${X0 + PASO * 6} ${Y}`);
+            const nodos = paradas.map(([ic, tx], i) => ({ n: H.nodo(mapa, `res-n-${i}`, X0 + i * PASO, Y, ic, false, 116), r: H.ancla(mapa, `res-r-${i}`, X0 + i * PASO, Y + 96, tx, 'rot'), x: X0 + i * PASO }));
+            const yo = H.punto(mapa, 'res-yo', X0, Y - 92, 'k-oro', 30);
+            const azul = H.punto(mapa, 'res-azul', X0 - 40, Y - 92, 'k-azul', 26);
+            
+            // f0 · el camino se dibuja y aparecen las paradas.
+            const t0 = T.pulso(f0.inicio);
+            H.dibujar(tl, camino.p, t0, 1.6);
+            const ent = T.reparto(7, t0 + 0.2, t0 + 1.8);
+            nodos.forEach((n, i) => { H.pop(tl, n.n, ent[i]); H.entra(tl, n.r, ent[i] + 0.1, { dy: 10 }); });
+            H.pop(tl, yo, t0 + 0.5);
+            
+            // f1–f2 · ella recorre cada parada en la palabra que la nombra; cada parada se vuelve dorada.
+            paradas.forEach(([, , re, k], i) => {
+              const f = k === 1 ? f1 : f2;
+              const t = T.pulso(H.palabra(f, re).inicio - 0.35);
+              tl.to(yo, { x: nodos[i].x - X0, duration: 0.45, ease: 'power3.inOut' }, t);
+              tl.to(`#res-n-${i}-n`, { boxShadow: 'inset 0 0 0 3px #e8b95a', color: '#e8b95a', duration: 0.25 }, t + 0.35);
+              H.late(tl, nodos[i].n, t + 0.35, { de: 1.15 });
+            });
+            tl.to(camino.p, { stroke: '#e8b95a', duration: 0.8 }, T.pulso(f2.fin - 0.4));
+            
+            // f3 · alguien está con ella en cada paso: el punto azul la acompaña de vuelta por toda la ruta.
+            const t3 = T.pulso(f3.inicio - 0.2);
+            tl.to(yo, { x: 0, duration: 0.8, ease: 'power3.inOut' }, t3);
+            H.pop(tl, azul, t3 + 0.6);
+            const tAl = T.pulso(H.clave(f3).inicio - 0.3);
+            tl.to(yo, { x: PASO * 6, duration: Math.max(1.6, f3.fin - tAl), ease: 'power1.inOut' }, tAl);
+            tl.to(azul, { x: PASO * 6, duration: Math.max(1.6, f3.fin - tAl), ease: 'power1.inOut' }, tAl + 0.1);
+            
+            // f4 · una persona nueva que se siente acompañada: los dos se juntan al final, unidos.
+            const t4 = T.pulso(f4.inicio - 0.2);
+            const lazo = H.linea(svg, 'res-lazo', X0 + PASO * 6 - 40, Y - 92, X0 + PASO * 6, Y - 92, true);
+            H.dibujar(tl, lazo, t4, 0.3);
+            H.late(tl, [yo, azul], T.pulso(H.clave(f4).inicio - 0.2), { de: 1.6, d: 0.6 });
+            
+            // f5 · una iglesia que ve cómo avanza cada una: muchas personas, cada una en su punto de la ruta.
+            const t5 = T.pulso(f5.inicio - 0.2);
+            const az = H.azar(55);
+            const otras = Array.from({ length: 22 }, (_, i) => {
+              const u = az();
+              const x = X0 + u * PASO * 6;
+              const y = Y + 176 + az() * 50 + (i % 2) * 36;
+              return { d: H.punto(mapa, `res-o-${i}`, X0, y, i % 5 === 0 ? 'k-azul' : '', 18), x };
+            });
+            otras.forEach((o, i) => tl.fromTo(o.d, { opacity: 0, scale: 0, x: 0 }, { opacity: 1, scale: 1, x: 0, duration: 0.3, ease: 'back.out(2)' }, t5 + (i % 6) * 0.08));
+            const tCada = T.pulso(H.clave(f5).inicio - 0.3);
+            otras.forEach((o, i) => tl.to(o.d, { x: o.x - X0, duration: 1.1, ease: 'power3.out' }, t5 + 0.5 + (i % 7) * 0.05));
+            H.late(tl, otras.map((o) => o.d), tCada, { de: 1.5 });
+            
+            H.sale(tl, '#res-mapa', T.salida(0.6), { d: 0.5 });
+            tl.set({}, {}, T.duracion);
+            window.__timelines['resumen'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

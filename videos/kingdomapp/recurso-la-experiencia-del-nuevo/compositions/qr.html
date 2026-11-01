@@ -1,0 +1,306 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"id\":\"qr\",\"composicion\":\"compositions/qr.html\",\"compId\":\"qr\",\"inicio\":34,\"duracion\":25.5,\"fin\":59.5,\"conVoz\":true,\"inicioAbs\":34,\"idioma\":\"es\",\"compas0\":0,\"golpes\":[0,1.95,2,2.5,3.95,4,6,8,10,12,16,17.95,18,20],\"frases\":[{\"id\":\"voz-qr-1\",\"clave\":\"qr\",\"texto\":\"Todo empieza con el QR de bienvenida de tu iglesia.\",\"inicio\":0.5,\"fin\":3.401,\"inicioAbs\":34.5,\"finAbs\":37.401,\"palabras\":[{\"texto\":\"Todo\",\"inicio\":0.53,\"fin\":0.838},{\"texto\":\"empieza\",\"inicio\":0.838,\"fin\":1.278},{\"texto\":\"con\",\"inicio\":1.278,\"fin\":1.455},{\"texto\":\"el\",\"inicio\":1.455,\"fin\":1.632},{\"texto\":\"QR\",\"inicio\":1.632,\"fin\":1.809,\"clave\":true},{\"texto\":\"de\",\"inicio\":1.809,\"fin\":1.986,\"clave\":true},{\"texto\":\"bienvenida\",\"inicio\":1.986,\"fin\":2.556,\"clave\":true},{\"texto\":\"de\",\"inicio\":2.556,\"fin\":2.734},{\"texto\":\"tu\",\"inicio\":2.734,\"fin\":2.911},{\"texto\":\"iglesia.\",\"inicio\":2.911,\"fin\":3.35}]},{\"id\":\"voz-qr-2\",\"clave\":\"imprime\",\"texto\":\"Lo imprimes, o lo proyectas en el altar.\",\"inicio\":3.901,\"fin\":6.184,\"inicioAbs\":37.901,\"finAbs\":40.184,\"palabras\":[{\"texto\":\"Lo\",\"inicio\":3.951,\"fin\":4.149},{\"texto\":\"imprimes,\",\"inicio\":4.149,\"fin\":4.64},{\"texto\":\"o\",\"inicio\":4.64,\"fin\":4.838},{\"texto\":\"lo\",\"inicio\":4.838,\"fin\":5.036},{\"texto\":\"proyectas\",\"inicio\":5.036,\"fin\":5.381},{\"texto\":\"en\",\"inicio\":5.381,\"fin\":5.579},{\"texto\":\"el\",\"inicio\":5.579,\"fin\":5.776},{\"texto\":\"altar.\",\"inicio\":5.776,\"fin\":6.121}]},{\"id\":\"voz-qr-3\",\"clave\":\"escanea\",\"texto\":\"La persona lo escanea con su celular y ve el logo de su iglesia.\",\"inicio\":6.784,\"fin\":10.219,\"inicioAbs\":40.784,\"finAbs\":44.219,\"palabras\":[{\"texto\":\"La\",\"inicio\":6.814,\"fin\":6.976},{\"texto\":\"persona\",\"inicio\":6.976,\"fin\":7.378},{\"texto\":\"lo\",\"inicio\":7.378,\"fin\":7.54},{\"texto\":\"escanea\",\"inicio\":7.54,\"fin\":7.943},{\"texto\":\"con\",\"inicio\":7.943,\"fin\":8.105},{\"texto\":\"su\",\"inicio\":8.105,\"fin\":8.267},{\"texto\":\"celular\",\"inicio\":8.267,\"fin\":8.669},{\"texto\":\"y\",\"inicio\":8.669,\"fin\":8.831},{\"texto\":\"ve\",\"inicio\":8.831,\"fin\":8.993},{\"texto\":\"el\",\"inicio\":8.993,\"fin\":9.155},{\"texto\":\"logo\",\"inicio\":9.155,\"fin\":9.438},{\"texto\":\"de\",\"inicio\":9.438,\"fin\":9.6},{\"texto\":\"su\",\"inicio\":9.6,\"fin\":9.762},{\"texto\":\"iglesia.\",\"inicio\":9.762,\"fin\":10.164}]},{\"id\":\"voz-qr-4\",\"clave\":\"google\",\"texto\":\"Entra con su cuenta de Google.\",\"inicio\":10.719,\"fin\":12.34,\"inicioAbs\":44.719,\"finAbs\":46.34,\"palabras\":[{\"texto\":\"Entra\",\"inicio\":10.749,\"fin\":11.073},{\"texto\":\"con\",\"inicio\":11.073,\"fin\":11.259},{\"texto\":\"su\",\"inicio\":11.259,\"fin\":11.445},{\"texto\":\"cuenta\",\"inicio\":11.445,\"fin\":11.769},{\"texto\":\"de\",\"inicio\":11.769,\"fin\":11.955},{\"texto\":\"Google.\",\"inicio\":11.955,\"fin\":12.279,\"clave\":true}]},{\"id\":\"voz-qr-5\",\"clave\":\"datos\",\"texto\":\"Escribe su nombre, su teléfono y su género, y toca «Unirme».\",\"inicio\":12.84,\"fin\":15.997,\"inicioAbs\":46.84,\"finAbs\":49.997,\"palabras\":[{\"texto\":\"Escribe\",\"inicio\":12.87,\"fin\":13.268},{\"texto\":\"su\",\"inicio\":13.268,\"fin\":13.428},{\"texto\":\"nombre,\",\"inicio\":13.428,\"fin\":13.707},{\"texto\":\"su\",\"inicio\":13.707,\"fin\":13.868},{\"texto\":\"teléfono\",\"inicio\":13.868,\"fin\":14.384},{\"texto\":\"y\",\"inicio\":14.384,\"fin\":14.545},{\"texto\":\"su\",\"inicio\":14.545,\"fin\":14.705},{\"texto\":\"género,\",\"inicio\":14.705,\"fin\":15.103},{\"texto\":\"y\",\"inicio\":15.103,\"fin\":15.263},{\"texto\":\"toca\",\"inicio\":15.263,\"fin\":15.542},{\"texto\":\"«Unirme».\",\"inicio\":15.542,\"fin\":15.94}]},{\"id\":\"voz-qr-6\",\"clave\":\"miembro\",\"texto\":\"En un minuto ya es miembro de tu iglesia, sin esperar una aprobación.\",\"inicio\":16.597,\"fin\":20.33,\"inicioAbs\":50.597,\"finAbs\":54.33,\"palabras\":[{\"texto\":\"En\",\"inicio\":16.627,\"fin\":16.788},{\"texto\":\"un\",\"inicio\":16.788,\"fin\":16.95},{\"texto\":\"minuto\",\"inicio\":16.95,\"fin\":17.35},{\"texto\":\"ya\",\"inicio\":17.35,\"fin\":17.512},{\"texto\":\"es\",\"inicio\":17.512,\"fin\":17.673},{\"texto\":\"miembro\",\"inicio\":17.673,\"fin\":17.954,\"clave\":true},{\"texto\":\"de\",\"inicio\":17.954,\"fin\":18.115},{\"texto\":\"tu\",\"inicio\":18.115,\"fin\":18.277},{\"texto\":\"iglesia,\",\"inicio\":18.277,\"fin\":18.677},{\"texto\":\"sin\",\"inicio\":18.857,\"fin\":19.025},{\"texto\":\"esperar\",\"inicio\":19.025,\"fin\":19.442},{\"texto\":\"una\",\"inicio\":19.442,\"fin\":19.735},{\"texto\":\"aprobación.\",\"inicio\":19.735,\"fin\":20.277}]},{\"id\":\"voz-qr-7\",\"clave\":\"reconoce\",\"texto\":\"Y si la iglesia ya tenía su ficha con ese correo, Kingdom la reconoce.\",\"inicio\":20.93,\"fin\":24.685,\"inicioAbs\":54.93,\"finAbs\":58.685,\"palabras\":[{\"texto\":\"Y\",\"inicio\":20.96,\"fin\":21.124},{\"texto\":\"si\",\"inicio\":21.124,\"fin\":21.289},{\"texto\":\"la\",\"inicio\":21.289,\"fin\":21.453},{\"texto\":\"iglesia\",\"inicio\":21.453,\"fin\":21.861},{\"texto\":\"ya\",\"inicio\":21.861,\"fin\":22.026},{\"texto\":\"tenía\",\"inicio\":22.026,\"fin\":22.312},{\"texto\":\"su\",\"inicio\":22.312,\"fin\":22.477},{\"texto\":\"ficha\",\"inicio\":22.477,\"fin\":22.763},{\"texto\":\"con\",\"inicio\":22.763,\"fin\":22.927},{\"texto\":\"ese\",\"inicio\":22.927,\"fin\":23.214},{\"texto\":\"correo,\",\"inicio\":23.214,\"fin\":23.5},{\"texto\":\"Kingdom\",\"inicio\":23.64,\"fin\":23.929},{\"texto\":\"la\",\"inicio\":23.929,\"fin\":24.095},{\"texto\":\"reconoce.\",\"inicio\":24.095,\"fin\":24.63,\"clave\":true}]}]}"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- «La experiencia del nuevo» · escena «qr» (storyboard en SPEC.md). Motion design sin la app (Tipo Recurso, frame.md): texto que sigue
+         la voz y un diagrama abstracto; todos los tiempos salen de KRecurso.tiempos() (identidad/recurso.js), en los pulsos y compases. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .col { position: absolute; left: 192px; top: 210px; width: 860px; height: 660px; }
+        .bloque { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+        .ceja-e { position: absolute; left: 192px; top: 132px; }
+        .dia { position: absolute; left: 1080px; top: 140px; width: 648px; height: 800px; }
+        .svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+        .ancla { position: absolute; width: 0; height: 0; }
+        .centro { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; }
+        .chip { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 28px; border-radius: 32px; background: rgba(12, 26, 58, 0.92);
+          box-shadow: inset 0 0 0 1px rgba(234, 240, 255, 0.18); font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1; color: var(--k-noche-tinta); }
+        .chip.oro { box-shadow: inset 0 0 0 2px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+        .chip.azul { box-shadow: inset 0 0 0 2px var(--k-azul); }
+        .chip .k-recurso-icono { --k-icono-tam: 34px; }
+        .rot { font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--k-noche-tinta-2); }
+        .rot.oro { color: var(--k-noche-dorado); }
+        /* Íconos como máscara con el estilo en el documento (no en kit.css): la url() de --k-icono se resuelve contra la página, igual que en la tarjeta de capítulo del kit. */
+        .ico { display: inline-block; flex: none; width: var(--k-icono-tam, 56px); height: var(--k-icono-tam, 56px); background: currentColor;
+          -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .ico-oro { color: var(--k-noche-dorado); }
+        #qr-codigo { position: absolute; left: 0; top: 0; width: 648px; height: 680px; }
+        .qr-celda { position: absolute; width: 24px; height: 24px; border-radius: 5px; background: var(--k-noche-tinta); }
+        .qr-celda.oro { background: var(--k-noche-dorado); }
+        .qr-barrido { position: absolute; left: 140px; top: 156px; width: 368px; height: 6px; border-radius: 3px; background: var(--k-noche-dorado);
+          box-shadow: 0 0 24px 4px rgba(232, 185, 90, 0.45); opacity: 0; }
+        .qr-marco { position: absolute; left: 132px; top: 148px; width: 384px; height: 384px; border-radius: 28px; box-shadow: inset 0 0 0 2px rgba(234, 240, 255, 0.22); }
+        .qr-anillo { position: absolute; left: 0; top: 0; width: 648px; height: 800px; overflow: visible; }
+        .qr-min { font-family: var(--k-fuente-marca); font-size: 96px; font-weight: 600; line-height: 1; color: var(--k-noche-tinta); letter-spacing: -0.02em; }
+        .qr-min small { font-size: 44px; color: var(--k-noche-tinta-2); margin-left: 8px; }
+        .qr-ficha { width: 470px; display: flex; flex-direction: column; gap: 18px; white-space: normal; }
+        .qr-ficha .fila { display: flex; align-items: center; gap: 18px; }
+      </style>
+
+      <div id="root" data-composition-id="qr" data-width="1920" data-height="1080" data-duration="25.5">
+        <div class="k-recurso-ceja ceja-e" id="qr-ceja">La bienvenida · El QR</div>
+        <div class="col" id="qr-col"></div>
+        <div class="dia" id="qr-dia" data-layout-allow-overflow data-layout-allow-overlap>
+          <div class="qr-marco" id="qr-marco"></div>
+          <div id="qr-codigo"></div>
+          <div class="qr-barrido" id="qr-barrido"></div>
+          <svg class="svg" id="qr-svg" viewBox="0 0 648 800"></svg>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window); // al empezar el script: «window» es el de esta escena
+          // ── H: piezas comunes de las escenas de este recurso (texto cinético con la voz, anclas, nodos, puntos, líneas, entradas) ──
+          const H = (() => {
+            const NS = 'http://www.w3.org/2000/svg';
+            const r3 = (n) => Math.round(n * 1000) / 1000;
+            // «texto con *énfasis*» → [{ texto, clave }]
+            const partir = (s) => {
+              const out = [];
+              let on = false;
+              for (const w of String(s).split(/\s+/)) {
+                if (!w) continue;
+                let t = '', c = false;
+                for (const ch of w) {
+                  if (ch === '*') { on = !on; continue; }
+                  t += ch;
+                  if (on) c = true;
+                }
+                out.push({ texto: t, clave: c });
+              }
+              return out;
+            };
+            const el = (tag, cls, padre, id, css) => {
+              const d = document.createElement(tag);
+              if (cls) d.className = cls;
+              if (id) d.id = id;
+              if (css) Object.assign(d.style, css);
+              padre.appendChild(d);
+              return d;
+            };
+            const icono = (n, tam, oro) =>
+              `<span class="ico${oro ? ' ico-oro' : ''}" style="--k-icono:url(identidad/iconos/${n}.svg);--k-icono-tam:${tam || 56}px"></span>`;
+            // Un ancla es un punto (0×0) en x, y: se anima el ancla (escala desde su centro) y su contenido queda centrado encima.
+            const ancla = (padre, id, x, y, html, cls) => {
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const c = el('div', `centro ${cls || ''}`, a);
+              c.innerHTML = html;
+              return a;
+            };
+            const chip = (padre, id, x, y, html, cls) => ancla(padre, id, x, y, html, `chip ${cls || ''}`);
+            const nodo = (padre, id, x, y, ic, oro, tam) => {
+              const t = tam || 120;
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const n = el('div', `k-recurso-nodo${oro ? ' k-oro' : ''}`, a, `${id}-n`, { left: '0px', top: '0px', width: `${t}px`, height: `${t}px`, margin: `-${t / 2}px 0 0 -${t / 2}px` });
+              n.innerHTML = icono(ic, Math.round(t * 0.46));
+              return a;
+            };
+            const punto = (padre, id, x, y, cls, tam) => {
+              const d = el('span', `k-recurso-punto ${cls || ''}`, padre, id, { left: `${x}px`, top: `${y}px` });
+              if (tam) Object.assign(d.style, { width: `${tam}px`, height: `${tam}px`, margin: `-${tam / 2}px 0 0 -${tam / 2}px` });
+              return d;
+            };
+            const linea = (svg, id, x1, y1, x2, y2, oro) => {
+              const l = document.createElementNS(NS, 'line');
+              l.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''}`);
+              l.setAttribute('id', id);
+              [['x1', x1], ['y1', y1], ['x2', x2], ['y2', y2]].forEach(([k, v]) => l.setAttribute(k, v));
+              const L = Math.hypot(x2 - x1, y2 - y1) + 2;
+              l.style.strokeDasharray = `${L} ${L + 40}`;
+              l.style.strokeDashoffset = `${L + 14}`;
+              svg.appendChild(l);
+              return l;
+            };
+            const camino = (svg, id, d, oro, cls) => {
+              const p = document.createElementNS(NS, 'path');
+              p.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''} ${cls || ''}`);
+              p.setAttribute('id', id);
+              p.setAttribute('d', d);
+              svg.appendChild(p);
+              const L = p.getTotalLength() + 2;
+              p.style.strokeDasharray = `${L} ${L + 40}`;
+              p.style.strokeDashoffset = `${L + 14}`;
+              return { p, L, punto: (u) => p.getPointAtLength(Math.max(0, Math.min(1, u)) * (L - 2)) };
+            };
+            const dibujar = (tl, l, t, d) => tl.to(l, { strokeDashoffset: 0, duration: d || 0.6, ease: 'power2.inOut' }, t);
+            // Entradas y salidas del frame: subir con desenfoque (power3.out) · escalas pequeñas con back.out · salir subiendo (power2.in).
+            const entra = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, y: (o && o.dy) ?? 30, filter: 'blur(6px)' },
+              { opacity: 1, y: 0, filter: 'blur(0px)', duration: (o && o.d) || 0.5, ease: 'power3.out', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const pop = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, scale: 0 },
+              { opacity: 1, scale: 1, duration: (o && o.d) || 0.45, ease: 'back.out(2)', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const sale = (tl, s, t, o) => tl.to(s, { opacity: 0, y: (o && o.dy) ?? -24, filter: 'blur(6px)', duration: (o && o.d) || 0.35, ease: 'power2.in', stagger: (o && o.stagger) || 0 }, t);
+            const late = (tl, s, t, o) => tl.fromTo(s, { scale: (o && o.de) || 1.12 }, { scale: 1, duration: (o && o.d) || 0.45, ease: 'power2.out', immediateRender: false }, t);
+            const halo = (tl, s, t) => tl.fromTo(s, { scale: 0.5, opacity: 0.9 }, { scale: 1.9, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+            // La palabra clave n de una frase (o la palabra que empieza con re).
+            const clave = (f, n) => (f.palabras.filter((p) => p.clave)[n || 0] || f.palabras[0] || { inicio: f.inicio, fin: f.fin });
+            const palabra = (f, re) => f.palabras.find((p) => re.test(p.texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^[^a-z0-9]+/, ''))) || { inicio: f.inicio, fin: f.fin };
+            // Texto cinético: un bloque por frase en «cont». textos[i]: undefined = la frase tal cual (sus palabras con sus tiempos);
+            // una cadena = un rótulo corto cuyas palabras entran repartidas sobre las de la frase; null = sin texto (sigue el anterior).
+            const bloques = (T, cont, pref, textos, clase) => {
+              textos = textos || [];
+              return T.frases.map((f, i) => {
+                const tx = textos[i];
+                if (tx === null) return null;
+                const b = el('div', 'bloque', cont, `${pref}-b-${i}`);
+                const fr = el('div', clase || 'k-recurso-frase', b, `${pref}-f-${i}`);
+                let ps;
+                if (tx === undefined) {
+                  ps = f.palabras.length ? f.palabras.map((p) => ({ texto: p.texto, clave: !!p.clave, inicio: p.inicio }))
+                    : partir(f.texto).map((p, j, a) => ({ ...p, inicio: f.inicio + (j * (f.fin - f.inicio)) / a.length }));
+                } else {
+                  const ws = partir(tx);
+                  const np = f.palabras.length;
+                  ps = ws.map((w, j) => ({ ...w, inicio: np ? f.palabras[Math.min(np - 1, Math.floor((j * np) / ws.length))].inicio : f.inicio + (j * (f.fin - f.inicio)) / ws.length }));
+                }
+                const spans = ps.map((p, j) => {
+                  const s = el('span', `k-recurso-palabra${p.clave ? ' k-recurso-clave' : ''}`, fr, `${pref}-p-${i}-${j}`);
+                  s.textContent = p.texto;
+                  return { s, inicio: p.inicio };
+                });
+                return { i, b, fr, spans };
+              });
+            };
+            const animarBloques = (tl, T, bs, finUltimo) => {
+              const vis = bs.filter(Boolean);
+              vis.forEach((x, k) => {
+                x.spans.forEach(({ s, inicio }) => tl.fromTo(s, { y: 28, opacity: 0, filter: 'blur(6px)' },
+                  { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, Math.max(0, inicio - 0.08)));
+                const sig = vis[k + 1];
+                const t = sig ? T.frases[sig.i].inicio - 0.32 : (finUltimo ?? T.salida(0.6));
+                tl.to(x.fr, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+              });
+            };
+            // Semilla fija para posiciones «al azar» (siempre las mismas).
+            const azar = (s) => () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+            return { r3, partir, el, icono, ancla, chip, nodo, punto, linea, camino, dibujar, entra, pop, sale, late, halo, clave, palabra, bloques, animarBloques, azar };
+          })();
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const [f0, f1, f2, f3, f4, f5, f6] = T.frases;
+            const dia = document.getElementById('qr-dia');
+            const svg = document.getElementById('qr-svg');
+            const bs = H.bloques(T, document.getElementById('qr-col'), 'qr', [undefined, undefined, 'La escanea con la cámara de su *celular*', undefined,
+              'Nombre, teléfono, género… y «*Unirme*»', 'En un minuto ya es *miembro*', 'Si ya tenía su ficha, Kingdom la *reconoce*']);
+            H.animarBloques(tl, T, bs);
+            H.entra(tl, '#qr-ceja', 0.1, { dy: 16 });
+            
+            // A · El QR de bienvenida: una rejilla de 13 × 13 con tres esquinas de posición (semilla fija).
+            const cod = document.getElementById('qr-codigo');
+            const az = H.azar(73);
+            const esquina = (i, j, a, b) => { const di = i - a, dj = j - b; if (di < 0 || dj < 0 || di > 4 || dj > 4) return null; const m = Math.max(Math.abs(di - 2), Math.abs(dj - 2)); return m === 2 || m === 0; };
+            const celdas = [];
+            for (let i = 0; i < 13; i++) for (let j = 0; j < 13; j++) {
+              let on = esquina(i, j, 0, 0) ?? esquina(i, j, 0, 8) ?? esquina(i, j, 8, 0);
+              const borde = (i === 5 && j < 6) || (j === 5 && i < 6) || (i === 5 && j > 6) || (j === 7 && i < 6) || (j === 5 && i > 6) || (i === 7 && j < 6);
+              if (on === null) on = borde ? false : az() > 0.48;
+              if (!on) continue;
+              const fin = esquina(i, j, 0, 0) !== null || esquina(i, j, 0, 8) !== null || esquina(i, j, 8, 0) !== null;
+              const c = H.el('span', `qr-celda${fin ? ' oro' : ''}`, cod, `qr-c-${i}-${j}`, { left: `${155 + j * 26}px`, top: `${171 + i * 26}px` });
+              celdas.push({ c, d: Math.hypot(i - 6, j - 6) });
+            }
+            celdas.sort((a, b) => a.d - b.d);
+            const tQr = T.pulso(H.clave(f0).inicio - 0.2);
+            H.entra(tl, '#qr-marco', tQr - 0.3, { dy: 0 });
+            celdas.forEach(({ c, d }) => tl.fromTo(c, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2)' }, tQr + d * 0.12));
+            H.late(tl, '#qr-codigo', T.pulso(f0.fin), { de: 1.04 });
+            
+            // f1 · impreso o en el altar.
+            const cImp = H.chip(dia, 'qr-imp', 190, 620, `${H.icono('assignment', 34)}Impreso`);
+            const cAlt = H.chip(dia, 'qr-alt', 458, 620, `${H.icono('volunteer_activism', 34)}En el altar`);
+            H.pop(tl, cImp, T.pulso(H.palabra(f1, /^imprim/).inicio - 0.1));
+            H.pop(tl, cAlt, T.pulso(H.palabra(f1, /^proyect/).inicio - 0.1));
+            
+            // f2 · la escanea: el barrido pasa dos veces; el QR se recoge y aparece el logo de su iglesia.
+            const tEsc = T.pulso(H.palabra(f2, /^escanea/).inicio - 0.2);
+            tl.fromTo('#qr-barrido', { y: 0, opacity: 0 }, { y: 0, opacity: 1, duration: 0.15 }, tEsc);
+            tl.fromTo('#qr-barrido', { y: 0 }, { y: 368, duration: 0.9, ease: 'power1.inOut', immediateRender: false }, tEsc);
+            tl.to('#qr-barrido', { y: 0, duration: 0.9, ease: 'power1.inOut' }, tEsc + 0.9);
+            tl.to('#qr-barrido', { opacity: 0, duration: 0.2 }, tEsc + 1.8);
+            const tLogo = T.pulso(H.palabra(f2, /^logo/).inicio - 0.4);
+            H.sale(tl, [cImp, cAlt], tLogo - 0.4, { stagger: 0.05 });
+            tl.to(['#qr-codigo', '#qr-marco'], { scale: 0.3, opacity: 0, duration: 0.5, ease: 'power2.in' }, tLogo);
+            const iglesia = H.nodo(dia, 'qr-iglesia', 324, 340, 'church', true, 180);
+            const iglesiaR = H.ancla(dia, 'qr-iglesia-r', 324, 482, 'Su iglesia', 'rot oro');
+            H.pop(tl, iglesia, tLogo + 0.3);
+            H.entra(tl, iglesiaR, tLogo + 0.5);
+            
+            // B · f3–f4: la iglesia sube; entra con Google y sus tres datos; «Unirme».
+            const t3 = T.pulso(f3.inicio - 0.3);
+            tl.to(iglesia, { y: -230, scale: 0.6, duration: 0.7, ease: 'power3.inOut' }, t3);
+            tl.to(iglesiaR, { y: -312, opacity: 0, duration: 0.5, ease: 'power3.inOut' }, t3);
+            const pasos = [
+              ['google', 'person', 'Continuar con Google', H.clave(f3).inicio],
+              ['nombre', 'badge', 'Nombre', H.palabra(f4, /^nombre/).inicio],
+              ['tel', 'chat', 'Teléfono', H.palabra(f4, /^telefono/).inicio],
+              ['genero', 'diversity_1', 'Género', H.palabra(f4, /^genero/).inicio],
+            ].map(([k, ic, tx, t], i) => ({ a: H.chip(dia, `qr-${k}`, 324, 270 + i * 96, `${H.icono(ic, 34)}${tx}`), t: T.pulso(t - 0.25) }));
+            pasos.forEach(({ a, t }) => H.entra(tl, a, t, { dy: 24 }));
+            const unirme = H.chip(dia, 'qr-unirme', 324, 670, `${H.icono('how_to_reg', 34)}Unirme`, 'oro');
+            const tUnir = T.pulso(H.clave(f4).inicio - 0.2);
+            H.pop(tl, unirme, tUnir);
+            H.late(tl, unirme, tUnir + 0.5, { de: 0.9, d: 0.35 });
+            
+            // C · f5: todo se recoge en ella (el punto dorado); el anillo del minuto se cierra y queda «Miembro», sin esperar aprobación.
+            const t5 = T.pulso(f5.inicio - 0.3);
+            const yo = H.punto(dia, 'qr-yo', 324, 380, 'k-oro', 34);
+            H.sale(tl, [...pasos.map((p) => p.a), unirme], t5, { stagger: 0.04, dy: 0 });
+            tl.to(iglesia, { opacity: 0, scale: 0.4, duration: 0.4, ease: 'power2.in' }, t5);
+            H.pop(tl, yo, t5 + 0.4);
+            const R = 150, CIRC = 2 * Math.PI * R;
+            const anillo = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            Object.entries({ cx: 324, cy: 380, r: R, class: 'k-recurso-linea k-oro', id: 'qr-anillo', transform: 'rotate(-90 324 380)' }).forEach(([k, v]) => anillo.setAttribute(k, v));
+            anillo.style.strokeDasharray = `${CIRC} ${CIRC + 40}`;
+            anillo.style.strokeDashoffset = `${CIRC + 14}`;
+            anillo.style.strokeWidth = '6';
+            svg.appendChild(anillo);
+            const base = anillo.cloneNode();
+            base.setAttribute('id', 'qr-anillo-base');
+            base.setAttribute('class', 'k-recurso-linea');
+            base.style.strokeDashoffset = '0';
+            svg.insertBefore(base, anillo);
+            tl.fromTo(base, { opacity: 0 }, { opacity: 1, duration: 0.4 }, t5 + 0.3);
+            const tMin = T.pulso(H.palabra(f5, /^minuto/).inicio - 0.3);
+            tl.to(anillo, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, tMin);
+            const minuto = H.ancla(dia, 'qr-minuto', 324, 380, '1<small>min</small>', 'qr-min');
+            tl.to(yo, { scale: 0, opacity: 0, duration: 0.3, ease: 'power2.in' }, tMin + 0.2);
+            H.pop(tl, minuto, tMin + 0.4);
+            const miembro = H.chip(dia, 'qr-miembro', 324, 600, `${H.icono('how_to_reg', 34)}Miembro`, 'oro');
+            const sinEsp = H.chip(dia, 'qr-sinesp', 324, 690, `${H.icono('check_circle', 34)}Sin esperar aprobación`);
+            const tMiembro = T.pulso(H.clave(f5).inicio - 0.2);
+            H.pop(tl, miembro, tMiembro);
+            H.entra(tl, sinEsp, T.pulso(H.palabra(f5, /^esperar/).inicio - 0.2), { dy: 20 });
+            
+            // D · f6: si ya tenía su ficha con ese correo, Kingdom la reconoce: el correo y la ficha se unen con un check.
+            const t6 = T.pulso(f6.inicio - 0.3);
+            H.sale(tl, [minuto, miembro, sinEsp], t6, { stagger: 0.04 });
+            tl.to(['#qr-anillo', '#qr-anillo-base'], { opacity: 0, duration: 0.35, ease: 'power2.in' }, t6);
+            const correo = H.chip(dia, 'qr-correo', 324, 250, `${H.icono('mail', 34)}El mismo correo`);
+            const ficha = H.ancla(dia, 'qr-ficha', 324, 520,
+              `<div class="k-recurso-tarjeta qr-ficha"><div class="fila">${H.icono('badge', 56, true)}<span class="k-recurso-etiqueta">Su ficha en la iglesia</span></div>` +
+              `<div class="fila">${H.icono('verified', 44, true)}<span class="rot oro">Reconocida</span></div></div>`);
+            const lazo = H.linea(svg, 'qr-lazo', 324, 290, 324, 430, true);
+            H.entra(tl, correo, t6 + 0.4);
+            H.entra(tl, ficha, T.pulso(H.palabra(f6, /^ficha/).inicio - 0.2));
+            H.dibujar(tl, lazo, T.pulso(H.clave(f6).inicio - 0.3), 0.4);
+            H.late(tl, ficha, T.pulso(H.clave(f6).inicio) + 0.5, { de: 1.06 });
+            
+            H.sale(tl, ['#qr-dia', '#qr-ceja'], T.salida(0.6), { d: 0.5 });
+            tl.set({}, {}, T.duracion);
+            window.__timelines['qr'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

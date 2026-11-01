@@ -1,0 +1,241 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"id\":\"avisos\",\"composicion\":\"compositions/avisos.html\",\"compId\":\"avisos\",\"inicio\":265,\"duracion\":17,\"fin\":282,\"conVoz\":true,\"inicioAbs\":265,\"idioma\":\"es\",\"compas0\":1,\"golpes\":[1,3,5,9,11.5,13,16.5],\"frases\":[{\"id\":\"voz-avisos-1\",\"clave\":\"avisos\",\"texto\":\"Todo esto le llega con avisos en su celular.\",\"inicio\":0.5,\"fin\":2.932,\"inicioAbs\":265.5,\"finAbs\":267.932,\"palabras\":[{\"texto\":\"Todo\",\"inicio\":0.53,\"fin\":0.817},{\"texto\":\"esto\",\"inicio\":0.817,\"fin\":1.104},{\"texto\":\"le\",\"inicio\":1.104,\"fin\":1.269},{\"texto\":\"llega\",\"inicio\":1.269,\"fin\":1.556},{\"texto\":\"con\",\"inicio\":1.556,\"fin\":1.721},{\"texto\":\"avisos\",\"inicio\":1.721,\"fin\":2.131,\"clave\":true},{\"texto\":\"en\",\"inicio\":2.131,\"fin\":2.296},{\"texto\":\"su\",\"inicio\":2.296,\"fin\":2.461},{\"texto\":\"celular.\",\"inicio\":2.461,\"fin\":2.87}]},{\"id\":\"voz-avisos-2\",\"clave\":\"lista\",\"texto\":\"El recordatorio de su plan, su boleta, su clase, el líder que la acompañará.\",\"inicio\":3.432,\"fin\":7.507,\"inicioAbs\":268.432,\"finAbs\":272.507,\"palabras\":[{\"texto\":\"El\",\"inicio\":3.462,\"fin\":3.636},{\"texto\":\"recordatorio\",\"inicio\":3.636,\"fin\":4.325},{\"texto\":\"de\",\"inicio\":4.325,\"fin\":4.499},{\"texto\":\"su\",\"inicio\":4.499,\"fin\":4.673},{\"texto\":\"plan,\",\"inicio\":4.673,\"fin\":4.847},{\"texto\":\"su\",\"inicio\":4.847,\"fin\":5.021},{\"texto\":\"boleta,\",\"inicio\":5.021,\"fin\":5.452},{\"texto\":\"su\",\"inicio\":5.452,\"fin\":5.626},{\"texto\":\"clase,\",\"inicio\":5.626,\"fin\":5.929},{\"texto\":\"el\",\"inicio\":5.929,\"fin\":6.102},{\"texto\":\"líder\",\"inicio\":6.102,\"fin\":6.405},{\"texto\":\"que\",\"inicio\":6.405,\"fin\":6.579},{\"texto\":\"la\",\"inicio\":6.579,\"fin\":6.753},{\"texto\":\"acompañará.\",\"inicio\":6.753,\"fin\":7.442}]},{\"id\":\"voz-avisos-3\",\"clave\":\"campana\",\"texto\":\"Todo queda guardado en la campana.\",\"inicio\":8.007,\"fin\":9.863,\"inicioAbs\":273.007,\"finAbs\":274.863,\"palabras\":[{\"texto\":\"Todo\",\"inicio\":8.037,\"fin\":8.332},{\"texto\":\"queda\",\"inicio\":8.332,\"fin\":8.627},{\"texto\":\"guardado\",\"inicio\":8.627,\"fin\":9.048},{\"texto\":\"en\",\"inicio\":9.048,\"fin\":9.217},{\"texto\":\"la\",\"inicio\":9.217,\"fin\":9.386},{\"texto\":\"campana.\",\"inicio\":9.386,\"fin\":9.807,\"clave\":true}]},{\"id\":\"voz-avisos-4\",\"clave\":\"silencio\",\"texto\":\"Ella elige qué recibir, y tiene un horario silencioso para descansar.\",\"inicio\":10.363,\"fin\":14.203,\"inicioAbs\":275.363,\"finAbs\":279.203,\"palabras\":[{\"texto\":\"Ella\",\"inicio\":10.393,\"fin\":10.664},{\"texto\":\"elige\",\"inicio\":10.664,\"fin\":11.051},{\"texto\":\"qué\",\"inicio\":11.051,\"fin\":11.206},{\"texto\":\"recibir,\",\"inicio\":11.206,\"fin\":11.593},{\"texto\":\"y\",\"inicio\":11.853,\"fin\":12.021},{\"texto\":\"tiene\",\"inicio\":12.021,\"fin\":12.314},{\"texto\":\"un\",\"inicio\":12.314,\"fin\":12.483},{\"texto\":\"horario\",\"inicio\":12.483,\"fin\":12.9},{\"texto\":\"silencioso\",\"inicio\":12.9,\"fin\":13.442,\"clave\":true},{\"texto\":\"para\",\"inicio\":13.442,\"fin\":13.735},{\"texto\":\"descansar.\",\"inicio\":13.735,\"fin\":14.153}]}]}"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- «La experiencia del nuevo» · escena «avisos» (storyboard en SPEC.md). Motion design sin la app (Tipo Recurso, frame.md): texto que sigue
+         la voz y un diagrama abstracto; todos los tiempos salen de KRecurso.tiempos() (identidad/recurso.js), en los pulsos y compases. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .col { position: absolute; left: 192px; top: 210px; width: 860px; height: 660px; }
+        .bloque { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+        .ceja-e { position: absolute; left: 192px; top: 132px; }
+        .dia { position: absolute; left: 1080px; top: 140px; width: 648px; height: 800px; }
+        .svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+        .ancla { position: absolute; width: 0; height: 0; }
+        .centro { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; }
+        .chip { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 28px; border-radius: 32px; background: rgba(12, 26, 58, 0.92);
+          box-shadow: inset 0 0 0 1px rgba(234, 240, 255, 0.18); font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1; color: var(--k-noche-tinta); }
+        .chip.oro { box-shadow: inset 0 0 0 2px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+        .chip.azul { box-shadow: inset 0 0 0 2px var(--k-azul); }
+        .chip .k-recurso-icono { --k-icono-tam: 34px; }
+        .rot { font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--k-noche-tinta-2); }
+        .rot.oro { color: var(--k-noche-dorado); }
+        /* Íconos como máscara con el estilo en el documento (no en kit.css): la url() de --k-icono se resuelve contra la página, igual que en la tarjeta de capítulo del kit. */
+        .ico { display: inline-block; flex: none; width: var(--k-icono-tam, 56px); height: var(--k-icono-tam, 56px); background: currentColor;
+          -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .ico-oro { color: var(--k-noche-dorado); }
+        .avi-pila { position: absolute; left: 0; top: 0; }
+        .avi-hora { font-family: var(--k-fuente); font-size: 30px; font-weight: 600; color: var(--k-noche-tinta-2); }
+        .avi-punto { position: absolute; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; background: var(--k-noche-dorado); box-shadow: 0 0 0 4px var(--k-noche); }
+      </style>
+
+      <div id="root" data-composition-id="avisos" data-width="1920" data-height="1080" data-duration="17">
+        <div class="k-recurso-ceja ceja-e" id="avi-ceja">Mi iglesia · Avisos</div>
+        <div class="col" id="avi-col"></div>
+        <div class="dia" id="avi-dia" data-layout-allow-overflow data-layout-allow-overlap>
+          <svg class="svg" id="avi-svg" viewBox="0 0 648 800"></svg>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window); // al empezar el script: «window» es el de esta escena
+          // ── H: piezas comunes de las escenas de este recurso (texto cinético con la voz, anclas, nodos, puntos, líneas, entradas) ──
+          const H = (() => {
+            const NS = 'http://www.w3.org/2000/svg';
+            const r3 = (n) => Math.round(n * 1000) / 1000;
+            // «texto con *énfasis*» → [{ texto, clave }]
+            const partir = (s) => {
+              const out = [];
+              let on = false;
+              for (const w of String(s).split(/\s+/)) {
+                if (!w) continue;
+                let t = '', c = false;
+                for (const ch of w) {
+                  if (ch === '*') { on = !on; continue; }
+                  t += ch;
+                  if (on) c = true;
+                }
+                out.push({ texto: t, clave: c });
+              }
+              return out;
+            };
+            const el = (tag, cls, padre, id, css) => {
+              const d = document.createElement(tag);
+              if (cls) d.className = cls;
+              if (id) d.id = id;
+              if (css) Object.assign(d.style, css);
+              padre.appendChild(d);
+              return d;
+            };
+            const icono = (n, tam, oro) =>
+              `<span class="ico${oro ? ' ico-oro' : ''}" style="--k-icono:url(identidad/iconos/${n}.svg);--k-icono-tam:${tam || 56}px"></span>`;
+            // Un ancla es un punto (0×0) en x, y: se anima el ancla (escala desde su centro) y su contenido queda centrado encima.
+            const ancla = (padre, id, x, y, html, cls) => {
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const c = el('div', `centro ${cls || ''}`, a);
+              c.innerHTML = html;
+              return a;
+            };
+            const chip = (padre, id, x, y, html, cls) => ancla(padre, id, x, y, html, `chip ${cls || ''}`);
+            const nodo = (padre, id, x, y, ic, oro, tam) => {
+              const t = tam || 120;
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const n = el('div', `k-recurso-nodo${oro ? ' k-oro' : ''}`, a, `${id}-n`, { left: '0px', top: '0px', width: `${t}px`, height: `${t}px`, margin: `-${t / 2}px 0 0 -${t / 2}px` });
+              n.innerHTML = icono(ic, Math.round(t * 0.46));
+              return a;
+            };
+            const punto = (padre, id, x, y, cls, tam) => {
+              const d = el('span', `k-recurso-punto ${cls || ''}`, padre, id, { left: `${x}px`, top: `${y}px` });
+              if (tam) Object.assign(d.style, { width: `${tam}px`, height: `${tam}px`, margin: `-${tam / 2}px 0 0 -${tam / 2}px` });
+              return d;
+            };
+            const linea = (svg, id, x1, y1, x2, y2, oro) => {
+              const l = document.createElementNS(NS, 'line');
+              l.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''}`);
+              l.setAttribute('id', id);
+              [['x1', x1], ['y1', y1], ['x2', x2], ['y2', y2]].forEach(([k, v]) => l.setAttribute(k, v));
+              const L = Math.hypot(x2 - x1, y2 - y1) + 2;
+              l.style.strokeDasharray = `${L} ${L + 40}`;
+              l.style.strokeDashoffset = `${L + 14}`;
+              svg.appendChild(l);
+              return l;
+            };
+            const camino = (svg, id, d, oro, cls) => {
+              const p = document.createElementNS(NS, 'path');
+              p.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''} ${cls || ''}`);
+              p.setAttribute('id', id);
+              p.setAttribute('d', d);
+              svg.appendChild(p);
+              const L = p.getTotalLength() + 2;
+              p.style.strokeDasharray = `${L} ${L + 40}`;
+              p.style.strokeDashoffset = `${L + 14}`;
+              return { p, L, punto: (u) => p.getPointAtLength(Math.max(0, Math.min(1, u)) * (L - 2)) };
+            };
+            const dibujar = (tl, l, t, d) => tl.to(l, { strokeDashoffset: 0, duration: d || 0.6, ease: 'power2.inOut' }, t);
+            // Entradas y salidas del frame: subir con desenfoque (power3.out) · escalas pequeñas con back.out · salir subiendo (power2.in).
+            const entra = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, y: (o && o.dy) ?? 30, filter: 'blur(6px)' },
+              { opacity: 1, y: 0, filter: 'blur(0px)', duration: (o && o.d) || 0.5, ease: 'power3.out', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const pop = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, scale: 0 },
+              { opacity: 1, scale: 1, duration: (o && o.d) || 0.45, ease: 'back.out(2)', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const sale = (tl, s, t, o) => tl.to(s, { opacity: 0, y: (o && o.dy) ?? -24, filter: 'blur(6px)', duration: (o && o.d) || 0.35, ease: 'power2.in', stagger: (o && o.stagger) || 0 }, t);
+            const late = (tl, s, t, o) => tl.fromTo(s, { scale: (o && o.de) || 1.12 }, { scale: 1, duration: (o && o.d) || 0.45, ease: 'power2.out', immediateRender: false }, t);
+            const halo = (tl, s, t) => tl.fromTo(s, { scale: 0.5, opacity: 0.9 }, { scale: 1.9, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+            // La palabra clave n de una frase (o la palabra que empieza con re).
+            const clave = (f, n) => (f.palabras.filter((p) => p.clave)[n || 0] || f.palabras[0] || { inicio: f.inicio, fin: f.fin });
+            const palabra = (f, re) => f.palabras.find((p) => re.test(p.texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^[^a-z0-9]+/, ''))) || { inicio: f.inicio, fin: f.fin };
+            // Texto cinético: un bloque por frase en «cont». textos[i]: undefined = la frase tal cual (sus palabras con sus tiempos);
+            // una cadena = un rótulo corto cuyas palabras entran repartidas sobre las de la frase; null = sin texto (sigue el anterior).
+            const bloques = (T, cont, pref, textos, clase) => {
+              textos = textos || [];
+              return T.frases.map((f, i) => {
+                const tx = textos[i];
+                if (tx === null) return null;
+                const b = el('div', 'bloque', cont, `${pref}-b-${i}`);
+                const fr = el('div', clase || 'k-recurso-frase', b, `${pref}-f-${i}`);
+                let ps;
+                if (tx === undefined) {
+                  ps = f.palabras.length ? f.palabras.map((p) => ({ texto: p.texto, clave: !!p.clave, inicio: p.inicio }))
+                    : partir(f.texto).map((p, j, a) => ({ ...p, inicio: f.inicio + (j * (f.fin - f.inicio)) / a.length }));
+                } else {
+                  const ws = partir(tx);
+                  const np = f.palabras.length;
+                  ps = ws.map((w, j) => ({ ...w, inicio: np ? f.palabras[Math.min(np - 1, Math.floor((j * np) / ws.length))].inicio : f.inicio + (j * (f.fin - f.inicio)) / ws.length }));
+                }
+                const spans = ps.map((p, j) => {
+                  const s = el('span', `k-recurso-palabra${p.clave ? ' k-recurso-clave' : ''}`, fr, `${pref}-p-${i}-${j}`);
+                  s.textContent = p.texto;
+                  return { s, inicio: p.inicio };
+                });
+                return { i, b, fr, spans };
+              });
+            };
+            const animarBloques = (tl, T, bs, finUltimo) => {
+              const vis = bs.filter(Boolean);
+              vis.forEach((x, k) => {
+                x.spans.forEach(({ s, inicio }) => tl.fromTo(s, { y: 28, opacity: 0, filter: 'blur(6px)' },
+                  { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, Math.max(0, inicio - 0.08)));
+                const sig = vis[k + 1];
+                const t = sig ? T.frases[sig.i].inicio - 0.32 : (finUltimo ?? T.salida(0.6));
+                tl.to(x.fr, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+              });
+            };
+            // Semilla fija para posiciones «al azar» (siempre las mismas).
+            const azar = (s) => () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+            return { r3, partir, el, icono, ancla, chip, nodo, punto, linea, camino, dibujar, entra, pop, sale, late, halo, clave, palabra, bloques, animarBloques, azar };
+          })();
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const [f0, f1, f2, f3] = T.frases;
+            const dia = document.getElementById('avi-dia');
+            const svg = document.getElementById('avi-svg');
+            const bs = H.bloques(T, document.getElementById('avi-col'), 'avi', [undefined, 'Su plan, su boleta, su clase, su líder', undefined, 'Ella elige, y *descansa*']);
+            H.animarBloques(tl, T, bs);
+            H.entra(tl, '#avi-ceja', 0.1, { dy: 16 });
+            
+            // f0 · la campana de sus avisos.
+            const campana = H.nodo(dia, 'avi-campana', 324, 150, 'notifications', true, 150);
+            const t0 = T.pulso(f0.inicio);
+            H.pop(tl, campana, t0, { d: 0.55 });
+            const tAv = T.pulso(H.clave(f0).inicio - 0.2);
+            [0, 1].forEach((k) => tl.fromTo('#avi-campana-n', { rotation: 0 }, { keyframes: [{ rotation: 12, duration: 0.12 }, { rotation: -10, duration: 0.14 }, { rotation: 0, duration: 0.14 }], immediateRender: false }, tAv + k * 0.5));
+            
+            // f1 · llegan sus avisos, uno en cada palabra, y se apilan.
+            const avisos = [['menu_book', 'El paso de hoy de su plan', /^plan/], ['confirmation_number', 'Su boleta está lista', /^boleta/],
+              ['school', 'Su clase empieza', /^clase/], ['handshake', 'Ana te acompañará', /^lider/]];
+            const pilas = avisos.map(([ic, tx, re], i) => ({ a: H.chip(dia, `avi-a-${i}`, 324, 300 + i * 100, `${H.icono(ic, 34, true)}${tx}`), re }));
+            pilas.forEach(({ a, re }) => {
+              const t = T.pulso(H.palabra(f1, re).inicio - 0.3);
+              tl.fromTo(a, { x: 380, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, t);
+              H.late(tl, '#avi-campana', t + 0.3, { de: 1.1 });
+            });
+            
+            // f2 · todo queda guardado en la campana: los avisos suben y entran en ella.
+            const tCam = T.pulso(H.clave(f2).inicio - 0.5);
+            pilas.forEach(({ a }, i) => tl.to(a, { y: 150 - (300 + i * 100), scale: 0.2, opacity: 0, duration: 0.6, ease: 'power2.in' }, tCam + i * 0.12));
+            const punto = H.el('span', 'avi-punto', dia, 'avi-punto', { left: '376px', top: '100px' });
+            H.pop(tl, punto, tCam + 0.8);
+            H.late(tl, campana, tCam + 0.8, { de: 1.2 });
+            
+            // f3 · elige qué recibir (unos se encienden, otro no) y un horario silencioso para descansar.
+            const t3 = T.pulso(f3.inicio - 0.3);
+            const prefs = [['Planes', 120, true], ['Eventos', 324, true], ['Resúmenes', 528, false]].map(([tx, x, on], i) => ({ a: H.chip(dia, `avi-p-${i}`, x, 320, tx), on, i }));
+            H.entra(tl, prefs.map((p) => p.a), t3, { stagger: 0.12, dy: 16 });
+            const tEl = T.pulso(H.palabra(f3, /^elige/).inicio);
+            prefs.forEach((p) => tl.to(`#avi-p-${p.i} .centro`, p.on ? { boxShadow: 'inset 0 0 0 2px #e8b95a', color: '#e8b95a', duration: 0.25 } : { opacity: 0.4, duration: 0.25 }, tEl + p.i * 0.25));
+            // El reloj del día: el arco de la noche (22:00 a 6:00) es el horario silencioso.
+            const C = { x: 324, y: 560 }, R = 150;
+            const ang = (h) => (h / 24) * Math.PI * 2 - Math.PI / 2;
+            const pt = (h) => [C.x + Math.cos(ang(h)) * R, C.y + Math.sin(ang(h)) * R];
+            const reloj = H.camino(svg, 'avi-reloj', `M${C.x} ${C.y - R} A ${R} ${R} 0 1 1 ${C.x - 0.01} ${C.y - R}`);
+            const [ax, ay] = pt(22), [bx, by] = pt(6);
+            const arco = H.camino(svg, 'avi-arco', `M${ax} ${ay} A ${R} ${R} 0 0 1 ${bx} ${by}`, true);
+            arco.p.style.strokeWidth = '14';
+            const zz = H.ancla(dia, 'avi-zz', C.x, C.y, H.icono('schedule', 72, true));
+            const h22 = H.ancla(dia, 'avi-22', ax - 70, ay - 10, '22:00', 'avi-hora');
+            const h6 = H.ancla(dia, 'avi-6', bx + 60, by + 10, '6:00', 'avi-hora');
+            const tSil = T.pulso(H.clave(f3).inicio - 0.6);
+            H.dibujar(tl, reloj.p, tSil - 0.2, 0.6);
+            H.pop(tl, zz, tSil);
+            H.dibujar(tl, arco.p, tSil + 0.3, 0.8);
+            H.entra(tl, [h22, h6], tSil + 0.5, { stagger: 0.2, dy: 10 });
+            
+            H.sale(tl, ['#avi-dia', '#avi-ceja'], T.salida(0.6), { d: 0.5 });
+            tl.set({}, {}, T.duracion);
+            window.__timelines['avisos'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

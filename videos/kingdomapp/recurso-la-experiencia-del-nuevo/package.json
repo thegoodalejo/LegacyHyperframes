@@ -1,0 +1,13 @@
+{
+  "name": "kingdomapp-recurso-la-experiencia-del-nuevo",
+  "private": true,
+  "type": "module",
+  "description": "Recurso 3 de la serie «Recursos» de Kingdom (decisión 239): «La experiencia del nuevo». Lo que vive una persona nueva con Mi iglesia (QR de bienvenida, primeros pasos, novedades, comunidades, objetivos, eventos con boleta, cursos, Quiero servir, testimonio, documentos, ficha y avisos) y cómo la iglesia la acompaña (ruta de crecimiento, Mi seguimiento, semáforo de actividad, tablero del Portal). Motion design sin la app.",
+  "scripts": {
+    "preparar:es": "node ../_herramientas/recurso.mjs preparar --idioma es",
+    "dev": "npx --yes hyperframes@0.8.221 preview",
+    "check": "npx --yes hyperframes@0.8.221 check",
+    "render:es": "node ../_herramientas/recurso.mjs render --idioma es",
+    "entregar:es": "node ../_herramientas/recurso.mjs entregar --idioma es"
+  }
+}

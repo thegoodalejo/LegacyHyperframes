@@ -1,0 +1,278 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"id\":\"inicio\",\"composicion\":\"compositions/inicio.html\",\"compId\":\"inicio\",\"inicio\":96,\"duracion\":27.5,\"fin\":123.5,\"conVoz\":true,\"inicioAbs\":96,\"idioma\":\"es\",\"compas0\":0,\"golpes\":[2,3.95,4,6,18,19.95,20,20.5,21.95,22,24,26],\"frases\":[{\"id\":\"voz-inicio-1\",\"clave\":\"mi\",\"texto\":\"Desde ese día tiene Mi iglesia en su celular, con el logo y los colores de tu iglesia.\",\"inicio\":0.5,\"fin\":5.065,\"inicioAbs\":96.5,\"finAbs\":101.065,\"palabras\":[{\"texto\":\"Desde\",\"inicio\":0.53,\"fin\":0.801},{\"texto\":\"ese\",\"inicio\":0.801,\"fin\":1.072},{\"texto\":\"día\",\"inicio\":1.072,\"fin\":1.228},{\"texto\":\"tiene\",\"inicio\":1.228,\"fin\":1.499},{\"texto\":\"Mi\",\"inicio\":1.499,\"fin\":1.655,\"clave\":true},{\"texto\":\"iglesia\",\"inicio\":1.655,\"fin\":2.042,\"clave\":true},{\"texto\":\"en\",\"inicio\":2.042,\"fin\":2.198},{\"texto\":\"su\",\"inicio\":2.198,\"fin\":2.353},{\"texto\":\"celular,\",\"inicio\":2.353,\"fin\":2.74},{\"texto\":\"con\",\"inicio\":3.03,\"fin\":3.187},{\"texto\":\"el\",\"inicio\":3.187,\"fin\":3.345},{\"texto\":\"logo\",\"inicio\":3.345,\"fin\":3.619},{\"texto\":\"y\",\"inicio\":3.619,\"fin\":3.776},{\"texto\":\"los\",\"inicio\":3.776,\"fin\":3.934},{\"texto\":\"colores\",\"inicio\":3.934,\"fin\":4.324},{\"texto\":\"de\",\"inicio\":4.324,\"fin\":4.482},{\"texto\":\"tu\",\"inicio\":4.482,\"fin\":4.639},{\"texto\":\"iglesia.\",\"inicio\":4.639,\"fin\":5.03}]},{\"id\":\"voz-inicio-2\",\"clave\":\"novedades\",\"texto\":\"En su inicio ve lo destacado y las novedades, como en una red social.\",\"inicio\":5.665,\"fin\":9.27,\"inicioAbs\":101.665,\"finAbs\":105.27,\"palabras\":[{\"texto\":\"En\",\"inicio\":5.695,\"fin\":5.853},{\"texto\":\"su\",\"inicio\":5.853,\"fin\":6.012},{\"texto\":\"inicio\",\"inicio\":6.012,\"fin\":6.405},{\"texto\":\"ve\",\"inicio\":6.405,\"fin\":6.564},{\"texto\":\"lo\",\"inicio\":6.564,\"fin\":6.722},{\"texto\":\"destacado\",\"inicio\":6.722,\"fin\":7.233},{\"texto\":\"y\",\"inicio\":7.233,\"fin\":7.391},{\"texto\":\"las\",\"inicio\":7.391,\"fin\":7.55},{\"texto\":\"novedades,\",\"inicio\":7.55,\"fin\":8.06,\"clave\":true},{\"texto\":\"como\",\"inicio\":8.06,\"fin\":8.336},{\"texto\":\"en\",\"inicio\":8.336,\"fin\":8.495},{\"texto\":\"una\",\"inicio\":8.495,\"fin\":8.771},{\"texto\":\"red\",\"inicio\":8.771,\"fin\":8.929},{\"texto\":\"social.\",\"inicio\":8.929,\"fin\":9.205}]},{\"id\":\"voz-inicio-3\",\"clave\":\"reacciona\",\"texto\":\"Fotos, videos, la tarjeta de un evento o de un curso. Y reacciona: «Amén», «Me edifica».\",\"inicio\":9.77,\"fin\":14.506,\"inicioAbs\":105.77,\"finAbs\":110.506,\"palabras\":[{\"texto\":\"Fotos,\",\"inicio\":9.8,\"fin\":10.116},{\"texto\":\"videos,\",\"inicio\":10.116,\"fin\":10.432},{\"texto\":\"la\",\"inicio\":10.432,\"fin\":10.613},{\"texto\":\"tarjeta\",\"inicio\":10.613,\"fin\":11.063},{\"texto\":\"de\",\"inicio\":11.063,\"fin\":11.245},{\"texto\":\"un\",\"inicio\":11.245,\"fin\":11.426},{\"texto\":\"evento\",\"inicio\":11.426,\"fin\":11.876},{\"texto\":\"o\",\"inicio\":11.876,\"fin\":12.058},{\"texto\":\"de\",\"inicio\":12.058,\"fin\":12.239},{\"texto\":\"un\",\"inicio\":12.239,\"fin\":12.421},{\"texto\":\"curso.\",\"inicio\":12.421,\"fin\":12.736},{\"texto\":\"Y\",\"inicio\":12.736,\"fin\":12.918},{\"texto\":\"reacciona:\",\"inicio\":12.918,\"fin\":13.368},{\"texto\":\"«Amén»,\",\"inicio\":13.368,\"fin\":13.684},{\"texto\":\"«Me\",\"inicio\":13.684,\"fin\":13.865},{\"texto\":\"edifica».\",\"inicio\":13.865,\"fin\":14.45}]},{\"id\":\"voz-inicio-4\",\"clave\":\"calendario\",\"texto\":\"Ve los próximos eventos en el calendario del mes.\",\"inicio\":15.106,\"fin\":17.773,\"inicioAbs\":111.106,\"finAbs\":113.773,\"palabras\":[{\"texto\":\"Ve\",\"inicio\":15.136,\"fin\":15.319},{\"texto\":\"los\",\"inicio\":15.319,\"fin\":15.501},{\"texto\":\"próximos\",\"inicio\":15.501,\"fin\":15.954},{\"texto\":\"eventos\",\"inicio\":15.954,\"fin\":16.407},{\"texto\":\"en\",\"inicio\":16.407,\"fin\":16.59},{\"texto\":\"el\",\"inicio\":16.59,\"fin\":16.773},{\"texto\":\"calendario\",\"inicio\":16.773,\"fin\":17.361,\"clave\":true},{\"texto\":\"del\",\"inicio\":17.361,\"fin\":17.543},{\"texto\":\"mes.\",\"inicio\":17.543,\"fin\":17.726}]},{\"id\":\"voz-inicio-5\",\"clave\":\"comunicados\",\"texto\":\"Le llegan los comunicados de su iglesia: ahora, a una hora programada o de forma repetida.\",\"inicio\":18.273,\"fin\":23.116,\"inicioAbs\":114.273,\"finAbs\":119.116,\"palabras\":[{\"texto\":\"Le\",\"inicio\":18.303,\"fin\":18.466},{\"texto\":\"llegan\",\"inicio\":18.466,\"fin\":18.749},{\"texto\":\"los\",\"inicio\":18.749,\"fin\":18.911},{\"texto\":\"comunicados\",\"inicio\":18.911,\"fin\":19.556,\"clave\":true},{\"texto\":\"de\",\"inicio\":19.556,\"fin\":19.718},{\"texto\":\"su\",\"inicio\":19.718,\"fin\":19.881},{\"texto\":\"iglesia:\",\"inicio\":19.881,\"fin\":20.284},{\"texto\":\"ahora,\",\"inicio\":20.284,\"fin\":20.688},{\"texto\":\"a\",\"inicio\":20.688,\"fin\":20.851},{\"texto\":\"una\",\"inicio\":20.851,\"fin\":21.134},{\"texto\":\"hora\",\"inicio\":21.134,\"fin\":21.417},{\"texto\":\"programada\",\"inicio\":21.417,\"fin\":21.941},{\"texto\":\"o\",\"inicio\":21.941,\"fin\":22.103},{\"texto\":\"de\",\"inicio\":22.103,\"fin\":22.266},{\"texto\":\"forma\",\"inicio\":22.266,\"fin\":22.549},{\"texto\":\"repetida.\",\"inicio\":22.549,\"fin\":23.073}]},{\"id\":\"voz-inicio-6\",\"clave\":\"senal\",\"texto\":\"Y lo último que vio lo puede leer aun sin señal.\",\"inicio\":23.716,\"fin\":26.361,\"inicioAbs\":119.716,\"finAbs\":122.361,\"palabras\":[{\"texto\":\"Y\",\"inicio\":23.766,\"fin\":23.946},{\"texto\":\"lo\",\"inicio\":23.946,\"fin\":24.127},{\"texto\":\"último\",\"inicio\":24.127,\"fin\":24.575},{\"texto\":\"que\",\"inicio\":24.575,\"fin\":24.755},{\"texto\":\"vio\",\"inicio\":24.755,\"fin\":24.936},{\"texto\":\"lo\",\"inicio\":24.936,\"fin\":25.116},{\"texto\":\"puede\",\"inicio\":25.116,\"fin\":25.43},{\"texto\":\"leer\",\"inicio\":25.43,\"fin\":25.611},{\"texto\":\"aun\",\"inicio\":25.611,\"fin\":25.791},{\"texto\":\"sin\",\"inicio\":25.791,\"fin\":25.972},{\"texto\":\"señal.\",\"inicio\":25.972,\"fin\":26.286}]}]}"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- «La experiencia del nuevo» · escena «inicio» (storyboard en SPEC.md). Motion design sin la app (Tipo Recurso, frame.md): texto que sigue
+         la voz y un diagrama abstracto; todos los tiempos salen de KRecurso.tiempos() (identidad/recurso.js), en los pulsos y compases. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .col { position: absolute; left: 192px; top: 210px; width: 860px; height: 660px; }
+        .bloque { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+        .ceja-e { position: absolute; left: 192px; top: 132px; }
+        .dia { position: absolute; left: 1080px; top: 140px; width: 648px; height: 800px; }
+        .svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+        .ancla { position: absolute; width: 0; height: 0; }
+        .centro { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; }
+        .chip { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 28px; border-radius: 32px; background: rgba(12, 26, 58, 0.92);
+          box-shadow: inset 0 0 0 1px rgba(234, 240, 255, 0.18); font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1; color: var(--k-noche-tinta); }
+        .chip.oro { box-shadow: inset 0 0 0 2px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+        .chip.azul { box-shadow: inset 0 0 0 2px var(--k-azul); }
+        .chip .k-recurso-icono { --k-icono-tam: 34px; }
+        .rot { font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--k-noche-tinta-2); }
+        .rot.oro { color: var(--k-noche-dorado); }
+        /* Íconos como máscara con el estilo en el documento (no en kit.css): la url() de --k-icono se resuelve contra la página, igual que en la tarjeta de capítulo del kit. */
+        .ico { display: inline-block; flex: none; width: var(--k-icono-tam, 56px); height: var(--k-icono-tam, 56px); background: currentColor;
+          -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .ico-oro { color: var(--k-noche-dorado); }
+        .inicio-color { position: absolute; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%; }
+        .inicio-feed { position: absolute; left: 44px; top: 150px; width: 560px; height: 610px; overflow: hidden;
+          -webkit-mask-image: linear-gradient(transparent 0, #000 70px, #000 540px, transparent 610px); mask-image: linear-gradient(transparent 0, #000 70px, #000 540px, transparent 610px); }
+        .inicio-carril { position: absolute; left: 0; top: 0; width: 560px; }
+        .inicio-tarjeta { position: absolute; left: 0; width: 560px; height: 128px; display: flex; align-items: center; gap: 26px; padding: 0 34px; }
+        .inicio-tarjeta .k-recurso-etiqueta { color: var(--k-noche-tinta); }
+        .inicio-dia { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+          background: rgba(12, 26, 58, 0.9); box-shadow: inset 0 0 0 1px rgba(234, 240, 255, 0.14); font-family: var(--k-fuente); font-size: 28px; font-weight: 600; color: var(--k-noche-tinta-2); }
+        .inicio-dia.ev { box-shadow: inset 0 0 0 2px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+      </style>
+
+      <div id="root" data-composition-id="inicio" data-width="1920" data-height="1080" data-duration="27.5">
+        <div class="k-recurso-ceja ceja-e" id="inicio-ceja">Mi iglesia · Inicio</div>
+        <div class="col" id="inicio-col"></div>
+        <div class="dia" id="inicio-dia" data-layout-allow-overflow data-layout-allow-overlap>
+          <svg class="svg" id="inicio-svg" viewBox="0 0 648 800"></svg>
+          <div class="inicio-feed" id="inicio-feed"><div class="inicio-carril" id="inicio-carril"></div></div>
+          <div id="inicio-cal"></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window); // al empezar el script: «window» es el de esta escena
+          // ── H: piezas comunes de las escenas de este recurso (texto cinético con la voz, anclas, nodos, puntos, líneas, entradas) ──
+          const H = (() => {
+            const NS = 'http://www.w3.org/2000/svg';
+            const r3 = (n) => Math.round(n * 1000) / 1000;
+            // «texto con *énfasis*» → [{ texto, clave }]
+            const partir = (s) => {
+              const out = [];
+              let on = false;
+              for (const w of String(s).split(/\s+/)) {
+                if (!w) continue;
+                let t = '', c = false;
+                for (const ch of w) {
+                  if (ch === '*') { on = !on; continue; }
+                  t += ch;
+                  if (on) c = true;
+                }
+                out.push({ texto: t, clave: c });
+              }
+              return out;
+            };
+            const el = (tag, cls, padre, id, css) => {
+              const d = document.createElement(tag);
+              if (cls) d.className = cls;
+              if (id) d.id = id;
+              if (css) Object.assign(d.style, css);
+              padre.appendChild(d);
+              return d;
+            };
+            const icono = (n, tam, oro) =>
+              `<span class="ico${oro ? ' ico-oro' : ''}" style="--k-icono:url(identidad/iconos/${n}.svg);--k-icono-tam:${tam || 56}px"></span>`;
+            // Un ancla es un punto (0×0) en x, y: se anima el ancla (escala desde su centro) y su contenido queda centrado encima.
+            const ancla = (padre, id, x, y, html, cls) => {
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const c = el('div', `centro ${cls || ''}`, a);
+              c.innerHTML = html;
+              return a;
+            };
+            const chip = (padre, id, x, y, html, cls) => ancla(padre, id, x, y, html, `chip ${cls || ''}`);
+            const nodo = (padre, id, x, y, ic, oro, tam) => {
+              const t = tam || 120;
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const n = el('div', `k-recurso-nodo${oro ? ' k-oro' : ''}`, a, `${id}-n`, { left: '0px', top: '0px', width: `${t}px`, height: `${t}px`, margin: `-${t / 2}px 0 0 -${t / 2}px` });
+              n.innerHTML = icono(ic, Math.round(t * 0.46));
+              return a;
+            };
+            const punto = (padre, id, x, y, cls, tam) => {
+              const d = el('span', `k-recurso-punto ${cls || ''}`, padre, id, { left: `${x}px`, top: `${y}px` });
+              if (tam) Object.assign(d.style, { width: `${tam}px`, height: `${tam}px`, margin: `-${tam / 2}px 0 0 -${tam / 2}px` });
+              return d;
+            };
+            const linea = (svg, id, x1, y1, x2, y2, oro) => {
+              const l = document.createElementNS(NS, 'line');
+              l.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''}`);
+              l.setAttribute('id', id);
+              [['x1', x1], ['y1', y1], ['x2', x2], ['y2', y2]].forEach(([k, v]) => l.setAttribute(k, v));
+              const L = Math.hypot(x2 - x1, y2 - y1) + 2;
+              l.style.strokeDasharray = `${L} ${L + 40}`;
+              l.style.strokeDashoffset = `${L + 14}`;
+              svg.appendChild(l);
+              return l;
+            };
+            const camino = (svg, id, d, oro, cls) => {
+              const p = document.createElementNS(NS, 'path');
+              p.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''} ${cls || ''}`);
+              p.setAttribute('id', id);
+              p.setAttribute('d', d);
+              svg.appendChild(p);
+              const L = p.getTotalLength() + 2;
+              p.style.strokeDasharray = `${L} ${L + 40}`;
+              p.style.strokeDashoffset = `${L + 14}`;
+              return { p, L, punto: (u) => p.getPointAtLength(Math.max(0, Math.min(1, u)) * (L - 2)) };
+            };
+            const dibujar = (tl, l, t, d) => tl.to(l, { strokeDashoffset: 0, duration: d || 0.6, ease: 'power2.inOut' }, t);
+            // Entradas y salidas del frame: subir con desenfoque (power3.out) · escalas pequeñas con back.out · salir subiendo (power2.in).
+            const entra = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, y: (o && o.dy) ?? 30, filter: 'blur(6px)' },
+              { opacity: 1, y: 0, filter: 'blur(0px)', duration: (o && o.d) || 0.5, ease: 'power3.out', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const pop = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, scale: 0 },
+              { opacity: 1, scale: 1, duration: (o && o.d) || 0.45, ease: 'back.out(2)', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const sale = (tl, s, t, o) => tl.to(s, { opacity: 0, y: (o && o.dy) ?? -24, filter: 'blur(6px)', duration: (o && o.d) || 0.35, ease: 'power2.in', stagger: (o && o.stagger) || 0 }, t);
+            const late = (tl, s, t, o) => tl.fromTo(s, { scale: (o && o.de) || 1.12 }, { scale: 1, duration: (o && o.d) || 0.45, ease: 'power2.out', immediateRender: false }, t);
+            const halo = (tl, s, t) => tl.fromTo(s, { scale: 0.5, opacity: 0.9 }, { scale: 1.9, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+            // La palabra clave n de una frase (o la palabra que empieza con re).
+            const clave = (f, n) => (f.palabras.filter((p) => p.clave)[n || 0] || f.palabras[0] || { inicio: f.inicio, fin: f.fin });
+            const palabra = (f, re) => f.palabras.find((p) => re.test(p.texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^[^a-z0-9]+/, ''))) || { inicio: f.inicio, fin: f.fin };
+            // Texto cinético: un bloque por frase en «cont». textos[i]: undefined = la frase tal cual (sus palabras con sus tiempos);
+            // una cadena = un rótulo corto cuyas palabras entran repartidas sobre las de la frase; null = sin texto (sigue el anterior).
+            const bloques = (T, cont, pref, textos, clase) => {
+              textos = textos || [];
+              return T.frases.map((f, i) => {
+                const tx = textos[i];
+                if (tx === null) return null;
+                const b = el('div', 'bloque', cont, `${pref}-b-${i}`);
+                const fr = el('div', clase || 'k-recurso-frase', b, `${pref}-f-${i}`);
+                let ps;
+                if (tx === undefined) {
+                  ps = f.palabras.length ? f.palabras.map((p) => ({ texto: p.texto, clave: !!p.clave, inicio: p.inicio }))
+                    : partir(f.texto).map((p, j, a) => ({ ...p, inicio: f.inicio + (j * (f.fin - f.inicio)) / a.length }));
+                } else {
+                  const ws = partir(tx);
+                  const np = f.palabras.length;
+                  ps = ws.map((w, j) => ({ ...w, inicio: np ? f.palabras[Math.min(np - 1, Math.floor((j * np) / ws.length))].inicio : f.inicio + (j * (f.fin - f.inicio)) / ws.length }));
+                }
+                const spans = ps.map((p, j) => {
+                  const s = el('span', `k-recurso-palabra${p.clave ? ' k-recurso-clave' : ''}`, fr, `${pref}-p-${i}-${j}`);
+                  s.textContent = p.texto;
+                  return { s, inicio: p.inicio };
+                });
+                return { i, b, fr, spans };
+              });
+            };
+            const animarBloques = (tl, T, bs, finUltimo) => {
+              const vis = bs.filter(Boolean);
+              vis.forEach((x, k) => {
+                x.spans.forEach(({ s, inicio }) => tl.fromTo(s, { y: 28, opacity: 0, filter: 'blur(6px)' },
+                  { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, Math.max(0, inicio - 0.08)));
+                const sig = vis[k + 1];
+                const t = sig ? T.frases[sig.i].inicio - 0.32 : (finUltimo ?? T.salida(0.6));
+                tl.to(x.fr, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+              });
+            };
+            // Semilla fija para posiciones «al azar» (siempre las mismas).
+            const azar = (s) => () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+            return { r3, partir, el, icono, ancla, chip, nodo, punto, linea, camino, dibujar, entra, pop, sale, late, halo, clave, palabra, bloques, animarBloques, azar };
+          })();
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const [f0, f1, f2, f3, f4, f5] = T.frases;
+            const dia = document.getElementById('inicio-dia');
+            const svg = document.getElementById('inicio-svg');
+            const bs = H.bloques(T, document.getElementById('inicio-col'), 'inicio', ['*Mi iglesia*, en su celular', 'Lo destacado y las *novedades*',
+              'Y reacciona: «*Amén*», «*Me edifica*»', 'Los próximos eventos, en el *calendario*', 'Los *comunicados* de su iglesia', 'Y lo último que vio, aun *sin señal*']);
+            H.animarBloques(tl, T, bs);
+            H.entra(tl, '#inicio-ceja', 0.1, { dy: 16 });
+            
+            // A · f0: Mi iglesia, con el logo y los colores de tu iglesia.
+            const igl = H.nodo(dia, 'inicio-igl', 324, 230, 'church', true, 180);
+            const iglR = H.ancla(dia, 'inicio-igl-r', 324, 372, 'Mi iglesia', 'rot oro');
+            const colores = ['#3576da', '#e8b95a', '#26a69a'].map((c, i) => H.el('span', 'inicio-color', dia, `inicio-c-${i}`, { left: `${244 + i * 80}px`, top: '480px', background: c }));
+            const colR = H.ancla(dia, 'inicio-col-r', 324, 560, 'Tu logo y tus colores', 'rot');
+            const t0 = T.pulso(f0.inicio);
+            H.pop(tl, igl, t0, { d: 0.55 });
+            H.entra(tl, iglR, t0 + 0.3);
+            const tCol = T.pulso(H.palabra(f0, /^colores/).inicio - 0.6);
+            H.pop(tl, colores, tCol, { stagger: 0.12 });
+            H.entra(tl, colR, tCol + 0.4, { dy: 16 });
+            
+            // B · f1–f2: el feed sube sin parar (lo destacado, las novedades, un evento, un curso) y llegan las reacciones.
+            const t1 = T.pulso(f1.inicio - 0.3);
+            tl.to(igl, { y: -175, scale: 0.5, duration: 0.7, ease: 'power3.inOut' }, t1);
+            H.sale(tl, [iglR, ...colores, colR], t1, { stagger: 0.03 });
+            const carril = document.getElementById('inicio-carril');
+            const tarjetas = [['star', 'Destacado'], ['campaign', 'Novedades'], ['play_circle', 'Un video'], ['event', 'Un evento · Inscribirme'],
+              ['school', 'Un curso · Unirme'], ['favorite', 'Una foto del culto'], ['groups', 'Para los jóvenes']];
+            tarjetas.forEach(([ic, tx], i) => {
+              const c = H.el('div', 'k-recurso-tarjeta inicio-tarjeta', carril, `inicio-t-${i}`, { top: `${80 + i * 150}px` });
+              c.innerHTML = `${H.icono(ic, 52, i === 0)}<span class="k-recurso-etiqueta">${tx}</span>`;
+            });
+            H.entra(tl, '#inicio-feed', t1 + 0.3, { dy: 60, d: 0.7 });
+            tl.fromTo(carril, { y: 0 }, { y: -560, duration: Math.max(2, f2.fin - t1), ease: 'none' }, t1 + 0.3);
+            const reac = [['Amén', 'favorite', /^amen/], ['Me edifica', 'volunteer_activism', /^edifica/]].map(([tx, ic, re], i) => {
+              const a = H.chip(dia, `inicio-r-${i}`, 430 - i * 40, 600 + i * 84, `${H.icono(ic, 34, true)}${tx}`, 'oro');
+              const t = T.pulso(H.palabra(f2, re).inicio - 0.2);
+              H.pop(tl, a, t);
+              H.late(tl, a, t + 0.5, { de: 1.15 });
+              return a;
+            });
+            
+            // C · f3: el calendario del mes; los días con eventos se encienden en pulsos.
+            const t3 = T.pulso(f3.inicio - 0.3);
+            H.sale(tl, ['#inicio-feed', ...reac], t3, { stagger: 0.04 });
+            tl.to(igl, { opacity: 0, duration: 0.3 }, t3);
+            const cal = document.getElementById('inicio-cal');
+            const eventos = [3, 7, 10, 14, 17, 21, 24, 28];
+            const diasCal = Array.from({ length: 30 }, (_, k) => {
+              const f = Math.floor((k + 2) / 7), c = (k + 2) % 7;
+              return H.el('div', `inicio-dia${eventos.includes(k + 1) ? ' ev' : ''}`, cal, `inicio-d-${k}`, { left: `${84 + c * 80}px`, top: `${190 + f * 84}px` });
+            });
+            diasCal.forEach((d, k) => (d.textContent = String(k + 1)));
+            const calR = H.ancla(dia, 'inicio-cal-r', 324, 110, `${H.icono('calendar_month', 40, true)}`, '');
+            const tCal = T.pulso(H.clave(f3).inicio - 0.5);
+            H.pop(tl, calR, t3 + 0.3);
+            diasCal.forEach((d, k) => tl.fromTo(d, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, t3 + 0.3 + (Math.floor((k + 2) / 7) + ((k + 2) % 7)) * 0.06));
+            eventos.forEach((n, k) => H.late(tl, diasCal[n - 1], tCal + k * 0.25, { de: 1.3 }));
+            
+            // D · f4: los comunicados: ahora, a una hora programada o de forma repetida.
+            const t4 = T.pulso(f4.inicio - 0.3);
+            H.sale(tl, ['#inicio-cal', calR], t4, { stagger: 0.04 });
+            const com = H.nodo(dia, 'inicio-com', 324, 230, 'campaign', true, 160);
+            const modos = [['send', 'Ahora', 120, 520, /^ahora/], ['schedule', 'Programado', 324, 620, /^programada/], ['sync', 'Repetido', 528, 520, /^repetida/]];
+            const lineas = modos.map(([, , x, y], i) => H.linea(svg, `inicio-l-${i}`, 324, 310, x, y - 34));
+            H.pop(tl, com, t4 + 0.3);
+            modos.forEach(([ic, tx, x, y, re], i) => {
+              const a = H.chip(dia, `inicio-m-${i}`, x, y, `${H.icono(ic, 34)}${tx}`);
+              const t = T.pulso(H.palabra(f4, re).inicio - 0.3);
+              H.dibujar(tl, lineas[i], t - 0.2, 0.35);
+              H.pop(tl, a, t);
+            });
+            H.late(tl, com, T.pulso(H.clave(f4).inicio), { de: 1.12 });
+            
+            // E · f5: sin señal: lo último que vio sigue ahí.
+            const t5 = T.pulso(f5.inicio - 0.3);
+            tl.to(lineas, { opacity: 0, duration: 0.3 }, t5);
+            H.sale(tl, [com, '#inicio-m-0', '#inicio-m-1', '#inicio-m-2'], t5, { stagger: 0.04 });
+            const ult = H.ancla(dia, 'inicio-ult', 324, 320, `<div class="k-recurso-tarjeta inicio-tarjeta" style="position:relative">${H.icono('campaign', 52)}<span class="k-recurso-etiqueta">Lo último que vio</span></div>`);
+            const sin = H.chip(dia, 'inicio-sin', 324, 500, `${H.icono('wifi_off', 34, true)}Sin señal`, 'oro');
+            H.entra(tl, ult, t5 + 0.3);
+            H.pop(tl, sin, T.pulso(H.clave(f5).inicio - 0.2));
+            H.late(tl, ult, T.pulso(H.clave(f5).inicio) + 0.5, { de: 1.04 });
+            
+            H.sale(tl, ['#inicio-dia', '#inicio-ceja'], T.salida(0.6), { d: 0.5 });
+            tl.set({}, {}, T.duracion);
+            window.__timelines['inicio'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>
