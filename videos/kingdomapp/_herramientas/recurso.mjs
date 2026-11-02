@@ -328,7 +328,7 @@ const PARA = ['pastores', 'lideres', 'administradores', 'servidores'];
 // v1.3 (decisión 241): la sección de Recursos donde se publica y, en «Para líderes», el departamento. Listas cerradas: es el contrato con el
 // publicador de KingdomApp (tools/recursos/publicar.mjs); un valor nuevo se agrega aquí y allá a la vez.
 const SECCIONES = ['pastores', 'lideres'];
-const DEPARTAMENTOS = ['afirmacion'];
+const DEPARTAMENTOS = ['afirmacion', 'academia'];
 /** «para» (a quién va), «seccion» y «departamento» (listas cerradas) y «mensaje» (el texto de WhatsApp, con {enlace}) del guion, validados;
  *  todos son opcionales. */
 function extrasFicha(guion) {
