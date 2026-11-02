@@ -55,7 +55,7 @@ _(sin voz, 4 s)_
 - En Membresía, abre «*Coordinar*». En «Nuevos» están quienes todavía no tienen acompañante, con cómo y cuándo llegaron.
 - Toca «*Repartir*», y Kingdom los reparte parejo entre tu equipo, según el cupo de cada uno.
 - O toca «Asignar» para elegir tú quién acompaña a cada uno.
-- Cada acompañante recibe un aviso en su celular: «Alguien nuevo para *acompañar*».
+- Cada acompañante recibe un aviso en su celular: «Tienes a alguien nuevo para *acompañar*».
 - En «Quienes acompañan» ves la carga de cada uno y sus pendientes en *rojo*.
 - Y en «Resumen», las cifras del día: quién está en rojo y a quién no han llamado *a tiempo*.
 
@@ -78,7 +78,7 @@ _(sin voz, 4 s)_
 - Para que la llamada abrace: preséntate y da *gracias* por su visita.
 - Pregúntale cómo se sintió, *escucha* más de lo que hablas y, si te lo permite, ora por ella.
 - Sé breve, no hagas preguntas personales e invítala a algo *concreto*: la próxima reunión, una casa de paz.
-- Si tu iglesia tiene Comunicaciones, el mensaje de *bienvenida* por WhatsApp sale solo, una hora después de que llega.
+- Si tu iglesia tiene Comunicaciones, puede dejar programado el mensaje de *bienvenida* por WhatsApp: sale solo, una hora después de que llega.
 - Y si hubo una visita, una consejería o una oración aparte, regístrala como *actividad extra* en su ficha.
 
 ### 11. cap-5 — capítulo 5 «De visitante a *familia*»
@@ -89,7 +89,7 @@ _(sin voz, 4 s)_
 
 - Afirmar no es una llamada: es acompañar a la persona hasta que se *conecta*.
 - Por eso cada persona tiene su *ruta de crecimiento*: llega a la iglesia, se conecta con una casa de paz, empieza las clases de la visión, empieza a servir.
-- Muchos pasos se cumplen *solos*: cuando asiste a su casa de paz, cuando empieza un curso, cuando se une a un equipo.
+- Y tu iglesia puede hacer que muchos pasos se cumplan *solos*: cuando asiste a su casa de paz, cuando empieza un curso, cuando se une a un equipo.
 - Con «Casa de paz, ¿cuál?» ves las más *cercanas* y le asignas una.
 - Un paso cumplido puede darle un *logro*. Y cuando cumple sus objetivos, Kingdom lo celebra: «¡Se conectó con la iglesia!».
 

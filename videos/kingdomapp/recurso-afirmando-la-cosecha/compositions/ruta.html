@@ -268,7 +268,7 @@
             const P = (f, re, d) => T.pulso(H.palabra(f, re).inicio + (d || 0));
             const $ = (id) => document.getElementById(id);
             const esc = $('rut-esc'), svg = $('rut-svg'), cam = $('rut-cam'), pag = $('rut-pag'), sobre = $('rut-sobre');
-            const bs = H.bloques(T, $('rut-col'), 'rut', ['Acompañar hasta que se *conecta*', 'Su *ruta de crecimiento*', 'Muchos pasos se cumplen *solos*',
+            const bs = H.bloques(T, $('rut-col'), 'rut', ['Acompañar hasta que se *conecta*', 'Su *ruta de crecimiento*', 'Pasos que pueden cumplirse *solos*',
               '«Casa de paz, ¿cuál?»: las más *cercanas*', 'Un paso cumplido, un *logro*']);
             H.animarBloques(tl, T, bs);
             H.entra(tl, '#rut-ceja', 0.1, { dy: 16 });
@@ -296,7 +296,7 @@
             });
             H.dibujar(tl, linea.p, P(f1, /^llega/, 0.2), 4.4);
 
-            // f2 · muchos pasos se cumplen solos: un rayo y cómo (al asistir, al empezar un curso, al unirse a un equipo).
+            // f2 · tu iglesia puede hacer que muchos pasos se cumplan solos («Cómo se cumple»): un rayo y cómo (al asistir, al empezar un curso, al unirse a un equipo).
             const solos = [[0, 'al asistir', /^asiste/], [2, 'al empezar un curso', /^curso/], [3, 'al unirse a un equipo', /^equipo/]];
             const tS = P(f2, /^solos/, -0.3);
             solos.forEach(([k, tx, re], j) => {

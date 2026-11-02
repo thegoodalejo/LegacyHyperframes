@@ -207,7 +207,7 @@
               return c;
             });
 
-            // f3 · con Comunicaciones, el mensaje de bienvenida por WhatsApp sale solo, una hora después de que llega.
+            // f3 · con Comunicaciones, la iglesia puede dejar programado el mensaje de bienvenida (la automatización): sale solo, una hora después de que llega.
             const tB = T.pulso(f3.inicio - 0.3);
             H.sale(tl, tarjetas, tB, { d: 0.4, stagger: 0.05 });
             const si = H.ancla(dia, 'con-si', 324, 180, 'Si tu iglesia tiene Comunicaciones', 'rot');
