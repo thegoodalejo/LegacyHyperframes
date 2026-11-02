@@ -1,5 +1,5 @@
 ---
-version: v1.2
+version: v1.3
 name: Kingdom — Frame del Tipo Recurso (16:9, 5–7 min)
 description: >
   Sistema visual de los videos «Recursos» de Kingdom (decisión 239): videos largos, de 5 a 7 minutos, que el dueño comparte por WhatsApp a
@@ -8,7 +8,7 @@ description: >
   de Material Symbols, diagramas abstractos y tipografía cinética que sigue la voz Kokoro, todo al pulso de «Product Launch» en bucle.
   Lo arma _herramientas/recurso.mjs desde guion.mjs; el kit trae intro-recurso, capitulo-recurso, cierre-recurso, recurso.js y kit.css.
 unit: el cuadro — 1920×1080, 30 cps
-principle: la marca es sagrada · el movimiento sigue a la música y a la voz · nada quieto · ningún dato inventado · la app no aparece
+principle: la marca es sagrada · el movimiento sigue a la música y a la voz · nada quieto · ningún dato inventado · la app no aparece en los Recursos de pastores; en «Para líderes» (v1.3) se recrea fiel
 
 colors:
   noche: "#060D1F"
@@ -36,6 +36,7 @@ typography:
   etiqueta:  { fontFamily: "Inter", px: 30, weight: 600, color: "tinta-2", class: ".k-recurso-etiqueta" }
   contador:  { fontFamily: "Fraunces", px: 160, weight: 600, numerals: "tabular", class: ".k-recurso-contador" }
   datos:     { fontFamily: "Inter", px: 28, weight: 600, class: ".k-datos-ejemplo.k-recurso-datos", text: "Datos de ejemplo" }
+  app:       { fontFamily: "Inter", use: "solo en la app recreada de «Para líderes» (v1.3): la tipografía de Material 3 de la app, en px lógicos (.k-app-t-*)" }
 
 components:
   fondo:      "identidad/fondo-recurso.html (kit), que monta el host debajo de todo el cuerpo: noche, halo que respira y puntos quietos; las escenas son transparentes"
@@ -50,6 +51,9 @@ components:
   palabra:    ".k-recurso-palabra (y .k-recurso-clave en dorado): una caja por palabra; el espacio es su margen"
   intro:      "identidad/intro-recurso.html (6 s), con el título y la ceja"
   cierre:     "identidad/cierre-recurso.html (9 s con «Sigue con», 6 s sin él), cuadro final del video"
+  app:        "v1.3, solo «Para líderes»: .k-app-* (la app v2 recreada: barras, riel, pestañas, chips, campos, botones, tarjetas, filas, diálogo, hoja, cifras, barras de tablero, notificación) dentro de .k-telefono.k-app-telefono o .k-ventana.k-ventana-escritorio"
+  dedo:       "v1.3: .k-dedo con su .k-dedo-onda (KRecurso.app.tocar)"
+  foco:       "v1.3: .k-foco, el resto al 55 % y el anillo dorado (KRecurso.app.foco)"
 ---
 
 # Kingdom — Frame del Tipo Recurso
@@ -104,7 +108,12 @@ atención durante minutos sin cansar.
 `person_pin_circle`, `travel_explore`, `route`, `flag`, `star`, `verified`, `check_circle`, `task_alt`, `done_all`, `edit_note`, `assignment`,
 `badge`, `format_list_bulleted`, `filter_alt`, `dashboard`, `monitoring`, `insights`, `bar_chart`, `query_stats`, `trending_up`,
 `stacked_line_chart`, `visibility`, `lightbulb`, `hub`, `account_tree`, `sync`, `wifi_off`, `celebration`, `arrow_forward`, `play_circle`,
-`rocket_launch`, `cloud`, `tune`, `support_agent`, `construction`.
+`rocket_launch`, `cloud`, `tune`, `support_agent`, `construction`. Desde la v1.3 (los de la app recreada y su estrategia): `apps`, `help`,
+`checklist`, `auto_awesome`, `cleaning_services`, `upload_file`, `error`, `phone_missed`, `assignment_late`, `fact_check`, `pause_circle`,
+`person_remove`, `cottage`, `person_search`, `expand_more`, `arrow_drop_down`, `call`, `more_vert`, `search`, `close`, `hourglass_top`,
+`download`, `add`, `sort`, `image`, `picture_as_pdf`, `content_copy`, `arrow_back`, `bolt`, `fullscreen`, `hearing`, `timer`, `event_busy`,
+`smartphone`, `lock`, `all_inclusive`, `ring_volume`, `military_tech`, `table_view`, `filter_alt_off`, `radio_button_checked`,
+`radio_button_unchecked` y `edit` (117 en total).
 
 Recetas de movimiento que encajan (en `/hyperframes-animation`): `kinetic-type-beats`, `svg-path-draw`, `counting-dynamic-scale`,
 `stat-bars-and-fills`, `constellation-hub`, `avatar-cloud-network`, `waterfall-entry`, `discrete-text-sequence`.
@@ -138,6 +147,60 @@ Recetas de movimiento que encajan (en `/hyperframes-animation`): `kinetic-type-b
 La voz `ef_dora` a 1,1 va rápida (de 3,5 a 4,9 palabras por segundo en la muestra), así que el guion usa frases cortas y `pausa` de 0,5 a
 0,8 s entre ideas; 6 minutos llevan unas 800–1000 palabras. Una escena con voz de más de ~40 s se parte en dos.
 
+## Para líderes (v1.3, decisión 241)
+
+Variante del Tipo Recurso para los **líderes de departamento** (el primero: afirmación o consolidación). Mezcla lo estratégico (las escenas
+de siempre, en motion design) con lo técnico: **la app de Kingdom v2 recreada en HTML, fiel**, y manipulada con animación (un dedo que
+toca, campos que se escriben, la cámara que se acerca y se mueve, un foco que oscurece el resto, hojas y diálogos que suben). No es una
+grabación de pantalla: es la interfaz rearmada con las piezas `.k-app-*` de `kit.css` y movida con `KRecurso.app` de `recurso.js`. El dueño
+la aprobó el 2026-11-01 (decisión 241); antes estaba prohibida. En `guion.mjs`: `para: ['lideres']`, `seccion: 'lideres'` y
+`departamento` (lista cerrada en `recurso.mjs`, hoy `afirmacion`).
+
+### Reglas de fidelidad (obligatorias)
+
+1. **Estructura y textos de las capturas reales** de la ayuda (Kingdom Demo; las URL están en KingdomApp
+   `frontend-v2/src/ayuda/medios.json`), copiadas al proyecto en `assets/referencias/` (fuera de git).
+   - Se copian iguales el orden de los elementos, las etiquetas, los íconos (Material Symbols Outlined), las pestañas, los chips y los botones.
+   - Los textos salen de la captura o de `frontend-v2/public/i18n/es.json`, **nunca de memoria**. Donde la clave lleva `{v_acompanante}`, va
+     «Acompañante» (el vocabulario por defecto).
+   - Lo que no tiene captura se arma con los componentes y los textos de la ayuda y de i18n (y se dice en el SPEC), nunca se inventa.
+2. **Colores y forma de la marca por defecto** (`frontend-v2/src/styles/_tokens.scss`, tema claro), que es lo que ve una iglesia sin
+   colores propios: primario `#015BBE` y su contenedor `#D7E2FF`; secundario `#7D5800` y su contenedor `#FFDEA9` (el chip elegido);
+   superficie `#FAF9FD`, texto `#1B1B1F`, contenedor de superficie `#EFEDF1` y borde `#C4C6D0`. Inter; tarjetas de radio 16, diálogos de 28,
+   chips en píldora. Las capturas de Kingdom Demo son violetas porque esa iglesia tiene marca propia: esa diferencia es la única de color
+   permitida. En la barra superior, el logo K de Kingdom y el nombre de la iglesia.
+3. **Celular:** `.k-telefono.k-app-telefono`, 390 × 812 px lógicos a 1,05 (409 × 853 en el cuadro). Barra superior (logo, nombre, apps,
+   campana, ayuda y la cuenta) y barra inferior (Inicio, Mi iglesia y Perfil). **Nunca un teléfono con el aparato dibujado.**
+4. **Computador:** `.k-ventana.k-ventana-escritorio` (1440 × 760) con 1440 × 760 px lógicos a 1 (las capturas de escritorio son de 1440 px): riel izquierdo (Inicio, Ajustes, Mi
+   iglesia, Perfil), barra superior y las pestañas del módulo.
+5. **Gestos y cámara** (todo con `KRecurso.app`, sobre la única línea de tiempo en pausa, determinista y buscable):
+   - `tocar()`: el `.k-dedo` cae en el elemento, se hunde con su onda y el elemento queda presionado 120 ms.
+   - `escribir()`: el campo se enfoca, la etiqueta sube y el texto aparece letra por letra con su cursor.
+   - `camara()`: acercamientos de 1,0 a 1,8 y paneos, `power2.inOut` de 0,8 a 1,2 s; `desliz()` es el desplazamiento de la página.
+   - `foco()`: el resto de la pantalla al 55 % y un anillo dorado redondeado sobre el elemento.
+   - `hoja()`: las hojas suben y los diálogos aparecen como en Material 3, con su velo.
+   - El gesto cae en el pulso de la palabra que lo nombra (`T.pulso(H.palabra(f, /…/).inicio)`).
+6. **Los datos:** personas ficticias (las del BRIEF) y fechas en el formato de la app. Toda cifra visible (cupos, conteos, embudo) lleva
+   `.k-datos-ejemplo` en la escena.
+7. **Prohibido:** pantallas o funciones que no estén en las capturas ni en la ayuda; teléfonos con el aparato dibujado; logos de terceros
+   (Google y WhatsApp se nombran, no se dibujan); y lo que el BRIEF del video pida no nombrar.
+
+### Antes del render: la hoja de fidelidad
+
+Snapshot de cada escena de la app en sus momentos clave y una hoja de contacto con **cada snapshot junto a su captura de referencia**
+(`snapshots/fidelidad-*.png`). Se revisa y se corrige hasta que coincidan textos, orden, íconos y forma; solo quedan las diferencias
+permitidas (el color de la marca, los datos de ejemplo y lo que el SPEC arma con los textos de la ayuda). Y después del render, un fotograma
+de cada escena sacado del MP4 con ffmpeg: las máscaras de los íconos (`.k-recurso-icono`, `.k-app-icono`) se repiten en el `<style>` de
+cada composición porque las de `kit.css` salen vacías en el render aunque el snapshot las muestre.
+
+### Composición de una escena de la app
+
+- La app ocupa una columna (el celular a la derecha, x ≈ 1150–1560) y el texto cinético corto la otra; o la ventana del computador debajo
+  de un titular. La cámara mueve la app, no la escena.
+- Las piezas de la app se escriben en el HTML de la escena (se leen y se comparan con la captura); el script solo arma la línea de tiempo.
+- El texto de la app es pequeño (14–16 px lógicos): `check` avisa `text_below_floor` en esas escenas y es esperado (la app se ve como es);
+  lo que importa se acerca con la cámara y el foco. Todo texto del kit encima de la app sigue con su piso de 28 px.
+
 ## Approved Entities
 
 - Nombre: **Kingdom** (nunca «Kingdom App»). Módulos con su nombre en la app: Membresía, Eventos, Academia, Mi iglesia, Portal,
@@ -147,19 +210,21 @@ La voz `ef_dora` a 1,1 va rápida (de 3,5 a 4,9 palabras por segundo en la muest
 
 ## Qué NO hacer
 
-- **Nada de la app:** ni grabaciones, ni pantallas redibujadas, ni teléfonos o computadores dibujados, ni «interfaces» inventadas que se
-  parezcan a la app.
+- **Nada de la app en los Recursos de pastores:** ni grabaciones, ni pantallas redibujadas, ni teléfonos o computadores dibujados, ni
+  «interfaces» inventadas que se parezcan a la app. La variante «Para líderes» (v1.3, decisión 241) sí la recrea, fiel a las capturas y con
+  las reglas de arriba; nunca grabada, nunca inventada y nunca dentro de un aparato dibujado.
 - **Nada inventado:** ninguna cifra de resultados («crecimos un 40 %»), ningún testimonio, ninguna iglesia ni persona real, ninguna función
   que no exista. Las cifras que ilustran un tablero son de ejemplo y lo dicen («Datos de ejemplo»).
 - Nada de emojis, degradados de «IA», logos de terceros (WhatsApp se nombra, no se dibuja), fotos de banco ni ilustraciones de personas.
-- Nada de texto bajo 28 px, de párrafos en pantalla ni de subtítulos quemados (van en el VTT).
+- Nada de texto bajo 28 px (salvo el de la app recreada de «Para líderes», que va a su tamaño real), de párrafos en pantalla ni de
+  subtítulos quemados (van en el VTT).
 - Ningún `Math.random()` sin semilla, `Date.now()`, temporizador o animación infinita.
 
 ## Pre-Render Self-Audit
 
 - [ ] `npx --yes hyperframes@0.8.221 check` en 0 errores (contraste AA incluido). `line_unread` en una frase cinética es un aviso: la frase
       se lee mientras se oye; si molesta, deja solo las palabras clave.
-- [ ] Snapshot en la mitad de cada escena (los segundos los imprime `preparar`) y la hoja de contacto revisada: nada de la app, todas las
-      cifras con «Datos de ejemplo», nada quieto.
+- [ ] Snapshot en la mitad de cada escena (los segundos los imprime `preparar`) y la hoja de contacto revisada: nada de la app (o, en «Para líderes», la
+      hoja de fidelidad con cada captura al lado), todas las cifras con «Datos de ejemplo», nada quieto.
 - [ ] `preparar` dice que la música queda 18–24 dB por debajo de la voz; `entregar` verifica −16 LUFS y pico ≤ −1,5 dBTP.
 - [ ] Duración total entre 5 y 7 min.

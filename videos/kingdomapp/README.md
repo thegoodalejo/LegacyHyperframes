@@ -8,7 +8,7 @@ Este directorio tiene el **kit de identidad** que todos los videos montan y las 
 
 | Carpeta | Qué es |
 |---|---|
-| `_identidad/` | Kit de identidad **v1.2**: intro y cierre del Tipo Wiki, cierres de marca del Comercial (16:9), del Corto (9:16) y del clip (4:5), las piezas del Tipo Recurso (`intro-recurso`, `capitulo-recurso`, `fondo-recurso`, `cierre-recurso`, `recurso.js`, `frame-recurso.md`), `kit.json`, `kit.css` (con `.k-ventana`, `.k-feed-*` y `.k-recurso-*`), `frame-wiki.md`, `frame-comercial.md`, `frame-corto.md`, favicon, Inter y Fraunces, 74 íconos de Material Symbols, `sonido-marca.mjs`, `sonidos-accion.mjs`, `musica/` (las pistas, fuera de git, y el mapa de pulsos de «Product Launch») y licencias. **No se edita por video** |
+| `_identidad/` | Kit de identidad **v1.3**: intro y cierre del Tipo Wiki, cierres de marca del Comercial (16:9), del Corto (9:16) y del clip (4:5), las piezas del Tipo Recurso (`intro-recurso`, `capitulo-recurso`, `fondo-recurso`, `cierre-recurso`, `recurso.js`, `frame-recurso.md`), `kit.json`, `kit.css` (con `.k-ventana`, `.k-feed-*`, `.k-recurso-*` y, desde la v1.3, `.k-app-*`, `.k-dedo` y `.k-foco` para la app recreada de «Para líderes»), `frame-wiki.md`, `frame-comercial.md`, `frame-corto.md`, favicon, Inter y Fraunces, 117 íconos de Material Symbols, `sonido-marca.mjs`, `sonidos-accion.mjs`, `musica/` (las pistas, fuera de git, y el mapa de pulsos de «Product Launch») y licencias. **No se edita por video** |
 | `_herramientas/montar-kit.mjs` | Copia el kit en `<proyecto>/identidad/`, comprueba el favicon contra la app, genera el sonido de marca a −20 LUFS y los sonidos de acción con su nivel de mezcla |
 | `muestra-kit/` | Muestra 16:9: intro Wiki → cuerpo con una captura real de la ayuda → cierre Wiki → cierre del Comercial |
 | `muestra-corto/` | Muestra 9:16: una escena de Corto con los componentes de `kit.css` → cierre del Corto |
@@ -184,11 +184,12 @@ cd ../muestra-recurso && npm run preparar:es && npm run check && npm run render:
 `wiki-eventos-crear-y-editar/` (`npm run preparar:es`, `npm run check`, `npm run render:es`, `npm run entregar:es`; lo mismo con `en`).
 Proceso y lista de revisión: `KingdomApp/docs/ayuda/videos.md`.
 
-## Tipo Recurso (v1.2)
+## Tipo Recurso (v1.2; variante «Para líderes» en la v1.3)
 
 Videos largos (5–7 min, 16:9) que el dueño comparte por WhatsApp a pastores y líderes que ya usan Kingdom (decisión 239; directivas en
-`KingdomApp/docs/videos/README.md` → «Tipo 5. Recurso»). **Motion design puro con la marca, sin la app** (excepción a la regla 1, decidida
-por el dueño), voz Kokoro fija y «Product Launch» en bucle. El sistema visual está en `_identidad/frame-recurso.md` (cópialo como
+`KingdomApp/docs/videos/README.md` → «Tipo 5. Recurso»). Los de pastores son **motion design puro con la marca, sin la app** (excepción a
+la regla 1, decidida por el dueño); los de la sección «Para líderes» (decisión 241) **recrean la app v2 en HTML, fiel**, en sus escenas
+técnicas (ver «Variante “Para líderes”» abajo). Voz Kokoro fija y «Product Launch» en bucle. El sistema visual está en `_identidad/frame-recurso.md` (cópialo como
 `frame.md` del proyecto antes de diseñar). La herramienta es `_herramientas/recurso.mjs`, fijada a **`hyperframes@0.8.221`**.
 
 ### El proyecto
@@ -212,6 +213,8 @@ export default {
   llamado: 'acompanamiento',                          // acompanamiento | compartir | ninguno
   contacto: 'whatsapp',                               // whatsapp | sitio | ninguno
   para: ['pastores', 'lideres'],                      // opcional, a la ficha: pastores | lideres | administradores | servidores
+  seccion: 'lideres',                                 // opcional (v1.3), a la ficha: pastores | lideres (la sección de Recursos)
+  departamento: 'afirmacion',                         // opcional (v1.3), a la ficha, en «Para líderes»: afirmacion (lista cerrada)
   mensaje: { es: 'Pastor, mira este recurso: {enlace}' }, // opcional, a la ficha: el texto de WhatsApp, con {enlace}
   poster: { en: 5.2 },                                // opcional: segundo del póster (por defecto, el final de la intro)
   musica: {                                           // opcional: todo tiene valor por defecto (kit.json → mapa.recurso)
@@ -261,7 +264,7 @@ node ../_herramientas/recurso.mjs render --idioma es     # renders/recurso-es.mp
 node ../_herramientas/recurso.mjs entregar --idioma es   # entrega/es/ y la verificación de sonoridad
 ```
 
-`preparar` comprueba que `hyperframes@0.8.221 tts` exista (Kokoro, con `HYPERFRAMES_PYTHON` del `.venv-tts`), valida `para` y `mensaje`,
+`preparar` comprueba que `hyperframes@0.8.221 tts` exista (Kokoro, con `HYPERFRAMES_PYTHON` del `.venv-tts`), valida `para`, `seccion`, `departamento` y `mensaje`,
 monta el kit, genera la voz fija del kit (`ef_dora` a 1,1 en español; una frase por archivo, normalizada a −16 LUFS en dos pasadas y en
 caché por texto) e imprime cada escena, el plan de la música, la mezcla medida y los segundos para el snapshot.
 
@@ -313,6 +316,28 @@ la música, en segundos **relativos a la escena**. La composición la declara y 
   `voz.wav` (cada frase a −16 LUFS) y el sonido de marca en el host, en los segundos de `kit.json`. `preparar` mide e imprime la relación
   (sobre los tramos con voz, que incluyen sus silencios internos: por eso da 1–2 dB menos que `bajoLaVoz`).
 
+### Variante «Para líderes» (kit v1.3, decisión 241)
+
+Recursos para **líderes de departamento** (el primero, `recurso-afirmando-la-cosecha/`, para afirmación o consolidación): mezclan la
+estrategia (las escenas de motion design de siempre) con lo técnico, y ahí **la app de Kingdom v2 se recrea en HTML, fiel** a las capturas
+de la ayuda, y se manipula con animación. No es una grabación de pantalla. Reglas completas en `_identidad/frame-recurso.md` → «Para
+líderes (v1.3, decisión 241)».
+
+- **Piezas** (`kit.css`): `.k-app` (los tokens de la marca por defecto de `frontend-v2/src/styles/_tokens.scss`, tema claro, e Inter),
+  `.k-telefono.k-app-telefono` (celular de 390 × 812 px lógicos a 1,05) o `.k-ventana.k-ventana-escritorio` (1440 × 760 a 1, como las capturas de escritorio) con
+  `.k-app-escala` y `.k-app-camara`; `.k-app-barra`, `.k-app-inferior`, `.k-app-riel`, `.k-app-pestanas`, `.k-app-chip` (con
+  `.k-app-chip-n`), `.k-app-campo` (etiqueta flotante, `.k-app-select`, `.k-app-area`), `.k-app-radio`, `.k-app-boton` (relleno,
+  `.contorno`, `.texto`, `.tonal`), `.k-app-tarjeta`, `.k-app-fila` con `.k-app-avatar`, `.k-app-dialogo`, `.k-app-hoja`, `.k-app-velo`,
+  `.k-app-cifra`, `.k-app-barras` (embudo), `.k-app-notificacion`, `.k-app-snackbar`; `.k-dedo` y `.k-foco`. Íconos con `.k-app-icono`
+  (repite su máscara en el `<style>` de la composición, como `.k-recurso-icono`).
+- **Ayudas** (`recurso.js` → `KRecurso.app`, sobre la línea de tiempo de la escena, deterministas y buscables): `camara()` (acercamiento y
+  paneo, `power2.inOut`), `desliz()` (el desplazamiento de la página), `escribir()` (letra por letra con su cursor; con `antes` borra lo que
+  había), `vaciar()`, `tocar()`, `foco()`, `hoja()` (hoja o diálogo con su velo), `aparecer()` y `quitar()`.
+- **El guion** lleva `para: ['lideres']`, `seccion: 'lideres'` y `departamento` (hoy `afirmacion`); `recurso.mjs` los valida y los
+  escribe en `ficha.json` para el publicador de la app (`KingdomApp/tools/recursos/publicar.mjs`).
+- **Fidelidad antes del render:** las capturas de referencia en `assets/referencias/` (fuera de git; las URL están en KingdomApp
+  `frontend-v2/src/ayuda/medios.json`) y una hoja `snapshots/fidelidad-*.png` con cada snapshot de la app junto a su captura.
+
 ### La entrega
 
 `entregar` toma `renders/recurso-<idioma>.mp4` y deja en `entrega/<idioma>/` (fuera de git) la forma exacta que espera el publicador de
@@ -325,9 +350,11 @@ la app (Plataforma → Recursos):
 | `poster.jpg` | 1200×630, menos de 300 KB (si no, WhatsApp puede no mostrar la vista previa); el final de la intro o `poster.en` |
 | `poster.webp` | El mismo cuadro en WebP |
 | `video.vtt` | Subtítulos (no quemados): un cue por frase o media frase, máx. 2 líneas de ~42 caracteres |
-| `ficha.json` | `{ slug, idioma, titulo, descripcion, duracion, ancho, alto, archivos: { "video-1080.mp4": { bytes, sha256 }, "video-720.mp4": {…}, "poster.jpg": {…}, "poster.webp": {…}, "video.vtt": {…} } }` y, si el guion los trae, `para` (lista de `pastores`, `lideres`, `administradores`, `servidores`) y `mensaje` (el texto de WhatsApp, con `{enlace}`). `duracion` en segundos (número); `ancho` y `alto` son los del video de 1080, en 16:9 (el publicador los compara con el archivo) |
+| `ficha.json` | `{ slug, idioma, titulo, descripcion, duracion, ancho, alto, archivos: { "video-1080.mp4": { bytes, sha256 }, "video-720.mp4": {…}, "poster.jpg": {…}, "poster.webp": {…}, "video.vtt": {…} } }` y, si el guion los trae, `para` (lista de `pastores`, `lideres`, `administradores`, `servidores`), `seccion` (`pastores` o `lideres`), `departamento` (`afirmacion`) y `mensaje` (el texto de WhatsApp, con `{enlace}`). `duracion` en segundos (número); `ancho` y `alto` son los del video de 1080, en 16:9 (el publicador los compara con el archivo) |
 
-El audio sale del render a −16 LUFS integrados (dos pasadas lineales, con margen de pico para el AAC) y `entregar` **verifica** en los dos
+El audio sale del render a −16 LUFS integrados (dos pasadas lineales, con margen de pico para el AAC; desde la v1.3 el video se codifica una
+vez y, si el AAC ya codificado pasa de −1,6 dBTP, el margen baja de a 1 dB —−2,5, −3,5, −4,5— con un limitador suave, y el usado queda en
+`renders/entrega-<idioma>.json`) y `entregar` **verifica** en los dos
 videos −16 ±0,5 LUFS y pico ≤ −1,5 dBTP, que el de 1080 mida 1920×1080 y que el póster pese menos de 300 KB; si algo falla, se detiene.
 Las medidas técnicas (sonoridad, pico, versiones) quedan en `renders/entrega-<idioma>.json`, aparte de la ficha. Publicar lo hace el
 líder; el dueño lo revisa ya publicado.

@@ -1,7 +1,7 @@
 {
-  "version": "v1.2",
+  "version": "v1.3",
   "fecha": "2026-11-01",
-  "estado": "v1 y v1.1 aprobados por el dueño el 2026-10-30 (KingdomApp docs/pendientes.md 40); v1.2 (Tipo Recurso, decisión 239: intro-recurso, cierre-recurso, capitulo-recurso, fondo-recurso, recurso.js, frame-recurso.md, clases .k-recurso-* y más íconos) del 2026-11-01, la revisa el dueño con el primer recurso publicado",
+  "estado": "v1 y v1.1 aprobados por el dueño el 2026-10-30 (KingdomApp docs/pendientes.md 40); v1.2 (Tipo Recurso, decisión 239: intro-recurso, cierre-recurso, capitulo-recurso, fondo-recurso, recurso.js, frame-recurso.md, clases .k-recurso-* y más íconos) del 2026-11-01, la revisa el dueño con el primer recurso publicado; v1.3 (variante «Para líderes», decisión 241: la app v2 recreada con .k-app-*, .k-dedo, .k-foco y KRecurso.app) del 2026-11-01, la revisa el dueño con «Afirmando la cosecha con Kingdom»",
   "fuente": "KingdomApp docs/videos/identidad.md",
   "favicon": {
     "archivo": "favicon.svg",
@@ -333,6 +333,7 @@
     }
   },
   "cambios": {
+    "v1.3": "2026-11-01: variante «Para líderes» del Tipo Recurso (decisión 241): la app v2 recreada en HTML, fiel a las capturas de la ayuda, con las piezas .k-app-* de kit.css (tokens de la marca por defecto de frontend-v2, barras superior e inferior, riel, pestañas, chips, campos con etiqueta flotante, select, radio, botones, tarjetas, filas con avatar, diálogo, hoja, cifras, barras de tablero, notificación y snackbar), .k-dedo y .k-foco, y KRecurso.app en recurso.js (camara, desliz, escribir, vaciar, tocar, foco, hoja, aparecer, quitar); reglas en frame-recurso.md → «Para líderes»; 43 íconos más de Material Symbols (117). recurso.mjs acepta seccion y departamento del guion y los escribe en ficha.json. Nada de lo anterior cambia de comportamiento.",
     "v1.2": "2026-11-01: Tipo Recurso (decisión 239): intro-recurso.html (6 s), cierre-recurso.html (8 s con «Sigue con», 6 s sin él) capitulo-recurso.html (tarjeta de capítulo) y fondo-recurso.html (la noche del cuerpo), recurso.js (los tiempos de cada escena para las composiciones), frame-recurso.md, clases .k-recurso-* en kit.css, el plan de «Product Launch» en bucle (mapa.recurso, ultimoGolpe) y 62 íconos más de Material Symbols. Nada de lo anterior cambia de comportamiento.",
     "v1.1": "2026-10-30: cierre-clip.html (la firma en 4:5, 1080×1350, 2,5 s, con las variables y los tiempos del cierre del Corto), .k-ventana (la grabación real ampliada, en tamaños para 4:5, 9:16, 16:9 y escritorio) y .k-feed-* (textos para 4:5) en kit.css, los sonidos de acción propios (sonidos-accion.mjs: toque, aparicion, desliz, subida y confirmacion) y la biblioteca de música con el mapa de «Product Launch». Aprobado por el dueño el mismo día.",
     "v1-voz": "2026-10-30: la voz en español pasa de em_alex (1,0) a ef_dora (1,1), femenina y más fluida; la eligió el dueño entre Kokoro y Chatterbox (muestras en muestra-kit/renders/voces/).",

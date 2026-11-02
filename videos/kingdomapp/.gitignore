@@ -1,6 +1,8 @@
 # Videos de Kingdom: en git solo el código del video (KingdomApp docs/videos/README.md → «Reglas comunes»).
 # Grabaciones, capturas, voces, música, renders y hojas de contacto van al bucket de la ayuda, no a git.
 */assets/captura/
+# v1.3 «Para líderes»: las capturas reales de la ayuda con que se compara la app recreada (se bajan de KingdomApp frontend-v2/src/ayuda/medios.json)
+*/assets/referencias/
 */assets/voice/
 */assets/musica/
 */renders/

@@ -1,11 +1,11 @@
-# Licencias del kit de identidad de Kingdom (v1.2)
+# Licencias del kit de identidad de Kingdom (v1.3)
 
 | Recurso | Archivo | Origen | Licencia |
 |---|---|---|---|
 | Favicon de Kingdom (baldosa, corona y K) | `favicon.svg`; sus piezas dentro de `intro-wiki.html` y `cierre-*.html` | Propio: KingdomApp `frontend-v2/public/favicon.svg` (= `logo.svg` y `sitio/public/favicon.svg`, sha256 `2d3dcdff…`) | Propiedad de Legacy Software S.A.S. |
 | Inter | `fuentes/inter-latin.woff2`, `fuentes/inter-latin-ext.woff2` | Google Fonts (`fonts.gstatic.com/s/inter/v20`), los mismos archivos que cargan la app v2 y el sitio | SIL Open Font License 1.1 |
 | Fraunces | `fuentes/fraunces.woff2`, `fuentes/fraunces-italica.woff2` | Copia de KingdomApp `sitio/public/fuentes/` (Undercase Type, fuente variable, solo latin) | SIL Open Font License 1.1 |
-| Íconos (los 12 de sección y, desde la v1.2, 62 más para el Tipo Recurso; lista en `frame-recurso.md`) | `iconos/*.svg` | Material Symbols Outlined (Google), 48 px, bajados de `fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/<nombre>/default/48px.svg` (la misma fuente que el kit de LegacyEnterprise) | Apache License 2.0 |
+| Íconos (los 12 de sección; desde la v1.2, 62 más para el Tipo Recurso, y desde la v1.3, 43 más para la app recreada de «Para líderes»: 117; lista en `frame-recurso.md`) | `iconos/*.svg` | Material Symbols Outlined (Google), 48 px, bajados de `fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/<nombre>/default/48px.svg` (la misma fuente que el kit de LegacyEnterprise) | Apache License 2.0 |
 | Sonido de marca | `sonido-marca.mjs` (genera el WAV; el WAV no va a git) | Propio: síntesis en código, sin muestras de terceros | Propiedad de Legacy Software S.A.S. Exclusivo de Kingdom |
 | Sonidos de acción (v1.1): `toque`, `aparicion`, `desliz`, `subida`, `confirmacion` | `sonidos-accion.mjs` (genera los WAV con el motor de `sonido-marca.mjs`; los WAV no van a git) | Propio: síntesis en código (tonos en Mi mayor y ruido de un generador con semilla fija), sin muestras de terceros | Propiedad de Legacy Software S.A.S. Exclusivo de Kingdom |
 | Mapa de pulsos de «Product Launch» | `musica/product-launch-the-mountain.pulsos.json` | Propio: sacado con `hyperframes beats` de la pista (2026-10-30) | Dato derivado, propiedad de Legacy Software S.A.S.; la pista sigue con su licencia de Pixabay |

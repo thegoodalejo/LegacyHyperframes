@@ -1,4 +1,4 @@
-/* Kit de identidad de los videos de Kingdom (v1.2): tokens y componentes para el CUERPO de los videos de los tres tipos.
+/* Kit de identidad de los videos de Kingdom (v1.3): tokens y componentes para el CUERPO de los videos de los tres tipos.
    La intro y los cierres son composiciones aparte (intro-wiki.html, cierre-*.html) y no dependen de este archivo.
    Uso, después de montar el kit, UNA vez en el <head> del host (index.html), en este orden; las escenas (subcomposiciones) usan las clases:
      <link rel="stylesheet" href="identidad/fuentes/fuentes.css" />
@@ -515,4 +515,636 @@
   font-size: 28px;
   background: rgba(12, 26, 58, 0.9);
   box-shadow: inset 0 0 0 1px var(--k-noche-linea);
+}
+
+/* ─── v1.3 · «Para líderes» (decisión 241): la interfaz de Kingdom v2 RECREADA en HTML, fiel, para manipularla con animación ─────────
+   Variante del Tipo Recurso para los videos de líderes de departamento: la app no se graba, se recrea con estas piezas (copiadas de las
+   capturas reales de la ayuda y de frontend-v2) y se «toca» con KRecurso.app (recurso.js): dedo, escribir, cámara, foco y hojas.
+   Reglas de fidelidad en frame-recurso.md → «Para líderes (v1.3, decisión 241)». Lo esencial:
+     · Estructura, orden, textos e íconos de las capturas de Kingdom Demo o de frontend-v2/public/i18n/es.json; nunca de memoria.
+     · Colores de la MARCA POR DEFECTO de Kingdom (frontend-v2/src/styles/_tokens.scss, tema claro), no los violetas de Kingdom Demo, e Inter.
+     · Medidas en px LÓGICOS de la app (las de su CSS): .k-app-escala lleva el escalado al cuadro. Nunca un teléfono dibujado: la pantalla
+       va en .k-telefono.k-app-telefono (celular, 390 px lógicos) o en .k-ventana.k-ventana-escritorio (computador, 1440 px lógicos).
+   Estructura (la cámara es el único envoltorio que GSAP escala y mueve; .k-app-escala lleva un scale FIJO de CSS y nunca se anima):
+     <div class="k-telefono k-app-telefono" style="left: 1150px; top: 114px">          (o .k-ventana.k-ventana-escritorio)
+       <div class="k-app k-app-escala">
+         <div class="k-app-camara" id="…-cam">                                          KRecurso.app.camara()
+           <div class="k-app-barra">…</div>                                           barra superior
+           <div class="k-app-cuerpo"><div class="k-app-desliz" id="…-desliz">…</div></div>   la página; el «scroll» es la y de .k-app-desliz
+           <nav class="k-app-inferior">…</nav>                                        barra inferior (celular) o .k-app-riel (computador)
+           <div class="k-foco" id="…"></div> <div class="k-dedo" id="…"><span class="k-dedo-onda"></span></div>
+     Íconos de la app: <span class="k-app-icono" style="--k-icono: url(identidad/iconos/<nombre>.svg)"></span> (Material Symbols Outlined
+     de identidad/iconos/). OJO: igual que .k-recurso-icono, la máscara que viene de ESTE archivo sale vacía en el render (la url() se
+     resuelve contra identidad/kit.css); cada composición repite en su <style>:
+       .k-app-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; } */
+.k-app {
+  /* Tokens de frontend-v2/src/styles/_tokens.scss (marca por defecto: semillas #3576DA, #D9A234 y #00897B; tema claro). */
+  --k-app-primario: #015bbe;
+  --k-app-sobre-primario: #ffffff;
+  --k-app-primario-cont: #d7e2ff;
+  --k-app-sobre-primario-cont: #004492;
+  --k-app-secundario: #7d5800;
+  --k-app-secundario-cont: #ffdea9;
+  --k-app-sobre-secundario-cont: #5e4100;
+  --k-app-terciario: #006b5f;
+  --k-app-terciario-cont: #8df5e4;
+  --k-app-sobre-terciario-cont: #005048;
+  --k-app-error: #ba1a1a;
+  --k-app-error-cont: #ffdad6;
+  --k-app-sobre-error-cont: #93000a;
+  --k-app-fondo: #faf9fd;
+  --k-app-texto: #1b1b1f;
+  --k-app-texto-2: #44474f;
+  --k-app-cont-min: #ffffff;
+  --k-app-cont-bajo: #f5f3f7;
+  --k-app-cont: #efedf1;
+  --k-app-cont-alto: #e9e7ec;
+  --k-app-cont-max: #e3e2e6;
+  --k-app-contorno: #74777f;
+  --k-app-borde: #c4c6d0;
+  --k-app-inversa: #2f3033;
+  --k-app-sobre-inversa: #f2f0f4;
+  --k-app-primario-inverso: #acc7ff;
+  --k-app-verde: #006e25;
+  --k-app-verde-cont: #8cfa94;
+  --k-app-sobre-verde-cont: #002106;
+  --k-app-amarillo: #f1c014;
+  --k-app-amarillo-cont: #ffe08e;
+  --k-app-sobre-amarillo-cont: #241a00;
+  --k-app-rojo: #bb1713;
+  --k-app-rojo-cont: #ffdad5;
+  --k-app-sobre-rojo-cont: #410001;
+  --k-app-velo: rgba(0, 0, 0, 0.32);
+  position: relative;
+  overflow: hidden;
+  background: var(--k-app-fondo);
+  color: var(--k-app-texto);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0;
+  text-align: left;
+}
+.k-app *,
+.k-app *::before,
+.k-app *::after {
+  box-sizing: border-box;
+}
+/* La pantalla del celular: 390 × 812 px lógicos (el celular de las capturas de la ayuda), a 1,05 (409 × 853 en el cuadro de 1080). */
+.k-telefono.k-app-telefono {
+  --k-app-escala: 1.05;
+  position: absolute;
+  width: calc(390px * var(--k-app-escala));
+  height: calc(812px * var(--k-app-escala));
+  aspect-ratio: auto;
+  border-radius: calc(34px * var(--k-app-escala));
+  background: #faf9fd;
+}
+/* El computador: 1440 × 760 px lógicos dentro de .k-ventana-escritorio (1440 × 760), a 1: las capturas de escritorio de la ayuda son de
+   1440 px de ancho (el riel de 113 px y el contenido de 64rem lo confirman). */
+.k-ventana.k-ventana-escritorio {
+  --k-app-escala: 1;
+}
+.k-app-escala {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 390px;
+  height: 812px;
+  transform: scale(var(--k-app-escala, 1));
+  transform-origin: 0 0;
+}
+.k-ventana-escritorio > .k-app-escala {
+  width: 1440px;
+  height: 760px;
+}
+.k-app-camara {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+}
+/* Tipografía de Material 3 con Inter (mat.theme de styles.scss). */
+.k-app-t-titular { font-size: 24px; font-weight: 400; line-height: 32px; }
+.k-app-t-titulo-g { font-size: 22px; font-weight: 400; line-height: 28px; }
+.k-app-t-titulo { font-size: 16px; font-weight: 500; line-height: 24px; }
+.k-app-t-titulo-p { font-size: 14px; font-weight: 500; line-height: 20px; }
+.k-app-t-cuerpo-g { font-size: 16px; font-weight: 400; line-height: 24px; }
+.k-app-t-cuerpo { font-size: 14px; font-weight: 400; line-height: 20px; }
+.k-app-t-cuerpo-p { font-size: 12px; font-weight: 400; line-height: 16px; }
+.k-app-t-rotulo { font-size: 14px; font-weight: 500; line-height: 20px; }
+.k-app-t-rotulo-m { font-size: 12px; font-weight: 500; line-height: 16px; }
+.k-app-suave { color: var(--k-app-texto-2); }
+.k-app-icono {
+  display: inline-block;
+  flex: none;
+  width: var(--k-icono-tam, 24px);
+  height: var(--k-icono-tam, 24px);
+  background: currentColor;
+  -webkit-mask: var(--k-icono) center / contain no-repeat;
+  mask: var(--k-icono) center / contain no-repeat;
+}
+/* Barra superior (shell.component.scss → .barra): logo de la iglesia, su nombre, apps, campana, ayuda y la cuenta. */
+.k-app-barra {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 56px;
+  padding: 0 4px 0 8px;
+  background: var(--k-app-cont);
+  border-bottom: 1px solid var(--k-app-borde);
+}
+.k-app-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 4px 8px 4px 4px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  white-space: nowrap;
+}
+.k-app-marca img {
+  width: 32px;
+  height: 32px;
+  flex: none;
+}
+.k-app-espacio { flex: 1 1 auto; }
+.k-app-boton-icono {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--k-app-texto-2);
+}
+.k-app-barra .k-app-boton-icono { color: var(--k-app-texto); }
+/* En el computador la ventana tiene radio 20: la cuenta no debe quedar debajo de la esquina. */
+.k-ventana-escritorio .k-app-barra { padding-right: 12px; }
+.k-app-cuenta {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin: 0 4px;
+  border-radius: 50%;
+  background: var(--k-app-primario-cont);
+  color: var(--k-app-sobre-primario-cont);
+  font-size: 14px;
+  font-weight: 500;
+}
+/* Barra inferior del celular (.inferior) y riel del computador (.riel): ícono en su píldora de 56 × 32 y el texto. */
+.k-app-inferior {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: space-around;
+  gap: 2px;
+  height: 74px;
+  padding: 6px 4px 8px;
+  background: var(--k-app-cont);
+  border-top: 1px solid var(--k-app-borde);
+}
+.k-app-riel {
+  position: absolute;
+  left: 0;
+  top: 56px;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 113px; /* .riel: 96 px de contenido + 16 de relleno + el borde (content-box en la app) */
+  padding: 12px 8px;
+  background: var(--k-app-cont-bajo);
+  border-right: 1px solid var(--k-app-borde);
+}
+.k-app-nav {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 2px;
+  color: var(--k-app-texto-2);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  white-space: nowrap;
+}
+.k-app-riel .k-app-nav { flex: none; padding: 8px 2px; }
+.k-app-nav > .k-app-icono-caja {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 32px;
+  border-radius: 16px;
+}
+.k-app-nav.activo { color: var(--k-app-texto); }
+.k-app-nav.activo > .k-app-icono-caja { background: var(--k-app-secundario-cont); color: var(--k-app-sobre-secundario-cont); }
+/* El cuerpo: debajo de la barra (y a la derecha del riel); el desplazamiento de la página es la y de .k-app-desliz. */
+.k-app-cuerpo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 56px;
+  bottom: 74px;
+  overflow: hidden;
+}
+.k-app-riel ~ .k-app-cuerpo { left: 113px; bottom: 0; }
+.k-app-desliz { position: absolute; left: 0; right: 0; top: 0; }
+.k-app-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+.k-ventana-escritorio .k-app-pagina { max-width: 1072px; margin: 0 auto; padding: 24px; } /* .mem-pagina: 64rem de contenido + el relleno de .page */
+/* Cabecera de un módulo (membresia-cabecera): el título y las pestañas con su ícono. */
+.k-app-pestanas {
+  display: flex;
+  gap: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--k-app-borde);
+}
+.k-app-pestana {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px 4px; /* medido en las capturas: el texto queda a 17 px de la raya de abajo */
+  color: var(--k-app-texto-2);
+  border-bottom: 3px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.k-app-pestana .k-app-icono { --k-icono-tam: 20px; }
+.k-app-pestana.activa { color: var(--k-app-primario); border-bottom-color: var(--k-app-primario); }
+/* Vistas y filtros en píldora (.vista de Coordinar y Tableros; filtros de Mi seguimiento): contorno, o el contenedor del secundario si está
+   elegida; el contador en su cajita. */
+.k-app-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.k-app-chips.una-linea { flex-wrap: nowrap; overflow: hidden; }
+.k-app-chip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--k-app-borde);
+  border-radius: 18px;
+  color: var(--k-app-texto);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.k-app-chip .k-app-icono { --k-icono-tam: 18px; }
+.k-app-chip.activa { background: var(--k-app-secundario-cont); color: var(--k-app-sobre-secundario-cont); border-color: transparent; }
+.k-app-chip-n {
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--k-app-cont-max);
+  color: var(--k-app-texto);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+/* Ficha de filtro puesta («Cumpleaños: En los próximos 10 días» con su X): el contenedor del secundario. */
+.k-app-ficha-filtro {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 6px 8px 6px 16px;
+  border-radius: 18px;
+  background: var(--k-app-secundario-cont);
+  color: var(--k-app-sobre-secundario-cont);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.k-app-ficha-filtro b { font-weight: 700; }
+.k-app-ficha-filtro .k-app-icono { --k-icono-tam: 18px; }
+/* Etiqueta pequeña (chips de la tarjeta de Mi seguimiento, pendientes de Coordinar) y el semáforo de un paso, con sus colores fijos. */
+.k-app-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: var(--k-app-cont-alto);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  white-space: nowrap;
+}
+.k-app-punto { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.k-app-etiqueta.verde { background: var(--k-app-verde-cont); color: var(--k-app-sobre-verde-cont); }
+.k-app-etiqueta.verde .k-app-punto { background: var(--k-app-verde); }
+.k-app-etiqueta.amarillo { background: var(--k-app-amarillo-cont); color: var(--k-app-sobre-amarillo-cont); }
+.k-app-etiqueta.amarillo .k-app-punto { background: var(--k-app-amarillo); }
+.k-app-etiqueta.rojo { background: var(--k-app-rojo-cont); color: var(--k-app-sobre-rojo-cont); }
+.k-app-etiqueta.rojo .k-app-punto { background: var(--k-app-rojo); }
+.k-app-etiqueta.mal { color: var(--k-app-error); }
+/* Campo de texto «outline» de Material 3 con su etiqueta flotante. La etiqueta está SIEMPRE flotando en el CSS (arriba, 12 px); un campo
+   vacío la baja con KRecurso.app.escribir() o .vaciar() (desde y: 26, scale: 4/3), así nunca se anima top ni font-size. .enfocado: el
+   borde de 2 px en el primario. El fondo de la etiqueta (--k-app-fondo-campo) corta el borde como el «notch» de Material. */
+.k-app-campo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 16px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--k-app-contorno);
+  color: var(--k-app-texto);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.03em;
+}
+.k-app-campo.enfocado { box-shadow: inset 0 0 0 2px var(--k-app-primario); }
+.k-app-campo-etiqueta {
+  position: absolute;
+  left: 12px;
+  top: -8px;
+  padding: 0 4px;
+  background: var(--k-app-fondo-campo, var(--k-app-fondo));
+  color: var(--k-app-texto-2);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transform-origin: 0 50%;
+}
+.k-app-campo.enfocado .k-app-campo-etiqueta { color: var(--k-app-primario); }
+.k-app-campo-valor { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; }
+.k-app-campo .k-app-icono { color: var(--k-app-texto-2); }
+.k-app-campo-ayuda { padding: 4px 16px 0; color: var(--k-app-texto-2); font-size: 12px; line-height: 16px; letter-spacing: 0.03em; }
+.k-app-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 20px;
+  margin-left: 1px;
+  vertical-align: -4px;
+  background: var(--k-app-primario);
+  opacity: 0;
+}
+/* Select: el mismo campo con la flecha (arrow_drop_down) a la derecha. Área de texto: 96 px y la etiqueta arriba por dentro. */
+.k-app-select { padding-right: 12px; }
+.k-app-select-flecha { margin-left: auto; color: var(--k-app-texto-2); }
+.k-app-campo.k-app-area { align-items: flex-start; min-height: 96px; padding-top: 16px; }
+/* Opciones de un select o de una búsqueda (menú de Material: contenedor y filas de 48 px). */
+.k-app-menu {
+  position: absolute;
+  z-index: 4;
+  padding: 8px 0;
+  border-radius: 4px;
+  background: var(--k-app-cont);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18), 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+.k-app-menu-item { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; font-size: 16px; line-height: 24px; white-space: nowrap; }
+.k-app-menu-item.elegido { background: var(--k-app-cont-max); }
+/* Radio de Material 3: el círculo de 20 px y su punto de 10 px en el primario. */
+.k-app-radio { display: flex; align-items: center; gap: 16px; min-height: 48px; font-size: 16px; line-height: 24px; }
+.k-app-radio-circulo {
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--k-app-texto-2);
+}
+.k-app-radio-circulo > span {
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: var(--k-app-primario);
+  opacity: 0;
+}
+.k-app-radio.marcado .k-app-radio-circulo { box-shadow: inset 0 0 0 2px var(--k-app-primario); }
+.k-app-radio.marcado .k-app-radio-circulo > span { opacity: 1; }
+/* Botones de Material 3: relleno (flat), de contorno (stroked), de texto, tonal y el FAB extendido. */
+.k-app-boton {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 24px;
+  border-radius: 20px;
+  background: var(--k-app-primario);
+  color: var(--k-app-sobre-primario);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.k-app-boton .k-app-icono { --k-icono-tam: 18px; margin-left: -8px; }
+.k-app-boton.contorno { background: transparent; color: var(--k-app-primario); box-shadow: inset 0 0 0 1px var(--k-app-contorno); }
+.k-app-boton.texto { background: transparent; color: var(--k-app-primario); padding: 0 12px; }
+.k-app-boton.tonal { background: var(--k-app-primario-cont); color: var(--k-app-sobre-primario-cont); }
+.k-app-fab {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 56px;
+  padding: 0 20px 0 16px;
+  border-radius: 16px;
+  background: var(--k-app-primario-cont);
+  color: var(--k-app-sobre-primario-cont);
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18);
+}
+.k-app-acciones { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
+/* Dos opciones del mismo ancho (Mujer / Hombre: .toggle-parejo). */
+.k-app-toggle { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; height: 48px; border-radius: 24px; box-shadow: inset 0 0 0 1px var(--k-app-contorno); overflow: hidden; }
+.k-app-toggle > span { display: grid; place-items: center; font-size: 14px; font-weight: 500; }
+.k-app-toggle > span + span { box-shadow: inset 1px 0 0 var(--k-app-contorno); }
+.k-app-toggle > span.si { background: var(--k-app-secundario-cont); color: var(--k-app-sobre-secundario-cont); }
+/* Tarjetas: la de la ficha y las listas (.mem-tarjeta, radio 16), las filas de Coordinar (.filas > li, radio 14) y el panel plegado. */
+.k-app-tarjeta { padding: 16px; border-radius: 16px; background: var(--k-app-cont); min-width: 0; }
+.k-app-tarjeta-titulo { margin: 0 0 10px; font-size: 16px; font-weight: 500; line-height: 24px; }
+.k-app-fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--k-app-cont);
+}
+.k-app-fila-texto { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.k-app-enlace { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.k-app-panel {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 24px;
+  border-radius: 12px;
+  background: var(--k-app-fondo);
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.14), 0 1px 3px rgba(0, 0, 0, 0.12);
+  font-size: 16px;
+  font-weight: 500;
+}
+/* Avatar con las iniciales (persona-avatar: 38 % del tamaño, 600, contenedor del primario). --k-tam: 32, 36 o 40 px. */
+.k-app-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--k-tam, 40px);
+  height: var(--k-tam, 40px);
+  border-radius: 50%;
+  background: var(--k-app-primario-cont);
+  color: var(--k-app-sobre-primario-cont);
+  font-size: calc(var(--k-tam, 40px) * 0.38);
+  font-weight: 600;
+  line-height: 1;
+}
+/* Cifras de «Coordinar → Resumen» (.tile): ícono, número y rótulo; .alerta en el contenedor del error. */
+.k-app-cifras { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.k-app-cifra {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 2px 6px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: var(--k-app-cont);
+}
+.k-app-cifra > b { font-size: 24px; font-weight: 400; line-height: 32px; }
+.k-app-cifra > span:last-child { grid-column: 1 / -1; font-size: 12px; font-weight: 500; line-height: 16px; }
+.k-app-cifra.alerta { background: var(--k-app-error-cont); color: var(--k-app-sobre-error-cont); }
+/* Barras de los tableros (tablero-barras): rótulo y cifra, la pista de 10 px con sus tramos y el detalle debajo; la leyenda arriba. */
+.k-app-barras { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.k-app-barras > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; align-items: center; }
+.k-app-barra-cifra { font-size: 14px; font-weight: 500; text-align: right; }
+.k-app-pista {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 2px;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--k-app-cont-max);
+}
+.k-app-tramo { height: 100%; min-width: 3px; background: var(--k-app-primario); transform-origin: 0 50%; }
+.k-app-tramo:first-child { border-radius: 5px 0 0 5px; }
+.k-app-tramo:last-child { border-radius: 0 5px 5px 0; }
+.k-app-tramo:only-child { border-radius: 5px; }
+.k-app-tramo.t2 { background: var(--k-app-terciario); }
+.k-app-barra-detalle { grid-column: 1 / -1; color: var(--k-app-texto-2); font-size: 12px; line-height: 16px; }
+.k-app-leyenda { display: flex; gap: 4px 12px; margin: 0 0 8px; font-size: 12px; line-height: 16px; }
+.k-app-leyenda i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 3px; background: var(--k-app-primario); }
+.k-app-leyenda i.t2 { background: var(--k-app-terciario); }
+/* Diálogo de Material 3 (radio 28, superficie) y hoja desde abajo (.hoja-abajo: radio 28 arriba); el velo detrás. Entran con
+   KRecurso.app.hoja(). */
+.k-app-velo { position: absolute; inset: 0; z-index: 5; background: var(--k-app-velo); opacity: 0; }
+.k-app-dialogo {
+  position: absolute;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 20px;
+  border-radius: 28px;
+  background: var(--k-app-fondo);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+.k-app-dialogo-titulo { margin: 0 0 16px; font-size: 24px; font-weight: 400; line-height: 32px; }
+.k-app-hoja {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  padding: 24px;
+  border-radius: 28px 28px 0 0;
+  background: var(--k-app-fondo);
+}
+/* Aviso en la pantalla (snackbar de la app: superficie inversa, radio 12). */
+.k-app-snackbar {
+  position: absolute;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--k-app-inversa);
+  color: var(--k-app-sobre-inversa);
+  font-size: 14px;
+  line-height: 20px;
+}
+/* Notificación de Kingdom en el celular (el aviso que manda la app; sin logos de terceros): el logo de la app, «Kingdom», el título y el
+   texto del catálogo de avisos (KingdomApp backend/avisos/catalogo.json). */
+.k-app-notificacion {
+  position: absolute;
+  z-index: 8;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 2px 12px;
+  padding: 14px 16px;
+  border-radius: 22px;
+  background: var(--k-app-cont-alto);
+  color: var(--k-app-texto);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+.k-app-notificacion img { grid-row: span 3; width: 36px; height: 36px; border-radius: 10px; }
+.k-app-notificacion small { color: var(--k-app-texto-2); font-size: 12px; line-height: 16px; }
+.k-app-notificacion b { font-size: 14px; font-weight: 600; line-height: 20px; }
+.k-app-notificacion span { color: var(--k-app-texto-2); font-size: 14px; line-height: 20px; }
+
+/* El dedo (v1.3): un círculo que cae en el elemento y lo presiona (aparece 4 cuadros antes; en el toque se hunde y el elemento queda
+   presionado 120 ms) con su onda en el primario; KRecurso.app.tocar() lo coloca y lo anima. Va DENTRO de la cámara (sigue al elemento si
+   la cámara se mueve), en px lógicos. */
+.k-dedo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  background: rgba(27, 27, 31, 0.26);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 4px 12px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+}
+.k-dedo-onda {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(1, 91, 190, 0.9);
+  opacity: 0;
+}
+/* El foco (v1.3): oscurece el resto de la pantalla al 55 % (la noche del kit) y pone un anillo dorado redondeado sobre el elemento.
+   KRecurso.app.foco() lo coloca sobre el elemento y lo anima. Va dentro de la cámara; la pantalla lo recorta. */
+.k-foco {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 8;
+  border-radius: var(--k-foco-radio, 16px);
+  box-shadow: 0 0 0 3px var(--k-noche-dorado, #e8b95a), 0 0 0 9999px rgba(6, 13, 31, 0.55);
+  opacity: 0;
+  pointer-events: none;
 }

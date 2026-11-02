@@ -6,7 +6,8 @@
 //   node ../_herramientas/recurso.mjs entregar --idioma es   entrega/<idioma>/: video-1080.mp4, video-720.mp4, poster.jpg/.webp, video.vtt,
 //                                                            ficha.json; verifica −16 LUFS integrados y pico ≤ −1,5 dBTP
 // El proyecto tiene su guion.mjs (formato en ../README.md → «Tipo Recurso (v1.2)») y sus composiciones (compositions/<id>.html), que son
-// motion design sin la app (excepción a la regla 1 de las directivas, decidida por el dueño). Todo lo demás se genera: el kit (montar-kit.mjs,
+// motion design sin la app (excepción a la regla 1 de las directivas, decidida por el dueño) o, en la variante «Para líderes» (kit v1.3,
+// decisión 241), la app v2 recreada en HTML con las piezas .k-app-* y KRecurso.app. Todo lo demás se genera: el kit (montar-kit.mjs,
 // sin editarlo), la voz (una frase por archivo, en caché por texto), la música («Product Launch» encadenada en compases hasta cubrir el
 // video y terminando en su final natural con el cierre), el host y los tiempos que cada escena lee con identidad/recurso.js.
 // Viene de tutorial-wiki.mjs (voz, normalización en dos pasadas, VTT, entrega).
@@ -324,16 +325,25 @@ function hacerEnvolvente(regiones, bajo) {
 }
 
 const PARA = ['pastores', 'lideres', 'administradores', 'servidores'];
-/** «para» (a quién va: lista cerrada) y «mensaje» (el texto de WhatsApp, con {enlace}) del guion, validados; los dos son opcionales. */
+// v1.3 (decisión 241): la sección de Recursos donde se publica y, en «Para líderes», el departamento. Listas cerradas: es el contrato con el
+// publicador de KingdomApp (tools/recursos/publicar.mjs); un valor nuevo se agrega aquí y allá a la vez.
+const SECCIONES = ['pastores', 'lideres'];
+const DEPARTAMENTOS = ['afirmacion'];
+/** «para» (a quién va), «seccion» y «departamento» (listas cerradas) y «mensaje» (el texto de WhatsApp, con {enlace}) del guion, validados;
+ *  todos son opcionales. */
 function extrasFicha(guion) {
   let para = guion.para;
   if (para !== undefined) {
     if (!Array.isArray(para) || !para.length || para.some(x => !PARA.includes(x))) throw new Error(`para: lista con valores de ${PARA.join(', ')}`);
     para = [...new Set(para)];
   }
+  const seccion = guion.seccion;
+  if (seccion !== undefined && !SECCIONES.includes(seccion)) throw new Error(`seccion: uno de ${SECCIONES.join(', ')}`);
+  const departamento = guion.departamento;
+  if (departamento !== undefined && !DEPARTAMENTOS.includes(departamento)) throw new Error(`departamento: uno de ${DEPARTAMENTOS.join(', ')}`);
   const mensaje = loc(guion.mensaje, 'mensaje');
   if (mensaje !== undefined && (typeof mensaje !== 'string' || !mensaje.includes('{enlace}'))) throw new Error('mensaje: el texto de WhatsApp debe llevar {enlace} donde va el enlace');
-  return { para, mensaje };
+  return { para, seccion, departamento, mensaje };
 }
 
 // ─── preparar ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -690,24 +700,41 @@ async function entregar() {
   // Audio: el del render (mezcla con su propio objetivo) a −16 LUFS en dos pasadas lineales, con 1 dB de margen de pico para el AAC.
   // Video: CRF con techo de bitrate (1080: 1,4 Mb/s + 128 kb/s ≈ 69 MB en 6 min como máximo; 720: 650 + 96 kb/s ≈ 34 MB).
   const lufs = kit.voz.lufs;
-  const audio = path.join(destino, 'audio-tmp.wav');
-  normalizar(mp4, audio, lufs, -2.5);
-  let m = medir(audio);
-  if (m.TP > -2.5 || Math.abs(m.I - lufs) > 0.3) {
-    // El modo lineal no alcanzó (picos): limitador suave y otra pasada.
-    const lim = path.join(destino, 'audio-lim.wav');
-    ffmpeg(['-i', audio, '-af', 'alimiter=limit=0.7:attack=5:release=60:level=disabled', '-ar', String(SR), lim]);
-    normalizar(lim, audio, lufs, -2.5);
-    fs.rmSync(lim);
-    m = medir(audio);
-  }
-  const x264 = ['-c:v', 'libx264', '-preset', 'slow', '-tune', 'animation', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-g', String(CPS * 2), '-movflags', '+faststart'];
+  // v1.3: el AAC rebasa el pico del WAV (a 96 kb/s, hasta ~1,4 dB con la mezcla de «Afirmando la cosecha»). El video se codifica UNA vez
+  // sin audio y el audio se prepara con un margen de pico que baja de a 1 dB (limitador suave antes de normalizar) hasta que el archivo
+  // ya codificado cumpla; cada margen se calcula una sola vez y sirve para los dos videos.
+  const audios = new Map();
+  const audioCon = (margen) => {
+    if (audios.has(margen)) return audios.get(margen);
+    const audio = path.join(destino, `audio${margen}.wav`);
+    normalizar(mp4, audio, lufs, margen);
+    const m = medir(audio);
+    if (m.TP > margen || Math.abs(m.I - lufs) > 0.3) {
+      // El modo lineal no alcanzó (picos): limitador suave y otra pasada.
+      const lim = path.join(destino, 'audio-lim.wav');
+      ffmpeg(['-i', audio, '-af', `alimiter=limit=${r3(Math.pow(10, (margen - 0.6) / 20))}:attack=5:release=60:level=disabled`, '-ar', String(SR), lim]);
+      normalizar(lim, audio, lufs, margen);
+      fs.rmSync(lim);
+    }
+    audios.set(margen, audio);
+    return audio;
+  };
+  const x264 = ['-c:v', 'libx264', '-preset', 'slow', '-tune', 'animation', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-g', String(CPS * 2)];
   const video1080 = path.join(destino, 'video-1080.mp4'), video720 = path.join(destino, 'video-720.mp4');
-  ffmpeg(['-i', mp4, '-i', audio, '-map', '0:v:0', '-map', '1:a:0', ...x264, '-crf', '20', '-maxrate', '1400k', '-bufsize', '2800k',
-    '-c:a', 'aac', '-b:a', '128k', '-ar', String(SR), video1080]);
-  ffmpeg(['-i', mp4, '-i', audio, '-map', '0:v:0', '-map', '1:a:0', '-vf', 'scale=1280:720:flags=lanczos', ...x264, '-crf', '22', '-maxrate', '650k',
-    '-bufsize', '1300k', '-c:a', 'aac', '-b:a', '96k', '-ar', String(SR), video720]);
-  fs.rmSync(audio);
+  const solo1080 = path.join(destino, 'solo-1080.mp4'), solo720 = path.join(destino, 'solo-720.mp4');
+  ffmpeg(['-i', mp4, '-map', '0:v:0', '-an', ...x264, '-crf', '20', '-maxrate', '1400k', '-bufsize', '2800k', solo1080]);
+  ffmpeg(['-i', mp4, '-map', '0:v:0', '-an', '-vf', 'scale=1280:720:flags=lanczos', ...x264, '-crf', '22', '-maxrate', '650k', '-bufsize', '1300k', solo720]);
+  const margenes = {};
+  for (const [solo, kbps, salida] of [[solo1080, '128k', video1080], [solo720, '96k', video720]]) {
+    for (const margen of [-2.5, -3.5, -4.5]) {
+      ffmpeg(['-i', solo, '-i', audioCon(margen), '-map', '0:v:0', '-map', '1:a:0', '-c:v', 'copy', '-c:a', 'aac', '-b:a', kbps, '-ar', String(SR),
+        '-movflags', '+faststart', salida]);
+      margenes[path.basename(salida)] = margen;
+      const v = medir(salida);
+      if (v.TP <= -1.6 && Math.abs(v.I - lufs) <= 0.4) break;
+    }
+  }
+  for (const f of [solo1080, solo720, ...audios.values()]) fs.rmSync(f, { force: true });
   fs.copyFileSync(vtt, path.join(destino, 'video.vtt'));
 
   // Póster para la vista previa de WhatsApp (1200×630, menos de 300 KB): el título del episodio al final de la intro, o el segundo del guion.
@@ -737,19 +764,21 @@ async function entregar() {
   const [ancho, alto] = correr('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0', video1080]).stdout.trim().split(',').map(Number);
   if (ancho !== 1920 || alto !== 1080) throw new Error(`video-1080.mp4 mide ${ancho}×${alto} (debe ser 1920×1080)`);
   if (archivos['poster.jpg'].bytes >= 300000) throw new Error(`poster.jpg pesa ${archivos['poster.jpg'].bytes} bytes (WhatsApp pide menos de 300 KB)`);
-  const { para, mensaje } = extrasFicha(guion);
+  const { para, seccion, departamento, mensaje } = extrasFicha(guion);
   const ficha = {
     slug: guion.slug, idioma: IDIOMA, titulo: tiempos.titulo.replace(/\*/g, ''), descripcion: tiempos.descripcion, duracion: r3(duracion(video1080)),
-    ancho, alto, archivos, ...(para ? { para } : {}), ...(mensaje ? { mensaje } : {}),
+    ancho, alto, archivos, ...(para ? { para } : {}), ...(seccion ? { seccion } : {}), ...(departamento ? { departamento } : {}),
+    ...(mensaje ? { mensaje } : {}),
   };
   fs.writeFileSync(path.join(PROYECTO, 'renders', `entrega-${IDIOMA}.json`), JSON.stringify({
-    kit: kit.version, hyperframes: HF, fecha: new Date().toISOString().slice(0, 10), audio: verif,
+    kit: kit.version, hyperframes: HF, fecha: new Date().toISOString().slice(0, 10), audio: verif, margenPicoAntesDelAac: margenes,
     video720: { bytes: archivos['video-720.mp4'].bytes }, poster: { en: enPoster, ancho: 1200, alto: 630 },
   }, null, 1));
   fs.writeFileSync(path.join(destino, 'ficha.json'), JSON.stringify(ficha, null, 2) + '\n');
   const mb = n => (n / 1048576).toFixed(1);
   console.log(`✓ entrega/${IDIOMA}/ (${d.toFixed(1)} s): video-1080 ${mb(archivos['video-1080.mp4'].bytes)} MB (${verif['video-1080.mp4'].lufs} LUFS, ${verif['video-1080.mp4'].picoDbtp} dBTP) · ` +
-    `video-720 ${mb(archivos['video-720.mp4'].bytes)} MB · póster ${Math.round(archivos['poster.jpg'].bytes / 1024)} KB · VTT · ficha.json${para ? ` (para: ${para.join(', ')})` : ''}`);
+    `video-720 ${mb(archivos['video-720.mp4'].bytes)} MB · póster ${Math.round(archivos['poster.jpg'].bytes / 1024)} KB · VTT · ficha.json` +
+    `${para ? ` (para: ${para.join(', ')})` : ''}${seccion ? ` (sección: ${seccion}${departamento ? ` · ${departamento}` : ''})` : ''}`);
   console.log('  Publicarlo en Recursos (Plataforma) lo hace el líder; el dueño lo revisa ya publicado.');
 }
 
