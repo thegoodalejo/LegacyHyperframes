@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es" data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"id\":\"resumen\",\"composicion\":\"compositions/resumen.html\",\"compId\":\"resumen\",\"inicio\":346.5,\"duracion\":19,\"fin\":365.5,\"conVoz\":true,\"inicioAbs\":346.5,\"idioma\":\"es\",\"compas0\":1.5,\"golpes\":[7.5,9.45,9.5,10,11.45],\"frases\":[{\"id\":\"voz-resumen-1\",\"clave\":\"simple\",\"texto\":\"Afirmar la cosecha con Kingdom es simple.\",\"inicio\":0.5,\"fin\":2.868,\"inicioAbs\":347,\"finAbs\":349.368,\"palabras\":[{\"texto\":\"Afirmar\",\"inicio\":0.53,\"fin\":1.027},{\"texto\":\"la\",\"inicio\":1.027,\"fin\":1.227},{\"texto\":\"cosecha\",\"inicio\":1.227,\"fin\":1.723},{\"texto\":\"con\",\"inicio\":1.723,\"fin\":1.923},{\"texto\":\"Kingdom\",\"inicio\":1.923,\"fin\":2.272},{\"texto\":\"es\",\"inicio\":2.272,\"fin\":2.472},{\"texto\":\"simple.\",\"inicio\":2.472,\"fin\":2.82,\"clave\":true}]},{\"id\":\"voz-resumen-2\",\"clave\":\"r1\",\"texto\":\"Registra a cada persona que llega. Reparte, para que nadie se quede solo.\",\"inicio\":3.468,\"fin\":7.521,\"inicioAbs\":349.968,\"finAbs\":354.021,\"palabras\":[{\"texto\":\"Registra\",\"inicio\":3.498,\"fin\":3.948},{\"texto\":\"a\",\"inicio\":3.948,\"fin\":4.129},{\"texto\":\"cada\",\"inicio\":4.129,\"fin\":4.445},{\"texto\":\"persona\",\"inicio\":4.445,\"fin\":4.895},{\"texto\":\"que\",\"inicio\":4.895,\"fin\":5.077},{\"texto\":\"llega.\",\"inicio\":5.077,\"fin\":5.392},{\"texto\":\"Reparte,\",\"inicio\":5.392,\"fin\":5.842},{\"texto\":\"para\",\"inicio\":5.842,\"fin\":6.158},{\"texto\":\"que\",\"inicio\":6.158,\"fin\":6.339},{\"texto\":\"nadie\",\"inicio\":6.339,\"fin\":6.655},{\"texto\":\"se\",\"inicio\":6.655,\"fin\":6.837},{\"texto\":\"quede\",\"inicio\":6.837,\"fin\":7.152},{\"texto\":\"solo.\",\"inicio\":7.152,\"fin\":7.468}]},{\"id\":\"voz-resumen-3\",\"clave\":\"r2\",\"texto\":\"Llama a tiempo y marca su paso. Acompáñala hasta que se conecte.\",\"inicio\":7.921,\"fin\":11.441,\"inicioAbs\":354.421,\"finAbs\":357.941,\"palabras\":[{\"texto\":\"Llama\",\"inicio\":7.951,\"fin\":8.241},{\"texto\":\"a\",\"inicio\":8.241,\"fin\":8.408},{\"texto\":\"tiempo\",\"inicio\":8.408,\"fin\":8.698},{\"texto\":\"y\",\"inicio\":8.698,\"fin\":8.864},{\"texto\":\"marca\",\"inicio\":8.864,\"fin\":9.154},{\"texto\":\"su\",\"inicio\":9.154,\"fin\":9.321},{\"texto\":\"paso.\",\"inicio\":9.321,\"fin\":9.611},{\"texto\":\"Acompáñala\",\"inicio\":9.801,\"fin\":10.424},{\"texto\":\"hasta\",\"inicio\":10.424,\"fin\":10.697},{\"texto\":\"que\",\"inicio\":10.697,\"fin\":10.854},{\"texto\":\"se\",\"inicio\":10.854,\"fin\":11.011},{\"texto\":\"conecte.\",\"inicio\":11.011,\"fin\":11.401}]},{\"id\":\"voz-resumen-4\",\"clave\":\"r3\",\"texto\":\"Mide, ajusta y vuelve a empezar.\",\"inicio\":11.841,\"fin\":13.825,\"inicioAbs\":358.341,\"finAbs\":360.325,\"palabras\":[{\"texto\":\"Mide,\",\"inicio\":11.871,\"fin\":12.186},{\"texto\":\"ajusta\",\"inicio\":12.186,\"fin\":12.635},{\"texto\":\"y\",\"inicio\":12.635,\"fin\":12.816},{\"texto\":\"vuelve\",\"inicio\":12.816,\"fin\":13.131},{\"texto\":\"a\",\"inicio\":13.131,\"fin\":13.312},{\"texto\":\"empezar.\",\"inicio\":13.312,\"fin\":13.761}]},{\"id\":\"voz-resumen-5\",\"clave\":\"confio\",\"texto\":\"Porque cada persona que llega es alguien que Dios te confió.\",\"inicio\":14.525,\"fin\":17.746,\"inicioAbs\":361.025,\"finAbs\":364.246,\"palabras\":[{\"texto\":\"Porque\",\"inicio\":14.555,\"fin\":14.894},{\"texto\":\"cada\",\"inicio\":14.894,\"fin\":15.233},{\"texto\":\"persona\",\"inicio\":15.233,\"fin\":15.716},{\"texto\":\"que\",\"inicio\":15.716,\"fin\":15.91},{\"texto\":\"llega\",\"inicio\":15.91,\"fin\":16.249},{\"texto\":\"es\",\"inicio\":16.249,\"fin\":16.444},{\"texto\":\"alguien\",\"inicio\":16.444,\"fin\":16.782},{\"texto\":\"que\",\"inicio\":16.782,\"fin\":16.977},{\"texto\":\"Dios\",\"inicio\":16.977,\"fin\":17.172},{\"texto\":\"te\",\"inicio\":17.172,\"fin\":17.366},{\"texto\":\"confió.\",\"inicio\":17.366,\"fin\":17.705,\"clave\":true}]}]}"}]'>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- «Afirmando la cosecha con Kingdom» · escena «resumen» (storyboard en SPEC.md). Estrategia: motion design del kit v1.2 (frame.md): los cinco
+         verbos en fila (Registra, Reparte, Llama, Acompaña, Mide), la vuelta a empezar y, al final, «alguien que Dios te confió». -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .col { position: absolute; left: 192px; top: 210px; width: 860px; height: 660px; }
+        .bloque { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+        .ceja-e { position: absolute; left: 192px; top: 132px; }
+        .dia { position: absolute; left: 1080px; top: 140px; width: 648px; height: 800px; }
+        .svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+        .ancla { position: absolute; width: 0; height: 0; }
+        .centro { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; }
+        .chip { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 28px; border-radius: 32px; background: rgba(12, 26, 58, 0.92);
+          box-shadow: inset 0 0 0 1px rgba(234, 240, 255, 0.18); font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1; color: var(--k-noche-tinta); }
+        .chip.oro { box-shadow: inset 0 0 0 2px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+        .chip.azul { box-shadow: inset 0 0 0 2px var(--k-azul); }
+        .rot { font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--k-noche-tinta-2); }
+        .rot.oro { color: var(--k-noche-dorado); }
+        /* Íconos como máscara con el estilo en el documento (no en kit.css): la url() de --k-icono se resuelve contra la página. Lección del
+           2026-11-01: la de kit.css sale vacía en el render aunque el snapshot la muestre. Lo mismo para .k-app-icono (kit v1.3). */
+        .ico { display: inline-block; flex: none; width: var(--k-icono-tam, 56px); height: var(--k-icono-tam, 56px); background: currentColor;
+          -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .ico-oro { color: var(--k-noche-dorado); }
+        .k-recurso-icono, .k-app-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .halo { position: absolute; left: 0; top: 0; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; opacity: 0; box-shadow: 0 0 0 3px var(--k-noche-dorado); }
+        /* Rótulo del kit sobre la app recreada (no es de la app): una píldora de la noche con borde dorado. */
+        .rotulo-kit { display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px; border-radius: 28px; background: rgba(6, 13, 31, 0.92);
+          box-shadow: inset 0 0 0 2px var(--k-noche-dorado), 0 16px 32px -12px rgba(0, 0, 0, 0.6); color: var(--k-noche-dorado); font-family: var(--k-fuente);
+          font-size: 28px; font-weight: 700; line-height: 1; white-space: nowrap; }
+        .arriba { position: absolute; left: 192px; top: 170px; width: 1536px; height: 200px; }
+        .arriba .bloque { align-items: center; text-align: center; }
+        .escena { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .verbo { font-family: var(--k-fuente-marca); font-size: 48px; font-weight: 560; color: var(--k-noche-tinta); white-space: nowrap; }
+        .final { position: absolute; left: 192px; top: 420px; width: 1536px; height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+      </style>
+
+      <div id="root" data-composition-id="resumen" data-width="1920" data-height="1080" data-duration="19">
+        <div class="k-recurso-ceja ceja-e" id="res-ceja">En resumen</div>
+        <div class="arriba" id="res-col"></div>
+        <div class="escena" id="res-esc" data-layout-allow-overflow data-layout-allow-overlap><svg class="svg" id="res-svg" viewBox="0 0 1920 1080"></svg></div>
+        <div class="final" id="res-final"><div class="k-recurso-titular" id="res-fin-t"></div></div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window); // al empezar el script: «window» es el de esta escena
+          // ── H: piezas comunes de las escenas de este recurso (las del Recurso 3: texto cinético con la voz, anclas, nodos, puntos, líneas,
+          //    entradas; y la app recreada se mueve con KRecurso.app, del kit v1.3) ──
+          const H = (() => {
+            const NS = 'http://www.w3.org/2000/svg';
+            const r3 = (n) => Math.round(n * 1000) / 1000;
+            // «texto con *énfasis*» → [{ texto, clave }]
+            const partir = (s) => {
+              const out = [];
+              let on = false;
+              for (const w of String(s).split(/\s+/)) {
+                if (!w) continue;
+                let t = '', c = false;
+                for (const ch of w) {
+                  if (ch === '*') { on = !on; continue; }
+                  t += ch;
+                  if (on) c = true;
+                }
+                out.push({ texto: t, clave: c });
+              }
+              return out;
+            };
+            const el = (tag, cls, padre, id, css) => {
+              const d = document.createElement(tag);
+              if (cls) d.className = cls;
+              if (id) d.id = id;
+              if (css) Object.assign(d.style, css);
+              padre.appendChild(d);
+              return d;
+            };
+            const icono = (n, tam, oro) =>
+              `<span class="ico${oro ? ' ico-oro' : ''}" style="--k-icono:url(identidad/iconos/${n}.svg);--k-icono-tam:${tam || 56}px"></span>`;
+            // Un ancla es un punto (0×0) en x, y: se anima el ancla (escala desde su centro) y su contenido queda centrado encima.
+            const ancla = (padre, id, x, y, html, cls) => {
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const c = el('div', `centro ${cls || ''}`, a);
+              c.innerHTML = html;
+              return a;
+            };
+            const chip = (padre, id, x, y, html, cls) => ancla(padre, id, x, y, html, `chip ${cls || ''}`);
+            const nodo = (padre, id, x, y, ic, oro, tam) => {
+              const t = tam || 120;
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const n = el('div', `k-recurso-nodo${oro ? ' k-oro' : ''}`, a, `${id}-n`, { left: '0px', top: '0px', width: `${t}px`, height: `${t}px`, margin: `-${t / 2}px 0 0 -${t / 2}px` });
+              n.innerHTML = icono(ic, Math.round(t * 0.46));
+              return a;
+            };
+            const punto = (padre, id, x, y, cls, tam) => {
+              const d = el('span', `k-recurso-punto ${cls || ''}`, padre, id, { left: `${x}px`, top: `${y}px` });
+              if (tam) Object.assign(d.style, { width: `${tam}px`, height: `${tam}px`, margin: `-${tam / 2}px 0 0 -${tam / 2}px` });
+              return d;
+            };
+            const linea = (svg, id, x1, y1, x2, y2, oro) => {
+              const l = document.createElementNS(NS, 'line');
+              l.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''}`);
+              l.setAttribute('id', id);
+              [['x1', x1], ['y1', y1], ['x2', x2], ['y2', y2]].forEach(([k, v]) => l.setAttribute(k, v));
+              const L = Math.hypot(x2 - x1, y2 - y1) + 2;
+              l.style.strokeDasharray = `${L} ${L + 40}`;
+              l.style.strokeDashoffset = `${L + 14}`;
+              svg.appendChild(l);
+              return l;
+            };
+            const camino = (svg, id, d, oro, cls) => {
+              const p = document.createElementNS(NS, 'path');
+              p.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''} ${cls || ''}`);
+              p.setAttribute('id', id);
+              p.setAttribute('d', d);
+              svg.appendChild(p);
+              const L = p.getTotalLength() + 2;
+              p.style.strokeDasharray = `${L} ${L + 40}`;
+              p.style.strokeDashoffset = `${L + 14}`;
+              return { p, L, punto: (u) => p.getPointAtLength(Math.max(0, Math.min(1, u)) * (L - 2)) };
+            };
+            const dibujar = (tl, l, t, d) => tl.to(l, { strokeDashoffset: 0, duration: d || 0.6, ease: 'power2.inOut' }, t);
+            // Entradas y salidas del frame: subir con desenfoque (power3.out) · escalas pequeñas con back.out · salir subiendo (power2.in).
+            const entra = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, y: (o && o.dy) ?? 30, filter: 'blur(6px)' },
+              { opacity: 1, y: 0, filter: 'blur(0px)', duration: (o && o.d) || 0.5, ease: 'power3.out', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const pop = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, scale: 0 },
+              { opacity: 1, scale: 1, duration: (o && o.d) || 0.45, ease: 'back.out(2)', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const sale = (tl, s, t, o) => tl.to(s, { opacity: 0, y: (o && o.dy) ?? -24, filter: 'blur(6px)', duration: (o && o.d) || 0.35, ease: 'power2.in', stagger: (o && o.stagger) || 0 }, t);
+            const late = (tl, s, t, o) => tl.fromTo(s, { scale: (o && o.de) || 1.12 }, { scale: 1, duration: (o && o.d) || 0.45, ease: 'power2.out', immediateRender: false }, t);
+            const halo = (tl, s, t) => tl.fromTo(s, { scale: 0.5, opacity: 0.9 }, { scale: 1.9, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+            // La palabra clave n de una frase (o la palabra que empieza con re).
+            const clave = (f, n) => (f.palabras.filter((p) => p.clave)[n || 0] || f.palabras[0] || { inicio: f.inicio, fin: f.fin });
+            const palabra = (f, re) => f.palabras.find((p) => re.test(p.texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^[^a-z0-9]+/, ''))) || { inicio: f.inicio, fin: f.fin };
+            // Texto cinético: un bloque por frase en «cont». textos[i]: undefined = la frase tal cual (sus palabras con sus tiempos);
+            // una cadena = un rótulo corto cuyas palabras entran repartidas sobre las de la frase; null = sin texto (sigue el anterior).
+            const bloques = (T, cont, pref, textos, clase) => {
+              textos = textos || [];
+              return T.frases.map((f, i) => {
+                const tx = textos[i];
+                if (tx === null) return null;
+                const b = el('div', 'bloque', cont, `${pref}-b-${i}`);
+                const fr = el('div', clase || 'k-recurso-frase', b, `${pref}-f-${i}`);
+                let ps;
+                if (tx === undefined) {
+                  ps = f.palabras.length ? f.palabras.map((p) => ({ texto: p.texto, clave: !!p.clave, inicio: p.inicio }))
+                    : partir(f.texto).map((p, j, a) => ({ ...p, inicio: f.inicio + (j * (f.fin - f.inicio)) / a.length }));
+                } else {
+                  const ws = partir(tx);
+                  const np = f.palabras.length;
+                  ps = ws.map((w, j) => ({ ...w, inicio: np ? f.palabras[Math.min(np - 1, Math.floor((j * np) / ws.length))].inicio : f.inicio + (j * (f.fin - f.inicio)) / ws.length }));
+                }
+                const spans = ps.map((p, j) => {
+                  const s = el('span', `k-recurso-palabra${p.clave ? ' k-recurso-clave' : ''}`, fr, `${pref}-p-${i}-${j}`);
+                  s.textContent = p.texto;
+                  return { s, inicio: p.inicio };
+                });
+                return { i, b, fr, spans };
+              });
+            };
+            const animarBloques = (tl, T, bs, finUltimo) => {
+              const vis = bs.filter(Boolean);
+              vis.forEach((x, k) => {
+                x.spans.forEach(({ s, inicio }) => tl.fromTo(s, { y: 28, opacity: 0, filter: 'blur(6px)' },
+                  { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, Math.max(0, inicio - 0.08)));
+                const sig = vis[k + 1];
+                const t = sig ? T.frases[sig.i].inicio - 0.32 : (finUltimo ?? T.salida(0.6));
+                tl.to(x.fr, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+              });
+            };
+            // Contador: el texto de el sube de a hasta b (enteros) en d segundos desde t, con onUpdate (buscable).
+            const contar = (tl, elc, a, b, t, d) => {
+              const o = { n: a };
+              tl.fromTo(o, { n: a }, { n: b, duration: d || 0.8, ease: 'power2.out', immediateRender: false, onUpdate: () => { elc.textContent = String(Math.round(o.n)); } }, t);
+            };
+            // Semilla fija para posiciones «al azar» (siempre las mismas).
+            const azar = (s) => () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+            return { r3, partir, el, icono, ancla, chip, nodo, punto, linea, camino, dibujar, entra, pop, sale, late, halo, clave, palabra, bloques, animarBloques, contar, azar };
+          })();
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const [f0, f1, f2, f3, f4] = T.frases;
+            const P = (f, re, d) => T.pulso(H.palabra(f, re).inicio + (d || 0));
+            const $ = (id) => document.getElementById(id);
+            const esc = $('res-esc'), svg = $('res-svg');
+            const bs = H.bloques(T, $('res-col'), 'res', ['Afirmar la cosecha es *simple*', null, null, null, null]);
+            H.animarBloques(tl, T, bs, T.pulso(f4.inicio - 0.4));
+            H.entra(tl, '#res-ceja', 0.1, { dy: 16 });
+
+            // f1–f3 · los cinco verbos, cada uno en su palabra, unidos por la ruta.
+            const V = [['person_add', 'Registra', f1, /^registra/], ['diversity_3', 'Reparte', f1, /^reparte/], ['call', 'Llama', f2, /^llama/],
+              ['route', 'Acompaña', f2, /^acompanala/], ['monitoring', 'Mide', f3, /^mide/]];
+            const XS = [330, 645, 960, 1275, 1590], Y = 610;
+            const base = H.linea(svg, 'res-base', XS[0], Y, XS[4], Y, true);
+            H.dibujar(tl, base, P(f1, /^registra/, -0.2), 6.5);
+            V.forEach(([ic, tx, f, re], i) => {
+              const n = H.nodo(esc, `res-n-${i}`, XS[i], Y, ic, true, 132);
+              const r = H.ancla(esc, `res-r-${i}`, XS[i], Y + 120, `<span class="verbo">${tx}</span>`, '');
+              const t = P(f, re, -0.3);
+              H.pop(tl, n, t);
+              H.entra(tl, r, t + 0.1, { dy: 14 });
+            });
+            // «mide, ajusta y vuelve a empezar»: la vuelta, de Mide a Registra.
+            const vuelta = H.camino(svg, 'res-vuelta', `M ${XS[4]} ${Y - 70} C ${XS[4]} ${Y - 260}, ${XS[0]} ${Y - 260}, ${XS[0]} ${Y - 70}`, false);
+            H.dibujar(tl, vuelta.p, P(f3, /^vuelve/, -0.3), 1.0);
+            const sync = H.ancla(esc, 'res-sync', 960, Y - 205, H.icono('sync', 56), 'rot');
+            H.pop(tl, sync, P(f3, /^empezar/, -0.3));
+
+            // f4 · porque cada persona que llega es alguien que Dios te confió.
+            const t4 = T.pulso(f4.inicio - 0.3);
+            H.sale(tl, ['#res-esc'], t4, { d: 0.45 });
+            const fin = $('res-fin-t');
+            H.partir('Alguien que Dios te *confió*').forEach((w, j) => {
+              const s = H.el('span', `k-recurso-palabra${w.clave ? ' k-recurso-clave' : ''}`, fin, `res-fin-${j}`);
+              s.textContent = w.texto;
+              const k = Math.min(f4.palabras.length - 1, 6 + j); // «alguien que Dios te confió» son las palabras 6 a 10
+              tl.fromTo(s, { y: 28, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.45, ease: 'power3.out' }, f4.palabras[k].inicio - 0.08);
+            });
+            const yo = H.punto($('res-final'), 'res-yo', 768, 70, 'k-oro', 36);
+            H.pop(tl, yo, P(f4, /^persona/, -0.3));
+            const halo = H.el('div', 'halo', $('res-final'), 'res-halo', { left: '768px', top: '70px' });
+            H.halo(tl, halo, P(f4, /^confio/, -0.1));
+
+            H.sale(tl, ['#res-final', '#res-ceja'], T.salida(0.6), { d: 0.5 });
+            tl.set({}, {}, T.duracion);
+            window.__timelines['resumen'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

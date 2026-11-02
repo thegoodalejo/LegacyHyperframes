@@ -1,0 +1,13 @@
+{
+  "name": "kingdomapp-recurso-afirmando-la-cosecha",
+  "private": true,
+  "type": "module",
+  "description": "Recurso para líderes 1 (sección «Para líderes», departamento Afirmación; decisión 241): «Afirmando la cosecha con Kingdom». Para el líder de afirmación o consolidación: registrar (QR de bienvenida y Nueva persona), repartir (Coordinar), llamar (Mi seguimiento y el reporte del paso), acompañar por la ruta de crecimiento, el semáforo de actividad, medir (Tableros) y multiplicar. Variante «Para líderes» del kit v1.3: la app v2 recreada en HTML, fiel a las capturas de Kingdom Demo, y manipulada con animación; la estrategia en motion design del kit v1.2.",
+  "scripts": {
+    "preparar:es": "node ../_herramientas/recurso.mjs preparar --idioma es",
+    "dev": "npx --yes hyperframes@0.8.221 preview",
+    "check": "npx --yes hyperframes@0.8.221 check",
+    "render:es": "node ../_herramientas/recurso.mjs render --idioma es",
+    "entregar:es": "node ../_herramientas/recurso.mjs entregar --idioma es"
+  }
+}

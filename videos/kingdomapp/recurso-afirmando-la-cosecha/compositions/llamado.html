@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es" data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"id\":\"llamado\",\"composicion\":\"compositions/llamado.html\",\"compId\":\"llamado\",\"inicio\":365.5,\"duracion\":8.5,\"fin\":374,\"conVoz\":true,\"inicioAbs\":365.5,\"idioma\":\"es\",\"compas0\":0.5,\"golpes\":[],\"frases\":[{\"id\":\"voz-llamado-1\",\"clave\":\"acompanamos\",\"texto\":\"En Kingdom te acompañamos a poner en marcha tu proceso de afirmación.\",\"inicio\":0.5,\"fin\":4.404,\"inicioAbs\":366,\"finAbs\":369.904,\"palabras\":[{\"texto\":\"En\",\"inicio\":0.53,\"fin\":0.712},{\"texto\":\"Kingdom\",\"inicio\":0.712,\"fin\":1.03},{\"texto\":\"te\",\"inicio\":1.03,\"fin\":1.212},{\"texto\":\"acompañamos\",\"inicio\":1.212,\"fin\":1.935,\"clave\":true},{\"texto\":\"a\",\"inicio\":1.935,\"fin\":2.117},{\"texto\":\"poner\",\"inicio\":2.117,\"fin\":2.435},{\"texto\":\"en\",\"inicio\":2.435,\"fin\":2.617},{\"texto\":\"marcha\",\"inicio\":2.617,\"fin\":2.935},{\"texto\":\"tu\",\"inicio\":2.935,\"fin\":3.117},{\"texto\":\"proceso\",\"inicio\":3.117,\"fin\":3.57},{\"texto\":\"de\",\"inicio\":3.57,\"fin\":3.752},{\"texto\":\"afirmación.\",\"inicio\":3.752,\"fin\":4.34}]},{\"id\":\"voz-llamado-2\",\"clave\":\"whatsapp\",\"texto\":\"Escríbenos por WhatsApp.\",\"inicio\":4.904,\"fin\":6.461,\"inicioAbs\":370.404,\"finAbs\":371.961,\"palabras\":[{\"texto\":\"Escríbenos\",\"inicio\":4.934,\"fin\":5.728},{\"texto\":\"por\",\"inicio\":5.728,\"fin\":5.975},{\"texto\":\"WhatsApp.\",\"inicio\":5.975,\"fin\":6.404}]}]}"}]'>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- «Afirmando la cosecha con Kingdom» · escena «llamado» (storyboard en SPEC.md). Estrategia: motion design del kit v1.2 (frame.md), como el
+         llamado del Recurso 3: Kingdom acompaña a la iglesia a poner en marcha su proceso de afirmación; escríbenos por WhatsApp (se nombra, no se
+         dibuja). Después viene el cierre del kit (llamado «acompanamiento», contacto «whatsapp»). -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .col { position: absolute; left: 192px; top: 210px; width: 860px; height: 660px; }
+        .bloque { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+        .ceja-e { position: absolute; left: 192px; top: 132px; }
+        .dia { position: absolute; left: 1080px; top: 140px; width: 648px; height: 800px; }
+        .svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+        .ancla { position: absolute; width: 0; height: 0; }
+        .centro { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; }
+        .chip { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 28px; border-radius: 32px; background: rgba(12, 26, 58, 0.92);
+          box-shadow: inset 0 0 0 1px rgba(234, 240, 255, 0.18); font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1; color: var(--k-noche-tinta); }
+        .chip.oro { box-shadow: inset 0 0 0 2px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+        .chip.azul { box-shadow: inset 0 0 0 2px var(--k-azul); }
+        .rot { font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--k-noche-tinta-2); }
+        .rot.oro { color: var(--k-noche-dorado); }
+        /* Íconos como máscara con el estilo en el documento (no en kit.css): la url() de --k-icono se resuelve contra la página. Lección del
+           2026-11-01: la de kit.css sale vacía en el render aunque el snapshot la muestre. Lo mismo para .k-app-icono (kit v1.3). */
+        .ico { display: inline-block; flex: none; width: var(--k-icono-tam, 56px); height: var(--k-icono-tam, 56px); background: currentColor;
+          -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .ico-oro { color: var(--k-noche-dorado); }
+        .k-recurso-icono, .k-app-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .halo { position: absolute; left: 0; top: 0; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; opacity: 0; box-shadow: 0 0 0 3px var(--k-noche-dorado); }
+        /* Rótulo del kit sobre la app recreada (no es de la app): una píldora de la noche con borde dorado. */
+        .rotulo-kit { display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px; border-radius: 28px; background: rgba(6, 13, 31, 0.92);
+          box-shadow: inset 0 0 0 2px var(--k-noche-dorado), 0 16px 32px -12px rgba(0, 0, 0, 0.6); color: var(--k-noche-dorado); font-family: var(--k-fuente);
+          font-size: 28px; font-weight: 700; line-height: 1; white-space: nowrap; }
+      </style>
+
+      <div id="root" data-composition-id="llamado" data-width="1920" data-height="1080" data-duration="8.5">
+        <div class="k-recurso-ceja ceja-e" id="lla-ceja">Te acompañamos</div>
+        <div class="col" id="lla-col"></div>
+        <div class="dia" id="lla-dia" data-layout-allow-overflow data-layout-allow-overlap>
+          <svg class="svg" id="lla-svg" viewBox="0 0 648 800"></svg>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window); // al empezar el script: «window» es el de esta escena
+          // ── H: piezas comunes de las escenas de este recurso (las del Recurso 3: texto cinético con la voz, anclas, nodos, puntos, líneas,
+          //    entradas; y la app recreada se mueve con KRecurso.app, del kit v1.3) ──
+          const H = (() => {
+            const NS = 'http://www.w3.org/2000/svg';
+            const r3 = (n) => Math.round(n * 1000) / 1000;
+            // «texto con *énfasis*» → [{ texto, clave }]
+            const partir = (s) => {
+              const out = [];
+              let on = false;
+              for (const w of String(s).split(/\s+/)) {
+                if (!w) continue;
+                let t = '', c = false;
+                for (const ch of w) {
+                  if (ch === '*') { on = !on; continue; }
+                  t += ch;
+                  if (on) c = true;
+                }
+                out.push({ texto: t, clave: c });
+              }
+              return out;
+            };
+            const el = (tag, cls, padre, id, css) => {
+              const d = document.createElement(tag);
+              if (cls) d.className = cls;
+              if (id) d.id = id;
+              if (css) Object.assign(d.style, css);
+              padre.appendChild(d);
+              return d;
+            };
+            const icono = (n, tam, oro) =>
+              `<span class="ico${oro ? ' ico-oro' : ''}" style="--k-icono:url(identidad/iconos/${n}.svg);--k-icono-tam:${tam || 56}px"></span>`;
+            // Un ancla es un punto (0×0) en x, y: se anima el ancla (escala desde su centro) y su contenido queda centrado encima.
+            const ancla = (padre, id, x, y, html, cls) => {
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const c = el('div', `centro ${cls || ''}`, a);
+              c.innerHTML = html;
+              return a;
+            };
+            const chip = (padre, id, x, y, html, cls) => ancla(padre, id, x, y, html, `chip ${cls || ''}`);
+            const nodo = (padre, id, x, y, ic, oro, tam) => {
+              const t = tam || 120;
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const n = el('div', `k-recurso-nodo${oro ? ' k-oro' : ''}`, a, `${id}-n`, { left: '0px', top: '0px', width: `${t}px`, height: `${t}px`, margin: `-${t / 2}px 0 0 -${t / 2}px` });
+              n.innerHTML = icono(ic, Math.round(t * 0.46));
+              return a;
+            };
+            const punto = (padre, id, x, y, cls, tam) => {
+              const d = el('span', `k-recurso-punto ${cls || ''}`, padre, id, { left: `${x}px`, top: `${y}px` });
+              if (tam) Object.assign(d.style, { width: `${tam}px`, height: `${tam}px`, margin: `-${tam / 2}px 0 0 -${tam / 2}px` });
+              return d;
+            };
+            const linea = (svg, id, x1, y1, x2, y2, oro) => {
+              const l = document.createElementNS(NS, 'line');
+              l.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''}`);
+              l.setAttribute('id', id);
+              [['x1', x1], ['y1', y1], ['x2', x2], ['y2', y2]].forEach(([k, v]) => l.setAttribute(k, v));
+              const L = Math.hypot(x2 - x1, y2 - y1) + 2;
+              l.style.strokeDasharray = `${L} ${L + 40}`;
+              l.style.strokeDashoffset = `${L + 14}`;
+              svg.appendChild(l);
+              return l;
+            };
+            const camino = (svg, id, d, oro, cls) => {
+              const p = document.createElementNS(NS, 'path');
+              p.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''} ${cls || ''}`);
+              p.setAttribute('id', id);
+              p.setAttribute('d', d);
+              svg.appendChild(p);
+              const L = p.getTotalLength() + 2;
+              p.style.strokeDasharray = `${L} ${L + 40}`;
+              p.style.strokeDashoffset = `${L + 14}`;
+              return { p, L, punto: (u) => p.getPointAtLength(Math.max(0, Math.min(1, u)) * (L - 2)) };
+            };
+            const dibujar = (tl, l, t, d) => tl.to(l, { strokeDashoffset: 0, duration: d || 0.6, ease: 'power2.inOut' }, t);
+            // Entradas y salidas del frame: subir con desenfoque (power3.out) · escalas pequeñas con back.out · salir subiendo (power2.in).
+            const entra = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, y: (o && o.dy) ?? 30, filter: 'blur(6px)' },
+              { opacity: 1, y: 0, filter: 'blur(0px)', duration: (o && o.d) || 0.5, ease: 'power3.out', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const pop = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, scale: 0 },
+              { opacity: 1, scale: 1, duration: (o && o.d) || 0.45, ease: 'back.out(2)', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const sale = (tl, s, t, o) => tl.to(s, { opacity: 0, y: (o && o.dy) ?? -24, filter: 'blur(6px)', duration: (o && o.d) || 0.35, ease: 'power2.in', stagger: (o && o.stagger) || 0 }, t);
+            const late = (tl, s, t, o) => tl.fromTo(s, { scale: (o && o.de) || 1.12 }, { scale: 1, duration: (o && o.d) || 0.45, ease: 'power2.out', immediateRender: false }, t);
+            const halo = (tl, s, t) => tl.fromTo(s, { scale: 0.5, opacity: 0.9 }, { scale: 1.9, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+            // La palabra clave n de una frase (o la palabra que empieza con re).
+            const clave = (f, n) => (f.palabras.filter((p) => p.clave)[n || 0] || f.palabras[0] || { inicio: f.inicio, fin: f.fin });
+            const palabra = (f, re) => f.palabras.find((p) => re.test(p.texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^[^a-z0-9]+/, ''))) || { inicio: f.inicio, fin: f.fin };
+            // Texto cinético: un bloque por frase en «cont». textos[i]: undefined = la frase tal cual (sus palabras con sus tiempos);
+            // una cadena = un rótulo corto cuyas palabras entran repartidas sobre las de la frase; null = sin texto (sigue el anterior).
+            const bloques = (T, cont, pref, textos, clase) => {
+              textos = textos || [];
+              return T.frases.map((f, i) => {
+                const tx = textos[i];
+                if (tx === null) return null;
+                const b = el('div', 'bloque', cont, `${pref}-b-${i}`);
+                const fr = el('div', clase || 'k-recurso-frase', b, `${pref}-f-${i}`);
+                let ps;
+                if (tx === undefined) {
+                  ps = f.palabras.length ? f.palabras.map((p) => ({ texto: p.texto, clave: !!p.clave, inicio: p.inicio }))
+                    : partir(f.texto).map((p, j, a) => ({ ...p, inicio: f.inicio + (j * (f.fin - f.inicio)) / a.length }));
+                } else {
+                  const ws = partir(tx);
+                  const np = f.palabras.length;
+                  ps = ws.map((w, j) => ({ ...w, inicio: np ? f.palabras[Math.min(np - 1, Math.floor((j * np) / ws.length))].inicio : f.inicio + (j * (f.fin - f.inicio)) / ws.length }));
+                }
+                const spans = ps.map((p, j) => {
+                  const s = el('span', `k-recurso-palabra${p.clave ? ' k-recurso-clave' : ''}`, fr, `${pref}-p-${i}-${j}`);
+                  s.textContent = p.texto;
+                  return { s, inicio: p.inicio };
+                });
+                return { i, b, fr, spans };
+              });
+            };
+            const animarBloques = (tl, T, bs, finUltimo) => {
+              const vis = bs.filter(Boolean);
+              vis.forEach((x, k) => {
+                x.spans.forEach(({ s, inicio }) => tl.fromTo(s, { y: 28, opacity: 0, filter: 'blur(6px)' },
+                  { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, Math.max(0, inicio - 0.08)));
+                const sig = vis[k + 1];
+                const t = sig ? T.frases[sig.i].inicio - 0.32 : (finUltimo ?? T.salida(0.6));
+                tl.to(x.fr, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+              });
+            };
+            // Contador: el texto de el sube de a hasta b (enteros) en d segundos desde t, con onUpdate (buscable).
+            const contar = (tl, elc, a, b, t, d) => {
+              const o = { n: a };
+              tl.fromTo(o, { n: a }, { n: b, duration: d || 0.8, ease: 'power2.out', immediateRender: false, onUpdate: () => { elc.textContent = String(Math.round(o.n)); } }, t);
+            };
+            // Semilla fija para posiciones «al azar» (siempre las mismas).
+            const azar = (s) => () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+            return { r3, partir, el, icono, ancla, chip, nodo, punto, linea, camino, dibujar, entra, pop, sale, late, halo, clave, palabra, bloques, animarBloques, contar, azar };
+          })();
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const [f0, f1] = T.frases;
+            const P = (f, re, d) => T.pulso(H.palabra(f, re).inicio + (d || 0));
+            const dia = document.getElementById('lla-dia');
+            const svg = document.getElementById('lla-svg');
+            const bs = H.bloques(T, document.getElementById('lla-col'), 'lla', ['Te *acompañamos* a ponerlo en marcha', 'Escríbenos por *WhatsApp*']);
+            H.animarBloques(tl, T, bs, T.salida(0.5));
+            H.entra(tl, '#lla-ceja', 0.1, { dy: 16 });
+
+            // f0 · Kingdom acompaña (el nodo del acompañamiento) a tu iglesia, con su proceso de afirmación.
+            const kd = H.nodo(dia, 'lla-kd', 324, 300, 'support_agent', true, 200);
+            const halo = H.el('div', 'halo', dia, 'lla-halo', { left: '324px', top: '300px', width: '220px', height: '220px', margin: '-110px 0 0 -110px' });
+            const igl = H.nodo(dia, 'lla-igl', 324, 300, 'church', false, 110);
+            H.pop(tl, kd, T.pulso(f0.inicio), { d: 0.6 });
+            const tAc = P(f0, /^acompanamos/, -0.3);
+            H.halo(tl, halo, tAc);
+            tl.fromTo(igl, { opacity: 0 }, { opacity: 1, duration: 0.01 }, tAc + 0.3);
+            tl.to(kd, { x: -110, duration: 0.7, ease: 'power3.inOut' }, tAc + 0.3);
+            tl.to(igl, { x: 130, duration: 0.7, ease: 'power3.inOut' }, tAc + 0.3);
+            const lazo = H.linea(svg, 'lla-lazo', 314, 300, 399, 300, true);
+            H.dibujar(tl, lazo, tAc + 1, 0.4);
+            const proceso = H.chip(dia, 'lla-proc', 324, 500, `${H.icono('diversity_3', 34)}Tu proceso de afirmación`, '');
+            H.entra(tl, proceso, P(f0, /^proceso/, -0.3), { dy: 18 });
+
+            // f1 · escríbenos por WhatsApp.
+            const wa = H.chip(dia, 'lla-wa', 324, 610, `${H.icono('chat', 34, true)}WhatsApp`, 'oro');
+            const tWa = P(f1, /^whatsapp/, -0.4);
+            H.pop(tl, wa, tWa);
+            H.late(tl, wa, tWa + 0.5, { de: 1.12 });
+
+            H.sale(tl, ['#lla-dia', '#lla-ceja'], T.salida(0.5), { d: 0.45 });
+            tl.set({}, {}, T.duracion);
+            window.__timelines['llamado'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>
