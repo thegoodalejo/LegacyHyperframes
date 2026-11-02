@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="es" data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"id\":\"asistencia\",\"composicion\":\"compositions/asistencia.html\",\"compId\":\"asistencia\",\"inicio\":200,\"duracion\":27,\"fin\":227,\"conVoz\":true,\"inicioAbs\":200,\"idioma\":\"es\",\"compas0\":0,\"golpes\":[10,11.95,12,12.5,13.95,14,16,18,20,22,26],\"frases\":[{\"id\":\"voz-asistencia-1\",\"clave\":\"hoy\",\"texto\":\"Para el profesor, todo empieza en «Hoy»: la clase del día, lo pendiente y lo que vence esta semana.\",\"inicio\":0.5,\"fin\":5.62,\"inicioAbs\":200.5,\"finAbs\":205.62,\"palabras\":[{\"texto\":\"Para\",\"inicio\":0.53,\"fin\":0.837},{\"texto\":\"el\",\"inicio\":0.837,\"fin\":1.013},{\"texto\":\"profesor,\",\"inicio\":1.013,\"fin\":1.451},{\"texto\":\"todo\",\"inicio\":1.451,\"fin\":1.758},{\"texto\":\"empieza\",\"inicio\":1.758,\"fin\":2.196},{\"texto\":\"en\",\"inicio\":2.196,\"fin\":2.372},{\"texto\":\"«Hoy»:\",\"inicio\":2.372,\"fin\":2.549},{\"texto\":\"la\",\"inicio\":2.549,\"fin\":2.725},{\"texto\":\"clase\",\"inicio\":2.725,\"fin\":3.032},{\"texto\":\"del\",\"inicio\":3.032,\"fin\":3.209},{\"texto\":\"día,\",\"inicio\":3.209,\"fin\":3.385},{\"texto\":\"lo\",\"inicio\":3.385,\"fin\":3.561},{\"texto\":\"pendiente\",\"inicio\":3.561,\"fin\":3.999},{\"texto\":\"y\",\"inicio\":3.999,\"fin\":4.175},{\"texto\":\"lo\",\"inicio\":4.175,\"fin\":4.352},{\"texto\":\"que\",\"inicio\":4.352,\"fin\":4.528},{\"texto\":\"vence\",\"inicio\":4.528,\"fin\":4.835},{\"texto\":\"esta\",\"inicio\":4.835,\"fin\":5.142},{\"texto\":\"semana.\",\"inicio\":5.142,\"fin\":5.58}]},{\"id\":\"voz-asistencia-2\",\"clave\":\"codigo\",\"texto\":\"Toca «Tomar asistencia» y muestra el código: cuatro números que cambian cada minuto.\",\"inicio\":6.12,\"fin\":10.749,\"inicioAbs\":206.12,\"finAbs\":210.749,\"palabras\":[{\"texto\":\"Toca\",\"inicio\":6.15,\"fin\":6.457},{\"texto\":\"«Tomar\",\"inicio\":6.457,\"fin\":6.764},{\"texto\":\"asistencia»\",\"inicio\":6.764,\"fin\":7.332},{\"texto\":\"y\",\"inicio\":7.332,\"fin\":7.509},{\"texto\":\"muestra\",\"inicio\":7.509,\"fin\":7.816},{\"texto\":\"el\",\"inicio\":7.816,\"fin\":7.992},{\"texto\":\"código:\",\"inicio\":7.992,\"fin\":8.43,\"clave\":true},{\"texto\":\"cuatro\",\"inicio\":8.74,\"fin\":9.045},{\"texto\":\"números\",\"inicio\":9.045,\"fin\":9.48},{\"texto\":\"que\",\"inicio\":9.48,\"fin\":9.655},{\"texto\":\"cambian\",\"inicio\":9.655,\"fin\":9.96},{\"texto\":\"cada\",\"inicio\":9.96,\"fin\":10.265},{\"texto\":\"minuto.\",\"inicio\":10.265,\"fin\":10.7}]},{\"id\":\"voz-asistencia-3\",\"clave\":\"listo\",\"texto\":\"A cada alumno le llega un aviso; escribe el código en su celular, y listo.\",\"inicio\":11.249,\"fin\":15.217,\"inicioAbs\":211.249,\"finAbs\":215.217,\"palabras\":[{\"texto\":\"A\",\"inicio\":11.279,\"fin\":11.437},{\"texto\":\"cada\",\"inicio\":11.437,\"fin\":11.712},{\"texto\":\"alumno\",\"inicio\":11.712,\"fin\":12.104},{\"texto\":\"le\",\"inicio\":12.104,\"fin\":12.262},{\"texto\":\"llega\",\"inicio\":12.262,\"fin\":12.537},{\"texto\":\"un\",\"inicio\":12.537,\"fin\":12.695},{\"texto\":\"aviso;\",\"inicio\":12.695,\"fin\":13.087},{\"texto\":\"escribe\",\"inicio\":13.087,\"fin\":13.478},{\"texto\":\"el\",\"inicio\":13.478,\"fin\":13.636},{\"texto\":\"código\",\"inicio\":13.636,\"fin\":14.028},{\"texto\":\"en\",\"inicio\":14.028,\"fin\":14.186},{\"texto\":\"su\",\"inicio\":14.186,\"fin\":14.344},{\"texto\":\"celular,\",\"inicio\":14.344,\"fin\":14.736},{\"texto\":\"y\",\"inicio\":14.736,\"fin\":14.894},{\"texto\":\"listo.\",\"inicio\":14.894,\"fin\":15.169,\"clave\":true}]},{\"id\":\"voz-asistencia-4\",\"clave\":\"toque\",\"texto\":\"El profesor ve en vivo cuántos marcaron, y a quien no tiene celular lo marca con un toque.\",\"inicio\":15.717,\"fin\":20.538,\"inicioAbs\":215.717,\"finAbs\":220.538,\"palabras\":[{\"texto\":\"El\",\"inicio\":15.747,\"fin\":15.924},{\"texto\":\"profesor\",\"inicio\":15.924,\"fin\":16.361},{\"texto\":\"ve\",\"inicio\":16.361,\"fin\":16.538},{\"texto\":\"en\",\"inicio\":16.538,\"fin\":16.715},{\"texto\":\"vivo\",\"inicio\":16.715,\"fin\":17.022},{\"texto\":\"cuántos\",\"inicio\":17.022,\"fin\":17.329},{\"texto\":\"marcaron,\",\"inicio\":17.329,\"fin\":17.767},{\"texto\":\"y\",\"inicio\":18.057,\"fin\":18.223},{\"texto\":\"a\",\"inicio\":18.223,\"fin\":18.389},{\"texto\":\"quien\",\"inicio\":18.389,\"fin\":18.555},{\"texto\":\"no\",\"inicio\":18.555,\"fin\":18.721},{\"texto\":\"tiene\",\"inicio\":18.721,\"fin\":19.01},{\"texto\":\"celular\",\"inicio\":19.01,\"fin\":19.421},{\"texto\":\"lo\",\"inicio\":19.421,\"fin\":19.587},{\"texto\":\"marca\",\"inicio\":19.587,\"fin\":19.876},{\"texto\":\"con\",\"inicio\":19.876,\"fin\":20.042},{\"texto\":\"un\",\"inicio\":20.042,\"fin\":20.208},{\"texto\":\"toque.\",\"inicio\":20.208,\"fin\":20.497,\"clave\":true}]},{\"id\":\"voz-asistencia-5\",\"clave\":\"lista\",\"texto\":\"¿No hay señal en el salón? «Pasar lista» funciona sin señal, y se envía sola cuando vuelve.\",\"inicio\":21.038,\"fin\":25.966,\"inicioAbs\":221.038,\"finAbs\":225.966,\"palabras\":[{\"texto\":\"¿No\",\"inicio\":21.068,\"fin\":21.26},{\"texto\":\"hay\",\"inicio\":21.26,\"fin\":21.453},{\"texto\":\"señal\",\"inicio\":21.453,\"fin\":21.788},{\"texto\":\"en\",\"inicio\":21.788,\"fin\":21.98},{\"texto\":\"el\",\"inicio\":21.98,\"fin\":22.173},{\"texto\":\"salón?\",\"inicio\":22.173,\"fin\":22.508},{\"texto\":\"«Pasar\",\"inicio\":22.508,\"fin\":22.843},{\"texto\":\"lista»\",\"inicio\":22.843,\"fin\":23.178,\"clave\":true},{\"texto\":\"funciona\",\"inicio\":23.178,\"fin\":23.656},{\"texto\":\"sin\",\"inicio\":23.656,\"fin\":23.848},{\"texto\":\"señal,\",\"inicio\":23.848,\"fin\":24.183},{\"texto\":\"y\",\"inicio\":24.183,\"fin\":24.375},{\"texto\":\"se\",\"inicio\":24.375,\"fin\":24.568},{\"texto\":\"envía\",\"inicio\":24.568,\"fin\":24.903},{\"texto\":\"sola\",\"inicio\":24.903,\"fin\":25.238},{\"texto\":\"cuando\",\"inicio\":25.238,\"fin\":25.573},{\"texto\":\"vuelve.\",\"inicio\":25.573,\"fin\":25.908}]}]}"}]'>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- «Formando líderes con Kingdom» · escena «asistencia» (SPEC.md → «asistencia»). App: Kingdom v2 RECREADA (kit v1.3, «Para líderes»), fiel a
+         las capturas academia__tomar-asistencia__01-hoy, __02-formas, __03-codigo, __04-presente, __06-lista y academia__marcar-mi-asistencia__01-tarjeta,
+         __02-codigo, __03-listo (assets/referencias/) y a frontend-v2: grupo.page.ts (ficha, cifras y secciones), asistencia/hoy.component.ts («Hoy»:
+         la clase, «Tomar asistencia» con sus dos formas, Pendientes, Próximas clases y Vence esta semana), asistencia/toma.page.ts (el código de
+         4 números que cambia cada minuto, su barra, el QR, «{n} de {total} marcaron», «Se cierra sola en…» y «Faltan (N)» con «Presente»),
+         asistencia/lista.page.ts («Pasar lista» sin señal: la banda, «Guardar la lista», «Guardada en el celular…», «Esta lista espera señal…» y
+         «Lista enviada ✓»), mis-cursos.page.ts (la tarjeta «Tu profesor está tomando asistencia»), asistencia.page.ts y codigo-cuadro.component.ts
+         (las cuatro casillas y «¡Listo! Quedó tu asistencia»). El aviso es el del catálogo (academia.asistencia). Marca por defecto de Kingdom
+         (azul); la categoría Biblia conserva su color. Grupo de ejemplo «Fundamentos · miércoles 7 p. m.» (18 inscritos), profesor Jorge Gallego
+         Gil, alumna Lucía Ruiz Montoya; personas ficticias de la demo. El QR es ficticio (no codifica nada). Datos de ejemplo. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .col { position: absolute; left: 192px; top: 210px; width: 860px; height: 660px; }
+        .bloque { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+        .ceja-e { position: absolute; left: 192px; top: 132px; }
+        .dia { position: absolute; left: 1080px; top: 140px; width: 648px; height: 800px; }
+        .svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+        .ancla { position: absolute; width: 0; height: 0; }
+        .centro { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; }
+        .chip { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 28px; border-radius: 32px; background: rgba(12, 26, 58, 0.92);
+          box-shadow: inset 0 0 0 1px rgba(234, 240, 255, 0.18); font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1; color: var(--k-noche-tinta); }
+        .chip.oro { box-shadow: inset 0 0 0 2px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+        .chip.azul { box-shadow: inset 0 0 0 2px var(--k-azul); }
+        .rot { font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--k-noche-tinta-2); }
+        .rot.oro { color: var(--k-noche-dorado); }
+        /* Íconos como máscara con el estilo en el documento (no en kit.css): la url() de --k-icono se resuelve contra la página. Lección del
+           2026-11-01: la de kit.css sale vacía en el render aunque el snapshot la muestre. Lo mismo para .k-app-icono (kit v1.3). */
+        .ico { display: inline-block; flex: none; width: var(--k-icono-tam, 56px); height: var(--k-icono-tam, 56px); background: currentColor;
+          -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .ico-oro { color: var(--k-noche-dorado); }
+        .k-recurso-icono, .k-app-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .halo { position: absolute; left: 0; top: 0; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; opacity: 0; box-shadow: 0 0 0 3px var(--k-noche-dorado); }
+        /* Rótulo del kit sobre la app recreada (no es de la app): una píldora de la noche con borde dorado. */
+        .rotulo-kit { display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px; border-radius: 28px; background: rgba(6, 13, 31, 0.92);
+          box-shadow: inset 0 0 0 2px var(--k-noche-dorado), 0 16px 32px -12px rgba(0, 0, 0, 0.6); color: var(--k-noche-dorado); font-family: var(--k-fuente);
+          font-size: 28px; font-weight: 700; line-height: 1; white-space: nowrap; }
+        .col { width: 590px; }
+        #asi-datos { left: 192px; right: auto; }
+        #asi-tel { left: 1199px; top: 114px; }
+        #asi-alu { left: 800px; top: 236px; --k-app-escala: 0.8; }
+        /* ── La página del grupo (grupo.page.ts) ── */
+        .pg { display: flex; flex-direction: column; gap: 14px; padding: 16px; }
+        .volver { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; min-height: 40px; color: var(--k-app-primario); font-size: 14px; font-weight: 500; line-height: 20px; }
+        .h1 { margin: 0; font-size: 24px; font-weight: 400; line-height: 32px; }
+        .ficha { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 16px; background: var(--k-app-cont); }
+        .fila-nombre { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+        .ficha h2 { margin: 0; font-size: 22px; font-weight: 400; line-height: 28px; }
+        .etiquetas { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+        .dato { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 14px; line-height: 20px; }
+        .dato .k-app-icono { color: var(--k-app-texto-2); }
+        .profesores { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+        .profesores .etq { color: var(--k-app-texto-2); }
+        .persona { display: inline-flex; align-items: center; gap: 6px; }
+        .gchip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 8px; font-size: 12px; font-weight: 500; line-height: 16px;
+          background: var(--k-app-cont-max); color: var(--k-app-texto-2); }
+        .gchip .k-app-icono { --k-icono-tam: 16px; }
+        .gchip.en-curso { background: var(--k-app-primario-cont); color: var(--k-app-sobre-primario-cont); }
+        .cifras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+        .cifra { display: flex; flex-direction: column; gap: 2px; padding: 12px; border-radius: 14px; background: var(--k-app-cont); min-width: 0; }
+        .cifra .valor { font-size: 24px; font-weight: 400; line-height: 32px; white-space: nowrap; }
+        .cifra small { font-size: 14px; font-weight: 500; line-height: 20px; color: var(--k-app-texto-2); }
+        .cifra .etq { font-size: 12px; line-height: 16px; color: var(--k-app-texto-2); }
+        .tabs { overflow: hidden; border-bottom: 1px solid var(--k-app-borde); }
+        .tabs-fila { display: flex; gap: 4px; width: max-content; }
+        .tab { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 8px 12px; border-bottom: 3px solid transparent; color: var(--k-app-texto-2);
+          white-space: nowrap; font-size: 14px; font-weight: 500; line-height: 20px; }
+        .tab .k-app-icono { --k-icono-tam: 20px; }
+        .tab.activa { color: var(--k-app-primario); border-bottom-color: var(--k-app-primario); }
+        .secs { position: relative; }
+        .sec { position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; gap: 12px; }
+        /* Resumen: «Materias y clases» */
+        .sec h3 { margin: 4px 0 0; font-size: 16px; font-weight: 500; line-height: 24px; }
+        .materia { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: var(--k-app-cont); }
+        .materia h4 { margin: 0; font-size: 14px; font-weight: 500; line-height: 20px; }
+        .clases { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .clases li { display: grid; grid-template-columns: 1fr auto; gap: 0 8px; padding: 8px 10px; border-radius: 10px; background: var(--k-app-cont-alto); }
+        .c-fecha { grid-column: 1; font-size: 12px; line-height: 16px; color: var(--k-app-texto-2); }
+        .c-titulo { grid-column: 1; }
+        .c-presentes { grid-column: 2; grid-row: 1 / span 2; align-self: center; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; }
+        .c-presentes .k-app-icono { --k-icono-tam: 18px; color: var(--k-app-primario); }
+        /* Hoy (hoy.component.ts) */
+        .clase { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 20px; background: var(--k-app-cont); }
+        .clase.principal { background: var(--k-app-primario-cont); color: var(--k-app-sobre-primario-cont); }
+        .clase .cab { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+        .clase .hora { font-size: 22px; font-weight: 400; line-height: 28px; }
+        .clase .mat { opacity: 0.85; }
+        .clase h4 { margin: 0; font-size: 24px; font-weight: 400; line-height: 32px; }
+        .botones { display: flex; flex-wrap: wrap; gap: 8px; }
+        .grande { flex: 1 1 100%; height: 56px; }
+        .k-app-boton.contorno.grande { box-shadow: inset 0 0 0 1px var(--k-app-contorno); }
+        .formas { display: grid; gap: 8px; }
+        .forma { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; background: var(--k-app-fondo); color: var(--k-app-texto);
+          border: 1px solid var(--k-app-borde); }
+        .forma > .k-app-icono { color: var(--k-app-primario); }
+        .forma span.t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .forma strong { font-size: 16px; font-weight: 700; line-height: 24px; }
+        .forma small { font-size: 12px; line-height: 16px; color: var(--k-app-texto-2); }
+        .hb { display: flex; flex-direction: column; gap: 8px; }
+        .hb h4 { margin: 4px 0 0; font-size: 16px; font-weight: 500; line-height: 24px; }
+        .pend, .lista-p { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .pend li { display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 12px; border-radius: 14px; background: var(--k-app-cont); }
+        .pend li > .k-app-icono { color: var(--k-app-texto-2); }
+        .pend .t { flex: 1; min-width: 0; }
+        .lista-p li { display: flex; flex-wrap: wrap; gap: 2px 10px; padding: 8px 12px; border-radius: 12px; background: var(--k-app-cont); }
+        .lista-p .f { color: var(--k-app-texto-2); }
+        /* ── La toma (toma.page.ts) y Pasar lista (lista.page.ts) ── */
+        .tbarra { display: flex; align-items: center; gap: 8px; }
+        .tbarra .titulo { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .tbarra .curso { font-size: 12px; font-weight: 500; line-height: 16px; color: var(--k-app-primario); }
+        .tbarra h1 { margin: 0; font-size: 22px; font-weight: 400; line-height: 28px; }
+        .tbarra .fecha { font-size: 12px; line-height: 16px; color: var(--k-app-texto-2); }
+        .toma { gap: 16px; }
+        .codigo-zona { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px; border-radius: 24px; background: var(--k-app-cont); text-align: center; }
+        .pide { margin: 0; font-size: 16px; font-weight: 500; line-height: 24px; }
+        .codigo { display: flex; gap: 0.25em; font-size: 68px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+        .dig { position: relative; display: block; overflow: hidden; padding: 0.05em 0.12em; border-radius: 0.12em; background: var(--k-app-cont-max); }
+        .dig i { display: block; font-style: normal; }
+        .dig i.b { position: absolute; left: 0.12em; top: 0.05em; }
+        .cambia { width: 262px; height: 6px; border-radius: 3px; background: var(--k-app-cont-max); overflow: hidden; }
+        .barrita { display: block; width: 100%; height: 100%; background: var(--k-app-primario); transform-origin: 0 50%; }
+        .mini { margin: 0; font-size: 12px; line-height: 16px; color: var(--k-app-texto-2); }
+        .qr { position: relative; width: 240px; height: 240px; margin-top: 4px; border-radius: 8px; overflow: hidden; background: #ffffff; }
+        .qr svg { position: absolute; inset: 12px; width: 216px; height: 216px; }
+        .contador-zona { display: flex; flex-direction: column; gap: 10px; }
+        .contador { margin: 0; font-size: 22px; line-height: 28px; }
+        .contador .n { font-size: 48px; font-weight: 700; line-height: 1; color: var(--k-app-primario); font-variant-numeric: tabular-nums; }
+        .restante { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 14px; font-weight: 500; line-height: 20px; }
+        .acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+        .acciones .k-app-boton { height: 48px; padding: 0 16px; }
+        .acciones .k-app-boton .k-app-icono { margin-left: 0; }
+        .faltan-t { margin: 6px 0 0; font-size: 16px; font-weight: 500; line-height: 24px; }
+        .faltan { position: relative; height: 1100px; }
+        .falta { position: absolute; left: 0; right: 0; display: flex; align-items: center; gap: 10px; height: 52px; padding: 6px 8px 6px 10px; border-radius: 14px;
+          background: var(--k-app-cont); }
+        .falta .nombre { flex: 1; min-width: 0; }
+        .falta .k-app-boton { height: 40px; padding: 0 16px 0 12px; }
+        .falta .k-app-boton .k-app-icono { margin-left: 0; }
+        .banda { display: flex; align-items: center; gap: 8px; margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--k-app-cont-alto); }
+        .banda.ok { background: var(--k-app-primario-cont); color: var(--k-app-sobre-primario-cont); }
+        .slot { position: relative; height: 0; margin-top: -14px; }
+        .slot .banda { position: absolute; left: 0; right: 0; top: 14px; opacity: 0; }
+        .resto { display: flex; flex-direction: column; gap: 14px; }
+        .cuenta { font-size: 16px; font-weight: 500; line-height: 24px; }
+        .cuenta .n { font-size: 32px; font-weight: 700; line-height: 1; color: var(--k-app-primario); font-variant-numeric: tabular-nums; }
+        .buscar { display: flex; align-items: center; min-height: 48px; padding: 8px 14px; border-radius: 24px; box-shadow: inset 0 0 0 1px var(--k-app-contorno);
+          background: var(--k-app-fondo); color: var(--k-app-texto-2); font-size: 16px; line-height: 24px; }
+        .personas { display: flex; flex-direction: column; gap: 6px; }
+        .fila-p { position: relative; display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 8px 12px; border-radius: 16px; background: var(--k-app-cont);
+          font-size: 16px; line-height: 24px; }
+        .fila-p .on { position: absolute; inset: 0; border-radius: 16px; background: var(--k-app-primario-cont); opacity: 0; }
+        .fila-p > :not(.on) { position: relative; }
+        .fila-p .nombre { flex: 1; min-width: 0; }
+        .fila-p .marca { position: relative; width: 28px; height: 28px; flex: none; }
+        .fila-p .marca .k-app-icono { position: absolute; inset: 0; --k-icono-tam: 28px; }
+        .fila-p .marca .si { color: var(--k-app-primario); opacity: 0; }
+        .pie { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; align-items: center; justify-content: center; height: 84px; padding: 10px 16px;
+          background: var(--k-app-cont); border-top: 1px solid var(--k-app-borde); }
+        .pie .k-app-boton { width: 358px; height: 52px; }
+        /* ── El celular de la alumna: Mis cursos y Marcar asistencia ── */
+        .tomando { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; padding: 14px; border-radius: 18px;
+          background: var(--k-app-terciario-cont); color: var(--k-app-sobre-terciario-cont); }
+        .tomando .txt { flex: 1 1 200px; display: flex; flex-direction: column; min-width: 0; }
+        .tomando strong { font-weight: 700; }
+        .tomando .k-app-boton { flex: 1 1 100%; height: 52px; }
+        .mtabs { display: flex; gap: 4px; border-bottom: 1px solid var(--k-app-borde); }
+        .mtab { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 8px 12px; border-bottom: 3px solid transparent; color: var(--k-app-texto-2);
+          font-size: 14px; font-weight: 500; line-height: 20px; white-space: nowrap; }
+        .mtab.activa { color: var(--k-app-primario); border-bottom-color: var(--k-app-primario); }
+        .mtab .n { padding: 0 7px; border-radius: 10px; font-size: 12px; line-height: 16px; background: var(--k-app-cont-max); color: var(--k-app-texto-2); }
+        .tarjeta { display: flex; flex-direction: column; gap: 4px; padding: 14px; border-radius: 18px; background: var(--k-app-cont); }
+        .tarjeta .cat { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; line-height: 16px; color: var(--k-app-texto-2); }
+        .tarjeta .cat .k-app-icono { --k-icono-tam: 18px; color: #1565c0; }
+        .tarjeta .curso { font-size: 16px; font-weight: 500; line-height: 24px; }
+        .tarjeta .proxima { display: flex; align-items: flex-start; gap: 6px; }
+        .tarjeta .proxima .k-app-icono { --k-icono-tam: 19px; }
+        .marco { padding: 16px 12px 20px; border-radius: 20px; background: var(--k-app-cont); }
+        .cuadro { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 8px 0; }
+        .cuadro .ccurso { margin: 0; font-size: 14px; font-weight: 500; line-height: 20px; color: var(--k-app-primario); }
+        .cuadro .cclase { margin: 0; font-size: 24px; font-weight: 400; line-height: 32px; }
+        .cuadro .cfecha { margin: 0; color: var(--k-app-texto-2); }
+        .cuadro .pregunta { margin: 8px 0 0; font-size: 16px; font-weight: 500; line-height: 24px; }
+        .cajas { display: flex; gap: 8px; margin: 6px 0; }
+        .caja { position: relative; width: 56px; height: 68px; border-radius: 14px; display: grid; place-items: center; font-size: 36px; font-weight: 600; line-height: 1;
+          background: var(--k-app-cont-alto); border: 2px solid var(--k-app-borde); }
+        .caja .llena { position: absolute; inset: -2px; border-radius: 14px; display: grid; place-items: center; background: var(--k-app-primario-cont);
+          color: var(--k-app-sobre-primario-cont); opacity: 0; }
+        .caja .actual { position: absolute; inset: -2px; border-radius: 14px; box-shadow: inset 0 0 0 2px var(--k-app-primario), 0 0 0 3px var(--k-app-primario); opacity: 0; }
+        .cuadro .ayuda { margin: 0; max-width: 384px; font-size: 12px; line-height: 16px; color: var(--k-app-texto-2); }
+        .hecho { position: absolute; left: 0; right: 0; top: 108px; display: flex; flex-direction: column; align-items: center; gap: 4px; opacity: 0; }
+        .hecho .check { --k-icono-tam: 80px; color: var(--k-app-primario); }
+        .hecho .grande-t { margin: 0; font-size: 24px; font-weight: 400; line-height: 32px; }
+        .ir { align-self: center; opacity: 0; }
+        .ir .k-app-icono { margin-left: -4px; }
+        .mias { display: flex; flex-direction: column; gap: 8px; }
+        .mias h2 { margin: 0; font-size: 16px; font-weight: 500; line-height: 24px; }
+        .mias .evm { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 14px; border-radius: 16px; background: var(--k-app-cont); }
+        .mias .evm .t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+        .mias .evm .nombre { font-size: 14px; font-weight: 500; line-height: 20px; }
+        .mias .evm .chico { font-size: 12px; line-height: 16px; }
+        .mias .evm .nota-m { font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+        .notif { left: 8px; right: 8px; top: 8px; opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="asistencia" data-width="1920" data-height="1080" data-duration="27">
+        <div class="k-recurso-ceja ceja-e" id="asi-ceja">Academia · El profesor</div>
+        <div class="col" id="asi-col"></div>
+        <div class="dia" id="asi-dia" data-layout-allow-overflow data-layout-allow-overlap></div>
+
+        <!-- ═══ El celular del profesor (Jorge Gallego Gil) ═══ -->
+        <div class="k-telefono k-app-telefono" id="asi-tel" data-layout-allow-overflow data-layout-allow-overlap>
+          <div class="k-app k-app-escala">
+            <div class="k-app-camara" id="asi-cam">
+              <div class="k-app-barra">
+                <span class="k-app-marca"><img src="identidad/favicon.svg" alt="" />Kingdom Demo</span>
+                <span class="k-app-espacio"></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/apps.svg)"></span></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/notifications.svg)"></span></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/help.svg)"></span></span>
+                <span class="k-app-cuenta">JG</span>
+              </div>
+              <div class="k-app-cuerpo">
+                <!-- S1 · La página del grupo: Resumen → Hoy (capturas 01-hoy y 02-formas) -->
+                <div class="k-app-desliz" id="asi-grupo">
+                  <div class="pg">
+                    <span class="volver"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/arrow_back.svg)"></span>Cursos</span>
+                    <h1 class="h1">Fundamentos bíblicos</h1>
+                    <section class="ficha">
+                      <div class="fila-nombre"><h2>Fundamentos · miércoles 7 p. m.</h2><span class="gchip en-curso">En curso</span></div>
+                      <p class="etiquetas"><span class="gchip"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/menu_book.svg); color: #1565c0"></span>Biblia</span><span class="gchip">Presencial</span></p>
+                      <p class="dato"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/event.svg)"></span>2 de sept de 2026 – 7 de oct de 2026</p>
+                      <div class="profesores"><span class="etq">Profesores</span><span class="persona"><span class="k-app-avatar" style="--k-tam: 28px">JG</span>Jorge Gallego Gil</span></div>
+                    </section>
+                    <div class="cifras">
+                      <div class="cifra"><span class="valor">4<small> / 6</small></span><span class="etq">Clases dictadas</span></div>
+                      <div class="cifra"><span class="valor">18</span><span class="etq">Inscritos</span></div>
+                      <div class="cifra"><span class="valor">83,3 %</span><span class="etq">Asistencia promedio</span></div>
+                    </div>
+                    <nav class="tabs" id="asi-tabs">
+                      <div class="tabs-fila">
+                        <span class="tab activa" id="asi-t-resumen"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/dashboard.svg)"></span>Resumen</span>
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/calendar_month.svg)"></span>Fechas</span>
+                        <span class="tab" id="asi-t-hoy"><span class="k-app-icono" style="--k-icono: url(assets/iconos/today.svg)"></span>Hoy</span>
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(assets/iconos/group.svg)"></span>Alumnos</span>
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/how_to_reg.svg)"></span>Asistencia</span>
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(assets/iconos/folder.svg)"></span>Material</span>
+                      </div>
+                    </nav>
+                    <div class="secs">
+                      <!-- Resumen: Materias y clases -->
+                      <section class="sec" id="asi-s-resumen">
+                        <h3>Materias y clases</h3>
+                        <div class="materia">
+                          <h4>Antiguo Testamento</h4>
+                          <ol class="clases">
+                            <li><span class="c-fecha">mié, 2 de sept · 7:00 p. m.</span><span class="c-titulo">La creación y los patriarcas</span><span class="c-presentes"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/how_to_reg.svg)"></span>16</span></li>
+                            <li><span class="c-fecha">mié, 9 de sept · 7:00 p. m.</span><span class="c-titulo">El éxodo y la ley</span><span class="c-presentes"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/how_to_reg.svg)"></span>15</span></li>
+                            <li><span class="c-fecha">mié, 16 de sept · 7:00 p. m.</span><span class="c-titulo">Reyes y profetas</span><span class="c-presentes"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/how_to_reg.svg)"></span>14</span></li>
+                          </ol>
+                        </div>
+                      </section>
+                      <!-- Hoy, antes de tocar «Tomar asistencia» -->
+                      <section class="sec" id="asi-s-hoy" style="opacity: 0">
+                        <article class="clase principal" id="asi-clase">
+                          <div class="cab"><span class="hora">7:00 p. m.</span><span class="mat">Nuevo Testamento</span></div>
+                          <h4>Hechos y las cartas</h4>
+                          <div class="botones"><span class="k-app-boton grande" id="asi-tomar"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/how_to_reg.svg)"></span>Tomar asistencia</span></div>
+                          <div class="botones"><span class="k-app-boton contorno grande"><span class="k-app-icono" style="--k-icono: url(assets/iconos/folder.svg)"></span>Material</span></div>
+                        </article>
+                        <section class="hb" id="asi-pend">
+                          <h4>Pendientes</h4>
+                          <ul class="pend">
+                            <li><span class="k-app-icono" style="--k-icono: url(assets/iconos/rate_review.svg)"></span><span class="t">3 respuestas abiertas por calificar</span><span class="k-app-boton texto">Ver</span></li>
+                            <li><span class="k-app-icono" style="--k-icono: url(assets/iconos/assignment_turned_in.svg)"></span><span class="t">3 entregas por calificar</span><span class="k-app-boton texto">Ver</span></li>
+                          </ul>
+                        </section>
+                        <section class="hb">
+                          <h4>Próximas clases</h4>
+                          <ul class="lista-p"><li><span class="f">mié, 7 de oct · 7:00 p. m.</span><span>Apocalipsis y la esperanza</span></li></ul>
+                        </section>
+                        <section class="hb" id="asi-vence">
+                          <h4>Vence esta semana</h4>
+                          <ul class="lista-p"><li><span class="f">sáb, 3 de oct · 11:59 p. m.</span><span>Línea de tiempo del Antiguo Testamento</span></li></ul>
+                        </section>
+                      </section>
+                      <!-- Hoy, con las dos formas abiertas (captura 02-formas) -->
+                      <section class="sec" id="asi-s-formas" style="opacity: 0">
+                        <article class="clase principal">
+                          <div class="cab"><span class="hora">7:00 p. m.</span><span class="mat">Nuevo Testamento</span></div>
+                          <h4>Hechos y las cartas</h4>
+                          <div class="botones"><span class="k-app-boton grande"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/how_to_reg.svg)"></span>Tomar asistencia</span></div>
+                          <div class="formas" id="asi-formas">
+                            <span class="forma" id="asi-f-codigo"><span class="k-app-icono" style="--k-icono: url(assets/iconos/pin.svg)"></span>
+                              <span class="t"><strong>Mostrar el código</strong><small>Con señal: cada uno lo marca en su celular (les llega un aviso).</small></span></span>
+                            <span class="forma"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/checklist.svg)"></span>
+                              <span class="t"><strong>Pasar lista</strong><small>Sin señal o sin celulares: un toque por persona.</small></span></span>
+                          </div>
+                          <div class="botones"><span class="k-app-boton contorno grande"><span class="k-app-icono" style="--k-icono: url(assets/iconos/folder.svg)"></span>Material</span></div>
+                        </article>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- S2 · La toma con el código (captura 03-codigo y 04-presente) -->
+                <div class="k-app-desliz" id="asi-toma" style="opacity: 0">
+                  <div class="pg toma">
+                    <div class="tbarra">
+                      <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/arrow_back.svg)"></span></span>
+                      <div class="titulo"><span class="curso">Fundamentos bíblicos · Fundamentos · miércoles 7 p. m.</span><h1>Hechos y las cartas</h1></div>
+                      <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/fullscreen.svg)"></span></span>
+                    </div>
+                    <section class="codigo-zona">
+                      <p class="pide">Marquen su asistencia con este código</p>
+                      <div class="codigo" id="asi-codigo">
+                        <span class="dig"><i class="a">4</i><i class="b">8</i></span><span class="dig"><i class="a">7</i><i class="b">3</i></span><span class="dig"><i class="a">2</i><i class="b">1</i></span><span class="dig"><i class="a">9</i><i class="b">6</i></span>
+                      </div>
+                      <div class="cambia" id="asi-cambia"><span class="barrita" id="asi-barrita"></span></div>
+                      <p class="mini">El código cambia en <span id="asi-seg">2</span> s</p>
+                      <div class="qr" id="asi-qr">
+                        <svg viewBox="0 0 25 25" shape-rendering="crispEdges"><path id="asi-qr-a" fill="#000000" d="" /></svg>
+                        <svg viewBox="0 0 25 25" shape-rendering="crispEdges" id="asi-qr-bs" style="opacity: 0"><rect width="25" height="25" fill="#ffffff" /><path id="asi-qr-b" fill="#000000" d="" /></svg>
+                      </div>
+                    </section>
+                    <section class="contador-zona" id="asi-cz">
+                      <p class="contador" id="asi-contador"><span class="n" id="asi-n">0</span> de 18 marcaron</p>
+                      <p class="restante"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/timer.svg)"></span>Se cierra sola en <span id="asi-rest">14:58</span></p>
+                      <div class="acciones">
+                        <span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/more_time.svg)"></span>5 minutos más</span>
+                        <span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/stop_circle.svg)"></span>Cerrar la toma</span>
+                      </div>
+                      <h2 class="faltan-t">Faltan (<span id="asi-faltan-n">18</span>)</h2>
+                      <div class="faltan" id="asi-faltan">
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">AP</span><span class="nombre">Andrea Perea López</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">AR</span><span class="nombre">Antonella Ríos Sánchez</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">CC</span><span class="nombre">Camilo Carmona Flórez</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta" id="asi-carolina"><span class="k-app-avatar" style="--k-tam: 32px">CG</span><span class="nombre">Carolina Gil Mesa</span><span class="k-app-boton contorno" id="asi-presente"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">DA</span><span class="nombre">Dayana Agudelo Carmona</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">DB</span><span class="nombre">Débora Bustamante Gil</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">EO</span><span class="nombre">Esteban Ospina Quintero</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">EG</span><span class="nombre">Ester Gil Mesa</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">FG</span><span class="nombre">Felipe Gil Franco</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">GG</span><span class="nombre">Gladys Gutiérrez Cano</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">IM</span><span class="nombre">Ignacio Mesa Vélez</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">JM</span><span class="nombre">Josué Murillo Uribe</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">JR</span><span class="nombre">Juliana Rentería Naranjo</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">LR</span><span class="nombre">Lucía Ruiz Montoya</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">MA</span><span class="nombre">Mariana Arias</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">MQ</span><span class="nombre">Miguel Quintero Asprilla</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">PA</span><span class="nombre">Paula Agudelo</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                        <div class="falta"><span class="k-app-avatar" style="--k-tam: 32px">SR</span><span class="nombre">Salomé Restrepo Tobón</span><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>Presente</span></div>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+
+                <!-- S3 · Pasar lista sin señal (captura 06-lista y lista.page.ts) -->
+                <div class="k-app-desliz" id="asi-lista" style="opacity: 0">
+                  <div class="pg">
+                    <div class="tbarra">
+                      <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/arrow_back.svg)"></span></span>
+                      <div class="titulo"><span class="curso">Fundamentos bíblicos · Fundamentos · miércoles 7 p. m.</span><h1>Hechos y las cartas</h1><span class="fecha">mié, 30 de sept · 7:00 p. m.</span></div>
+                    </div>
+                    <p class="banda" id="asi-b-sin"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/wifi_off.svg)"></span>Sin señal: es la lista guardada en este celular. Lo que marques se envía solo cuando vuelva la señal.</p>
+                    <div class="slot">
+                      <p class="banda" id="asi-b-cola"><span class="k-app-icono" style="--k-icono: url(assets/iconos/cloud_upload.svg)"></span><span>Esta lista espera señal para enviarse. Se envía sola.</span></p>
+                      <p class="banda ok" id="asi-b-hecho"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>Guardada en el celular: se envía sola cuando vuelva la señal.</p>
+                      <p class="banda ok" id="asi-b-enviada"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>Lista enviada ✓</p>
+                    </div>
+                    <div class="resto" id="asi-li-resto">
+                      <div class="cuenta"><span class="n" id="asi-li-n">0</span> de 18 presentes</div>
+                      <div class="buscar">Buscar por nombre</div>
+                      <div class="personas" id="asi-personas">
+                        <div class="fila-p"><span class="on"></span><span class="k-app-avatar" style="--k-tam: 36px">AP</span><span class="nombre">Andrea Perea López</span><span class="marca"><span class="k-app-icono no" style="--k-icono: url(identidad/iconos/radio_button_unchecked.svg)"></span><span class="k-app-icono si" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span></div>
+                        <div class="fila-p"><span class="on"></span><span class="k-app-avatar" style="--k-tam: 36px">AR</span><span class="nombre">Antonella Ríos Sánchez</span><span class="marca"><span class="k-app-icono no" style="--k-icono: url(identidad/iconos/radio_button_unchecked.svg)"></span><span class="k-app-icono si" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span></div>
+                        <div class="fila-p"><span class="on"></span><span class="k-app-avatar" style="--k-tam: 36px">CC</span><span class="nombre">Camilo Carmona Flórez</span><span class="marca"><span class="k-app-icono no" style="--k-icono: url(identidad/iconos/radio_button_unchecked.svg)"></span><span class="k-app-icono si" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span></div>
+                        <div class="fila-p"><span class="on"></span><span class="k-app-avatar" style="--k-tam: 36px">CG</span><span class="nombre">Carolina Gil Mesa</span><span class="marca"><span class="k-app-icono no" style="--k-icono: url(identidad/iconos/radio_button_unchecked.svg)"></span><span class="k-app-icono si" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span></div>
+                        <div class="fila-p"><span class="on"></span><span class="k-app-avatar" style="--k-tam: 36px">DA</span><span class="nombre">Dayana Agudelo Carmona</span><span class="marca"><span class="k-app-icono no" style="--k-icono: url(identidad/iconos/radio_button_unchecked.svg)"></span><span class="k-app-icono si" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span></div>
+                        <div class="fila-p"><span class="on"></span><span class="k-app-avatar" style="--k-tam: 36px">DB</span><span class="nombre">Débora Bustamante Gil</span><span class="marca"><span class="k-app-icono no" style="--k-icono: url(identidad/iconos/radio_button_unchecked.svg)"></span><span class="k-app-icono si" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span></div>
+                        <div class="fila-p"><span class="on"></span><span class="k-app-avatar" style="--k-tam: 36px">EO</span><span class="nombre">Esteban Ospina Quintero</span><span class="marca"><span class="k-app-icono no" style="--k-icono: url(identidad/iconos/radio_button_unchecked.svg)"></span><span class="k-app-icono si" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span></div>
+                        <div class="fila-p"><span class="on"></span><span class="k-app-avatar" style="--k-tam: 36px">EG</span><span class="nombre">Ester Gil Mesa</span><span class="marca"><span class="k-app-icono no" style="--k-icono: url(identidad/iconos/radio_button_unchecked.svg)"></span><span class="k-app-icono si" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <nav class="k-app-inferior">
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/dashboard.svg)"></span></span>Inicio</span>
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/church.svg)"></span></span>Mi iglesia</span>
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/person.svg)"></span></span>Perfil</span>
+              </nav>
+              <!-- «Guardar la lista» tapa la barra inferior mientras se pasa la lista (lista.page.ts → .pie) -->
+              <div class="pie" id="asi-pie" style="opacity: 0">
+                <span class="k-app-boton" id="asi-guardar"><span class="k-app-icono" style="--k-icono: url(assets/iconos/save.svg)"></span><span id="asi-guardar-t">Guardar la lista</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ El celular de la alumna (Lucía Ruiz Montoya): el aviso y el código ═══ -->
+        <div class="k-telefono k-app-telefono" id="asi-alu" style="opacity: 0" data-layout-allow-overflow data-layout-allow-overlap>
+          <div class="k-app k-app-escala">
+            <div class="k-app-camara" id="asi-alu-cam">
+              <div class="k-app-barra">
+                <span class="k-app-marca"><img src="identidad/favicon.svg" alt="" />Kingdom Demo</span>
+                <span class="k-app-espacio"></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/apps.svg)"></span></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/notifications.svg)"></span></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/help.svg)"></span></span>
+                <span class="k-app-cuenta">LR</span>
+              </div>
+              <div class="k-app-cuerpo">
+                <!-- Mis cursos con la tarjeta «Tu profesor está tomando asistencia» (captura marcar-mi-asistencia__01-tarjeta) -->
+                <div class="k-app-desliz" id="asi-mc">
+                  <div class="pg">
+                    <h1 class="h1">Mis cursos</h1>
+                    <div class="tomando">
+                      <span class="k-app-icono" style="--k-icono: url(assets/iconos/sensors.svg)"></span>
+                      <div class="txt"><strong>Tu profesor está tomando asistencia</strong><span>Fundamentos bíblicos · Hechos y las cartas</span></div>
+                      <span class="k-app-boton"><span class="k-app-icono" style="--k-icono: url(assets/iconos/pin.svg)"></span>Marcar asistencia</span>
+                    </div>
+                    <nav class="mtabs"><span class="mtab activa">En curso <span class="n">1</span></span><span class="mtab">Explorar</span><span class="mtab">Terminados <span class="n">0</span></span></nav>
+                    <div class="tarjeta">
+                      <span class="cat"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/menu_book.svg)"></span>Biblia</span>
+                      <span class="curso">Fundamentos bíblicos</span>
+                      <span class="k-app-suave">Fundamentos · miércoles 7 p. m.</span>
+                      <span>Viniste a 3 de 4 clases (75 %)</span>
+                      <span class="proxima"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/event.svg)"></span>Próxima: mié, 30 de sept · 7:00 p. m. — Hechos y las cartas</span>
+                    </div>
+                    <section class="mias"><h2>Mis evaluaciones</h2>
+                      <div class="evm"><span class="k-app-icono" style="--k-icono: url(assets/iconos/grading.svg)"></span><span class="t"><span class="nombre">Quiz de los evangelios</span><span class="chico k-app-suave">Fundamentos bíblicos · Fundamentos · miércoles 7 p. m.</span><span class="chico">Calificada</span></span><span class="nota-m">5</span><span class="k-app-icono" style="--k-icono: url(assets/iconos/chevron_right.svg)"></span></div>
+                      <div class="evm"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/event_busy.svg)"></span><span class="t"><span class="nombre">Examen final</span><span class="chico k-app-suave">Fundamentos bíblicos · Fundamentos · miércoles 7 p. m.</span><span class="chico">Todavía sin fecha</span></span><span class="k-app-icono" style="--k-icono: url(assets/iconos/chevron_right.svg)"></span></div>
+                    </section>
+                  </div>
+                </div>
+                <!-- Marcar asistencia (asistencia.page.ts + codigo-cuadro; capturas 02-codigo y 03-listo) -->
+                <div class="k-app-desliz" id="asi-marcar" style="opacity: 0">
+                  <div class="pg">
+                    <h1 class="h1">Marcar asistencia</h1>
+                    <div class="marco">
+                      <div class="cuadro">
+                        <p class="ccurso">Fundamentos bíblicos</p>
+                        <h2 class="cclase">Hechos y las cartas</h2>
+                        <p class="cfecha">mié, 30 de sept · 7:00 p. m.</p>
+                        <div class="escribe" id="asi-escribe">
+                          <p class="pregunta">Escribe los 4 números que muestra tu profesor</p>
+                          <div class="cajas" id="asi-cajas">
+                            <span class="caja"><span class="actual"></span><span class="llena">8</span></span>
+                            <span class="caja"><span class="actual"></span><span class="llena">3</span></span>
+                            <span class="caja"><span class="actual"></span><span class="llena">1</span></span>
+                            <span class="caja"><span class="actual"></span><span class="llena">6</span></span>
+                          </div>
+                          <p class="ayuda">El código cambia cada minuto. Si tu profesor muestra un QR, también puedes escanearlo con la cámara.</p>
+                        </div>
+                        <div class="hecho" id="asi-hecho">
+                          <span class="k-app-icono check" id="asi-check" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>
+                          <p class="grande-t">¡Listo! Quedó tu asistencia</p>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="k-app-boton contorno ir" id="asi-ir"><span class="k-app-icono" style="--k-icono: url(assets/iconos/local_library.svg)"></span>Ir a Mis cursos</span>
+                  </div>
+                </div>
+              </div>
+              <nav class="k-app-inferior">
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/dashboard.svg)"></span></span>Inicio</span>
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/church.svg)"></span></span>Mi iglesia</span>
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/person.svg)"></span></span>Perfil</span>
+              </nav>
+              <div class="k-app-notificacion notif" id="asi-notif"><img src="identidad/favicon.svg" alt="" /><small>Kingdom · ahora</small><b>Tu profesor está tomando asistencia</b>
+                <span>Fundamentos bíblicos · Hechos y las cartas: marca tu asistencia ahora con el código.</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="k-datos-ejemplo k-recurso-datos" id="asi-datos" style="opacity: 0">Datos de ejemplo</div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window); // al empezar el script: «window» es el de esta escena
+          // ── H: piezas comunes de las escenas de este recurso (las del Recurso 3: texto cinético con la voz, anclas, nodos, puntos, líneas,
+          //    entradas; y la app recreada se mueve con KRecurso.app, del kit v1.3) ──
+          const H = (() => {
+            const NS = 'http://www.w3.org/2000/svg';
+            const r3 = (n) => Math.round(n * 1000) / 1000;
+            // «texto con *énfasis*» → [{ texto, clave }]
+            const partir = (s) => {
+              const out = [];
+              let on = false;
+              for (const w of String(s).split(/\s+/)) {
+                if (!w) continue;
+                let t = '', c = false;
+                for (const ch of w) {
+                  if (ch === '*') { on = !on; continue; }
+                  t += ch;
+                  if (on) c = true;
+                }
+                out.push({ texto: t, clave: c });
+              }
+              return out;
+            };
+            const el = (tag, cls, padre, id, css) => {
+              const d = document.createElement(tag);
+              if (cls) d.className = cls;
+              if (id) d.id = id;
+              if (css) Object.assign(d.style, css);
+              padre.appendChild(d);
+              return d;
+            };
+            const icono = (n, tam, oro) =>
+              `<span class="ico${oro ? ' ico-oro' : ''}" style="--k-icono:url(identidad/iconos/${n}.svg);--k-icono-tam:${tam || 56}px"></span>`;
+            // Un ancla es un punto (0×0) en x, y: se anima el ancla (escala desde su centro) y su contenido queda centrado encima.
+            const ancla = (padre, id, x, y, html, cls) => {
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const c = el('div', `centro ${cls || ''}`, a);
+              c.innerHTML = html;
+              return a;
+            };
+            const chip = (padre, id, x, y, html, cls) => ancla(padre, id, x, y, html, `chip ${cls || ''}`);
+            const nodo = (padre, id, x, y, ic, oro, tam) => {
+              const t = tam || 120;
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const n = el('div', `k-recurso-nodo${oro ? ' k-oro' : ''}`, a, `${id}-n`, { left: '0px', top: '0px', width: `${t}px`, height: `${t}px`, margin: `-${t / 2}px 0 0 -${t / 2}px` });
+              n.innerHTML = icono(ic, Math.round(t * 0.46));
+              return a;
+            };
+            const punto = (padre, id, x, y, cls, tam) => {
+              const d = el('span', `k-recurso-punto ${cls || ''}`, padre, id, { left: `${x}px`, top: `${y}px` });
+              if (tam) Object.assign(d.style, { width: `${tam}px`, height: `${tam}px`, margin: `-${tam / 2}px 0 0 -${tam / 2}px` });
+              return d;
+            };
+            const linea = (svg, id, x1, y1, x2, y2, oro) => {
+              const l = document.createElementNS(NS, 'line');
+              l.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''}`);
+              l.setAttribute('id', id);
+              [['x1', x1], ['y1', y1], ['x2', x2], ['y2', y2]].forEach(([k, v]) => l.setAttribute(k, v));
+              const L = Math.hypot(x2 - x1, y2 - y1) + 2;
+              l.style.strokeDasharray = `${L} ${L + 40}`;
+              l.style.strokeDashoffset = `${L + 14}`;
+              svg.appendChild(l);
+              return l;
+            };
+            const camino = (svg, id, d, oro, cls) => {
+              const p = document.createElementNS(NS, 'path');
+              p.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''} ${cls || ''}`);
+              p.setAttribute('id', id);
+              p.setAttribute('d', d);
+              svg.appendChild(p);
+              const L = p.getTotalLength() + 2;
+              p.style.strokeDasharray = `${L} ${L + 40}`;
+              p.style.strokeDashoffset = `${L + 14}`;
+              return { p, L, punto: (u) => p.getPointAtLength(Math.max(0, Math.min(1, u)) * (L - 2)) };
+            };
+            const dibujar = (tl, l, t, d) => tl.to(l, { strokeDashoffset: 0, duration: d || 0.6, ease: 'power2.inOut' }, t);
+            // Entradas y salidas del frame: subir con desenfoque (power3.out) · escalas pequeñas con back.out · salir subiendo (power2.in).
+            const entra = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, y: (o && o.dy) ?? 30, filter: 'blur(6px)' },
+              { opacity: 1, y: 0, filter: 'blur(0px)', duration: (o && o.d) || 0.5, ease: 'power3.out', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const pop = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, scale: 0 },
+              { opacity: 1, scale: 1, duration: (o && o.d) || 0.45, ease: 'back.out(2)', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const sale = (tl, s, t, o) => tl.to(s, { opacity: 0, y: (o && o.dy) ?? -24, filter: 'blur(6px)', duration: (o && o.d) || 0.35, ease: 'power2.in', stagger: (o && o.stagger) || 0 }, t);
+            const late = (tl, s, t, o) => tl.fromTo(s, { scale: (o && o.de) || 1.12 }, { scale: 1, duration: (o && o.d) || 0.45, ease: 'power2.out', immediateRender: false }, t);
+            const halo = (tl, s, t) => tl.fromTo(s, { scale: 0.5, opacity: 0.9 }, { scale: 1.9, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+            // La palabra clave n de una frase (o la palabra que empieza con re).
+            const clave = (f, n) => (f.palabras.filter((p) => p.clave)[n || 0] || f.palabras[0] || { inicio: f.inicio, fin: f.fin });
+            const palabra = (f, re) => f.palabras.find((p) => re.test(p.texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^[^a-z0-9]+/, ''))) || { inicio: f.inicio, fin: f.fin };
+            // Texto cinético: un bloque por frase en «cont». textos[i]: undefined = la frase tal cual (sus palabras con sus tiempos);
+            // una cadena = un rótulo corto cuyas palabras entran repartidas sobre las de la frase; null = sin texto (sigue el anterior).
+            const bloques = (T, cont, pref, textos, clase) => {
+              textos = textos || [];
+              return T.frases.map((f, i) => {
+                const tx = textos[i];
+                if (tx === null) return null;
+                const b = el('div', 'bloque', cont, `${pref}-b-${i}`);
+                const fr = el('div', clase || 'k-recurso-frase', b, `${pref}-f-${i}`);
+                let ps;
+                if (tx === undefined) {
+                  ps = f.palabras.length ? f.palabras.map((p) => ({ texto: p.texto, clave: !!p.clave, inicio: p.inicio }))
+                    : partir(f.texto).map((p, j, a) => ({ ...p, inicio: f.inicio + (j * (f.fin - f.inicio)) / a.length }));
+                } else {
+                  const ws = partir(tx);
+                  const np = f.palabras.length;
+                  ps = ws.map((w, j) => ({ ...w, inicio: np ? f.palabras[Math.min(np - 1, Math.floor((j * np) / ws.length))].inicio : f.inicio + (j * (f.fin - f.inicio)) / ws.length }));
+                }
+                const spans = ps.map((p, j) => {
+                  const s = el('span', `k-recurso-palabra${p.clave ? ' k-recurso-clave' : ''}`, fr, `${pref}-p-${i}-${j}`);
+                  s.textContent = p.texto;
+                  return { s, inicio: p.inicio };
+                });
+                return { i, b, fr, spans };
+              });
+            };
+            const animarBloques = (tl, T, bs, finUltimo) => {
+              const vis = bs.filter(Boolean);
+              vis.forEach((x, k) => {
+                x.spans.forEach(({ s, inicio }) => tl.fromTo(s, { y: 28, opacity: 0, filter: 'blur(6px)' },
+                  { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, Math.max(0, inicio - 0.08)));
+                const sig = vis[k + 1];
+                const t = sig ? T.frases[sig.i].inicio - 0.32 : (finUltimo ?? T.salida(0.6));
+                tl.to(x.fr, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+              });
+            };
+            // Contador: el texto de el sube de a hasta b (enteros) en d segundos desde t, con onUpdate (buscable).
+            const contar = (tl, elc, a, b, t, d) => {
+              const o = { n: a };
+              tl.fromTo(o, { n: a }, { n: b, duration: d || 0.8, ease: 'power2.out', immediateRender: false, onUpdate: () => { elc.textContent = String(Math.round(o.n)); } }, t);
+            };
+            // Semilla fija para posiciones «al azar» (siempre las mismas).
+            const azar = (s) => () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+            return { r3, partir, el, icono, ancla, chip, nodo, punto, linea, camino, dibujar, entra, pop, sale, late, halo, clave, palabra, bloques, animarBloques, contar, azar };
+          })();
+
+          // Un QR ficticio (no codifica nada): los tres patrones de posición y módulos con semilla fija.
+          const qr = (id, semilla) => {
+            const N = 25, az = H.azar(semilla), on = [];
+            for (let i = 0; i < N * N; i++) on.push(az() < 0.48);
+            const finder = (fx, fy) => { for (let y = -1; y <= 7; y++) for (let x = -1; x <= 7; x++) {
+              const X = fx + x, Y = fy + y; if (X < 0 || Y < 0 || X >= N || Y >= N) continue;
+              const borde = x === 0 || x === 6 || y === 0 || y === 6, centro = x >= 2 && x <= 4 && y >= 2 && y <= 4;
+              on[Y * N + X] = x >= 0 && x <= 6 && y >= 0 && y <= 6 && (borde || centro); } };
+            finder(0, 0); finder(N - 7, 0); finder(0, N - 7);
+            for (let i = 8; i < N - 8; i++) { on[6 * N + i] = i % 2 === 0; on[i * N + 6] = i % 2 === 0; }
+            let d = '';
+            on.forEach((v, i) => { if (v) d += `M${i % N} ${Math.floor(i / N)}h1v1h-1z`; });
+            document.getElementById(id).setAttribute('d', d);
+          };
+
+          const construir = () => {
+            qr('asi-qr-a', 4729);
+            qr('asi-qr-b', 8316);
+            const tl = gsap.timeline({ paused: true });
+            const A = KRecurso.app;
+            // Un solo dedo para toques seguidos (a menos de 0,65 s uno de otro, en la misma capa): el dedo del primer toque se queda, se
+            // desliza al siguiente y lo presiona; se va después del último (queda). Así nunca se ven dos dedos a la vez.
+            const tocarSerie = (ancla, pasos, queda) => {
+              const p0 = pasos[0], ult = pasos[pasos.length - 1];
+              const d = A.tocar(tl, ancla, p0.en, p0.t, { queda: H.r3(ult.t - p0.t + (queda ?? 0.35)), dx: p0.dx, dy: p0.dy, presionar: p0.presionar });
+              const onda = d.firstElementChild;
+              for (let i = 1; i < pasos.length; i++) {
+                const p = pasos[i], prev = pasos[i - 1];
+                const c = A.caja(p.en, ancla);
+                const mueve = H.r3(Math.max(0.1, Math.min(0.3, p.t - prev.t - 0.2)));
+                tl.to(d, { x: H.r3(c.cx + (p.dx || 0)), y: H.r3(c.cy + (p.dy || 0)), duration: mueve, ease: 'power2.inOut' }, H.r3(p.t - mueve - 0.02));
+                tl.to(d, { scale: 0.82, duration: 0.08, ease: 'power2.in' }, p.t);
+                tl.fromTo(onda, { opacity: 0.9, scale: 0.6 }, { opacity: 0, scale: 1.45, duration: 0.45, ease: 'power2.out', immediateRender: false }, p.t);
+                tl.to(d, { scale: 1, duration: 0.12, ease: 'power2.out' }, p.t + 0.12);
+                if (p.presionar !== false) {
+                  tl.to(p.en, { scale: 0.97, filter: 'brightness(0.9)', duration: 0.06, ease: 'power1.out' }, p.t);
+                  tl.to(p.en, { scale: 1, filter: 'brightness(1)', duration: 0.14, ease: 'power1.out' }, p.t + 0.12);
+                }
+              }
+              return d;
+            };
+            const [f0, f1, f2, f3, f4] = T.frases;
+            const P = (f, re, d) => T.pulso(H.palabra(f, re).inicio + (d || 0));
+            const $ = (id) => document.getElementById(id);
+            const cam = $('asi-cam'), grupo = $('asi-grupo'), toma = $('asi-toma'), lista = $('asi-lista');
+            const bs = H.bloques(T, $('asi-col'), 'asi', ['Todo empieza en «*Hoy*»', 'Un *código* que cambia cada minuto', 'Le llega un aviso, y *listo*',
+              'Lo ves en *vivo*', '«Pasar *lista*», sin señal']);
+            H.animarBloques(tl, T, bs);
+            H.entra(tl, '#asi-ceja', 0.1, { dy: 16 });
+            // Un texto que cambia cada segundo (relojes de la app), con sets en el segundo exacto: buscable.
+            const reloj = (el, textos, t0, paso) => textos.forEach((x, k) => tl.set(el, { textContent: x }, H.r3(t0 + k * (paso || 1))));
+
+            // f0 · entra el celular en la página del grupo; «Hoy»: la clase del día, lo pendiente y lo que vence esta semana.
+            tl.fromTo('#asi-tel', { opacity: 0, y: 70, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power3.out' }, T.pulso(f0.inicio));
+            H.entra(tl, '#asi-datos', T.pulso(f0.inicio) + 0.6, { dy: 10 });
+            const tHoy = P(f0, /^hoy/, -0.2);
+            A.tocar(tl, grupo, $('asi-t-hoy'), tHoy);
+            tl.set('#asi-t-resumen', { color: '#44474f', borderBottomColor: 'rgba(0,0,0,0)' }, tHoy + 0.08);
+            tl.set('#asi-t-hoy', { color: '#015bbe', borderBottomColor: '#015bbe' }, tHoy + 0.08);
+            tl.to('#asi-s-resumen', { opacity: 0, duration: 0.15 }, tHoy + 0.08);
+            tl.fromTo('#asi-s-hoy', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, tHoy + 0.15);
+            const cTabs = A.caja($('asi-tabs'), grupo);
+            const yHoy = -(cTabs.y - 8);
+            A.desliz(tl, grupo, yHoy, tHoy + 0.45, 0.8);
+            const tClase = P(f0, /^clase/, -0.1);
+            A.foco(tl, grupo, $('asi-clase'), tClase, P(f0, /^pendiente/, -0.3), { pad: 4, radio: 22 });
+            const cVence = A.caja($('asi-vence'), grupo);
+            const yPend = -(cVence.y + cVence.h - 682 + 24);
+            A.desliz(tl, grupo, yPend, P(f0, /^pendiente/, -0.4), 0.7);
+            A.foco(tl, grupo, $('asi-pend'), P(f0, /^pendiente/, 0.1), P(f0, /^vence/, -0.25), { pad: 4, radio: 16 });
+            A.foco(tl, grupo, $('asi-vence'), P(f0, /^vence/, -0.2), H.r3(f0.fin + 0.1), { pad: 4, radio: 14 });
+
+            // f1 · «Tomar asistencia» → las dos formas → «Mostrar el código»: cuatro números que cambian cada minuto.
+            A.desliz(tl, grupo, yHoy, H.r3(f0.fin + 0.15), 0.55);
+            const tTomar = P(f1, /^tomar/, -0.1);
+            A.tocar(tl, grupo, $('asi-tomar'), tTomar);
+            tl.set('#asi-s-hoy', { opacity: 0 }, tTomar + 0.15);
+            tl.set('#asi-s-formas', { opacity: 1 }, tTomar + 0.15);
+            tl.fromTo('#asi-formas', { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out', immediateRender: false }, tTomar + 0.15);
+            const tCod = P(f1, /^muestra/);
+            A.foco(tl, grupo, $('asi-f-codigo'), tTomar + 0.4, tCod + 0.1, { pad: 3, radio: 18 });
+            A.tocar(tl, grupo, $('asi-f-codigo'), tCod);
+            tl.to(grupo, { opacity: 0, duration: 0.2 }, tCod + 0.2);
+            tl.fromTo(toma, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, tCod + 0.25);
+            const tNum = P(f1, /^cuatro/, -0.4);
+            const cCod = A.caja($('asi-codigo'), cam);
+            A.camara(tl, cam, { z: 1.2, cx: 195, cy: cCod.cy + 40, t: tNum - 0.5, d: 0.9 });
+            A.foco(tl, toma, $('asi-codigo'), tNum, T.pulso(f1.fin + 0.3), { pad: 6, radio: 14 });
+            // La barra y «El código cambia en N s»: el código cambia en «cambian» (el segundo 60 del minuto).
+            const tCambia = P(f1, /^cambian/);
+            const tToma = tCod + 0.25;
+            tl.fromTo('#asi-barrita', { scaleX: (tCambia - tToma + 0.5) / 60 }, { scaleX: 0, duration: tCambia - tToma, ease: 'none', immediateRender: false }, tToma);
+            tl.set('#asi-barrita', { scaleX: 1 }, tCambia);
+            tl.to('#asi-barrita', { scaleX: (60 - (T.duracion - tCambia)) / 60, duration: T.duracion - tCambia, ease: 'none' }, tCambia);
+            reloj($('asi-seg'), ['2', '1'], tToma, (tCambia - tToma) / 2);
+            reloj($('asi-seg'), Array.from({ length: Math.ceil(T.duracion - tCambia) }, (_, k) => String(60 - k)), tCambia);
+            document.querySelectorAll('#asi-codigo .dig').forEach((d, k) => {
+              tl.fromTo(d.querySelector('.a'), { yPercent: 0 }, { yPercent: -110, duration: 0.3, ease: 'power2.in', immediateRender: false }, tCambia + k * 0.06);
+              tl.fromTo(d.querySelector('.b'), { yPercent: 110 }, { yPercent: 0, duration: 0.35, ease: 'power2.out' }, tCambia + 0.12 + k * 0.06);
+            });
+            tl.to('#asi-qr-bs', { opacity: 1, duration: 0.2 }, tCambia + 0.1);
+            // «Se cierra sola en 14:58»: cuenta hacia atrás desde que se abre la toma.
+            const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+            reloj($('asi-rest'), Array.from({ length: Math.ceil(T.duracion - tToma) }, (_, k) => mmss(898 - k)), tToma);
+
+            // Quienes marcan: la lista «Faltan» (18) se va vaciando con su orden de la app (por nombre) y el contador sube.
+            const filas = [...document.querySelectorAll('#asi-faltan .falta')];
+            const ALTO = 58;
+            filas.forEach((f, i) => tl.set(f, { y: i * ALTO }, 0));
+            const quitados = [];
+            const nEl = $('asi-n'), fEl = $('asi-faltan-n');
+            const quitar = (nombre, t) => {
+              const i = filas.findIndex((f) => f.querySelector('.nombre').textContent === nombre);
+              quitados.push(i);
+              tl.to(filas[i], { opacity: 0, x: 30, duration: 0.25, ease: 'power1.in' }, t);
+              filas.forEach((f, j) => {
+                if (quitados.includes(j) || j < i) return;
+                const antes = quitados.filter((q) => q < j).length;
+                tl.to(f, { y: (j - antes) * ALTO, duration: 0.3, ease: 'power2.inOut' }, t + 0.15);
+              });
+              tl.set(nEl, { textContent: String(quitados.length) }, t);
+              tl.set(fEl, { textContent: String(18 - quitados.length) }, t);
+            };
+            // f2 · al alumno le llega el aviso y escribe el código: tres marcan mientras tanto (la última, Lucía, en «listo»).
+            const tSale = T.pulso(f2.inicio - 0.5);
+            A.camara(tl, cam, { z: 1, t: tSale, d: 0.7 });
+            tl.fromTo('#asi-alu', { opacity: 0, y: 60, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.6, ease: 'power3.out', immediateRender: false }, T.pulso(f2.inicio));
+            const tAviso = P(f2, /^aviso/, -0.3);
+            tl.fromTo('#asi-notif', { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.45, ease: 'back.out(1.6)', immediateRender: false }, tAviso);
+            const tToca = P(f2, /^escribe/, -0.1);
+            A.tocar(tl, $('asi-alu-cam'), $('asi-notif'), tToca);
+            tl.to('#asi-notif', { opacity: 0, y: -30, duration: 0.25, ease: 'power1.in' }, tToca + 0.2);
+            tl.to('#asi-mc', { opacity: 0, duration: 0.2 }, tToca + 0.2);
+            tl.fromTo('#asi-marcar', { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, tToca + 0.25);
+            const cajas = [...document.querySelectorAll('#asi-cajas .caja')];
+            const tListo = P(f2, /^listo/, -0.15);
+            const t0Esc = P(f2, /^codigo/, -0.2);
+            const pasoEsc = Math.min(0.3, (tListo - 0.35 - t0Esc) / 4);
+            tl.set(cajas[0].querySelector('.actual'), { opacity: 1 }, tToca + 0.3);
+            cajas.forEach((c, k) => {
+              const t = H.r3(t0Esc + k * pasoEsc);
+              tl.set(c.querySelector('.actual'), { opacity: 0 }, t);
+              tl.fromTo(c.querySelector('.llena'), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.15, ease: 'power2.out', immediateRender: false }, t);
+              if (cajas[k + 1]) tl.set(cajas[k + 1].querySelector('.actual'), { opacity: 1 }, t);
+            });
+            tl.to('#asi-escribe', { opacity: 0, duration: 0.2 }, tListo - 0.15);
+            tl.to('#asi-hecho', { opacity: 1, duration: 0.2 }, tListo);
+            tl.fromTo('#asi-check', { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out', immediateRender: false }, tListo);
+            tl.fromTo('#asi-ir', { opacity: 0 }, { opacity: 1, duration: 0.25, immediateRender: false }, tListo + 0.2);
+            quitar('Antonella Ríos Sánchez', P(f2, /^llega/, 0));
+            quitar('Débora Bustamante Gil', P(f2, /^escribe/, 0.2));
+            quitar('Lucía Ruiz Montoya', tListo);
+
+            // f3 · el profesor ve en vivo cuántos marcaron (13 de 18) y a quien no tiene celular lo marca con un toque.
+            const tF3 = T.pulso(f3.inicio);
+            tl.to('#asi-alu', { opacity: 0, x: -40, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, tF3 - 0.3);
+            const cCz = A.caja($('asi-cz'), toma);
+            const yCz = -(cCz.y - 12);
+            A.desliz(tl, toma, yCz, tF3, 0.8);
+            const tVivo = P(f3, /^vivo/, -0.3);
+            const resto = ['Andrea Perea López', 'Camilo Carmona Flórez', 'Juliana Rentería Naranjo', 'Felipe Gil Franco', 'Gladys Gutiérrez Cano', 'Josué Murillo Uribe',
+              'Mariana Arias', 'Miguel Quintero Asprilla', 'Paula Agudelo', 'Salomé Restrepo Tobón'];
+            const tMarcaron = P(f3, /^marcaron/, -0.1);
+            resto.forEach((n, k) => quitar(n, H.r3(tVivo + 0.1 + (k * (tMarcaron - tVivo - 0.1)) / (resto.length - 1))));
+            const cCont = A.caja($('asi-contador'), cam);
+            A.camara(tl, cam, { z: 1.4, borde: 'izquierda', cy: cCont.cy + yCz + 100, t: tVivo - 0.5, d: 0.9 });
+            A.camara(tl, cam, { z: 1, t: P(f3, /^quien/, -0.3), d: 0.7 });
+            A.foco(tl, toma, $('asi-contador'), tMarcaron, P(f3, /^quien/, 0), { pad: 6, radio: 12 });
+            H.late(tl, '#asi-n', tMarcaron + 0.1, { de: 1.25 });
+            const tToque = P(f3, /^toque/, -0.2);
+            A.foco(tl, toma, $('asi-carolina'), P(f3, /^celular/, -0.3), tToque + 0.3, { pad: 4, radio: 16 });
+            A.tocar(tl, toma, $('asi-presente'), tToque);
+            quitar('Carolina Gil Mesa', tToque + 0.15);
+            H.late(tl, '#asi-n', tToque + 0.2, { de: 1.2 });
+
+            // f4 · «Pasar lista» sin señal (la clase de hoy, la otra forma de tomarla): se marcan con un solo dedo que se desliza (0,5 s entre
+            //      toques), «Guardar la lista», queda en el celular y se envía sola al volver la señal.
+            const tF4 = T.pulso(f4.inicio - 0.3);
+            tl.to(toma, { opacity: 0, duration: 0.2 }, tF4);
+            tl.fromTo(lista, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, tF4 + 0.05);
+            tl.fromTo('#asi-pie', { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: false }, tF4 + 0.05);
+            const pers = [...document.querySelectorAll('#asi-personas .fila-p')];
+            const liN = $('asi-li-n');
+            const tL0 = H.r3(tF4 + 0.7);
+            tocarSerie(lista, [0, 1, 2, 4].map((k, j) => ({ en: pers[k], t: H.r3(tL0 + j * 0.5) })), 0.04);
+            [0, 1, 2, 4].forEach((k, j) => {
+              const t = H.r3(tL0 + j * 0.5);
+              tl.to(pers[k].querySelector('.on'), { opacity: 1, duration: 0.12 }, t + 0.05);
+              tl.set(pers[k].querySelector('.no'), { opacity: 0 }, t + 0.05);
+              tl.set(pers[k].querySelector('.si'), { opacity: 1 }, t + 0.05);
+              tl.set(pers[k].querySelector('.nombre'), { color: '#004492' }, t + 0.05);
+              tl.set(liN, { textContent: String(j + 1) }, t + 0.05);
+            });
+            A.foco(tl, lista, $('asi-b-sin'), H.r3(tL0 + 1.8), H.r3(P(f4, /^envia/, -0.3) - 0.2), { pad: 4, radio: 14 }); // después del último toque
+            const tGuardar = P(f4, /^envia/, -0.3);
+            A.tocar(tl, cam, $('asi-guardar'), tGuardar);
+            const hCola = A.medida($('asi-b-cola')).h, hHecho = A.medida($('asi-b-hecho')).h, hEnv = A.medida($('asi-b-enviada')).h;
+            tl.set('#asi-b-hecho', { y: hCola + 14 }, 0);
+            tl.to('#asi-li-resto', { y: hCola + hHecho + 28, duration: 0.4, ease: 'power3.out' }, tGuardar + 0.15);
+            tl.to(['#asi-b-cola', '#asi-b-hecho'], { opacity: 1, duration: 0.3 }, tGuardar + 0.25);
+            tl.set('#asi-guardar-t', { textContent: 'Sin cambios' }, tGuardar + 0.15);
+            tl.set('#asi-guardar', { backgroundColor: 'rgba(27, 27, 31, 0.12)', color: 'rgba(27, 27, 31, 0.38)' }, tGuardar + 0.15);
+            A.foco(tl, lista, $('asi-b-cola'), tGuardar + 0.5, P(f4, /^vuelve/, -0.2), { pad: 4, radio: 14 });
+            const tVuelve = P(f4, /^vuelve/, -0.1);
+            tl.to(['#asi-b-cola', '#asi-b-hecho'], { opacity: 0, duration: 0.2 }, tVuelve);
+            tl.fromTo('#asi-b-enviada', { opacity: 0, y: -6 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, tVuelve + 0.15);
+            tl.to('#asi-li-resto', { y: hEnv + 14, duration: 0.4, ease: 'power3.out' }, tVuelve + 0.1);
+            H.late(tl, '#asi-b-enviada', tVuelve + 0.45, { de: 1.05 });
+
+            H.sale(tl, ['#asi-tel', '#asi-ceja', '#asi-datos'], T.salida(0.6), { d: 0.5 });
+            tl.set({}, {}, T.duracion);
+            window.__timelines['asistencia'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

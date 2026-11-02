@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="es" data-composition-variables='[{"id":"tiempos","type":"string","label":"Tiempos de la escena (los escribe recurso.mjs)","default":"{\"id\":\"calificar\",\"composicion\":\"compositions/calificar.html\",\"compId\":\"calificar\",\"inicio\":227,\"duracion\":35,\"fin\":262,\"conVoz\":true,\"inicioAbs\":227,\"idioma\":\"es\",\"compas0\":1,\"golpes\":[1.5,3,6.5,7,10.5,15,16.95,17,19,31,32.95,33,33.5,34.95],\"frases\":[{\"id\":\"voz-calificar-1\",\"clave\":\"notas\",\"texto\":\"Las notas se ponen en fila: escribes, Enter, y pasas al siguiente.\",\"inicio\":0.5,\"fin\":4.297,\"inicioAbs\":227.5,\"finAbs\":231.297,\"palabras\":[{\"texto\":\"Las\",\"inicio\":0.53,\"fin\":0.729},{\"texto\":\"notas\",\"inicio\":0.729,\"fin\":1.076,\"clave\":true},{\"texto\":\"se\",\"inicio\":1.076,\"fin\":1.275},{\"texto\":\"ponen\",\"inicio\":1.275,\"fin\":1.622},{\"texto\":\"en\",\"inicio\":1.622,\"fin\":1.822},{\"texto\":\"fila:\",\"inicio\":1.822,\"fin\":2.169},{\"texto\":\"escribes,\",\"inicio\":2.169,\"fin\":2.663},{\"texto\":\"Enter,\",\"inicio\":2.663,\"fin\":3.01},{\"texto\":\"y\",\"inicio\":3.01,\"fin\":3.209},{\"texto\":\"pasas\",\"inicio\":3.209,\"fin\":3.556},{\"texto\":\"al\",\"inicio\":3.556,\"fin\":3.755},{\"texto\":\"siguiente.\",\"inicio\":3.755,\"fin\":4.25}]},{\"id\":\"voz-calificar-2\",\"clave\":\"califican\",\"texto\":\"Las evaluaciones se abren con un toque, por el tiempo que elijas, y se califican solas al cerrar. Las preguntas abiertas las calificas tú.\",\"inicio\":4.797,\"fin\":12.456,\"inicioAbs\":231.797,\"finAbs\":239.456,\"palabras\":[{\"texto\":\"Las\",\"inicio\":4.827,\"fin\":5.018},{\"texto\":\"evaluaciones\",\"inicio\":5.018,\"fin\":5.777},{\"texto\":\"se\",\"inicio\":5.777,\"fin\":5.968},{\"texto\":\"abren\",\"inicio\":5.968,\"fin\":6.301},{\"texto\":\"con\",\"inicio\":6.301,\"fin\":6.493},{\"texto\":\"un\",\"inicio\":6.493,\"fin\":6.684},{\"texto\":\"toque,\",\"inicio\":6.684,\"fin\":7.017},{\"texto\":\"por\",\"inicio\":7.017,\"fin\":7.209},{\"texto\":\"el\",\"inicio\":7.209,\"fin\":7.4},{\"texto\":\"tiempo\",\"inicio\":7.4,\"fin\":7.733},{\"texto\":\"que\",\"inicio\":7.733,\"fin\":7.924},{\"texto\":\"elijas,\",\"inicio\":7.924,\"fin\":8.399},{\"texto\":\"y\",\"inicio\":8.399,\"fin\":8.591},{\"texto\":\"se\",\"inicio\":8.591,\"fin\":8.782},{\"texto\":\"califican\",\"inicio\":8.782,\"fin\":9.399,\"clave\":true},{\"texto\":\"solas\",\"inicio\":9.399,\"fin\":9.732},{\"texto\":\"al\",\"inicio\":9.732,\"fin\":9.923},{\"texto\":\"cerrar.\",\"inicio\":9.923,\"fin\":10.256},{\"texto\":\"Las\",\"inicio\":10.256,\"fin\":10.448},{\"texto\":\"preguntas\",\"inicio\":10.448,\"fin\":10.923},{\"texto\":\"abiertas\",\"inicio\":10.923,\"fin\":11.398},{\"texto\":\"las\",\"inicio\":11.398,\"fin\":11.589},{\"texto\":\"calificas\",\"inicio\":11.589,\"fin\":12.206},{\"texto\":\"tú.\",\"inicio\":12.206,\"fin\":12.397}]},{\"id\":\"voz-calificar-3\",\"clave\":\"correcta\",\"texto\":\"Cada alumno recibe su nota y ve cuál era la respuesta correcta.\",\"inicio\":12.956,\"fin\":16.561,\"inicioAbs\":239.956,\"finAbs\":243.561,\"palabras\":[{\"texto\":\"Cada\",\"inicio\":12.986,\"fin\":13.29},{\"texto\":\"alumno\",\"inicio\":13.29,\"fin\":13.724},{\"texto\":\"recibe\",\"inicio\":13.724,\"fin\":14.157},{\"texto\":\"su\",\"inicio\":14.157,\"fin\":14.332},{\"texto\":\"nota\",\"inicio\":14.332,\"fin\":14.636},{\"texto\":\"y\",\"inicio\":14.636,\"fin\":14.811},{\"texto\":\"ve\",\"inicio\":14.811,\"fin\":14.985},{\"texto\":\"cuál\",\"inicio\":14.985,\"fin\":15.16},{\"texto\":\"era\",\"inicio\":15.16,\"fin\":15.464},{\"texto\":\"la\",\"inicio\":15.464,\"fin\":15.639},{\"texto\":\"respuesta\",\"inicio\":15.639,\"fin\":16.072},{\"texto\":\"correcta.\",\"inicio\":16.072,\"fin\":16.506,\"clave\":true}]},{\"id\":\"voz-calificar-4\",\"clave\":\"comentario\",\"texto\":\"Los trabajos llegan con una foto o un archivo, y los calificas uno tras otro, con un comentario.\",\"inicio\":17.061,\"fin\":22.33,\"inicioAbs\":244.061,\"finAbs\":249.33,\"palabras\":[{\"texto\":\"Los\",\"inicio\":17.091,\"fin\":17.269},{\"texto\":\"trabajos\",\"inicio\":17.269,\"fin\":17.712},{\"texto\":\"llegan\",\"inicio\":17.712,\"fin\":18.022},{\"texto\":\"con\",\"inicio\":18.022,\"fin\":18.2},{\"texto\":\"una\",\"inicio\":18.2,\"fin\":18.511},{\"texto\":\"foto\",\"inicio\":18.511,\"fin\":18.821},{\"texto\":\"o\",\"inicio\":18.821,\"fin\":18.999},{\"texto\":\"un\",\"inicio\":18.999,\"fin\":19.178},{\"texto\":\"archivo,\",\"inicio\":19.178,\"fin\":19.62},{\"texto\":\"y\",\"inicio\":19.62,\"fin\":19.798},{\"texto\":\"los\",\"inicio\":19.798,\"fin\":19.977},{\"texto\":\"calificas\",\"inicio\":19.977,\"fin\":20.551},{\"texto\":\"uno\",\"inicio\":20.551,\"fin\":20.861},{\"texto\":\"tras\",\"inicio\":20.861,\"fin\":21.04},{\"texto\":\"otro,\",\"inicio\":21.04,\"fin\":21.35},{\"texto\":\"con\",\"inicio\":21.35,\"fin\":21.528},{\"texto\":\"un\",\"inicio\":21.528,\"fin\":21.707},{\"texto\":\"comentario.\",\"inicio\":21.707,\"fin\":22.281,\"clave\":true}]},{\"id\":\"voz-calificar-5\",\"clave\":\"semaforo\",\"texto\":\"Todo cae en la sábana de notas, con el semáforo de cada alumno: cumple, en riesgo o no cumple.\",\"inicio\":22.83,\"fin\":27.737,\"inicioAbs\":249.83,\"finAbs\":254.737,\"palabras\":[{\"texto\":\"Todo\",\"inicio\":22.86,\"fin\":23.153},{\"texto\":\"cae\",\"inicio\":23.153,\"fin\":23.321},{\"texto\":\"en\",\"inicio\":23.321,\"fin\":23.49},{\"texto\":\"la\",\"inicio\":23.49,\"fin\":23.658},{\"texto\":\"sábana\",\"inicio\":23.658,\"fin\":24.076},{\"texto\":\"de\",\"inicio\":24.076,\"fin\":24.244},{\"texto\":\"notas,\",\"inicio\":24.244,\"fin\":24.537},{\"texto\":\"con\",\"inicio\":24.537,\"fin\":24.706},{\"texto\":\"el\",\"inicio\":24.706,\"fin\":24.874},{\"texto\":\"semáforo\",\"inicio\":24.874,\"fin\":25.417,\"clave\":true},{\"texto\":\"de\",\"inicio\":25.417,\"fin\":25.585},{\"texto\":\"cada\",\"inicio\":25.585,\"fin\":25.878},{\"texto\":\"alumno:\",\"inicio\":25.878,\"fin\":26.296},{\"texto\":\"cumple,\",\"inicio\":26.296,\"fin\":26.589},{\"texto\":\"en\",\"inicio\":26.589,\"fin\":26.757},{\"texto\":\"riesgo\",\"inicio\":26.757,\"fin\":27.05},{\"texto\":\"o\",\"inicio\":27.05,\"fin\":27.219},{\"texto\":\"no\",\"inicio\":27.219,\"fin\":27.387},{\"texto\":\"cumple.\",\"inicio\":27.387,\"fin\":27.68}]},{\"id\":\"voz-calificar-6\",\"clave\":\"escribes\",\"texto\":\"Y en «Faltaron» ves quién lleva varias clases sin venir, y le escribes por WhatsApp con un toque.\",\"inicio\":28.237,\"fin\":33.208,\"inicioAbs\":255.237,\"finAbs\":260.208,\"palabras\":[{\"texto\":\"Y\",\"inicio\":28.267,\"fin\":28.443},{\"texto\":\"en\",\"inicio\":28.443,\"fin\":28.619},{\"texto\":\"«Faltaron»\",\"inicio\":28.619,\"fin\":29.055},{\"texto\":\"ves\",\"inicio\":29.055,\"fin\":29.231},{\"texto\":\"quién\",\"inicio\":29.231,\"fin\":29.407},{\"texto\":\"lleva\",\"inicio\":29.407,\"fin\":29.713},{\"texto\":\"varias\",\"inicio\":29.713,\"fin\":30.019},{\"texto\":\"clases\",\"inicio\":30.019,\"fin\":30.325},{\"texto\":\"sin\",\"inicio\":30.325,\"fin\":30.501},{\"texto\":\"venir,\",\"inicio\":30.501,\"fin\":30.807},{\"texto\":\"y\",\"inicio\":31.127,\"fin\":31.313},{\"texto\":\"le\",\"inicio\":31.313,\"fin\":31.499},{\"texto\":\"escribes\",\"inicio\":31.499,\"fin\":31.961,\"clave\":true},{\"texto\":\"por\",\"inicio\":31.961,\"fin\":32.147},{\"texto\":\"WhatsApp\",\"inicio\":32.147,\"fin\":32.471},{\"texto\":\"con\",\"inicio\":32.471,\"fin\":32.657},{\"texto\":\"un\",\"inicio\":32.657,\"fin\":32.843},{\"texto\":\"toque.\",\"inicio\":32.843,\"fin\":33.167}]}]}"}]'>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- «Formando líderes con Kingdom» · escena «calificar» (SPEC.md → «calificar»). App: Kingdom v2 RECREADA (kit v1.3, «Para líderes»), fiel a
+         las capturas academia__notas-entregas-y-evaluaciones__01-notas, __02-columna, __03-entregas, __05-evaluaciones, __07-ventana,
+         academia__mis-cursos__06-evaluacion y academia__tomar-asistencia__07-faltaron (assets/referencias/) y a frontend-v2: notas/notas-grupo.component.ts
+         (la sábana con el semáforo y sus filtros), notas/nota-editar.component.ts (las notas en fila: «Enter guarda y pasa al siguiente»),
+         evaluaciones-grupo.component.ts y ventana-evaluacion.component.ts («Abrir ahora» → «¿Por cuánto tiempo?»; abierta, cerrada y calificada;
+         «Calificar (N)»), resultado-evaluacion.component.ts («Tu nota», «Tu respuesta» y «La correcta»), entregas/entregas-grupo.component.ts y
+         entregas/calificar-entregas.page.ts («Calificar en fila», notas rápidas, «Comentario para el alumno», «Guardar y seguir») y
+         asistencia/clase-detalle-dialog.component.ts («Faltaron (N)», «{n} clases seguidas sin venir» y «Escribir», que abre el WhatsApp del
+         propio profesor con el mensaje de ac.ac2_wa_mensaje; WhatsApp se nombra, no se dibuja). El aviso de la nota es el del catálogo
+         (academia.nota). Marca por defecto de Kingdom (azul). Grupo de ejemplo «Fundamentos · miércoles 7 p. m.» (18 inscritos); personas
+         ficticias de la demo. Datos de ejemplo. -->
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; overflow: hidden; color: var(--k-noche-tinta); font-family: var(--k-fuente); }
+        .col { position: absolute; left: 192px; top: 210px; width: 860px; height: 660px; }
+        .bloque { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+        .ceja-e { position: absolute; left: 192px; top: 132px; }
+        .dia { position: absolute; left: 1080px; top: 140px; width: 648px; height: 800px; }
+        .svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+        .ancla { position: absolute; width: 0; height: 0; }
+        .centro { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; }
+        .chip { display: flex; align-items: center; gap: 14px; height: 64px; padding: 0 28px; border-radius: 32px; background: rgba(12, 26, 58, 0.92);
+          box-shadow: inset 0 0 0 1px rgba(234, 240, 255, 0.18); font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1; color: var(--k-noche-tinta); }
+        .chip.oro { box-shadow: inset 0 0 0 2px var(--k-noche-dorado); color: var(--k-noche-dorado); }
+        .chip.azul { box-shadow: inset 0 0 0 2px var(--k-azul); }
+        .rot { font-family: var(--k-fuente); font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--k-noche-tinta-2); }
+        .rot.oro { color: var(--k-noche-dorado); }
+        /* Íconos como máscara con el estilo en el documento (no en kit.css): la url() de --k-icono se resuelve contra la página. Lección del
+           2026-11-01: la de kit.css sale vacía en el render aunque el snapshot la muestre. Lo mismo para .k-app-icono (kit v1.3). */
+        .ico { display: inline-block; flex: none; width: var(--k-icono-tam, 56px); height: var(--k-icono-tam, 56px); background: currentColor;
+          -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .ico-oro { color: var(--k-noche-dorado); }
+        .k-recurso-icono, .k-app-icono { -webkit-mask: var(--k-icono) center / contain no-repeat; mask: var(--k-icono) center / contain no-repeat; }
+        .halo { position: absolute; left: 0; top: 0; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; opacity: 0; box-shadow: 0 0 0 3px var(--k-noche-dorado); }
+        /* Rótulo del kit sobre la app recreada (no es de la app): una píldora de la noche con borde dorado. */
+        .rotulo-kit { display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px; border-radius: 28px; background: rgba(6, 13, 31, 0.92);
+          box-shadow: inset 0 0 0 2px var(--k-noche-dorado), 0 16px 32px -12px rgba(0, 0, 0, 0.6); color: var(--k-noche-dorado); font-family: var(--k-fuente);
+          font-size: 28px; font-weight: 700; line-height: 1; white-space: nowrap; }
+        .col { width: 590px; }
+        #cal-datos { left: 192px; right: auto; }
+        #cal-tel { left: 1199px; top: 114px; }
+        #cal-alu { left: 800px; top: 236px; --k-app-escala: 0.8; }
+        .sobre { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+        .tecla { position: absolute; left: 192px; top: 800px; opacity: 0; }
+        .lapso { position: absolute; left: 192px; top: 800px; opacity: 0; }
+        .msg { position: absolute; left: 192px; top: 330px; width: 600px; padding: 28px 32px; border-radius: 28px; background: rgba(6, 13, 31, 0.92);
+          box-shadow: inset 0 0 0 2px var(--k-noche-dorado), 0 16px 32px -12px rgba(0, 0, 0, 0.6); opacity: 0; }
+        .msg .cab { display: flex; align-items: center; gap: 14px; margin: 0 0 14px; font-family: var(--k-fuente); font-size: 28px; font-weight: 700; color: var(--k-noche-dorado); }
+        .msg p { margin: 0; font-family: var(--k-fuente); font-size: 30px; font-weight: 500; line-height: 1.35; color: var(--k-noche-tinta); }
+        /* ── La página del grupo (grupo.page.ts) ── */
+        .pg { display: flex; flex-direction: column; gap: 14px; padding: 16px; }
+        .volver { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; min-height: 40px; color: var(--k-app-primario); font-size: 14px; font-weight: 500; line-height: 20px; }
+        .h1 { margin: 0; font-size: 24px; font-weight: 400; line-height: 32px; }
+        .ficha { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 16px; background: var(--k-app-cont); }
+        .fila-nombre { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+        .ficha h2 { margin: 0; font-size: 22px; font-weight: 400; line-height: 28px; }
+        .etiquetas { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+        .dato { display: flex; align-items: center; gap: 6px; margin: 0; }
+        .dato .k-app-icono { color: var(--k-app-texto-2); }
+        .profesores { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+        .profesores .etq { color: var(--k-app-texto-2); }
+        .persona { display: inline-flex; align-items: center; gap: 6px; }
+        .gchip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 8px; font-size: 12px; font-weight: 500; line-height: 16px;
+          background: var(--k-app-cont-max); color: var(--k-app-texto-2); }
+        .gchip .k-app-icono { --k-icono-tam: 16px; }
+        .gchip.en-curso { background: var(--k-app-primario-cont); color: var(--k-app-sobre-primario-cont); }
+        .gchip.calificada, .gchip.cerrada { background: var(--k-app-secundario-cont); color: var(--k-app-sobre-secundario-cont); }
+        .gchip.abierta, .gchip.publicada { background: var(--k-app-primario); color: #ffffff; }
+        .cifras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+        .cifra { display: flex; flex-direction: column; gap: 2px; padding: 12px; border-radius: 14px; background: var(--k-app-cont); min-width: 0; }
+        .cifra .valor { font-size: 24px; font-weight: 400; line-height: 32px; white-space: nowrap; }
+        .cifra small { font-size: 14px; font-weight: 500; line-height: 20px; color: var(--k-app-texto-2); }
+        .cifra .etq { font-size: 12px; line-height: 16px; color: var(--k-app-texto-2); }
+        .tabs { overflow: hidden; border-bottom: 1px solid var(--k-app-borde); }
+        .tabs-fila { display: flex; gap: 4px; width: max-content; }
+        .tab { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 8px 12px; border-bottom: 3px solid transparent; color: var(--k-app-texto-2);
+          white-space: nowrap; font-size: 14px; font-weight: 500; line-height: 20px; }
+        .tab .k-app-icono { --k-icono-tam: 20px; }
+        .tab.activa { color: var(--k-app-primario); border-bottom-color: var(--k-app-primario); }
+        .secs { position: relative; }
+        .sec { position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; gap: 10px; }
+        /* Notas (notas-grupo.component.ts): filtros del semáforo, promedio, buscar y la sábana */
+        .filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+        .fchip { display: inline-flex; align-items: center; gap: 4px; min-height: 36px; padding: 4px 12px; border-radius: 18px; border: 1px solid var(--k-app-borde);
+          font-size: 14px; font-weight: 500; line-height: 20px; color: var(--k-app-texto); white-space: nowrap; }
+        .fchip .k-app-icono { --k-icono-tam: 18px; }
+        .fchip.activo { background: var(--k-app-secundario-cont); color: var(--k-app-sobre-secundario-cont); border-color: transparent; }
+        .promedio { margin-left: auto; color: var(--k-app-texto-2); }
+        .buscar-n { display: flex; align-items: center; min-height: 44px; padding: 6px 12px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--k-app-contorno);
+          background: var(--k-app-fondo); color: var(--k-app-texto-2); font-size: 16px; line-height: 24px; }
+        .sab { overflow: hidden; border-radius: 14px; box-shadow: inset 0 0 0 1px var(--k-app-borde); background: var(--k-app-fondo); }
+        .sab table { border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; }
+        .sab th, .sab td { padding: 4px 6px; border-bottom: 1px solid var(--k-app-borde); background: var(--k-app-fondo); text-align: center; vertical-align: middle; }
+        .sab thead th { background: var(--k-app-cont-alto); font-size: 12px; font-weight: 500; line-height: 16px; }
+        .sab .fila-materias th { height: 32px; white-space: nowrap; }
+        .sab .fila-acts th { min-width: 76px; max-width: 120px; }
+        .sab .fija { position: relative; z-index: 1; min-width: 132px; max-width: 156px; text-align: left; }
+        .act-nombre { display: block; }
+        .act-peso { display: inline-flex; align-items: center; gap: 2px; color: var(--k-app-texto-2); }
+        .act-peso .k-app-icono { --k-icono-tam: 14px; }
+        .columna { display: inline-flex; padding: 2px; border-radius: 8px; color: var(--k-app-primario); vertical-align: middle; }
+        .columna .k-app-icono { --k-icono-tam: 20px; }
+        .alumno { display: flex; align-items: center; min-height: 40px; color: var(--k-app-primario); font-size: 14px; line-height: 20px; }
+        .celda { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 52px; min-height: 40px; padding: 2px 6px; font-size: 16px; line-height: 24px; }
+        .con-com { position: absolute; top: 4px; right: 4px; width: 6px; height: 6px; border-radius: 50%; background: var(--k-app-primario); }
+        .sab .col-final, .sab thead .col-final { min-width: 76px; background: var(--k-app-cont); }
+        .final { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; line-height: 20px; }
+        .final .k-app-icono { --k-icono-tam: 18px; }
+        .final.cumple .k-app-icono { color: var(--k-app-verde); }
+        .final.en_riesgo .k-app-icono { color: var(--k-app-amarillo); }
+        .final.no_cumple .k-app-icono { color: var(--k-app-error); }
+        /* Evaluaciones (evaluaciones-grupo.component.ts) */
+        .cab-ev { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+        .muted { color: var(--k-app-texto-2); }
+        .ev, .act { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 18px; background: var(--k-app-cont); }
+        .act { gap: 6px; }
+        .ev.abierta { box-shadow: 0 0 0 2px var(--k-app-primario); }
+        .ev-cab { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; }
+        .ev h3, .act h3 { margin: 0; font-size: 16px; font-weight: 500; line-height: 24px; }
+        .meta, .cuando { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 0; }
+        .meta .k-app-icono, .cuando .k-app-icono { --k-icono-tam: 20px; color: var(--k-app-texto-2); }
+        .cuando.vivo { font-weight: 500; color: var(--k-app-primario); font-variant-numeric: tabular-nums; }
+        .cuando.vivo .k-app-icono { color: var(--k-app-primario); }
+        .mini-cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 6px; }
+        .mini-cifras > span { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 12px; background: var(--k-app-cont-alto); }
+        .mini-cifras > span.pendiente { background: var(--k-app-terciario-cont); color: var(--k-app-sobre-terciario-cont); }
+        .mini-cifras .n { font-size: 22px; line-height: 28px; font-variant-numeric: tabular-nums; }
+        .mini-cifras small { font-size: 14px; font-weight: 500; }
+        .mini-cifras .etq { font-size: 12px; line-height: 16px; }
+        .acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+        .acciones .k-app-boton { height: 44px; padding: 0 16px; }
+        .acciones .k-app-boton .k-app-icono { margin-left: 0; }
+        .acciones .k-app-boton.grande { flex: 1 1 192px; height: 52px; }
+        .k-app-boton.peligro { color: var(--k-app-error); }
+        .banco { align-self: flex-start; }
+        .estados { position: relative; }
+        .estados > .ev { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
+        .estados > .ev.v1 { position: relative; opacity: 1; }
+        /* Entregas (entregas-grupo.component.ts) */
+        .borrado { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 16px; background: var(--k-app-terciario-cont); color: var(--k-app-sobre-terciario-cont); }
+        .borrado p { margin: 0; font-size: 14px; font-weight: 500; line-height: 20px; }
+        /* Calificar en fila (calificar-entregas.page.ts) */
+        .cab-cal { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+        .cab-cal h1 { flex: 1 1 100%; margin: 0; font-size: 24px; font-weight: 400; line-height: 32px; }
+        .cab-cal p { margin: 0; flex: 1 1 192px; }
+        .chip-v { display: inline-flex; align-items: center; min-height: 36px; padding: 4px 12px; border-radius: 18px; border: 1px solid var(--k-app-borde); font-size: 14px; font-weight: 500; }
+        .entrega { display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 20px; background: var(--k-app-cont); }
+        .pos { margin: 0; font-size: 14px; font-weight: 500; line-height: 20px; color: var(--k-app-texto-2); }
+        .quien { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+        .quien .datos { display: flex; flex-direction: column; flex: 1 1 160px; min-width: 0; }
+        .quien strong { font-weight: 700; }
+        .estado-e { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 10px; font-size: 14px; font-weight: 500; background: var(--k-app-primario-cont); color: var(--k-app-sobre-primario-cont); }
+        .estado-e .k-app-icono { --k-icono-tam: 18px; }
+        .visor { display: flex; flex-direction: column; gap: 8px; }
+        .visor .vcab { display: flex; align-items: center; gap: 4px 8px; }
+        .visor .vcab > .k-app-icono { color: var(--k-app-texto-2); }
+        .visor .vnombre { flex: 1 1 auto; min-width: 0; font-size: 14px; font-weight: 500; }
+        .visor .peso { font-size: 12px; color: var(--k-app-texto-2); }
+        .foto { display: block; width: 100%; height: 190px; border-radius: 12px; background: var(--k-app-cont-max); }
+        .calificar-panel { display: flex; flex-direction: column; gap: 10px; padding-top: 4px; border-top: 1px solid var(--k-app-borde); }
+        .calificar-panel h2 { margin: 8px 0 0; font-size: 16px; font-weight: 500; line-height: 24px; }
+        .rapidas { display: flex; flex-wrap: wrap; gap: 8px; }
+        .rapida { position: relative; display: grid; place-items: center; min-width: 56px; height: 48px; padding: 6px 12px; border-radius: 14px; box-shadow: inset 0 0 0 1px var(--k-app-contorno);
+          font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+        .rapida .on { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 14px; background: var(--k-app-primario); color: #ffffff; opacity: 0; }
+        .calificar-panel .k-app-campo { --k-app-fondo-campo: var(--k-app-cont); }
+        .ayuda-c { padding: 4px 16px 0; font-size: 12px; line-height: 16px; color: var(--k-app-texto-2); }
+        .seguir { height: 52px; }
+        .seguir .k-app-icono { margin: 0 -8px 0 0; }
+        .otras { display: flex; flex-wrap: wrap; gap: 8px; }
+        .otras .k-app-boton { flex: 1 1 128px; height: 44px; padding: 0 12px; }
+        .otras .k-app-boton .k-app-icono { margin-left: 0; }
+        .otras .devolver { color: var(--k-app-error); }
+        .snack { left: 8px; right: 8px; bottom: 82px; opacity: 0; }
+        /* Hojas: las notas en fila, «Abrir ahora» y el detalle de la clase con «Faltaron» */
+        .hoja { position: absolute; left: 0; right: 0; bottom: 0; z-index: 6; display: flex; flex-direction: column; padding: 24px; border-radius: 28px 28px 0 0;
+          background: var(--k-app-fondo); }
+        .hoja h2.ht { margin: 0 0 16px; font-size: 24px; font-weight: 400; line-height: 32px; }
+        .hoja .hc { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 10px; }
+        .hoja .hc > p { margin: 0; }
+        .hoja .ha { display: flex; justify-content: flex-end; gap: 8px; padding-top: 12px; }
+        #cal-h-notas { top: 114px; }
+        #cal-h-falt { top: 120px; }
+        .nlista { display: flex; flex-direction: column; gap: 4px; }
+        .nlista > div { display: grid; grid-template-columns: auto minmax(0, 1fr) 72px 24px; align-items: center; gap: 4px 10px; padding: 4px 6px; border-radius: 12px; background: var(--k-app-cont); }
+        .nota { min-height: 44px; padding: 6px 10px; border-radius: 10px; box-shadow: inset 0 0 0 1px var(--k-app-contorno); background: var(--k-app-fondo);
+          font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0; }
+        .nota .k-app-campo-valor { text-align: right; }
+        .ok-n { --k-icono-tam: 24px; color: var(--k-app-verde); opacity: 0; }
+        .duraciones { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+        .duracion { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 68px; padding: 6px; border-radius: 16px;
+          box-shadow: inset 0 0 0 1px var(--k-app-borde); background: var(--k-app-cont-alto); }
+        .duracion.sugerida { background: var(--k-app-primario-cont); color: var(--k-app-sobre-primario-cont); box-shadow: none; }
+        .duracion .n { font-size: 24px; line-height: 32px; font-variant-numeric: tabular-nums; }
+        .duracion .u { font-size: 12px; font-weight: 500; line-height: 16px; }
+        .otra { display: flex; align-items: center; gap: 8px; }
+        .otra .k-app-campo { flex: 1 1 128px; }
+        .deshab { color: rgba(27, 27, 31, 0.38); box-shadow: inset 0 0 0 1px rgba(27, 27, 31, 0.12) !important; }
+        .flista { display: flex; flex-direction: column; gap: 4px; }
+        .flista > div { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 4px 4px 4px 8px; border-radius: 12px; background: var(--k-app-cont); }
+        .flista .txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .enlace { text-decoration: underline; text-decoration-color: var(--k-app-borde); text-underline-offset: 3px; }
+        .seguidas { align-self: flex-start; padding: 0 8px; border-radius: 8px; font-size: 12px; font-weight: 500; line-height: 16px; background: var(--k-app-error-cont); color: var(--k-app-sobre-error-cont); }
+        .wa { height: 40px; padding: 0 10px; }
+        .wa .k-app-icono { margin-left: 0; }
+        .hoja h3 { margin: 8px 0 0; font-size: 14px; font-weight: 500; line-height: 20px; }
+        /* El celular de la alumna: el resultado de su evaluación (resultado-evaluacion.component.ts) */
+        .tarjeta { display: flex; flex-direction: column; gap: 4px; padding: 14px; border-radius: 18px; background: var(--k-app-cont); }
+        .tarjeta .cat { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; line-height: 16px; color: var(--k-app-texto-2); }
+        .tarjeta .cat .k-app-icono { --k-icono-tam: 18px; color: #1565c0; }
+        .tarjeta .curso { font-size: 16px; font-weight: 500; line-height: 24px; }
+        .mtabs { display: flex; gap: 4px; border-bottom: 1px solid var(--k-app-borde); }
+        .mtab { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 8px 12px; border-bottom: 3px solid transparent; color: var(--k-app-texto-2);
+          font-size: 14px; font-weight: 500; line-height: 20px; white-space: nowrap; }
+        .mtab.activa { color: var(--k-app-primario); border-bottom-color: var(--k-app-primario); }
+        .mtab .n { padding: 0 7px; border-radius: 10px; font-size: 12px; line-height: 16px; background: var(--k-app-cont-max); color: var(--k-app-texto-2); }
+        .rnota { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px; border-radius: 20px; background: var(--k-app-primario-cont); color: var(--k-app-sobre-primario-cont); }
+        .rnota .etq { font-size: 14px; font-weight: 500; line-height: 20px; }
+        .rnota .valor { font-size: 36px; line-height: 44px; font-variant-numeric: tabular-nums; }
+        .rchip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 10px; font-size: 14px; font-weight: 500; background: var(--k-app-primario); color: #ffffff; }
+        .rchip .k-app-icono { --k-icono-tam: 18px; }
+        .rfiltro { display: flex; gap: 6px; }
+        .rfiltro span { position: relative; display: inline-flex; align-items: center; min-height: 40px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--k-app-borde);
+          font-size: 14px; font-weight: 500; }
+        .rfiltro span.activo { background: var(--k-app-secundario-cont); color: var(--k-app-sobre-secundario-cont); border-color: transparent; }
+        .item { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 16px; background: var(--k-app-cont-bajo); border-left: 4px solid var(--k-app-error); }
+        .item .icab { display: flex; align-items: center; gap: 6px 10px; }
+        .num { display: grid; place-items: center; min-width: 32px; height: 32px; border-radius: 50%; font-size: 14px; font-weight: 500; background: var(--k-app-cont-max); }
+        .est-no { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; color: var(--k-app-error); }
+        .est-no .k-app-icono { --k-icono-tam: 20px; }
+        .pts { margin-left: auto; font-size: 12px; line-height: 16px; }
+        .enunciado { margin: 0; font-size: 16px; line-height: 24px; }
+        .opciones { display: flex; flex-direction: column; gap: 6px; }
+        .opciones > div { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 10px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--k-app-borde); }
+        .opciones > div.errada { box-shadow: inset 0 0 0 2px var(--k-app-error); background: var(--k-app-cont-alto); }
+        .opciones > div.buena { box-shadow: inset 0 0 0 2px var(--k-app-primario); }
+        .letra { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; font-weight: 500; background: var(--k-app-cont-max); flex: none; }
+        .opciones .texto { flex: 1 1 140px; min-width: 0; }
+        .tag { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 500; line-height: 16px; color: var(--k-app-texto-2); }
+        .tag.ok { color: var(--k-app-primario); }
+        .tag .k-app-icono { --k-icono-tam: 16px; }
+        .mias { display: flex; flex-direction: column; gap: 8px; }
+        .mias h2 { margin: 0; font-size: 16px; font-weight: 500; line-height: 24px; }
+        .mias .evm { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 14px; border-radius: 16px; background: var(--k-app-cont); }
+        .mias .evm .t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+        .mias .evm .nombre { font-size: 14px; font-weight: 500; line-height: 20px; }
+        .mias .evm .chico { font-size: 12px; line-height: 16px; }
+        .mias .evm .nota-m { font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+        .notif { left: 8px; right: 8px; top: 8px; opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="calificar" data-width="1920" data-height="1080" data-duration="35">
+        <div class="k-recurso-ceja ceja-e" id="cal-ceja">Academia · Notas y evaluaciones</div>
+        <div class="col" id="cal-col"></div>
+
+        <!-- ═══ El celular del profesor ═══ -->
+        <div class="k-telefono k-app-telefono" id="cal-tel" data-layout-allow-overflow data-layout-allow-overlap>
+          <div class="k-app k-app-escala">
+            <div class="k-app-camara" id="cal-cam">
+              <div class="k-app-barra">
+                <span class="k-app-marca"><img src="identidad/favicon.svg" alt="" />Kingdom Demo</span>
+                <span class="k-app-espacio"></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/apps.svg)"></span></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/notifications.svg)"></span></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/help.svg)"></span></span>
+                <span class="k-app-cuenta">JG</span>
+              </div>
+              <div class="k-app-cuerpo">
+                <!-- La página del grupo: Notas, Evaluaciones y Entregas (capturas 01-notas, 05-evaluaciones y 03-entregas) -->
+                <div class="k-app-desliz" id="cal-grupo">
+                  <div class="pg">
+                    <span class="volver"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/arrow_back.svg)"></span>Cursos</span>
+                    <h1 class="h1">Fundamentos bíblicos</h1>
+                    <section class="ficha">
+                      <div class="fila-nombre"><h2>Fundamentos · miércoles 7 p. m.</h2><span class="gchip en-curso">En curso</span></div>
+                      <p class="etiquetas"><span class="gchip"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/menu_book.svg); color: #1565c0"></span>Biblia</span><span class="gchip">Presencial</span></p>
+                      <p class="dato"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/event.svg)"></span>2 de sept de 2026 – 7 de oct de 2026</p>
+                      <div class="profesores"><span class="etq">Profesores</span><span class="persona"><span class="k-app-avatar" style="--k-tam: 28px">JG</span>Jorge Gallego Gil</span></div>
+                    </section>
+                    <div class="cifras" id="cal-cifras">
+                      <div class="cifra"><span class="valor">6<small> / 6</small></span><span class="etq">Clases dictadas</span></div>
+                      <div class="cifra"><span class="valor">18</span><span class="etq">Inscritos</span></div>
+                      <div class="cifra"><span class="valor">83,3 %</span><span class="etq">Asistencia promedio</span></div>
+                    </div>
+                    <nav class="tabs" id="cal-tabs">
+                      <div class="tabs-fila" id="cal-tabs-fila">
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/dashboard.svg)"></span>Resumen</span>
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/calendar_month.svg)"></span>Fechas</span>
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(assets/iconos/today.svg)"></span>Hoy</span>
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(assets/iconos/group.svg)"></span>Alumnos</span>
+                        <span class="tab" id="cal-t-asistencia"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/how_to_reg.svg)"></span>Asistencia</span>
+                        <span class="tab" id="cal-t-material"><span class="k-app-icono" style="--k-icono: url(assets/iconos/folder.svg)"></span>Material</span>
+                        <span class="tab activa" id="cal-t-notas"><span class="k-app-icono" style="--k-icono: url(assets/iconos/grading.svg)"></span>Notas</span>
+                        <span class="tab" id="cal-t-entregas"><span class="k-app-icono" style="--k-icono: url(assets/iconos/assignment_turned_in.svg)"></span>Entregas</span>
+                        <span class="tab" id="cal-t-evaluaciones"><span class="k-app-icono" style="--k-icono: url(assets/iconos/quiz.svg)"></span>Evaluaciones</span>
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/workspace_premium.svg)"></span>Graduar</span>
+                        <span class="tab"><span class="k-app-icono" style="--k-icono: url(assets/iconos/summarize.svg)"></span>Reportes</span>
+                      </div>
+                    </nav>
+                    <div class="secs">
+                      <!-- Notas: la sábana -->
+                      <section class="sec" id="cal-s-notas">
+                        <div class="filtros">
+                          <span class="fchip activo">Todos · 18</span>
+                          <span class="fchip" id="cal-f-cumple"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>Cumple · 13</span>
+                          <span class="fchip" id="cal-f-riesgo"><span class="k-app-icono" style="--k-icono: url(assets/iconos/warning.svg)"></span>En riesgo · 1</span>
+                          <span class="fchip" id="cal-f-no"><span class="k-app-icono" style="--k-icono: url(assets/iconos/cancel.svg)"></span>No cumple · 4</span>
+                          <span class="promedio">Promedio del grupo: 4,03 / 5</span>
+                        </div>
+                        <div class="buscar-n">Buscar alumno</div>
+                        <div class="sab" id="cal-sab">
+                          <table id="cal-tabla">
+                            <thead>
+                              <tr class="fila-materias">
+                                <th class="fija" rowspan="2">Alumno</th>
+                                <th colspan="2">Antiguo Testamento · 50 %</th>
+                                <th colspan="2">Nuevo Testamento · 50 %</th>
+                                <th class="col-final" rowspan="2">Final</th>
+                              </tr>
+                              <tr class="fila-acts">
+                                <th><span class="act-nombre">Participación</span><span class="act-peso"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit_note.svg)"></span>20 %</span>
+                                  <span class="columna" id="cal-lapiz"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit.svg)"></span></span></th>
+                                <th><span class="act-nombre">Línea de tiempo del Antiguo Testamento</span><span class="act-peso"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/assignment.svg)"></span>30 %</span></th>
+                                <th><span class="act-nombre">Quiz de los evangelios</span><span class="act-peso"><span class="k-app-icono" style="--k-icono: url(assets/iconos/quiz.svg)"></span>25 %</span></th>
+                                <th><span class="act-nombre">Examen final</span><span class="act-peso"><span class="k-app-icono" style="--k-icono: url(assets/iconos/quiz.svg)"></span>25 %</span></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr><th class="fija"><span class="alumno">Andrea Perea López</span></th><td><span class="celda" id="cal-c-0">—</span></td><td><span class="celda">4,6<span class="con-com"></span></span></td><td><span class="celda">5</span></td><td><span class="celda">4,5</span></td>
+                                <td class="col-final"><span class="final cumple"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>4,6</span></td></tr>
+                              <tr><th class="fija"><span class="alumno">Antonella Ríos Sánchez</span></th><td><span class="celda" id="cal-c-1">—</span></td><td><span class="celda">4,6<span class="con-com"></span></span></td><td><span class="celda">4</span></td><td><span class="celda">4,17</span></td>
+                                <td class="col-final"><span class="final cumple"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>4,1</span></td></tr>
+                              <tr><th class="fija"><span class="alumno">Camilo Carmona Flórez</span></th><td><span class="celda" id="cal-c-2">—</span></td><td><span class="celda">4,2<span class="con-com"></span></span></td><td><span class="celda">3,33</span></td><td><span class="celda">3,83</span></td>
+                                <td class="col-final"><span class="final cumple"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>3,8</span></td></tr>
+                              <tr><th class="fija"><span class="alumno">Carolina Gil Mesa</span></th><td><span class="celda">—</span></td><td><span class="celda">4,4<span class="con-com"></span></span></td><td><span class="celda">2,5</span></td><td><span class="celda">—</span></td>
+                                <td class="col-final"><span class="final en_riesgo"><span class="k-app-icono" style="--k-icono: url(assets/iconos/warning.svg)"></span>2,9</span></td></tr>
+                              <tr><th class="fija"><span class="alumno">Dayana Agudelo Carmona</span></th><td><span class="celda">—</span></td><td><span class="celda">3,9</span></td><td><span class="celda">2</span></td><td><span class="celda">2,5</span></td>
+                                <td class="col-final"><span class="final no_cumple"><span class="k-app-icono" style="--k-icono: url(assets/iconos/cancel.svg)"></span>2,3</span></td></tr>
+                              <tr><th class="fija"><span class="alumno">Débora Bustamante Gil</span></th><td><span class="celda">3,8</span></td><td><span class="celda">3,9</span></td><td><span class="celda">4,33</span></td><td><span class="celda">4</span></td>
+                                <td class="col-final"><span class="final cumple"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>4</span></td></tr>
+                              <tr><th class="fija"><span class="alumno">Esteban Ospina Quintero</span></th><td><span class="celda">3,7</span></td><td><span class="celda">—</span></td><td><span class="celda">2,67</span></td><td><span class="celda">—</span></td>
+                                <td class="col-final"><span class="final no_cumple"><span class="k-app-icono" style="--k-icono: url(assets/iconos/cancel.svg)"></span>1,6</span></td></tr>
+                              <tr><th class="fija"><span class="alumno">Ester Gil Mesa</span></th><td><span class="celda">—</span></td><td><span class="celda">4</span></td><td><span class="celda">3,67</span></td><td><span class="celda">3,5</span></td>
+                                <td class="col-final"><span class="final cumple"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>3,7</span></td></tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </section>
+                      <!-- Evaluaciones -->
+                      <section class="sec" id="cal-s-ev" style="opacity: 0">
+                        <div class="cab-ev"><p class="muted" style="margin: 0">2 evaluaciones · 18 inscritos</p>
+                          <span class="k-app-boton contorno banco"><span class="k-app-icono" style="--k-icono: url(assets/iconos/quiz.svg)"></span>Banco de preguntas</span></div>
+                        <article class="ev">
+                          <div class="ev-cab"><h3>Quiz de los evangelios</h3><span class="gchip calificada">Calificada</span></div>
+                          <p class="meta muted">Nuevo Testamento · Los evangelios · mié, 23 de sept · 7:00 p. m.</p>
+                          <p class="meta"><span class="k-app-icono" style="--k-icono: url(assets/iconos/format_list_numbered.svg)"></span>3 preguntas<span class="gchip">Orden aleatorio</span></p>
+                          <p class="cuando"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/lock.svg)"></span>Cerró el mié, 23 de sept · 7:30 p. m.</p>
+                          <div class="mini-cifras"><span><span class="n">17<small> / 18</small></span><span class="etq">La presentaron</span></span><span><span class="n">4,02</span><span class="etq">Promedio</span></span></div>
+                          <div class="acciones"><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/insights.svg)"></span>Resultados</span>
+                            <span class="k-app-boton texto"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit_note.svg)"></span>Ver preguntas</span></div>
+                        </article>
+                        <div class="estados" id="cal-ex">
+                          <!-- Sin programar -->
+                          <article class="ev v1" id="cal-ex-1">
+                            <div class="ev-cab"><h3>Examen final</h3><span class="gchip">Sin programar</span></div>
+                            <p class="meta muted">Nuevo Testamento · Apocalipsis y la esperanza · mié, 7 de oct · 7:00 p. m.</p>
+                            <p class="meta"><span class="k-app-icono" style="--k-icono: url(assets/iconos/format_list_numbered.svg)"></span>6 preguntas<span class="gchip">Orden aleatorio</span></p>
+                            <div class="acciones"><span class="k-app-boton grande" id="cal-abrir"><span class="k-app-icono" style="--k-icono: url(assets/iconos/play_arrow.svg)"></span>Abrir ahora</span>
+                              <span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/event.svg)"></span>Programar</span>
+                              <span class="k-app-boton texto"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit_note.svg)"></span>Preguntas</span></div>
+                          </article>
+                          <!-- Abierta y, al cerrar, «Cerró: calificando…» -->
+                          <article class="ev abierta" id="cal-ex-2">
+                            <div class="ev-cab"><h3>Examen final</h3><span class="gchip abierta" id="cal-ex-2-chip">Abierta</span></div>
+                            <p class="meta muted">Nuevo Testamento · Apocalipsis y la esperanza · mié, 7 de oct · 7:00 p. m.</p>
+                            <p class="meta"><span class="k-app-icono" style="--k-icono: url(assets/iconos/format_list_numbered.svg)"></span>6 preguntas<span class="gchip">Orden aleatorio</span></p>
+                            <p class="cuando vivo" id="cal-ex-2-cuando"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/schedule.svg)"></span><span id="cal-ex-2-falta">Cierra a las 7:30 p. m. · faltan 30:00</span></p>
+                            <div class="mini-cifras"><span><span class="n"><span id="cal-ex-2-n">0</span><small> / 18</small></span><span class="etq">La presentaron</span></span><span><span class="n">—</span><span class="etq">Promedio</span></span></div>
+                            <div class="acciones"><span class="k-app-boton contorno" id="cal-ex-2-ext"><span class="k-app-icono" style="--k-icono: url(assets/iconos/more_time.svg)"></span>Extender</span>
+                              <span class="k-app-boton contorno peligro" id="cal-ex-2-cer"><span class="k-app-icono" style="--k-icono: url(assets/iconos/stop_circle.svg)"></span>Cerrar ya</span>
+                              <span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/insights.svg)"></span><span id="cal-ex-2-quien">Quién la está presentando</span></span>
+                              <span class="k-app-boton texto"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit_note.svg)"></span>Ver preguntas</span></div>
+                          </article>
+                          <!-- Calificada sola al cerrar, con las abiertas por calificar -->
+                          <article class="ev" id="cal-ex-3">
+                            <div class="ev-cab"><h3>Examen final</h3><span class="gchip calificada">Calificada</span></div>
+                            <p class="meta muted">Nuevo Testamento · Apocalipsis y la esperanza · mié, 7 de oct · 7:00 p. m.</p>
+                            <p class="meta"><span class="k-app-icono" style="--k-icono: url(assets/iconos/format_list_numbered.svg)"></span>6 preguntas<span class="gchip">Orden aleatorio</span></p>
+                            <p class="cuando"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/lock.svg)"></span>Cerró el mié, 7 de oct · 7:30 p. m.</p>
+                            <div class="mini-cifras"><span><span class="n">15<small> / 18</small></span><span class="etq">La presentaron</span></span><span><span class="n">4,06</span><span class="etq">Promedio</span></span>
+                              <span class="pendiente" id="cal-ex-3-abiertas"><span class="n">3</span><span class="etq">Abiertas por calificar</span></span></div>
+                            <div class="acciones"><span class="k-app-boton grande" id="cal-calificar3"><span class="k-app-icono" style="--k-icono: url(assets/iconos/rate_review.svg)"></span>Calificar (3)</span>
+                              <span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/insights.svg)"></span>Resultados</span>
+                              <span class="k-app-boton texto"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit_note.svg)"></span>Ver preguntas</span></div>
+                          </article>
+                        </div>
+                      </section>
+                      <!-- Entregas -->
+                      <section class="sec" id="cal-s-ent" style="opacity: 0">
+                        <div class="borrado"><span class="k-app-icono" style="--k-icono: url(assets/iconos/auto_delete.svg)"></span>
+                          <p>Los archivos que entregaron en este grupo se borran el 7 de ene de 2027 (aprox.: 3 meses después de la última clase). Las notas y los comentarios quedan.</p></div>
+                        <article class="act">
+                          <div class="ev-cab"><h3>Línea de tiempo del Antiguo Testamento</h3><span class="gchip publicada">Publicada</span></div>
+                          <p class="meta muted">Antiguo Testamento · Reyes y profetas · mié, 16 de sept · 7:00 p. m.</p>
+                          <p class="meta"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/event.svg)"></span>Hasta el sáb, 3 de oct · 11:59 p. m.</p>
+                          <p class="meta" id="cal-recibe"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/upload_file.svg)"></span>Recibe PDF, imagen · un archivo</p>
+                          <div class="mini-cifras"><span><span class="n">16<small> / 18</small></span><span class="etq">Entregaron</span></span><span class="pendiente"><span class="n">3</span><span class="etq">Por calificar</span></span>
+                            <span><span class="n">2</span><span class="etq">Faltan</span></span></div>
+                          <div class="acciones"><span class="k-app-boton grande" id="cal-fila"><span class="k-app-icono" style="--k-icono: url(assets/iconos/rate_review.svg)"></span>Calificar en fila (3)</span>
+                            <span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/tune.svg)"></span>Configurar</span>
+                            <span class="k-app-boton texto"><span class="k-app-icono" style="--k-icono: url(assets/iconos/list.svg)"></span>Ver entregas</span></div>
+                        </article>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Calificar en fila (calificar-entregas.page.ts) -->
+                <div class="k-app-desliz" id="cal-ent" style="opacity: 0">
+                  <div class="pg">
+                    <span class="volver"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/arrow_back.svg)"></span>Fundamentos · miércoles 7 p. m.</span>
+                    <header class="cab-cal">
+                      <h1>Línea de tiempo del Antiguo Testamento</h1>
+                      <p class="muted">3 por calificar · 13 calificadas · 2 sin entregar</p>
+                      <span class="chip-v">Ver también las calificadas</span>
+                    </header>
+                    <article class="entrega">
+                      <p class="pos" id="cal-pos">Entrega 1 de 3</p>
+                      <div class="quien" id="cal-quien">
+                        <span class="k-app-avatar">MA</span>
+                        <div class="datos"><strong>Mariana Arias</strong><span class="muted">Entregó vie, 2 de oct · 8:14 p. m.</span></div>
+                        <span class="estado-e"><span class="k-app-icono" style="--k-icono: url(assets/iconos/task.svg)"></span>Entregada</span>
+                      </div>
+                      <div class="visor">
+                        <div class="vcab"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/image.svg)"></span><span class="vnombre">linea-de-tiempo.jpg</span><span class="peso">1,2 MB</span></div>
+                        <!-- La foto que subió la alumna (su cuaderno con la línea de tiempo): ilustración, no un dato. -->
+                        <svg class="foto" viewBox="0 0 326 190" aria-hidden="true">
+                          <rect x="22" y="14" width="282" height="162" rx="6" fill="#fdfcf6" transform="rotate(-1.5 163 95)" />
+                          <g transform="rotate(-1.5 163 95)" stroke="#3b4a6b" stroke-linecap="round" fill="none">
+                            <line x1="44" y1="98" x2="284" y2="98" stroke-width="3" />
+                            <g fill="#3b4a6b" stroke="none"><circle cx="64" cy="98" r="5" /><circle cx="114" cy="98" r="5" /><circle cx="164" cy="98" r="5" /><circle cx="214" cy="98" r="5" /><circle cx="264" cy="98" r="5" /></g>
+                            <g stroke-width="2" opacity="0.75"><line x1="50" y1="76" x2="80" y2="76" /><line x1="100" y1="120" x2="130" y2="120" /><line x1="150" y1="76" x2="180" y2="76" />
+                              <line x1="200" y1="120" x2="230" y2="120" /><line x1="250" y1="76" x2="278" y2="76" /><line x1="54" y1="66" x2="74" y2="66" /><line x1="154" y1="66" x2="176" y2="66" /></g>
+                            <line x1="40" y1="34" x2="160" y2="34" stroke-width="3" opacity="0.8" />
+                          </g>
+                        </svg>
+                        <div class="acciones"><span class="k-app-boton contorno"><span class="k-app-icono" style="--k-icono: url(assets/iconos/open_in_new.svg)"></span>Abrir en otra pestaña</span>
+                          <span class="k-app-boton texto"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/download.svg)"></span>Descargar</span></div>
+                      </div>
+                      <section class="calificar-panel" id="cal-panel">
+                        <h2>Nota (de 0 a 5)</h2>
+                        <div class="rapidas">
+                          <span class="rapida">5</span><span class="rapida" id="cal-r45">4,5<span class="on">4,5</span></span><span class="rapida">4</span><span class="rapida">3,5</span><span class="rapida">3</span>
+                        </div>
+                        <div class="k-app-campo" id="cal-nota-c"><span class="k-app-campo-etiqueta">Nota (0 a 5)</span><span class="k-app-campo-valor" id="cal-nota-v"></span></div>
+                        <div>
+                          <div class="k-app-campo k-app-area" id="cal-com"><span class="k-app-campo-etiqueta">Comentario para el alumno</span><span class="k-app-campo-valor"></span></div>
+                          <div class="ayuda-c">Lo ve el alumno con su nota. Para devolver, escribe aquí qué debe corregir.</div>
+                        </div>
+                        <span class="k-app-boton seguir" id="cal-seguir">Guardar y seguir<span class="k-app-icono" style="--k-icono: url(identidad/iconos/arrow_forward.svg)"></span></span>
+                        <div class="otras">
+                          <span class="k-app-boton contorno deshab"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/arrow_back.svg)"></span>Anterior</span>
+                          <span class="k-app-boton contorno devolver"><span class="k-app-icono" style="--k-icono: url(assets/iconos/undo.svg)"></span>Devolver para corregir</span>
+                          <span class="k-app-boton contorno">Siguiente<span class="k-app-icono" style="--k-icono: url(identidad/iconos/arrow_forward.svg)"></span></span>
+                        </div>
+                      </section>
+                    </article>
+                  </div>
+                </div>
+              </div>
+              <nav class="k-app-inferior">
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/dashboard.svg)"></span></span>Inicio</span>
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/church.svg)"></span></span>Mi iglesia</span>
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/person.svg)"></span></span>Perfil</span>
+              </nav>
+              <div class="k-app-snackbar snack" id="cal-snack">Guardaste la nota de Mariana Arias.</div>
+              <div class="k-app-velo" id="cal-velo"></div>
+
+              <!-- Hoja: «Participación», las notas en fila (nota-editar.component.ts; captura 02-columna) -->
+              <div class="hoja" id="cal-h-notas">
+                <h2 class="ht">Participación</h2>
+                <div class="hc">
+                  <p class="muted">Nota de 0 a 5. Enter guarda y pasa al siguiente; vacío quita la nota.</p>
+                  <div class="nlista">
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">AP</span><span>Andrea Perea López</span><span class="nota k-app-campo" id="cal-n-0"><span class="k-app-campo-valor"></span></span><span class="k-app-icono ok-n" id="cal-ok-0" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">AR</span><span>Antonella Ríos Sánchez</span><span class="nota k-app-campo" id="cal-n-1"><span class="k-app-campo-valor"></span></span><span class="k-app-icono ok-n" id="cal-ok-1" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">CC</span><span>Camilo Carmona Flórez</span><span class="nota k-app-campo" id="cal-n-2"><span class="k-app-campo-valor"></span></span><span class="k-app-icono ok-n" id="cal-ok-2" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">CG</span><span>Carolina Gil Mesa</span><span class="nota k-app-campo" id="cal-n-3"><span class="k-app-campo-valor"></span></span><span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">DA</span><span>Dayana Agudelo Carmona</span><span class="nota k-app-campo"><span class="k-app-campo-valor"></span></span><span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">DB</span><span>Débora Bustamante Gil</span><span class="nota k-app-campo"><span class="k-app-campo-valor">3,8</span></span><span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">EO</span><span>Esteban Ospina Quintero</span><span class="nota k-app-campo"><span class="k-app-campo-valor">3,7</span></span><span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">EG</span><span>Ester Gil Mesa</span><span class="nota k-app-campo"><span class="k-app-campo-valor"></span></span><span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">FG</span><span>Felipe Gil Franco</span><span class="nota k-app-campo"><span class="k-app-campo-valor">4,1</span></span><span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">IM</span><span>Ignacio Mesa Vélez</span><span class="nota k-app-campo"><span class="k-app-campo-valor">3,3</span></span><span></span></div>
+                  </div>
+                </div>
+                <div class="ha"><span class="k-app-boton" id="cal-listo">Listo</span></div>
+              </div>
+
+              <!-- Hoja: «Abrir ahora» → «¿Por cuánto tiempo?» (ventana-evaluacion.component.ts; captura 07-ventana) -->
+              <div class="hoja" id="cal-h-abrir">
+                <h2 class="ht" style="margin-bottom: 8px">Abrir ahora</h2>
+                <div class="hc">
+                  <p class="muted">Examen final</p>
+                  <p style="font-size: 14px; font-weight: 500">¿Por cuánto tiempo?</p>
+                  <div class="duraciones">
+                    <span class="duracion"><span class="n">15</span><span class="u">minutos</span></span>
+                    <span class="duracion sugerida" id="cal-30"><span class="n">30</span><span class="u">minutos</span></span>
+                    <span class="duracion"><span class="n">45</span><span class="u">minutos</span></span>
+                    <span class="duracion"><span class="n">1</span><span class="u">hora</span></span>
+                    <span class="duracion"><span class="n">1.5</span><span class="u">horas</span></span>
+                    <span class="duracion"><span class="n">2</span><span class="u">horas</span></span>
+                  </div>
+                  <div class="otra"><div class="k-app-campo"><span class="k-app-campo-etiqueta" style="transform: translate(0px, 28px) scale(1.3333)">Otra duración (minutos)</span><span class="k-app-campo-valor"></span></div>
+                    <span class="k-app-boton contorno deshab">Abrir</span></div>
+                </div>
+                <div class="ha"><span class="k-app-boton texto">Cancelar</span></div>
+              </div>
+
+              <!-- Hoja: el detalle de la clase, «Faltaron (N)» (clase-detalle-dialog.component.ts; captura 07-faltaron) -->
+              <div class="hoja" id="cal-h-falt">
+                <h2 class="ht" style="margin-bottom: 12px">Hechos y las cartas</h2>
+                <div class="hc" style="gap: 8px">
+                  <p class="muted">mié, 30 de sept · 7:00 p. m. · Nuevo Testamento</p>
+                  <h3>Faltaron (4)</h3>
+                  <div class="flista">
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">EO</span><span class="txt"><span class="enlace">Esteban Ospina Quintero</span><span class="seguidas" id="cal-seg">3 clases seguidas sin venir</span></span>
+                      <span class="k-app-boton contorno wa" id="cal-wa"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/chat.svg)"></span>Escribir</span>
+                      <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit.svg)"></span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">DA</span><span class="txt"><span class="enlace">Dayana Agudelo Carmona</span><span class="seguidas">2 clases seguidas sin venir</span></span>
+                      <span class="k-app-boton contorno wa"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/chat.svg)"></span>Escribir</span>
+                      <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit.svg)"></span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">EG</span><span class="txt"><span class="enlace">Ester Gil Mesa</span></span>
+                      <span class="k-app-boton contorno wa"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/chat.svg)"></span>Escribir</span>
+                      <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit.svg)"></span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">IM</span><span class="txt"><span class="enlace">Ignacio Mesa Vélez</span></span>
+                      <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/edit.svg)"></span></span></div>
+                  </div>
+                  <h3>Vinieron (14)</h3>
+                  <div class="flista">
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">AP</span><span class="txt"><span>Andrea Perea López</span><span class="muted" style="font-size: 12px; line-height: 16px">Por código</span></span></div>
+                    <div><span class="k-app-avatar" style="--k-tam: 32px">AR</span><span class="txt"><span>Antonella Ríos Sánchez</span><span class="muted" style="font-size: 12px; line-height: 16px">Por código</span></span></div>
+                  </div>
+                </div>
+                <div class="ha"><span class="k-app-boton">Cerrar</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ El celular de la alumna (Lucía Ruiz Montoya): «Ya está tu nota» y su resultado ═══ -->
+        <div class="k-telefono k-app-telefono" id="cal-alu" style="opacity: 0" data-layout-allow-overflow data-layout-allow-overlap>
+          <div class="k-app k-app-escala">
+            <div class="k-app-camara" id="cal-alu-cam">
+              <div class="k-app-barra">
+                <span class="k-app-marca"><img src="identidad/favicon.svg" alt="" />Kingdom Demo</span>
+                <span class="k-app-espacio"></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/apps.svg)"></span></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/notifications.svg)"></span></span>
+                <span class="k-app-boton-icono"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/help.svg)"></span></span>
+                <span class="k-app-cuenta">LR</span>
+              </div>
+              <div class="k-app-cuerpo">
+                <div class="k-app-desliz" id="cal-mc">
+                  <div class="pg">
+                    <h1 class="h1">Mis cursos</h1>
+                    <nav class="mtabs"><span class="mtab activa">En curso <span class="n">1</span></span><span class="mtab">Explorar</span><span class="mtab">Terminados <span class="n">0</span></span></nav>
+                    <div class="tarjeta">
+                      <span class="cat"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/menu_book.svg)"></span>Biblia</span>
+                      <span class="curso">Fundamentos bíblicos</span>
+                      <span class="muted">Fundamentos · miércoles 7 p. m.</span>
+                      <span>Viniste a 5 de 6 clases (83 %)</span>
+                    </div>
+                    <section class="mias"><h2>Mis evaluaciones</h2>
+                      <div class="evm"><span class="k-app-icono" style="--k-icono: url(assets/iconos/grading.svg)"></span><span class="t"><span class="nombre">Quiz de los evangelios</span><span class="chico k-app-suave">Fundamentos bíblicos · Fundamentos · miércoles 7 p. m.</span><span class="chico">Calificada</span></span><span class="nota-m">5</span><span class="k-app-icono" style="--k-icono: url(assets/iconos/chevron_right.svg)"></span></div>
+                      <div class="evm"><span class="k-app-icono" style="--k-icono: url(assets/iconos/grading.svg)"></span><span class="t"><span class="nombre">Examen final</span><span class="chico k-app-suave">Fundamentos bíblicos · Fundamentos · miércoles 7 p. m.</span><span class="chico">Calificada</span></span><span class="nota-m">4,17</span><span class="k-app-icono" style="--k-icono: url(assets/iconos/chevron_right.svg)"></span></div>
+                    </section>
+                  </div>
+                </div>
+                <div class="k-app-desliz" id="cal-res" style="opacity: 0">
+                  <div class="pg">
+                    <h1 class="h1">Examen final</h1>
+                    <p class="muted" style="margin: -6px 0 0">Fundamentos bíblicos · Fundamentos · miércoles 7 p. m. · Nuevo Testamento</p>
+                    <div class="rnota"><span class="etq">Tu nota</span><span class="valor">4,17 / 5</span>
+                      <span class="rchip"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/check_circle.svg)"></span>Alcanzó la nota mínima (3)</span></div>
+                    <div class="rfiltro"><span class="activo" id="cal-r-todas">Todas (6)</span><span id="cal-r-inc">Incorrectas (1)</span></div>
+                    <div class="item" id="cal-item" style="opacity: 0">
+                      <div class="icab"><span class="num">3</span><span class="est-no"><span class="k-app-icono" style="--k-icono: url(assets/iconos/cancel.svg)"></span>Incorrecta</span><span class="pts">0 de 1 pts</span></div>
+                      <p class="enunciado">¿Quién escribió la mayoría de las cartas del Nuevo Testamento?</p>
+                      <div class="opciones">
+                        <div class="errada"><span class="letra">A</span><span class="texto">Pedro</span><span class="tag">Tu respuesta</span></div>
+                        <div class="buena" id="cal-buena"><span class="letra">B</span><span class="texto">Pablo</span><span class="tag ok"><span class="k-app-icono" style="--k-icono: url(assets/iconos/check.svg)"></span>La correcta</span></div>
+                        <div><span class="letra">C</span><span class="texto">Juan</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <nav class="k-app-inferior">
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/dashboard.svg)"></span></span>Inicio</span>
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/church.svg)"></span></span>Mi iglesia</span>
+                <span class="k-app-nav"><span class="k-app-icono-caja"><span class="k-app-icono" style="--k-icono: url(identidad/iconos/person.svg)"></span></span>Perfil</span>
+              </nav>
+              <div class="k-app-notificacion notif" id="cal-notif"><img src="identidad/favicon.svg" alt="" /><small>Kingdom · ahora</small><b>Ya está tu nota</b>
+                <span>«Examen final» de Fundamentos bíblicos: 4,17.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lo del kit sobre la noche (no es de la app) -->
+        <div class="sobre" id="cal-sobre" data-layout-allow-overflow data-layout-allow-overlap>
+          <span class="rotulo-kit tecla" id="cal-enter">Enter</span>
+          <span class="rotulo-kit lapso" id="cal-lapso"><span class="ico ico-oro" style="--k-icono: url(identidad/iconos/hourglass_top.svg); --k-icono-tam: 30px"></span>30 minutos después</span>
+          <div class="msg" id="cal-msg">
+            <div class="cab"><span class="ico ico-oro" style="--k-icono: url(identidad/iconos/chat.svg); --k-icono-tam: 34px"></span>Se abre tu WhatsApp, con el mensaje listo</div>
+            <p>Hola Esteban, te extrañamos en la clase «Hechos y las cartas» de Fundamentos bíblicos. ¿Todo bien? Te esperamos en la próxima.</p>
+          </div>
+        </div>
+        <div class="k-datos-ejemplo k-recurso-datos" id="cal-datos" style="opacity: 0">Datos de ejemplo</div>
+      </div>
+
+      <script>
+        (function () {
+          const T = KRecurso.tiempos(window); // al empezar el script: «window» es el de esta escena
+          // ── H: piezas comunes de las escenas de este recurso (las del Recurso 3: texto cinético con la voz, anclas, nodos, puntos, líneas,
+          //    entradas; y la app recreada se mueve con KRecurso.app, del kit v1.3) ──
+          const H = (() => {
+            const NS = 'http://www.w3.org/2000/svg';
+            const r3 = (n) => Math.round(n * 1000) / 1000;
+            // «texto con *énfasis*» → [{ texto, clave }]
+            const partir = (s) => {
+              const out = [];
+              let on = false;
+              for (const w of String(s).split(/\s+/)) {
+                if (!w) continue;
+                let t = '', c = false;
+                for (const ch of w) {
+                  if (ch === '*') { on = !on; continue; }
+                  t += ch;
+                  if (on) c = true;
+                }
+                out.push({ texto: t, clave: c });
+              }
+              return out;
+            };
+            const el = (tag, cls, padre, id, css) => {
+              const d = document.createElement(tag);
+              if (cls) d.className = cls;
+              if (id) d.id = id;
+              if (css) Object.assign(d.style, css);
+              padre.appendChild(d);
+              return d;
+            };
+            const icono = (n, tam, oro) =>
+              `<span class="ico${oro ? ' ico-oro' : ''}" style="--k-icono:url(identidad/iconos/${n}.svg);--k-icono-tam:${tam || 56}px"></span>`;
+            // Un ancla es un punto (0×0) en x, y: se anima el ancla (escala desde su centro) y su contenido queda centrado encima.
+            const ancla = (padre, id, x, y, html, cls) => {
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const c = el('div', `centro ${cls || ''}`, a);
+              c.innerHTML = html;
+              return a;
+            };
+            const chip = (padre, id, x, y, html, cls) => ancla(padre, id, x, y, html, `chip ${cls || ''}`);
+            const nodo = (padre, id, x, y, ic, oro, tam) => {
+              const t = tam || 120;
+              const a = el('div', 'ancla', padre, id, { left: `${x}px`, top: `${y}px` });
+              const n = el('div', `k-recurso-nodo${oro ? ' k-oro' : ''}`, a, `${id}-n`, { left: '0px', top: '0px', width: `${t}px`, height: `${t}px`, margin: `-${t / 2}px 0 0 -${t / 2}px` });
+              n.innerHTML = icono(ic, Math.round(t * 0.46));
+              return a;
+            };
+            const punto = (padre, id, x, y, cls, tam) => {
+              const d = el('span', `k-recurso-punto ${cls || ''}`, padre, id, { left: `${x}px`, top: `${y}px` });
+              if (tam) Object.assign(d.style, { width: `${tam}px`, height: `${tam}px`, margin: `-${tam / 2}px 0 0 -${tam / 2}px` });
+              return d;
+            };
+            const linea = (svg, id, x1, y1, x2, y2, oro) => {
+              const l = document.createElementNS(NS, 'line');
+              l.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''}`);
+              l.setAttribute('id', id);
+              [['x1', x1], ['y1', y1], ['x2', x2], ['y2', y2]].forEach(([k, v]) => l.setAttribute(k, v));
+              const L = Math.hypot(x2 - x1, y2 - y1) + 2;
+              l.style.strokeDasharray = `${L} ${L + 40}`;
+              l.style.strokeDashoffset = `${L + 14}`;
+              svg.appendChild(l);
+              return l;
+            };
+            const camino = (svg, id, d, oro, cls) => {
+              const p = document.createElementNS(NS, 'path');
+              p.setAttribute('class', `k-recurso-linea${oro ? ' k-oro' : ''} ${cls || ''}`);
+              p.setAttribute('id', id);
+              p.setAttribute('d', d);
+              svg.appendChild(p);
+              const L = p.getTotalLength() + 2;
+              p.style.strokeDasharray = `${L} ${L + 40}`;
+              p.style.strokeDashoffset = `${L + 14}`;
+              return { p, L, punto: (u) => p.getPointAtLength(Math.max(0, Math.min(1, u)) * (L - 2)) };
+            };
+            const dibujar = (tl, l, t, d) => tl.to(l, { strokeDashoffset: 0, duration: d || 0.6, ease: 'power2.inOut' }, t);
+            // Entradas y salidas del frame: subir con desenfoque (power3.out) · escalas pequeñas con back.out · salir subiendo (power2.in).
+            const entra = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, y: (o && o.dy) ?? 30, filter: 'blur(6px)' },
+              { opacity: 1, y: 0, filter: 'blur(0px)', duration: (o && o.d) || 0.5, ease: 'power3.out', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const pop = (tl, s, t, o) => tl.fromTo(s, { opacity: 0, scale: 0 },
+              { opacity: 1, scale: 1, duration: (o && o.d) || 0.45, ease: 'back.out(2)', stagger: (o && o.stagger) || 0, immediateRender: !(o && o.otra) }, t);
+            const sale = (tl, s, t, o) => tl.to(s, { opacity: 0, y: (o && o.dy) ?? -24, filter: 'blur(6px)', duration: (o && o.d) || 0.35, ease: 'power2.in', stagger: (o && o.stagger) || 0 }, t);
+            const late = (tl, s, t, o) => tl.fromTo(s, { scale: (o && o.de) || 1.12 }, { scale: 1, duration: (o && o.d) || 0.45, ease: 'power2.out', immediateRender: false }, t);
+            const halo = (tl, s, t) => tl.fromTo(s, { scale: 0.5, opacity: 0.9 }, { scale: 1.9, opacity: 0, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+            // La palabra clave n de una frase (o la palabra que empieza con re).
+            const clave = (f, n) => (f.palabras.filter((p) => p.clave)[n || 0] || f.palabras[0] || { inicio: f.inicio, fin: f.fin });
+            const palabra = (f, re) => f.palabras.find((p) => re.test(p.texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^[^a-z0-9]+/, ''))) || { inicio: f.inicio, fin: f.fin };
+            // Texto cinético: un bloque por frase en «cont». textos[i]: undefined = la frase tal cual (sus palabras con sus tiempos);
+            // una cadena = un rótulo corto cuyas palabras entran repartidas sobre las de la frase; null = sin texto (sigue el anterior).
+            const bloques = (T, cont, pref, textos, clase) => {
+              textos = textos || [];
+              return T.frases.map((f, i) => {
+                const tx = textos[i];
+                if (tx === null) return null;
+                const b = el('div', 'bloque', cont, `${pref}-b-${i}`);
+                const fr = el('div', clase || 'k-recurso-frase', b, `${pref}-f-${i}`);
+                let ps;
+                if (tx === undefined) {
+                  ps = f.palabras.length ? f.palabras.map((p) => ({ texto: p.texto, clave: !!p.clave, inicio: p.inicio }))
+                    : partir(f.texto).map((p, j, a) => ({ ...p, inicio: f.inicio + (j * (f.fin - f.inicio)) / a.length }));
+                } else {
+                  const ws = partir(tx);
+                  const np = f.palabras.length;
+                  ps = ws.map((w, j) => ({ ...w, inicio: np ? f.palabras[Math.min(np - 1, Math.floor((j * np) / ws.length))].inicio : f.inicio + (j * (f.fin - f.inicio)) / ws.length }));
+                }
+                const spans = ps.map((p, j) => {
+                  const s = el('span', `k-recurso-palabra${p.clave ? ' k-recurso-clave' : ''}`, fr, `${pref}-p-${i}-${j}`);
+                  s.textContent = p.texto;
+                  return { s, inicio: p.inicio };
+                });
+                return { i, b, fr, spans };
+              });
+            };
+            const animarBloques = (tl, T, bs, finUltimo) => {
+              const vis = bs.filter(Boolean);
+              vis.forEach((x, k) => {
+                x.spans.forEach(({ s, inicio }) => tl.fromTo(s, { y: 28, opacity: 0, filter: 'blur(6px)' },
+                  { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power3.out' }, Math.max(0, inicio - 0.08)));
+                const sig = vis[k + 1];
+                const t = sig ? T.frases[sig.i].inicio - 0.32 : (finUltimo ?? T.salida(0.6));
+                tl.to(x.fr, { y: -24, opacity: 0, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, t);
+              });
+            };
+            // Contador: el texto de el sube de a hasta b (enteros) en d segundos desde t, con onUpdate (buscable).
+            const contar = (tl, elc, a, b, t, d) => {
+              const o = { n: a };
+              tl.fromTo(o, { n: a }, { n: b, duration: d || 0.8, ease: 'power2.out', immediateRender: false, onUpdate: () => { elc.textContent = String(Math.round(o.n)); } }, t);
+            };
+            // Semilla fija para posiciones «al azar» (siempre las mismas).
+            const azar = (s) => () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+            return { r3, partir, el, icono, ancla, chip, nodo, punto, linea, camino, dibujar, entra, pop, sale, late, halo, clave, palabra, bloques, animarBloques, contar, azar };
+          })();
+
+          const construir = () => {
+            const tl = gsap.timeline({ paused: true });
+            const A = KRecurso.app;
+            const [f0, f1, f2, f3, f4, f5] = T.frases;
+            const P = (f, re, d) => T.pulso(H.palabra(f, re).inicio + (d || 0));
+            const $ = (id) => document.getElementById(id);
+            const cam = $('cal-cam'), grupo = $('cal-grupo'), ent = $('cal-ent'), velo = $('cal-velo'), fila = $('cal-tabs-fila');
+            const bs = H.bloques(T, $('cal-col'), 'cal', ['Notas en *fila*', 'Se califican *solas*', 'Su nota y la *correcta*', 'Trabajos, uno tras *otro*',
+              'El *semáforo* de cada uno', 'En «*Faltaron*», un toque']);
+            H.animarBloques(tl, T, bs);
+            H.entra(tl, '#cal-ceja', 0.1, { dy: 16 });
+            const reloj = (el, textos, t0, paso) => textos.forEach((x, k) => tl.set(el, { textContent: x }, H.r3(t0 + k * (paso || 1))));
+            // Las pestañas del grupo: se corren a la vista (scroll horizontal) y se marca la activa.
+            const xTab = (sel, margen) => -Math.max(0, A.caja(document.querySelector(sel), fila).x - (margen ?? 26));
+            let tabActiva = '#cal-t-notas';
+            const pestana = (id, t) => {
+              tl.set(tabActiva, { color: '#44474f', borderBottomColor: 'rgba(0,0,0,0)' }, t);
+              tl.set(id, { color: '#015bbe', borderBottomColor: '#015bbe' }, t);
+              tabActiva = id;
+            };
+            let secActiva = '#cal-s-notas';
+            const seccion = (id, t) => {
+              tl.to(secActiva, { opacity: 0, duration: 0.15 }, t);
+              tl.fromTo(id, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, t + 0.1);
+              secActiva = id;
+            };
+            const cTabs = A.caja($('cal-tabs'), grupo);
+            const yTabs = -(cTabs.y - 8);
+
+            // f0 · la sábana; el lápiz de «Participación» abre las notas en fila: escribes, Enter y pasas al siguiente.
+            tl.set(fila, { x: xTab('#cal-t-material') }, 0);
+            tl.set(grupo, { y: yTabs + 60 }, 0);
+            tl.fromTo('#cal-tel', { opacity: 0, y: 70, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power3.out' }, T.pulso(f0.inicio) - 0.4);
+            H.entra(tl, '#cal-datos', T.pulso(f0.inicio) + 0.2, { dy: 10 });
+            const tLapiz = P(f0, /^notas/, -0.1);
+            A.tocar(tl, grupo, $('cal-lapiz'), tLapiz);
+            A.hoja(tl, $('cal-h-notas'), tLapiz + 0.15, { velo });
+            const tEsc = H.r3(P(f0, /^escribes/, -0.3));
+            const notas = ['4,5', '3,5', '3,7'];
+            const tEnter = [];
+            let t = tEsc;
+            for (let k = 0; k < 3; k++) {
+              const fin = A.escribir(tl, $(`cal-n-${k}`), notas[k], t, { cps: 12, espera: 0.15 });
+              tEnter.push(H.r3(fin + 0.12));
+              tl.fromTo(`#cal-ok-${k}`, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2, ease: 'back.out(2)', immediateRender: false }, fin + 0.18);
+              t = H.r3(fin + 0.45);
+            }
+            // La tecla Enter (rótulo del kit) late en cada Enter.
+            tl.fromTo('#cal-enter', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.25, ease: 'power3.out', immediateRender: false }, tEnter[0] - 0.15);
+            tEnter.forEach((x) => H.late(tl, '#cal-enter', x, { de: 1.15, d: 0.3 }));
+            tl.to('#cal-enter', { opacity: 0, duration: 0.25 }, tEnter[2] + 0.5);
+            // La sábana recibe las notas.
+            notas.forEach((n, k) => tl.set(`#cal-c-${k}`, { textContent: n }, tEnter[k]));
+            const tListo = H.r3(Math.max(tEnter[2] + 0.35, f0.fin - 0.1));
+            A.tocar(tl, cam, $('cal-listo'), tListo, { queda: 0.04 });
+            tl.to('#cal-h-notas', { yPercent: 104, duration: 0.3, ease: 'power2.in' }, tListo + 0.15);
+            tl.to(velo, { opacity: 0, duration: 0.25 }, tListo + 0.15);
+
+            // f1 · Evaluaciones: «Abrir ahora» → «¿Por cuánto tiempo?» → abierta → al cerrar se califica sola → «Calificar (3)» para las abiertas.
+            const tEv = H.r3(f1.inicio + 0.1);
+            tl.to(fila, { x: xTab('#cal-t-notas'), duration: 0.4, ease: 'power2.inOut' }, tEv - 0.45);
+            A.tocar(tl, grupo, $('cal-t-evaluaciones'), tEv, { dx: xTab('#cal-t-notas') });
+            pestana('#cal-t-evaluaciones', tEv + 0.08);
+            seccion('#cal-s-ev', tEv + 0.08);
+            const cEx = A.caja($('cal-ex'), grupo);
+            const yEx = -(cEx.y - 150);
+            A.desliz(tl, grupo, yEx, tEv + 0.35, 0.7);
+            const tAbrir = P(f1, /^toque/, -0.2);
+            A.tocar(tl, grupo, $('cal-abrir'), tAbrir);
+            const t30 = P(f1, /^tiempo/);
+            A.hoja(tl, $('cal-h-abrir'), tAbrir + 0.15, { velo, hasta: H.r3(t30 + 0.25) });
+            A.tocar(tl, cam, $('cal-30'), t30);
+            const tAb = t30 + 0.4;
+            tl.to('#cal-ex-1', { opacity: 0, duration: 0.15 }, tAb);
+            tl.to('#cal-ex-2', { opacity: 1, duration: 0.2 }, tAb + 0.05);
+            const tLapso = P(f1, /^califican/, -0.5);
+            reloj($('cal-ex-2-falta'), ['Cierra a las 7:30 p. m. · faltan 30:00', 'Cierra a las 7:30 p. m. · faltan 29:59'], tAb, 0.3);
+            tl.fromTo('#cal-lapso', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out', immediateRender: false }, tLapso - 0.2);
+            reloj($('cal-ex-2-falta'), ['Cierra a las 7:30 p. m. · faltan 0:03', 'Cierra a las 7:30 p. m. · faltan 0:02', 'Cierra a las 7:30 p. m. · faltan 0:01'], tLapso, 0.2);
+            const oN = { n: 0 };
+            tl.fromTo(oN, { n: 0 }, { n: 15, duration: 0.8, ease: 'power1.out', immediateRender: false, onUpdate: () => { $('cal-ex-2-n').textContent = String(Math.round(oN.n)); } }, tLapso - 0.3);
+            const tCierra = H.r3(tLapso + 0.6);
+            tl.set('#cal-ex-2-chip', { textContent: 'Cerrada', backgroundColor: '#ffdea9', color: '#5e4100' }, tCierra);
+            tl.set('#cal-ex-2', { boxShadow: '0 0 0 0px rgba(0,0,0,0)' }, tCierra);
+            tl.set('#cal-ex-2-cuando', { color: '#1b1b1f', fontWeight: 400 }, tCierra);
+            tl.set('#cal-ex-2-cuando .k-app-icono', { '--k-icono': 'url(assets/iconos/lock_clock.svg)', color: '#44474f' }, tCierra);
+            tl.set('#cal-ex-2-falta', { textContent: 'Cerró: calificando…' }, tCierra);
+            // Cerrada (evaluaciones-grupo.component.ts:87-100): sin «Extender» ni «Cerrar ya», y el botón de la lista pasa a «Resultados».
+            tl.set(['#cal-ex-2-ext', '#cal-ex-2-cer'], { display: 'none' }, tCierra);
+            tl.set('#cal-ex-2-quien', { textContent: 'Resultados' }, tCierra);
+            const tCalif = P(f1, /^cerrar/, -0.1);
+            tl.to('#cal-ex-2', { opacity: 0, duration: 0.15 }, tCalif);
+            tl.to('#cal-ex-3', { opacity: 1, duration: 0.2 }, tCalif + 0.05);
+            H.late(tl, '#cal-ex-3 .gchip.calificada', tCalif + 0.1, { de: 1.2 });
+            tl.to('#cal-lapso', { opacity: 0, duration: 0.25 }, tCalif + 0.4);
+            const tAbiertas = P(f1, /^abiertas/, -0.5);
+            A.foco(tl, grupo, $('cal-ex-3-abiertas'), tAbiertas, tAbiertas + 0.8, { pad: 3, radio: 14 });
+            A.foco(tl, grupo, $('cal-calificar3'), tAbiertas + 0.8, H.r3(f1.fin + 0.1), { pad: 3, radio: 28 });
+            A.tocar(tl, grupo, $('cal-calificar3'), H.r3(tAbiertas + 1.4));
+
+            // f2 · la alumna recibe «Ya está tu nota» y ve cuál era la correcta.
+            tl.fromTo('#cal-alu', { opacity: 0, y: 60, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.6, ease: 'power3.out', immediateRender: false }, T.pulso(f2.inicio));
+            const tNota = P(f2, /^recibe/, -0.2);
+            tl.fromTo('#cal-notif', { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.45, ease: 'back.out(1.6)', immediateRender: false }, tNota);
+            const tToca = P(f2, /^nota/, 0);
+            A.tocar(tl, $('cal-alu-cam'), $('cal-notif'), tToca, { queda: 0.04 });
+            tl.to('#cal-notif', { opacity: 0, y: -30, duration: 0.25, ease: 'power1.in' }, tToca + 0.2);
+            tl.to('#cal-mc', { opacity: 0, duration: 0.2 }, tToca + 0.2);
+            tl.fromTo('#cal-res', { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, tToca + 0.25);
+            const tInc = H.r3(tToca + 0.75);
+            A.tocar(tl, $('cal-res'), $('cal-r-inc'), tInc);
+            tl.set('#cal-r-todas', { backgroundColor: 'rgba(0,0,0,0)', color: '#1b1b1f', borderColor: '#c4c6d0' }, tInc + 0.08);
+            tl.set('#cal-r-inc', { backgroundColor: '#ffdea9', color: '#5e4100', borderColor: 'rgba(0,0,0,0)' }, tInc + 0.08);
+            tl.fromTo('#cal-item', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, tInc + 0.12);
+            const cBuena = A.caja($('cal-buena'), $('cal-alu-cam'));
+            const tCorr = P(f2, /^correcta/, -0.5);
+            A.camara(tl, $('cal-alu-cam'), { z: 1.3, borde: 'izquierda', cy: cBuena.cy - 40, t: tCorr - 0.6, d: 0.8 });
+            A.foco(tl, $('cal-res'), $('cal-buena'), tCorr, T.pulso(f2.fin + 0.4), { pad: 4, radio: 14 });
+
+            // f3 · Entregas: con una foto o un archivo; «Calificar en fila», la nota y un comentario, y la siguiente.
+            const tF3 = T.pulso(f3.inicio) - 0.5;
+            tl.to('#cal-alu', { opacity: 0, x: -40, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, tF3 - 0.2);
+            A.desliz(tl, grupo, yTabs, tF3 - 0.2, 0.5);
+            const tEnt = H.r3(tF3 + 0.35);
+            A.tocar(tl, grupo, $('cal-t-entregas'), tEnt, { dx: xTab('#cal-t-notas') });
+            pestana('#cal-t-entregas', tEnt + 0.08);
+            seccion('#cal-s-ent', tEnt + 0.08);
+            const tRecibe = P(f3, /^foto/, -0.3);
+            A.foco(tl, grupo, $('cal-recibe'), tRecibe, tRecibe + 0.7, { pad: 4, radio: 10 });
+            const cRec = A.caja($('cal-fila'), grupo);
+            A.desliz(tl, grupo, Math.min(yTabs, -(cRec.y - 520)), tRecibe - 0.4, 0.6);
+            const tFila = H.r3(tRecibe + 0.7);
+            A.tocar(tl, grupo, $('cal-fila'), tFila);
+            tl.to(grupo, { opacity: 0, duration: 0.2 }, tFila + 0.2);
+            tl.fromTo(ent, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.3, ease: 'power2.out', immediateRender: false }, tFila + 0.25);
+            const cPanel = A.caja($('cal-panel'), ent);
+            const tPanel = H.r3(tFila + 0.65);
+            A.desliz(tl, ent, -(cPanel.y - 64), tPanel, 0.6);
+            const tR = Math.max(P(f3, /^calificas/, 0), T.pulso(tPanel + 0.6));
+            A.tocar(tl, ent, $('cal-r45'), tR);
+            tl.to('#cal-r45 .on', { opacity: 1, duration: 0.12 }, tR + 0.05);
+            tl.set('#cal-nota-v', { textContent: '4,5' }, tR + 0.08);
+            ['cal-nota-c', 'cal-com'].forEach((id) => A.vaciar(tl, $(id)));
+            tl.fromTo('#cal-nota-c .k-app-campo-etiqueta', { x: 0, y: 28, scale: 4 / 3 }, { x: 0, y: 0, scale: 1, duration: 0.2, ease: 'power2.out', immediateRender: false }, tR + 0.08);
+            const finCom = A.escribir(tl, $('cal-com'), '¡Muy completa, Mariana!', H.r3(tR + 0.45), { cps: 22, espera: 0.2 });
+            const tSeguir = H.r3(Math.min(f4.inicio - 0.35, finCom + 0.3));
+            A.tocar(tl, ent, $('cal-seguir'), tSeguir);
+            A.aparecer(tl, $('cal-snack'), tSeguir + 0.15);
+            A.quitar(tl, $('cal-snack'), tSeguir + 1.3);
+
+            // f4 · la sábana con el semáforo de cada alumno: cumple, en riesgo o no cumple.
+            const tF4 = H.r3(f4.inicio + 0.05);
+            tl.to(ent, { opacity: 0, duration: 0.2 }, tF4);
+            tl.set(grupo, { y: yTabs }, tF4);
+            tl.to(grupo, { opacity: 1, duration: 0.25 }, tF4 + 0.05);
+            pestana('#cal-t-notas', tF4);
+            seccion('#cal-s-notas', tF4);
+            tl.set('#cal-s-notas', { opacity: 1, y: 0 }, tF4 + 0.4);
+            const sab = $('cal-sab'), tabla = $('cal-tabla');
+            const dx = -(A.medida(tabla).w - A.medida(sab).w);
+            const tSem = P(f4, /^semaforo/, -0.6);
+            tl.to(tabla, { x: dx, duration: 0.9, ease: 'power2.inOut' }, tSem);
+            tl.to('#cal-tabla .fija', { x: -dx, duration: 0.9, ease: 'power2.inOut' }, tSem);
+            const cSab = A.caja(sab, cam);
+            A.camara(tl, cam, { z: 1.35, borde: 'derecha', cy: cSab.cy + yTabs + 40, t: tSem - 0.2, d: 0.9 });
+            A.camara(tl, cam, { z: 1, t: P(f4, /^cumple/, -0.9), d: 0.6 });
+            A.foco(tl, grupo, $('cal-f-cumple'), P(f4, /^cumple/, -0.25), P(f4, /^riesgo/, -0.25), { pad: 3, radio: 20 });
+            A.foco(tl, grupo, $('cal-f-riesgo'), P(f4, /^riesgo/, -0.25), P(f4, /^no$/, -0.2), { pad: 3, radio: 20 });
+            A.foco(tl, grupo, $('cal-f-no'), P(f4, /^no$/, -0.2), H.r3(f5.inicio - 0.1), { pad: 3, radio: 20 });
+
+            // f5 · «Faltaron»: quién lleva varias clases sin venir y «Escribir», que abre el WhatsApp del profesor con el mensaje listo.
+            const tF5 = T.pulso(f5.inicio - 0.4);
+            A.camara(tl, cam, { z: 1, t: tF5 - 0.5, d: 0.5 });
+            tl.to(fila, { x: xTab('#cal-t-asistencia'), duration: 0.35, ease: 'power2.inOut' }, tF5 - 0.4);
+            A.tocar(tl, grupo, $('cal-t-asistencia'), tF5, { dx: xTab('#cal-t-asistencia') });
+            pestana('#cal-t-asistencia', tF5 + 0.08);
+            A.hoja(tl, $('cal-h-falt'), tF5 + 0.25, { velo });
+            const tSeg = P(f5, /^varias/, -0.3);
+            A.foco(tl, cam, $('cal-seg'), tSeg, tSeg + 1.2, { pad: 3, radio: 10 });
+            const tWa = P(f5, /^whatsapp/, -0.3);
+            A.foco(tl, cam, $('cal-wa'), tWa - 0.6, tWa + 0.6, { pad: 3, radio: 22 });
+            A.tocar(tl, cam, $('cal-wa'), tWa);
+            tl.to('#cal-f-5', { opacity: 0, y: -24, filter: 'blur(6px)', duration: 0.3, ease: 'power2.in' }, tWa + 0.05);
+            tl.fromTo('#cal-msg', { opacity: 0, y: 24, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power3.out', immediateRender: false }, tWa + 0.25);
+
+            H.sale(tl, ['#cal-tel', '#cal-ceja', '#cal-datos', '#cal-msg'], T.salida(0.6), { d: 0.5 });
+            tl.set({}, {}, T.duracion);
+            window.__timelines['calificar'] = tl;
+          };
+          document.fonts.ready.then(construir);
+        })();
+      </script>
+    </template>
+  </body>
+</html>
