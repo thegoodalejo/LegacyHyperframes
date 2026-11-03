@@ -4,7 +4,7 @@
   data-composition-variables='[
     {"id":"siguiente","type":"string","label":"Sigue con: título del siguiente recurso (vacío: sin tarjeta y el cierre dura 6 s)","default":"","maxLength":56},
     {"id":"llamado","type":"enum","label":"Llamado (solo los aprobados)","default":"acompanamiento","options":[
-      {"value":"acompanamiento","label":"Te acompañamos a mejorar los procesos de tu iglesia"},{"value":"compartir","label":"Comparte este video con tu equipo"},{"value":"ninguno","label":"Sin llamado"}]},
+      {"value":"acompanamiento","label":"Te acompañamos a mejorar los procesos de tu iglesia"},{"value":"compartir","label":"Comparte este video con tu equipo"},{"value":"ministerio","label":"Tu aliado para la expansión del Reino (ministerios)"},{"value":"ninguno","label":"Sin llamado"}]},
     {"id":"contacto","type":"enum","label":"Contacto","default":"whatsapp","options":[
       {"value":"whatsapp","label":"WhatsApp de ventas (el del sitio)"},{"value":"sitio","label":"Sitio público"},{"value":"ninguno","label":"Sin contacto"}]},
     {"id":"idioma","type":"enum","label":"Idioma","default":"es","options":[{"value":"es","label":"Español"},{"value":"en","label":"English"},{"value":"pt","label":"Português"}]}
@@ -193,23 +193,26 @@
 
       <script>
         (function () {
-          // Textos de lista cerrada: el llamado lo dio el dueño (decisión 239) y el contacto es el publicado en el sitio
+          // Textos de lista cerrada: el llamado lo dio el dueño (decisión 239; «ministerio», el 2026-11-03, v1.4) y el contacto es el publicado en el sitio
           // (KingdomApp sitio/src/data/sitio.ts → WHATSAPP_VISIBLE). Un texto nuevo es una decisión del dueño y sube la versión del kit.
           const TEXTOS = {
             es: {
               sigue: 'Sigue con',
               acompanamiento: 'Te acompañamos a <em>mejorar los procesos</em> de tu iglesia',
               compartir: 'Comparte este video <em>con tu equipo</em>',
+              ministerio: 'Tu aliado para la <em>expansión del Reino</em>',
             },
             en: {
               sigue: 'Up next',
               acompanamiento: 'We walk with you to <em>improve the processes</em> of your church',
               compartir: 'Share this video <em>with your team</em>',
+              ministerio: 'Your ally in <em>growing the Kingdom</em>',
             },
             pt: {
               sigue: 'A seguir',
               acompanamiento: 'Acompanhamos você a <em>melhorar os processos</em> da sua igreja',
               compartir: 'Compartilhe este vídeo <em>com sua equipe</em>',
+              ministerio: 'Seu aliado na <em>expansão do Reino</em>',
             },
           };
           const CONTACTOS = { whatsapp: 'WhatsApp +57 300 471 2642', sitio: 'kingdom-sitio.web.app' };
@@ -218,7 +221,7 @@
           const idioma = TEXTOS[v.idioma] ? v.idioma : 'es';
           const t = TEXTOS[idioma];
           const siguiente = String(v.siguiente || '').trim();
-          const llamado = ['acompanamiento', 'compartir', 'ninguno'].includes(v.llamado) ? v.llamado : 'acompanamiento';
+          const llamado = ['acompanamiento', 'compartir', 'ministerio', 'ninguno'].includes(v.llamado) ? v.llamado : 'acompanamiento';
           const contacto = ['whatsapp', 'sitio', 'ninguno'].includes(v.contacto) ? v.contacto : 'whatsapp';
           // Con «Sigue con» la firma empieza en el 3,0; sin él, en el 0 (y el cierre dura 6 s).
           const F = siguiente ? 3 : 0;

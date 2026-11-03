@@ -8,7 +8,7 @@ Este directorio tiene el **kit de identidad** que todos los videos montan y las 
 
 | Carpeta | Qué es |
 |---|---|
-| `_identidad/` | Kit de identidad **v1.3**: intro y cierre del Tipo Wiki, cierres de marca del Comercial (16:9), del Corto (9:16) y del clip (4:5), las piezas del Tipo Recurso (`intro-recurso`, `capitulo-recurso`, `fondo-recurso`, `cierre-recurso`, `recurso.js`, `frame-recurso.md`), `kit.json`, `kit.css` (con `.k-ventana`, `.k-feed-*`, `.k-recurso-*` y, desde la v1.3, `.k-app-*`, `.k-dedo` y `.k-foco` para la app recreada de «Para líderes»), `frame-wiki.md`, `frame-comercial.md`, `frame-corto.md`, favicon, Inter y Fraunces, 117 íconos de Material Symbols, `sonido-marca.mjs`, `sonidos-accion.mjs`, `musica/` (las pistas, fuera de git, y el mapa de pulsos de «Product Launch») y licencias. **No se edita por video** |
+| `_identidad/` | Kit de identidad **v1.4**: intro y cierre del Tipo Wiki, cierres de marca del Comercial (16:9), del Corto (9:16) y del clip (4:5), las piezas del Tipo Recurso (`intro-recurso`, `capitulo-recurso`, `fondo-recurso`, `cierre-recurso`, `recurso.js`, `frame-recurso.md`), `kit.json`, `kit.css` (con `.k-ventana`, `.k-feed-*`, `.k-recurso-*` y, desde la v1.3, `.k-app-*`, `.k-dedo` y `.k-foco` para la app recreada de «Para líderes»), `frame-wiki.md`, `frame-comercial.md`, `frame-corto.md`, favicon, Inter y Fraunces, 117 íconos de Material Symbols, `sonido-marca.mjs`, `sonidos-accion.mjs`, `musica/` (las pistas, fuera de git, y el mapa de pulsos de «Product Launch») y licencias. **No se edita por video** |
 | `_herramientas/montar-kit.mjs` | Copia el kit en `<proyecto>/identidad/`, comprueba el favicon contra la app, genera el sonido de marca a −20 LUFS y los sonidos de acción con su nivel de mezcla |
 | `muestra-kit/` | Muestra 16:9: intro Wiki → cuerpo con una captura real de la ayuda → cierre Wiki → cierre del Comercial |
 | `muestra-corto/` | Muestra 9:16: una escena de Corto con los componentes de `kit.css` → cierre del Corto |
@@ -210,7 +210,7 @@ export default {
   descripcion: { es: '…' },                          // página pública y vista previa de WhatsApp (~160 caracteres)
   ceja: { es: 'Recursos' },                           // opcional (por defecto «Recursos»/«Resources»); o el nombre de la serie
   siguiente: { es: 'Eventos de ciudad, de punta a punta' }, // opcional: «Sigue con» en el cierre (sin él, el cierre dura 6 s)
-  llamado: 'acompanamiento',                          // acompanamiento | compartir | ninguno
+  llamado: 'acompanamiento',                          // acompanamiento | compartir | ministerio (v1.4: «Tu aliado para la expansión del Reino») | ninguno
   contacto: 'whatsapp',                               // whatsapp | sitio | ninguno
   para: ['pastores', 'lideres'],                      // opcional, a la ficha: pastores | lideres | administradores | servidores
   seccion: 'lideres',                                 // opcional (v1.3), a la ficha: pastores | lideres (la sección de Recursos)

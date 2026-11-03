@@ -206,7 +206,7 @@ cada composición porque las de `kit.css` salen vacías en el render aunque el s
 - Nombre: **Kingdom** (nunca «Kingdom App»). Módulos con su nombre en la app: Membresía, Eventos, Academia, Mi iglesia, Portal,
   Comunicaciones, Equipos, Eventos masivos, Archivos y Compartir. Solo funciones que existen (KingdomApp `docs/modulos-app.md` y la ayuda).
 - Llamados del cierre (`llamado`): `acompanamiento` («Te acompañamos a mejorar los procesos de tu iglesia»), `compartir` («Comparte este
-  video con tu equipo») o `ninguno`. Contacto (`contacto`): `whatsapp` (+57 300 471 2642, el del sitio), `sitio` o `ninguno`.
+  video con tu equipo»), `ministerio` («Tu aliado para la expansión del Reino», para Kingdom Ministry; v1.4) o `ninguno`. Contacto (`contacto`): `whatsapp` (+57 300 471 2642, el del sitio), `sitio` o `ninguno`.
 
 ## Qué NO hacer
 

@@ -361,7 +361,7 @@ async function preparar() {
   if (titulo.replace(/\*/g, '').length > 48) console.warn(`  aviso: el título tiene ${titulo.replace(/\*/g, '').length} caracteres (máx. ~48 en la intro)`);
   if (descripcion.length > 200) console.warn(`  aviso: la descripción tiene ${descripcion.length} caracteres (la vista previa de WhatsApp corta cerca de 160)`);
   const llamado = guion.llamado ?? 'acompanamiento', contacto = guion.contacto ?? 'whatsapp';
-  if (!['acompanamiento', 'compartir', 'ninguno'].includes(llamado)) throw new Error('llamado: acompanamiento | compartir | ninguno');
+  if (!['acompanamiento', 'compartir', 'ministerio', 'ninguno'].includes(llamado)) throw new Error('llamado: acompanamiento | compartir | ministerio | ninguno');
   if (!['whatsapp', 'sitio', 'ninguno'].includes(contacto)) throw new Error('contacto: whatsapp | sitio | ninguno');
 
   extrasFicha(guion);
